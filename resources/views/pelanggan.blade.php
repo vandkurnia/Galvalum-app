@@ -18,7 +18,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Penjualan -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Penjualan</span></a>
@@ -43,7 +43,7 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#">
                     <i class="material-symbols-outlined">
                         person</i>
@@ -187,111 +187,82 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-5 mr-5">
-                            <h2>Input Pembelian</h2>
-                            <form action="/proses-input-pembelian" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="id_barang">ID Barang:</label>
-                                    <input type="text" class="form-control" id="id_barang" name="id_barang" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nama_barang">Nama Barang:</label>
-                                    <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jumlah_barang">Jumlah Barang:</label>
-                                    <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="harga_barang">Harga Barang:</label>
-                                    <input type="number" class="form-control" id="harga_barang" name="harga_barang" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 offset-1 mt-5">
-                                <div class="form-group">
-                                    <label for="total">Total (Rp):</label>
-                                    <input type="text" class="form-control" id="total" name="total" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bayar">Bayar (Rp):</label>
-                                    <input type="text" class="form-control" id="bayar" name="bayar" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kembali">Kembali (Rp):</label>
-                                    <input type="number" class="form-control" id="kembali" name="kembali" required>
-                                </div> 
-                            </div>
-                        </div>                        
-                    </div>
-                </div>                 
-
                 <div class="container-fluid">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Barang Yang Dibeli</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Pelanggan</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>No</th>
+                                            <th>Nama Pembeli</th>
+                                            <th>Alamat</th>
+                                            <th>No Hp</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>No</th>
+                                            <th>Nama Pembeli</th>
+                                            <th>Alamat</th>
+                                            <th>No Hp</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
+                                            <th>1</th>
+                                            <td>John Doe</td>
+                                            <td>Jl. ABC No. 123</td>
+                                            <td>08123456789</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
+                                            <th>2</th>
+                                            <td>Jane Doe</td>
+                                            <td>Jl. XYZ No. 456</td>
+                                            <td>08765432100</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
+                                            <th>3</th>
+                                            <td>Alice Smith</td>
+                                            <td>Jl. DEF No. 789</td>
+                                            <td>08987654321</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
+                                            <th>4</th>
+                                            <td>Bob Johnson</td>
+                                            <td>Jl. GHI No. 1011</td>
+                                            <td>081122334455</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>5</th>
+                                            <td>Eve Wilson</td>
+                                            <td>Jl. JKL No. 1213</td>
+                                            <td>082233445566</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
