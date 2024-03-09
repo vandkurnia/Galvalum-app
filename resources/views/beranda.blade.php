@@ -11,7 +11,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Galvalum-App</div>
+                <div class="sidebar-brand-text mx-3">Galvalum App</div>
             </a>
 
             <!-- Divider -->
@@ -20,7 +20,7 @@
             <!-- Nav Item - Penjualan -->
             <li class="nav-item active">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     <span>Penjualan</span></a>
             </li>
 
