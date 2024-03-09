@@ -242,56 +242,74 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Tipe Barang</th>
+                                            <th>Ukuran Barang</th>
+                                            <th>Harga Barang</th>
+                                            <th>Jumlah</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Tipe Barang</th>
+                                            <th>Ukuran Barang</th>
+                                            <th>Harga Barang</th>
+                                            <th>Jumlah</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
+                                            <th>1</th>
+                                            <td>Galvalum Sheet 0.3mm</td>
+                                            <td>Sheet</td>
+                                            <td>0.3mm</td>
+                                            <td>150000</td>
+                                            <td>100</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
+                                            <th>2</th>
+                                            <td>Galvalum Coil 0.5mm</td>
+                                            <td>Coil</td>
+                                            <td>0.5mm</td>
+                                            <td>200000</td>
+                                            <td>80</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
+                                            <th>3</th>
+                                            <td>Galvalum Pipe 1 inch</td>
+                                            <td>Pipa</td>
+                                            <td>1 inch</td>
+                                            <td>180000</td>
+                                            <td>50</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
+                                            <th>4</th>
+                                            <td>Galvalum Wire 2.5mm</td>
+                                            <td>Wire</td>
+                                            <td>2.5mm</td>
+                                            <td>220000</td>
+                                            <td>60</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
