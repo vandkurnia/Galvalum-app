@@ -1,5 +1,17 @@
 @extends('app')
 
+<style>
+    /* Sembunyikan Showing entries */
+    #dataTable_length, #dataTable_info {
+        display: none;
+    }
+
+    /* Sembunyikan pagination */
+    #dataTable_paginate {
+        display: none;
+    }
+</style>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -25,7 +37,7 @@
             </li>
 
             <!-- Nav Item - Retur -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Retur</span></a>
@@ -43,11 +55,10 @@
                 </a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#">
-                    <i class="material-symbols-outlined">
-                        person</i>
-                    <span>Pelanggan</span>
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <span>Daftar Transaksi</span>
                 </a>
             </li>
 
@@ -187,10 +198,26 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-5 mr-5">
+                            <h2>Retur</h2>
+                            <form action="/proses-input-pembelian" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="nama_barang">Id Pembelian:</label>
+                                    <input type="text" class="form-control" id="id_pembelian" name="id_pembelian" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>                     
+                    </div>
+                </div>
+
                 <div class="container-fluid">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Pelanggan</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Daftar Pembelian</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -198,69 +225,27 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Pembeli</th>
-                                            <th>Alamat</th>
-                                            <th>No Hp</th>
+                                            <th>Nama Barang</th>
+                                            <th>Tipe Barang</th>
+                                            <th>Ukuran Barang</th>
+                                            <th>Harga Barang</th>
+                                            <th>Jumlah</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Pembeli</th>
-                                            <th>Alamat</th>
-                                            <th>No Hp</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         <tr>
                                             <th>1</th>
-                                            <td>John Doe</td>
-                                            <td>Jl. ABC No. 123</td>
-                                            <td>08123456789</td>
+                                            <td>Galvalum Sheet 0.3mm</td>
+                                            <td>Sheet</td>
+                                            <td>0.3mm</td>
+                                            <td>150000</td>
+                                            <td>100</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>2</th>
-                                            <td>Jane Doe</td>
-                                            <td>Jl. XYZ No. 456</td>
-                                            <td>08765432100</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>3</th>
-                                            <td>Alice Smith</td>
-                                            <td>Jl. DEF No. 789</td>
-                                            <td>08987654321</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>4</th>
-                                            <td>Bob Johnson</td>
-                                            <td>Jl. GHI No. 1011</td>
-                                            <td>081122334455</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>5</th>
-                                            <td>Eve Wilson</td>
-                                            <td>Jl. JKL No. 1213</td>
-                                            <td>082233445566</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                <a>
+                                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalRetur">
+                                                        <span><i class="fas fa-edit"></i></span>Edit</button>
+                                                </a>
                                                 <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                             </td>
                                         </tr>
@@ -288,6 +273,46 @@
 
     </div>
     <!-- End of Page Wrapper -->
+
+    <!-- Modal Retur -->
+    <div class="modal fade" id="modalRetur" tabindex="-1" role="dialog" aria-labelledby="modalReturLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalReturLabel">Retur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulir Pembayaran -->
+                    <form>
+                        <div class="form-group">
+                            <label for="tanggalRetur">Tanggal Retur:</label>
+                            <input type="date" class="form-control" id="tanggalRetur" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenisPembelian">Jenis Retur:</label>
+                            <select class="form-control" id="jenisRetur" required>
+                                <option value="">Pilih jenis retur</option>
+                                <option value="barang_rusak">Barang Rusak</option>
+                                <option value="tidak_rusak">Tidak Rusak</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="buktiRetur">Bukti Retur:</label>
+                            <input type="file" class="form-control-file" id="buktiRetur" accept="image/*" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="noHp">Keterangan:</label>
+                            <input type="text" class="form-control" id="Keterangan" placeholder="Keterangan" required>
+                        </div>
+                    </form>
+                    <button type="submit" class="btn btn-primary">Retur</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

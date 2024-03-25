@@ -43,9 +43,8 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#">
-                <i class="material-symbols-outlined">
-                    person</i>
-                <span>Pelanggan</span>
+                <i class="fa fa-list" aria-hidden="true"></i>
+                <span>Daftar Transaksi</span>
             </a>
         </li>
 
@@ -204,7 +203,10 @@
                                         <td>150000</td>
                                         <td>100</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -217,7 +219,10 @@
                                         <td>200000</td>
                                         <td>80</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -230,7 +235,10 @@
                                         <td>180000</td>
                                         <td>50</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -243,7 +251,10 @@
                                         <td>220000</td>
                                         <td>60</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -256,7 +267,10 @@
                                         <td>190000</td>
                                         <td>70</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -269,7 +283,10 @@
                                         <td>210000</td>
                                         <td>55</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -282,7 +299,10 @@
                                         <td>230000</td>
                                         <td>45</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -295,7 +315,10 @@
                                         <td>250000</td>
                                         <td>65</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -308,7 +331,10 @@
                                         <td>280000</td>
                                         <td>75</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -321,7 +347,10 @@
                                         <td>270000</td>
                                         <td>85</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                            <a>
+                                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStok">
+                                                    <span><i class="fas fa-edit"></i></span>Edit</button>
+                                            </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -335,6 +364,46 @@
 
         </div>
         <!-- End of Main Content -->
+
+        <!-- Modal Edit Stok -->
+        <div class="modal fade" id="modalStok" tabindex="-1" role="dialog" aria-labelledby="modalStokLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="modalReturLabel">Edit Stok</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulir Pembayaran -->
+                        <form>
+                            <div class="form-group">
+                                <label for="pemasok">Pemasok:</label>
+                                <input type="text" class="form-control" id="pemasok" placeholder="pemasok" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama_barang">Nama Barang:</label>
+                                <input type="text" class="form-control" id="nama_barang" placeholder="nama_barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ukuran_barang">Ukuran Barang:</label>
+                                <input type="text" class="form-control" id="ukuran_barang" placeholder="ukuran_barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="harga_barang">Harga Barang:</label>
+                                <input type="text" class="form-control" id="harga_barang" placeholder="harga_barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jumlah_stok">Jumlah Stok:</label>
+                                <input type="text" class="form-control" id="jumlah_stok" placeholder="jumlah_stok" required>
+                            </div>
+                        </form>
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white">

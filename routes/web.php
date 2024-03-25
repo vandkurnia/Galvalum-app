@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\ReturController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\DaftarTransaksiController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +18,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('beranda');
-});
+Route::get('/', [StokController::class, 'index']);
