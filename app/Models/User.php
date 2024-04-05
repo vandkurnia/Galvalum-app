@@ -17,8 +17,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = 'users';
+    protected $primaryKey = 'id_admin';
     protected $fillable = [
-        'name',
+        'nama_admin',
+        'no_telp_admin',
         'email',
         'password',
     ];
@@ -33,12 +36,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function NotaPembelian()
+    {
+        return $this->hasMany(NotaPembeli::class, 'id_admin');
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
@@ -18,4 +19,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [StokController::class, 'index']);
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+});
