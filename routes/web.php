@@ -18,4 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [StokController::class, 'index']);
+Route::get('/', [BerandaController::class, 'index']);
+Route::get('/retur', [ReturController::class, 'index']);
+Route::get('/stok', [StokController::class, 'index']);
+Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index']);

@@ -31,14 +31,14 @@
 
             <!-- Nav Item - Penjualan -->
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('/beranda') }}">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     <span>Penjualan</span></a>
             </li>
 
             <!-- Nav Item - Retur -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('/retur') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Retur</span></a>
             </li>
@@ -48,14 +48,14 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{ url('/stok') }}">
                     <i class="fa fa-archive" aria-hidden="true"></i>
                     <span>Stok Barang</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{ url('/daftar_transaksi') }}">
                     <i class="fa fa-list" aria-hidden="true"></i>
                     <span>Daftar Transaksi</span>
                 </a>
