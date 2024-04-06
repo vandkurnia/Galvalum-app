@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -22,6 +24,13 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        User::create([
+            'nama_admin' => 'Admin',
+            'no_telp_admin' => '123456789',
+            'email' => 'admin@galvalum.com',
+            'password' => Hash::make('password'),
+        ]);
     }
 
     /**
