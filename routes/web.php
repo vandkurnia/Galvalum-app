@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -29,4 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+    Route::get('/retur', [ReturController::class, 'index']);
+    Route::get('/stok', [StokController::class, 'index']);
+    Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index']);
 });
+

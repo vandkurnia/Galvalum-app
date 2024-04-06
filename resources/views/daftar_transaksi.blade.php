@@ -19,14 +19,14 @@
 
             <!-- Nav Item - Penjualan -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Penjualan</span></a>
             </li>
 
             <!-- Nav Item - Retur -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('/retur') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Retur</span></a>
             </li>
@@ -36,7 +36,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{ url('/stok') }}">
                     <i class="material-symbols-outlined">
                         inventory_2</i>
                     <span>Stok Barang</span>
@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{ url('/daftar_transaksi') }}">
                     <i class="fa fa-list" aria-hidden="true"></i>
                     <span>Daftar Transaksi</span>
                 </a>
