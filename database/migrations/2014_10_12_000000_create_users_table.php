@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_admin');
+            $table->string('hash_id_admin', 900)->unique(); // Kolom unique dengan panjang 900
             $table->string('nama_admin');
             $table->string('no_telp_admin');
             $table->string('email')->unique();
@@ -25,12 +26,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        User::create([
-            'nama_admin' => 'Admin',
-            'no_telp_admin' => '123456789',
-            'email' => 'admin@galvalum.com',
-            'password' => Hash::make('password'),
-        ]);
+
+
     }
 
     /**
