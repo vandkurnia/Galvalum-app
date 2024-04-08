@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class Pembeli extends Model
 {
@@ -19,5 +20,11 @@ class Pembeli extends Model
     public function NotaPembelian()
     {
         return $this->hasMany(NotaPembeli::class, 'id_pembeli');
+    }
+    protected static function booted()
+    {
+        static::creating(function ($pembeli) {
+            $pembeli->hash_id_pembeli = Uuid::uuid4()->toString();
+        });
     }
 }

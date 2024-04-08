@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('pembelis', function (Blueprint $table) {
             $table->id('id_pembeli');
+            $table->uuid('hash_id_pembeli')->unique();
             $table->string('nama_pembeli');
             $table->string('alamat_pembeli');
             $table->string('no_hp_pembeli');

@@ -7,6 +7,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PemasokBarangController;
+use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\TipeBarangController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [PemasokBarangController::class, 'store'])->name('pemasokbarang.store'); // Menyimpan tipebarang baru
         Route::put('/{id}', [PemasokBarangController::class, 'update'])->name('pemasokbarang.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [PemasokBarangController::class, 'destroy'])->name('pemasokbarang.destroy'); // Menghapus tipebarang berdasarkan ID
+    });
+    // Master Pemasok Barang
+    Route::prefix('pembeli')->group(function () {
+        Route::get('/', [PembeliController::class, 'index'])->name('pembeli.index');
+        Route::get('/edit/{id}', [PembeliController::class, 'edit'])->name('pembeli.edit');
+        Route::post('/', [PembeliController::class, 'store'])->name('pembeli.store'); // Menyimpan tipebarang baru
+        Route::put('/{id}', [PembeliController::class, 'update'])->name('pembeli.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id}', [PembeliController::class, 'destroy'])->name('pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');

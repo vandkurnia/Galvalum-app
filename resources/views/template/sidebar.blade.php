@@ -43,6 +43,11 @@
             <i class="fa fa-user" aria-hidden="true"></i>
             <span>Pemasok Barang</span></a>
     </li>
+    <li class="nav-item {{ request()->is('pembeli') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/pembeli') }}">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Pembeli</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
