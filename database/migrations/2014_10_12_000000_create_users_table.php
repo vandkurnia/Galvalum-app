@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('hash_id_admin', 900)->unique(); // Kolom unique dengan panjang 900
             $table->string('nama_admin');
             $table->string('no_telp_admin');
-            $table->string('email')->unique();
+            $table->string('email_admin')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

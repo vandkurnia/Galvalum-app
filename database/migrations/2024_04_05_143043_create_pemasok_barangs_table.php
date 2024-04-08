@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('pemasok_barangs', function (Blueprint $table) {
             $table->id('id_pemasok');
+            $table->uuid('hash_id_pemasok')->unique();;
             $table->string('nama_pemasok');
             $table->string('no_telp_pemasok');
             $table->string('alamat_pemasok');

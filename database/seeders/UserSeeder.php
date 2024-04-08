@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         User::create([
             'nama_admin' => 'Admin',
             'no_telp_admin' => '123456789',
-            'email' => 'admin@galvalum.com',
+            'email_admin' => 'admin@galvalum.com',
             'password' => Hash::make('password'),
             'hash_id_admin' => $hash,
         ]);

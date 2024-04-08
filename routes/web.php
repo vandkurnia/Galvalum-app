@@ -32,16 +32,28 @@ Route::middleware(['auth'])->group(function () {
 
     // Master User
     Route::prefix('user')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
+        Route::get('/', [UserController::class, 'index'])->name('user.index'); // Menampilkan semua user
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('/', [UserController::class, 'store'])->name('user.store'); // Menyimpan user baru
+        Route::put('/{id}', [UserController::class, 'update'])->name('user.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy'); // Menghapus user berdasarkan ID
     });
+
     // Master Tipe Barang
     Route::prefix('tipe-barang')->group(function () {
-        Route::get('/', [TipeBarangController::class, 'index']);
+        Route::get('/', [TipeBarangController::class, 'index'])->name('tipebarang.index'); // Menampilkan semua user
+        Route::get('/edit/{id}', [TipeBarangController::class, 'edit'])->name('tipebarang.edit');
+        Route::post('/', [TipeBarangController::class, 'store'])->name('tipebarang.store'); // Menyimpan tipebarang baru
+        Route::put('/{id}', [TipeBarangController::class, 'update'])->name('tipebarang.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id}', [TipeBarangController::class, 'destroy'])->name('tipebarang.destroy'); // Menghapus tipebarang berdasarkan ID
     });
     // Master Pemasok Barang
     Route::prefix('pemasok-barang')->group(function () {
-        Route::get('/', [PemasokBarangController::class, 'index']);
-
+        Route::get('/', [PemasokBarangController::class, 'index'])->name('pemasokbarang.index');
+        Route::get('/edit/{id}', [PemasokBarangController::class, 'edit'])->name('pemasokbarang.edit');
+        Route::post('/', [PemasokBarangController::class, 'store'])->name('pemasokbarang.store'); // Menyimpan tipebarang baru
+        Route::put('/{id}', [PemasokBarangController::class, 'update'])->name('pemasokbarang.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id}', [PemasokBarangController::class, 'destroy'])->name('pemasokbarang.destroy'); // Menghapus tipebarang berdasarkan ID
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');

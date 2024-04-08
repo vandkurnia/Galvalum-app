@@ -20,7 +20,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         $infologin = [
-            'email' => $request->email,
+            'email_admin' => $request->email,
             'password' => $request->password,
         ];
 

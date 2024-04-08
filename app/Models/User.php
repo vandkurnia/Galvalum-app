@@ -20,9 +20,10 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $primaryKey = 'id_admin';
     protected $fillable = [
+        'hash_id_admin',
         'nama_admin',
         'no_telp_admin',
-        'email',
+        'email_admin',
         'password',
     ];
 
