@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 class PemasokBarangController extends Controller
 {
 
+    public function showAllPemasok()
+    {
+        $dataPemasokTerpilih = PemasokBarang::all();
+        return $dataPemasokTerpilih;
+    }
+
     public function index()
     {
         $dataPemasokTerpilih = PemasokBarang::all();
@@ -17,7 +23,7 @@ class PemasokBarangController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $dataPemasokTerpilih = PemasokBarang::where('hash_id_pemasok', $id)->first();
+        $dataPemasokTerpilih = PemasokBarang::where('hash_id_barang', $id)->first();
         if (!$dataPemasokTerpilih) {
             return response()->json([
                 'code' => 404,

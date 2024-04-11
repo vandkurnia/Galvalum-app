@@ -67,6 +67,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
     Route::get('/retur', [ReturController::class, 'index']);
-    Route::get('/stok', [StokController::class, 'index']);
+    Route::prefix('stok')->group(function () {
+        Route::get('/', [StokController::class, 'index'])->name('stok.index');
+        Route::get('/edit/{id}', [StokController::class, 'edit'])->name('stok.edit');
+        Route::post('/', [StokController::class, 'store'])->name('stok.store'); // Menyimpan tipebarang baru
+        Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
+    });
     Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index']);
 });

@@ -15,7 +15,6 @@
         }
     </style>
 
-
 @endsection
 
 
@@ -29,8 +28,12 @@
                 <form action="/proses-input-pembelian" method="POST">
                     @csrf
                     <div class="form-group">
+
                         <label for="nama_barang">Nama Barang:</label>
-                        <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
+                        <select class="form-control" id="nama_barang" name="nama_barang" required>
+                            <option value="1">Mamamnk</option>
+                            <option value="2">Kucing</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="jumlah_barang">Jumlah Barang:</label>
@@ -167,8 +170,9 @@
         </div>
     </div>
 </div>
-
 @section('javascript-custom')
+
+
     <script>
         // Ambil semua harga barang dari tabel dan hitung totalnya
         var totalHarga = 0;
@@ -215,10 +219,15 @@
         }
 
         // Inisialisasi Select2 untuk input nama_barang
-        $(document).ready(function() {
-            $(".js-example-matcher-start").select2({
-                matcher: matchStart
-            });
+        // $(document).ready(function() {
+        //     $(".js-example-matcher-start").select2({
+        //         matcher: matchStart
+        //     });
+        // });
+        // In your Javascript (external .js resource or <script> tag)
+        $('#nama_barang').select2({
+            placeholder: 'Ketik nama barang',
+            allowClear: true
         });
     </script>
 @endsection
