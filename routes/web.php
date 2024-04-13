@@ -5,8 +5,11 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
+use App\Http\Controllers\JsonType\BarangJsonController;
+use App\Http\Controllers\JsonType\PembeliJsonController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PemasokBarangController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\TipeBarangController;
 use App\Http\Controllers\UserController;
@@ -63,6 +66,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [PembeliController::class, 'store'])->name('pembeli.store'); // Menyimpan tipebarang baru
         Route::put('/{id}', [PembeliController::class, 'update'])->name('pembeli.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [PembeliController::class, 'destroy'])->name('pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
+    });
+
+    // Route untuk json type api internal
+    Route::prefix('jsontype')->group(function () {
+        Route::get('/semuabarang', [BarangJsonController::class, 'getSemuaBarangData'])->name('json.semuabarang');
+        Route::get('/semuapembeli', [PembeliJsonController::class, 'getSemuaPembeliData'])->name('json.semuapembeli');
+    });
+
+
+    Route::prefix('pemesanan')->group(function () {
+        Route::post('/', [PembelianController::class, 'store'])->name('pemesanan.store');
+        Route::get('/', [PembelianController::class, 'index'])->name('pemesanan.index');
+        Route::get('/edit/{id}', [PembelianController::class, 'edit'])->name('pemesanan.edit');
+        Route::put('/{id}', [PembelianController::class, 'update'])->name('pemesanan.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id}', [PembelianController::class, 'destroy'])->name('pemesanan.destroy'); // Menghapus tipebarang berdasarkan ID
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');

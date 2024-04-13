@@ -1,0 +1,23 @@
+{
+  "name": "galvalumapp",
+  "description": "Aplikasi distributor galvalum",
+  "main": "bower",
+  "authors": [
+    "farhanang <75283346+farhanangwa12@users.noreply.github.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "bower"
+  ],
+  "dependencies": {
+    "select2": "~4.0"
+  },
+  "homepage": "https://github.com/vandkurnia/Galvalum-app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

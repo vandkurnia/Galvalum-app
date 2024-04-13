@@ -16,12 +16,14 @@ class PemasokSeeder extends Seeder
     public function run()
     {
 
-        $PemasokData = [
-            'nama_pemasok' => 'Nama Pemasok',
-            'no_telp_pemasok' => '123456789',
-            'alamat_pemasok' => 'Alamat Pemasok',
-        ];
+        for ($i = 0; $i < 10; $i++) {
+            $PemasokData = [
+                'nama_pemasok' => fake()->company(),
+                'no_telp_pemasok' => fake()->e164PhoneNumber(),
+                'alamat_pemasok' => fake()->address(),
+            ];
 
-        PemasokBarang::create($PemasokData);
+            PemasokBarang::create($PemasokData);
+        }
     }
 }
