@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('keterangan');
             $table->unsignedBigInteger('id_pesanan');
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('id_pesanan')->references('id_pesanan')->on('pesanan_pembelis');
         });
     }

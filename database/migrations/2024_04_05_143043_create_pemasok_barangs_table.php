@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('no_telp_pemasok');
             $table->string('alamat_pemasok');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

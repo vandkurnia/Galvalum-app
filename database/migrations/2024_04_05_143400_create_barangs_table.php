@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pemasok');
             $table->unsignedBigInteger('id_tipe_barang');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs');
             $table->foreign('id_tipe_barang')->references('id_tipe_barang')->on('tipe_barangs');

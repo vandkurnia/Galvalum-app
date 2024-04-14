@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis');
             $table->foreign('id_barang')->references('id_barang')->on('barangs');
 

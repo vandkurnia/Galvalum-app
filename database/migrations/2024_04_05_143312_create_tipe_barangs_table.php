@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('hash_id_tipe_barang')->unique();
             $table->string('nama_tipe');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

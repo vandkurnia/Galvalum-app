@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('alamat_pembeli');
             $table->string('no_hp_pembeli');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

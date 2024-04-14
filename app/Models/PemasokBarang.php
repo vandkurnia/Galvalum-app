@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
 class PemasokBarang extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $table = 'pemasok_barangs';
     protected $primaryKey = 'id_pemasok';
     protected $fillable = [
