@@ -14,21 +14,10 @@ class PembelianController extends Controller
 {
     public function edit(Request $request, $id)
     {
-        $dataPembeli = PesananPembeli::where('hash_id_pesanan', $id)->first();
-        if (!$dataPembeli) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Not found',
-                'data' => null
-            ], 404);
-        }
+        $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli')->first();
+        $dataPesanan = PesananPembeli::where('id_nota', $notaPembelian->id_nota)->with('Barang', 'Barang.TipeBarang')->get();
 
-
-        return response()->json([
-            'code' => 200,
-            'message' => 'Success',
-            'data' => view('master.pembeli.edit', compact('dataPembeli'))->render()
-        ], 200);
+        return view('daftar_transaksi.edit', compact('notaPembelian', 'dataPesanan'));
     }
     public function store(Request $request)
     {
@@ -91,12 +80,11 @@ class PembelianController extends Controller
         DB::commit();
 
 
-        return redirect()->route('beranda')->with('success', 'Pesanan herhasil ditambahkan');
+        return redirect()->route('pemesanan.index')->with('success', 'Pesanan herhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
     {
-
 
         $request->validate([
             'jenis_pembelian' => 'required|string',
@@ -107,30 +95,75 @@ class PembelianController extends Controller
 
         ]);
 
-        $notaPembeli = NotaPembeli::where('id_nota', $id)->first();
-        $pesananData = $request->get('pesanan');
-        // Get Data pembeli
-        $pembeliData = Pembeli::where('hash_id_pembeli', $request->get('id_pembeli'))->first();
+        DB::beginTransaction();
 
-        $notaPembeli = new NotaPembeli;
+        $pesananData = json_decode($request->get('pesanan')[0], true);
+        // Get Data pembeli
+        $pembeliData = Pembeli::firstOrCreate(
+            ['hash_id_pembeli' => $request->get('id_pembeli')],
+            [
+                'nama_pembeli' => $request->id_pembeli,
+                'alamat_pembeli' => $request->alamat_pembeli,
+                'no_hp_pembeli' => $request->no_hp,
+            ] // Isi dengan data default jika pembeli baru dibuat
+        );
+
+        $notaPembeli = NotaPembeli::where('id_nota', $id)->first();
         $notaPembeli->jenis_pembelian = $request->get('jenis_pembelian'); // Contoh nilai untuk jenis_pembelian
         $notaPembeli->status_pembelian = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
+
         $notaPembeli->save();
-        // Perulangan untuk pesanan
-        // foreach ($pesananData as $pesanan) {
-        //     // Data barang 
-        //     $barangData = Barang::where('hash_id_barang', $request->get('id'))->first();
-        //     // Buat data baru untuk PesananPembeli yang terhubung dengan NotaPembeli dan Barang
-        //     $pesananPembeli = new PesananPembeli;
-        //     $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pembelian']; // Contoh nilai untuk jumlah_pembelian
-        //     $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
-        //     $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
-        //     $pesananPembeli->save();
-        //     // Array data user dari request
-        // }
-        return redirect()->route('beranda')->with('success', 'Pesanan herhasil ditambahkan');
+
+        // Penghapusan pesanan yang hilang
+        $pesananygTelahAda = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->get();
+        $pesananUntukDihapus = [];
+        foreach ($pesananygTelahAda as $pesananTlhAda) {
+            // Menambahkan pesanan ke dihapus, untuk dihapus nanti
+            array_push($pesananUntukDihapus, [
+                $pesananTlhAda['id_pesanan'] => $pesananTlhAda
+            ]);
+
+
+            // Perulangan untuk pesanan
+            foreach ($pesananData as $pesanan) {
+                // Data barang 
+                $barangData = Barang::where('hash_id_barang', $pesanan['id_barang'])->lockForUpdate()->first();
+                // Buat data baru untuk PesananPembeli yang terhubung dengan NotaPembeli dan Barang
+                $pesananPembeli = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->where('id_barang', $barangData->id_barang)->first();
+                $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
+
+                $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
+                $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
+                $pesananPembeli->save();
+                // Array data user dari request
+
+
+
+                /**
+                 * Salah
+                 */
+                // Update data barang 
+                if ($barangData->stok >=  $pesanan['jumlah_pesanan']) {
+                    $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
+                    $barangData->save();
+                } else {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Gagal memasukkan data');
+                }
+            }
+        }
+
+
+
+
+
+
+        DB::commit();
+
+
+        return redirect()->route('pemesanan.index')->with('success', 'Pesanan herhasil diupdate');
     }
 
     public function destroy($id)
@@ -141,9 +174,9 @@ class PembelianController extends Controller
         if ($notaPembeli) {
             $notaPembeli->delete();
 
-            return redirect()->route('beranda')->with('success', 'Nota Pembelian dihapus');
+            return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');
         } else {
-            return redirect()->route('beranda')->with('error', 'Nota Pembelian gagal dihapus');
+            return redirect()->route('pemesanan.index')->with('error', 'Nota Pembelian gagal dihapus');
         }
     }
 }

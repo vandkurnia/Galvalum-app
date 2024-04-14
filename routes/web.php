@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('pemesanan')->group(function () {
         Route::post('/', [PembelianController::class, 'store'])->name('pemesanan.store');
-        Route::get('/', [PembelianController::class, 'index'])->name('pemesanan.index');
+        // Route::get('/', [PembelianController::class, 'index']);
         Route::get('/edit/{id}', [PembelianController::class, 'edit'])->name('pemesanan.edit');
         Route::put('/{id}', [PembelianController::class, 'update'])->name('pemesanan.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [PembelianController::class, 'destroy'])->name('pemesanan.destroy'); // Menghapus tipebarang berdasarkan ID
@@ -92,5 +92,5 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
     });
-    Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index']);
+    Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
 });
