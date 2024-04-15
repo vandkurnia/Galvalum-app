@@ -84,7 +84,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
-    Route::get('/retur', [ReturController::class, 'index']);
     Route::prefix('stok')->group(function () {
         Route::get('/', [StokController::class, 'index'])->name('stok.index');
         Route::get('/edit/{id}', [StokController::class, 'edit'])->name('stok.edit');
@@ -92,5 +91,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
     });
-    Route::get('/daftar_transaksi', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
+
+    Route::prefix('daftar_transaksi')->group(function () {
+        Route::get('/', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
+        Route::get('/info/{id}', [DaftarTransaksiController::class, 'daftarBarangPesanan'])->name('pemesanan.infobarang');
+    });
+    Route::prefix('retur')->group(function () {
+        Route::get('/', [ReturController::class, 'index'])->name('retur.index');
+        Route::get('/add/{id_pesanan}', [ReturController::class, 'add'])->name('retur.add');
+        Route::post('/', [ReturController::class, 'store'])->name('retur.store');
+        // Route::get('/', [ReturController::class, 'index']);
+        Route::get('/edit/{id_retur}', [ReturController::class, 'edit'])->name('retur.edit');
+        Route::put('/{id_retur}', [ReturController::class, 'update'])->name('retur.update'); // Mengupdate tipebarang berdasarkan ID
+        Route::delete('/{id_retur}', [ReturController::class, 'destroy'])->name('retur.destroy'); // Menghapus tipebarang berdasarkan ID
+    });
 });

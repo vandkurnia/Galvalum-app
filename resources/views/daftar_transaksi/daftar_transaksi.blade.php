@@ -82,6 +82,10 @@
                                     <td>{{ 10000 }}</td>
                                     <td>{{ $notaPembeli->Admin->nama_admin }}</td>
                                     <td>
+                                        <button class="btn btn-info btn-sm p-2" onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli->id_nota]) }}')"><i
+                                                class="fas fa-info-circle"></i></button>
+
+
                                         <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli->id_nota]) }}"
                                             class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
                                             Edit</a>
@@ -132,6 +136,30 @@
 </div>
 {{-- End of Modal Delete --}}
 
+{{-- Modal Info Barang Nota --}}
+<div class="modal fade" id="infoNotaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Informasi Barang nota pesanan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- End of Modal Info Barang Nota --}}
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
@@ -162,6 +190,36 @@
 @section('javascript-custom')
 
     <script>
+        function funcInfoNota(url) {
+
+            // Lakukan AJAX ke /user/
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    // Tampilkan modal dengan data response
+
+                    if (response.code === 200) {
+                        // Tampilkan data di dalam modal
+                        $('#infoNotaModal .modal-body').html(response.data);
+                        $('#infoNotaModal').modal('show');
+                    } else {
+                        // Tampilkan pesan error
+                        console.error('Error:', response.message);
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.status === 401) {
+                        // Unauthorized, reload halaman
+                        window.location.reload(true);
+                    } else {
+                        console.error('Error:', error);
+                    }
+                }
+            });
+        }
+
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');
             formtambah.submit();
