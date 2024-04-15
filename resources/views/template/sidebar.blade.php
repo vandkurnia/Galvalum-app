@@ -83,10 +83,44 @@
         </a>
     </li>
 
-    <li class="nav-item {{ request()->is('#') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#">
+  
+    <div class="sidebar-heading">
+        Laporan
+    </div>
+    <li class="nav-item {{ request()->is('laporan/omzet') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.omzet') }}">
             <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan</span>
+            <span>Laporan Omzet</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/hutang') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.hutang') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Hutang</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/piutang') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.piutang') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Piutang</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/kas-keluar') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.kaskeluar') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Kas Keluar</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/modal-tambahan') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.modaltambahan') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Modal Tambahan</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/laba-rugi') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.labarugi') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Laba Rugi</span>
         </a>
     </li>
     <!-- Divider -->

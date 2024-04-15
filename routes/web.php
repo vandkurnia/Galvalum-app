@@ -7,7 +7,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
 use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Laporan\LaporanController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembeliController;
@@ -104,5 +104,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id_retur}', [ReturController::class, 'edit'])->name('retur.edit');
         Route::put('/{id_retur}', [ReturController::class, 'update'])->name('retur.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id_retur}', [ReturController::class, 'destroy'])->name('retur.destroy'); // Menghapus tipebarang berdasarkan ID
+    });
+
+    Route::prefix('laporan')->group(function () {
+        Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');
+        Route::get('/hutang', [LaporanController::class, 'laporanHutang'])->name('laporan.hutang');
+        Route::get('/piutang', [LaporanController::class, 'laporanPiutang'])->name('laporan.piutang');
+        Route::get('/kas-keluar', [LaporanController::class, 'kasKeluar'])->name('laporan.kaskeluar');
+        Route::get('/modal-tambahan', [LaporanController::class, 'modalTambahan'])->name('laporan.modaltambahan');
+        Route::get('/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.labarugi');
     });
 });
