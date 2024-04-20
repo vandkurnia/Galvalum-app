@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('nota_pembelis', function (Blueprint $table) {
             $table->id('id_nota');
-            $table->string('jenis_pembelian');
-            $table->string('status_pembelian');
+            $table->string('no_nota')->unique();
             $table->unsignedBigInteger('id_pembeli');
             $table->unsignedBigInteger('id_admin');
             $table->timestamps();
-
+            $table->string('metode_pembayaran'); // tambahan field metode_pembayaran
+            $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
             $table->softDeletes();
             $table->foreign('id_pembeli')->references('id_pembeli')->on('pembelis');
             $table->foreign('id_admin')->references('id_admin')->on('users');

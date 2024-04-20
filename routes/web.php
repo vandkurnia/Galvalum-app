@@ -11,6 +11,8 @@ use App\Http\Controllers\Laporan\LaporanController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembeliController;
+use App\Http\Controllers\Retur\ReturPemasokController;
+use App\Http\Controllers\Retur\ReturPembeliController;
 use App\Http\Controllers\TipeBarangController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -98,12 +100,24 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::prefix('retur')->group(function () {
         Route::get('/', [ReturController::class, 'index'])->name('retur.index');
-        Route::get('/add/{id_pesanan}', [ReturController::class, 'add'])->name('retur.add');
-        Route::post('/', [ReturController::class, 'store'])->name('retur.store');
-        // Route::get('/', [ReturController::class, 'index']);
-        Route::get('/edit/{id_retur}', [ReturController::class, 'edit'])->name('retur.edit');
-        Route::put('/{id_retur}', [ReturController::class, 'update'])->name('retur.update'); // Mengupdate tipebarang berdasarkan ID
-        Route::delete('/{id_retur}', [ReturController::class, 'destroy'])->name('retur.destroy'); // Menghapus tipebarang berdasarkan ID
+        Route::prefix('pemasok')->group(function () {
+            // Route::get('/', [ReturController::class, 'index'])->name('retur.pemasok.index');
+            Route::get('/add/{id_pesanan}', [ReturPemasokController::class, 'add'])->name('retur.pemasok.add');
+            Route::post('/', [ReturPemasokController::class, 'store'])->name('retur.pemasok.store');
+            // Route::get('/', [ReturPemasokController::class, 'index']);
+            Route::get('/edit/{id_retur}', [ReturPemasokController::class, 'edit'])->name('retur.pemasok.edit');
+            Route::put('/{id_retur}', [ReturPemasokController::class, 'update'])->name('retur.pemasok.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id_retur}', [ReturPemasokController::class, 'destroy'])->name('retur.pemasok.destroy'); // Menghapus tipebarang berdasarkan ID
+        });
+        Route::prefix('pembeli')->group(function () {
+    
+            Route::get('/add/{id_pesanan}', [ReturPembeliController::class, 'add'])->name('retur.pembeli.add');
+            Route::post('/', [ReturPembeliController::class, 'store'])->name('retur.pembeli.store');
+            // Route::get('/', [ReturPembeliController::class, 'index']);
+            Route::get('/edit/{id_retur}', [ReturPembeliController::class, 'edit'])->name('retur.pembeli.edit');
+            Route::put('/{id_retur}', [ReturPembeliController::class, 'update'])->name('retur.pembeli.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id_retur}', [ReturPembeliController::class, 'destroy'])->name('retur.pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
+        });
     });
 
     Route::prefix('laporan')->group(function () {

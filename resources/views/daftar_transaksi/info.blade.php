@@ -14,9 +14,12 @@
                 <td>{{ $pesanan->Barang->nama_barang }}</td>
                 <td>{{ $pesanan->jumlah_pembelian }}</td>
                 <td>
-                    <a href="{{ route('retur.add', ['id_pesanan' => $pesanan->id_pesanan]) }}"
+                    <a href="{{ route('retur.pemasok.add', ['id_pesanan' => $pesanan->id_pesanan]) }}"
                         class="btn btn-info btn-sm p-2"><i class="fas fa-info-circle"></i>
-                        Retur</a>
+                        Retur Pemasok</a>
+                    <a href="{{ route('retur.pembeli.add', ['id_pesanan' => $pesanan->id_pesanan]) }}"
+                        class="btn btn-info btn-sm p-2"><i class="fas fa-info-circle"></i>
+                        Retur Pembeli</a>
                 </td>
             </tr>
         @endforeach

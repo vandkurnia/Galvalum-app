@@ -69,7 +69,7 @@
         @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Retur</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Retur Pemasok</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -107,31 +107,39 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Tanggal Retur</th>
-                                <th scope="col">Bukti</th>
-                                <th scope="col">Jenis Retur</th>
-                                <th scope="col">Keterangan</th>
-                                <th scope="col">Aksi</th>
-
+                                <th>No. Retur</th>
+                                <th>Faktur Retur</th>
+                                <th>Tanggal Retur</th>
+                                <th>Bukti Retur</th>
+                                <th>Jenis Retur</th>
+                                <th>Total Nilai Retur</th>
+                                <th>Pengembalian Data</th>
+                                <th>Kekurangan</th>
+                                <th>Status</th>
+                                <th>Nama Pemasok</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($dataRetur as $retur)
+                            @foreach ($dataReturPemasok as $retur)
                                 <tr>
-                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $retur->no_retur_pemasok }}</td>
+                                    <td>{{ $retur->faktur_retur_pemasok }}</td>
                                     <td>{{ $retur->tanggal_retur }}</td>
-                                    <td>{{ $retur->bukti }}</td>
+                                    <td>{{ $retur->bukti_retur_pemasok }}</td>
                                     <td>{{ $retur->jenis_retur }}</td>
-                                    <td>{{ $retur->keterangan }}</td>
+                                    <td>{{ $retur->total_nilai_retur }}</td>
+                                    <td>{{ $retur->pengembalian_data }}</td>
+                                    <td>{{ $retur->kekurangan }}</td>
+                                    <td>{{ $retur->status }}</td>
+                                    <td>{{ $retur->pemasok->nama_pemasok }}</td>
                                     <td>
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('retur.edit', ['id_retur' => $retur->id_retur]) }}"><i
+                                        <button class="btn btn-primary btn-sm"
+                                            onclick="funcEditUser('{{ route('retur.pemasok.edit', ['id_retur' => $retur->hash_id_retur_pemasok]) }}')"><i
                                                 class="fas fa-edit"></i>
-                                            Edit</a>
-
+                                            Edit</button>
                                         <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('retur.destroy', ['id_retur' => $retur->id_retur]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('retur.pemasok.destroy', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>
@@ -143,50 +151,129 @@
                 </div>
             </div>
         </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Retur Pembeli</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No. Retur</th>
+                                <th>Faktur Retur</th>
+                                <th>Tanggal Retur</th>
+                                <th>Bukti Retur</th>
+                                <th>Jenis Retur</th>
+                                <th>Total Nilai Retur</th>
+                                <th>Pengembalian Data</th>
+                                <th>Kekurangan</th>
+                                <th>Status</th>
+                                <th>Nama Pembeli</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dataReturPembeli as $retur)
+                                <tr>
+                                    <td>{{ $retur->no_retur_pembeli }}</td>
+                                    <td>{{ $retur->faktur_retur_pembeli }}</td>
+                                    <td>{{ $retur->tanggal_retur_pembeli }}</td>
+                                    <td>{{ $retur->bukti_retur_pembeli }}</td>
+                                    <td>{{ $retur->jenis_retur }}</td>
+                                    <td>{{ $retur->total_nilai_retur }}</td>
+                                    <td>{{ $retur->pengembalian_data }}</td>
+                                    <td>{{ $retur->kekurangan }}</td>
+                                    <td>{{ $retur->status }}</td>
+                                    <td>{{ $retur->pembeli->nama_pembeli }}</td>
+                                    <td>
+
+                                        <a class="btn btn-primary btn-sm"
+                                            href="{{ route('retur.pembeli.edit', ['id_retur' => $retur->hash_id_retur_pembeli]) }}"><i class="fas fa-edit"></i>Edit</a>
+
+                             
+                                        <button class="btn btn-danger btn-sm"
+                                            onclick="funcHapusUser('{{ route('retur.pembeli.destroy', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)"><i
+                                                class="fas fa-trash"></i>
+                                            Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+        </div>
     </div>
 @endsection
 
 
-<!-- Modal Retur -->
-{{-- <div class="modal fade" id="modalRetur" tabindex="-1" role="dialog" aria-labelledby="modalReturLabel"
+{{-- Modal Tambah User --}}
+<div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalReturLabel">Retur</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Tipe Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Formulir Pembayaran -->
-                <form>
+                <form action="{{ route('pembeli.store') }}" id="formTambahUser" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <label for="tanggalRetur">Tanggal Retur:</label>
-                        <input type="date" class="form-control" id="tanggalRetur" placeholder="" required>
+                        <label for="nama_pembeli" class="form-label">Nama Pembeli</label>
+                        <input type="text" class="form-control" id="nama_pembeli_store" name="nama_pembeli" required>
                     </div>
                     <div class="form-group">
-                        <label for="jenisPembelian">Jenis Retur:</label>
-                        <select class="form-control" id="jenisRetur" required>
-                            <option value="">Pilih jenis retur</option>
-                            <option value="barang_rusak">Barang Rusak</option>
-                            <option value="tidak_rusak">Tidak Rusak</option>
-                        </select>
+                        <label for="alamat_pembeli" class="form-label">Alamat Pembeli</label>
+                        <input type="text" class="form-control" id="alamat_pembeli_store" name="alamat_pembeli"
+                            required>
                     </div>
                     <div class="form-group">
-                        <label for="buktiRetur">Bukti Retur:</label>
-                        <input type="file" class="form-control-file" id="buktiRetur" accept="image/*" required>
+                        <label for="no_hp_pembeli" class="form-label">No HP Pembeli</label>
+                        <input type="text" class="form-control" id="no_hp_pembeli_store" name="no_hp_pembeli"
+                            required>
                     </div>
-                    <div class="form-group">
-                        <label for="noHp">Keterangan:</label>
-                        <input type="text" class="form-control" id="Keterangan" placeholder="Keterangan" required>
-                    </div>
+
                 </form>
-                <button type="submit" class="btn btn-primary">Retur</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcTambahUser()">Simpan</button>
             </div>
         </div>
     </div>
-</div> --}}
+</div>
+{{-- End of Modal Tambah User --}}
+
+{{-- Modal Edit --}}
+<div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Tipe Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcUpdateUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Edit --}}
 
 {{-- Modal Delete --}}
 <div class="modal fade" id="HapusUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -194,7 +281,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hapus Barang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Tipe Barang</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -245,6 +332,51 @@
 
 @section('javascript-custom')
     <script>
+        function funcTambahUser() {
+            let formtambah = document.querySelector('#formTambahUser');
+            formtambah.submit();
+        }
+
+        function funcEditUser(url) {
+            var url = url;
+
+            // Kirim request Ajax
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(function(response) {
+                // Handle response
+                console.log(response.code);
+
+                if (response.ok) {
+                    response.json().then(function(data) {
+                        $('#EditUser .modal-body').html(data
+                            .data); // Menetapkan respons ke elemen HTML dengan ID editUser
+                        $('#EditUser').modal('show');
+                    });
+                } else {
+                    alert('Response was not ok');
+                }
+                // Memuat modal EditUser dengan data pengguna
+                // $('#editUserModal').html(response);
+
+            }).catch(function(error) {
+                // Handle error
+                alert('Terjadi kesalahan');
+            });
+
+        }
+
+        function funcUpdateUser() {
+            let formedit = $('#EditUser .modal-body #formEditUser');
+            formedit.submit();
+            $('#EditUser').modal('hide');
+        }
+
+
         function funcHapusUser(url, typeoperasi) {
             // 0 = Menampilkan modal, 1 = Submit penghapusan
             if (typeof(typeoperasi) === "number") {

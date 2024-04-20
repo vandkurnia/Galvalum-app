@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Retur\ReturPembeliModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,6 +24,10 @@ class Pembeli extends Model
     public function NotaPembelian()
     {
         return $this->hasMany(NotaPembeli::class, 'id_pembeli');
+    }
+    public function returPembeli()
+    {
+        return $this->hasMany(ReturPembeliModel::class, 'id_pembeli');
     }
     protected static function booted()
     {

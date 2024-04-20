@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('returs', function (Blueprint $table) {
+        Schema::create('retur', function (Blueprint $table) {
             $table->id('id_retur');
             $table->dateTime('tanggal_retur');
             $table->string('bukti');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pesanan');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('id_pesanan')->references('id_pesanan')->on('pesanan_pembelis');
+            $table->foreign('id_pesanan')->references('id_pesanan')->on('pesanan_pembelis')->onUpdate('CASCADE')->onDelete('cascade');
         });
     }
 

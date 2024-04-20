@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Retur\ReturPemasokModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,6 +25,10 @@ class PemasokBarang extends Model
     public function Barang()
     {
         return $this->hasMany(Barang::class, 'id_pemasok');
+    }
+    public function returPemasok()
+    {
+        return $this->hasMany(ReturPemasokModel::class, 'id_pemasok');
     }
 
     protected static function booted()

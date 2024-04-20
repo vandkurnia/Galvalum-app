@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NotaPembeli extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'nota_pembelis';
     protected $primaryKey = 'id_nota';
     protected $fillable = [
-        'jenis_pembelian',
+        'no_nota',
         'status_pembelian',
         'id_pembeli',
         'id_admin',
@@ -33,5 +32,15 @@ class NotaPembeli extends Model
     public function PesananPembeli()
     {
         return $this->hasMany(PesananPembeli::class, 'id_nota');
+    }
+    protected static function booted()
+    {
+        static::creating(function ($notaPembeli) {
+            $lastId = static::max('id');
+            $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
+            $lastId++;
+
+            $notaPembeli->no_nota = 'NT' . date('Y') . date('mdHis') . str_pad($lastId, 4, '0', STR_PAD_LEFT);
+        });
     }
 }

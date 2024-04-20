@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -17,11 +18,13 @@ return new class extends Migration {
             $table->integer('jumlah_pembelian');
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
+            $table->foreign('id_jenis_pelanggan')->references('jenis_pelanggan')->on('id_jenis_pelanggan')->onUpdate('CASCADE')->onDelete('cascade');
+            $table->unsignedBigInteger('id_diskon')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis');
-            $table->foreign('id_barang')->references('id_barang')->on('barangs');
-
+            $table->foreign('id_diskon')->references('id_diskon')->on('diskon')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_barang')->references('id_barang')->on('barangs')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

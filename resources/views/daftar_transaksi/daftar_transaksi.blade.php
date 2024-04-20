@@ -79,7 +79,7 @@
                                     <td>{{ $notaPembeli->jenis_pembelian }}</td>
                                     <td>{{ $notaPembeli->status_pembelian }}</td>
                                     <td>{{ $notaPembeli->created_at }}</td>
-                                    <td>{{ 10000 }}</td>
+                                    <td>{{ "Not defined!" }}</td>
                                     <td>{{ $notaPembeli->Admin->nama_admin }}</td>
                                     <td>
                                         <button class="btn btn-info btn-sm p-2" onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli->id_nota]) }}')"><i

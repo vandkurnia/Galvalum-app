@@ -55,7 +55,7 @@
     <li class="nav-item {{ request()->is('beranda') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/beranda') }}">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span>Penjualan</span></a>
+            <span>Nota Penjualan</span></a>
     </li>
 
     <!-- Nav Item - Retur -->
