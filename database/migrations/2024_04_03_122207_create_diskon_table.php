@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('diskon', function (Blueprint $table) {
             $table->id('id_diskon');
             $table->uuid('hash_id_diskon')->unique();
-            $table->string('nama_diskon');
-            $table->decimal('nominal_diskon', 20, 2);
-            $table->string('tipe_diskon');
+            $table->string('kode_diskon', 10);
+            $table->string('nama_diskon', 255);
+            $table->enum('type', ['percentage', 'amount'])->default('percentage');
+            $table->text('besaran');
+            $table->enum('status', ['AKTIF', 'NONAKTIF'])->default('NONAKTIF');
             $table->timestamps();
             $table->softDeletes();
         });

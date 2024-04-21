@@ -5,6 +5,7 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
+use App\Http\Controllers\DiskonController;
 use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
 use App\Http\Controllers\Laporan\LaporanController;
@@ -94,7 +95,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
     });
 
-    Route::prefix('daftar_transaksi')->group(function () {
+    Route::prefix('laporan_penjualan')->group(function () {
         Route::get('/', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
         Route::get('/info/{id}', [DaftarTransaksiController::class, 'daftarBarangPesanan'])->name('pemesanan.infobarang');
     });
@@ -120,17 +121,16 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+ 
 
-    Route::prefix('cetak')->group(function(){
-        Route::get('invoice-penjualan', function(){
-            return view('pdfprint.invoice-penjualan');
 
-        });
-        Route::get('surat-jalan', function(){
-            return view('pdfprint.surat-jalan');
-
-        });
-
+    // Master Diskon
+    Route::prefix('diskon')->group(function () {
+        Route::get('/', [DiskonController::class, 'index'])->name('diskon.index'); // Menampilkan semua user
+        Route::get('/edit/{id}', [DiskonController::class, 'edit'])->name('diskon.edit');
+        Route::post('/', [DiskonController::class, 'store'])->name('diskon.store'); // Menyimpan user baru
+        Route::put('/{id}', [DiskonController::class, 'update'])->name('diskon.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
     });
 
     Route::prefix('laporan')->group(function () {
