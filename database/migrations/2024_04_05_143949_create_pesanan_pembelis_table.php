@@ -18,10 +18,12 @@ return new class extends Migration
             $table->integer('jumlah_pembelian');
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
-            $table->foreign('id_jenis_pelanggan')->references('jenis_pelanggan')->on('id_jenis_pelanggan')->onUpdate('CASCADE')->onDelete('cascade');
+            $table->unsignedBigInteger('id_jenis_pelanggan');
             $table->unsignedBigInteger('id_diskon')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('id_jenis_pelanggan')->references('id_jenis_pelanggan')->on('jenis_pelanggan')->onUpdate('cascade')->onDelete('cascade');
+
             $table->foreign('id_diskon')->references('id_diskon')->on('diskon')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_barang')->references('id_barang')->on('barangs')->onUpdate('cascade')->onDelete('cascade');

@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_admin');
-            $table->string('hash_id_admin', 900)->unique(); // Kolom unique dengan panjang 900
+            $table->string('hash_id_admin', 255)->unique(); // Kolom unique dengan panjang 900
             $table->string('nama_admin');
             $table->string('no_telp_admin');
             $table->string('email_admin')->unique();
