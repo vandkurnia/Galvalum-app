@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    @livewireStyles
+    
 
 @endsection
 
@@ -130,7 +130,7 @@
 </div>
 
 
-@livewireScripts
+
 @section('javascript-custom')
 
 @endsection

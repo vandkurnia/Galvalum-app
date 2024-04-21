@@ -75,11 +75,11 @@
         <div class="right-header">
             <p style="
     display: flex;
-">Jakarta, <span class="isian-tanggal"
+">Jakarta ,<span class="isian-tanggal"
                     style="
     border-bottom: 1px dotted;
     flex-grow: 1;
-"></span> </p>
+">Minggu 21 April 2024</span> </p>
             <div class="informasi-pelanggan" style="
     display: flex;
     flex-direction: column;

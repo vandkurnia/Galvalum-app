@@ -48,6 +48,11 @@
             <i class="fa fa-user" aria-hidden="true"></i>
             <span>Pembeli</span></a>
     </li>
+     <li class="nav-item {{ request()->is('diskon') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/diskon') }}">
+            <i class="fa fa-plus aria-hidden="true"></i>
+            <span>Diskon</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -76,10 +81,10 @@
         </a>
     </li>
 
-    <li class="nav-item {{ request()->is('daftar_transaksi') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ url('/daftar_transaksi') }}">
+    <li class="nav-item {{ request()->is('laporan_penjualan') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ url('/laporan_penjualan') }}">
             <i class="fa fa-list" aria-hidden="true"></i>
-            <span>Daftar Transaksi</span>
+            <span>Laporan Penjualan</span>
         </a>
     </li>
 

@@ -58,13 +58,18 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Pembeli</th>
-                                <th>Jenis Pembelian</th>
-                                <th>Metode Pembelian</th>
-                                <th>Tanggal Pembayaran</th>
-                                <th>Total Pembelian</th>
-                                <th>Nama Penginput</th>
-                                <th>Aksi</th>
+                                <th>Handphone</th>
+                                <th>Nama</th>
+                                <th>Barang Pembelian</th>
+                                <th>Jumlah Pembelian</th>
+                                <th>Tanggal Beli</th>
+                                <th>Jam</th>
+                                <th>Jenis Pelanggan</th>
+                                <th>Harga</th>
+                                <th>Lunas</th>
+                                <th>Waktu Payment</th>
+                                <th>Payment Methode</th>
+                                <th>Cetak</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,6 +85,7 @@
                                     <td>{{ $notaPembeli->status_pembelian }}</td>
                                     <td>{{ $notaPembeli->created_at }}</td>
                                     <td>{{ "Not defined!" }}</td>
+                                    <td>Unknown</td>
                                     <td>{{ $notaPembeli->Admin->nama_admin }}</td>
                                     <td>
                                         <button class="btn btn-info btn-sm p-2" onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli->id_nota]) }}')"><i

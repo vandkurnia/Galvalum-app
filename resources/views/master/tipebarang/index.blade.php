@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    @livewireStyles
+    
 
 @endsection
 
@@ -212,15 +212,9 @@
 </div>
 
 
-@livewireScripts
+
 @section('javascript-custom')
-    {{-- Livewire Script --}}
-    <script>
-        Livewire.on('postAdded', postId => {
-            alert('A post was added with the id of: ' + postId);
-        })
-    </script>
-    {{-- End of livewire script --}}
+   
 
     <script>
         function funcTambahUser() {
