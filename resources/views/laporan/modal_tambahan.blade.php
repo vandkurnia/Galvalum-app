@@ -57,29 +57,41 @@
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Modal Tambahan</h6>
             </div>
             <div class="card-body">
-             
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Jumlah</th>
-                                <th>Keterangan</th>
+                                <th>Jenis Modal Tambahan</th>
+                                <th>Deskripsi</th>
+                                <th>Jumlah Modal</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>2024-04-20</td>
-                                <td>Rp. 1.000.000</td>
-                                <td>Modal Tambahan</td>
+                                <td>2024-05-01</td>
+                                <td>Modal Awal</td>
+                                <td>Modal awal untuk pembukaan usaha</td>
+                                <td>$1000</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Hapus</button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td>2024-04-25</td>
-                                <td>Rp. 500.000</td>
-                                <td>Investasi Tambahan</td>
+                                <td>2024-05-05</td>
+                                <td>Modal Tambahan</td>
+                                <td>Modal tambahan untuk ekspansi usaha</td>
+                                <td>$500</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Hapus</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

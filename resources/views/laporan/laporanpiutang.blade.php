@@ -57,29 +57,59 @@
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Piutang</h6>
             </div>
             <div class="card-body">
-               
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Pelanggan</th>
-                                <th>Total Piutang</th>
+                                <th>Nama Pembeli</th>
+                                <th>Handphone</th>
+                                <th>Barang Pembelian</th>
+                                <th>Jumlah Pembelian</th>
+                                <th>Jenis Pelanggan</th>
+                                <th>Tanggal Pembelian</th>
+                                <th>Harga Total</th>
+                                <th>Jumlah Terbayar</th>
+                                <th>Kekurangan</th>
+                                <th>Jatuh Tempo</th>
                                 <th>Status</th>
+                                <th>Lunas</th>
+                                <th>Update</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>1</td>
+                                <td>Pembeli A</td>
+                                <td>08123456789</td>
+                                <td>Barang A</td>
+                                <td>10</td>
                                 <td>Pelanggan A</td>
-                                <td>Rp. 1.000.000</td>
-                                <td>Lunas</td>
+                                <td>2024-05-01</td>
+                                <td>$100</td>
+                                <td>$50</td>
+                                <td>$50</td>
+                                <td>2024-06-01</td>
+                                <td><span class="badge badge-warning">Belum Dibayar</span></td>
+                                <td>Hutang</td>
+                                <td><button class="btn btn-primary">Update</button></td>
                             </tr>
                             <tr>
                                 <td>2</td>
+                                <td>Pembeli B</td>
+                                <td>08123456788</td>
+                                <td>Barang B</td>
+                                <td>20</td>
                                 <td>Pelanggan B</td>
-                                <td>Rp. 500.000</td>
-                                <td>Belum Lunas</td>
+                                <td>2024-05-05</td>
+                                <td>$200</td>
+                                <td>$200</td>
+                                <td>$0</td>
+                                <td>2024-06-05</td>
+                                <td><span class="badge badge-success">Lunas</span></td>
+                                <td>Dibayar</td>
+                                <td><button class="btn btn-primary">Update</button></td>
                             </tr>
                         </tbody>
                     </table>

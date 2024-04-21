@@ -120,6 +120,19 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+
+    Route::prefix('cetak')->group(function(){
+        Route::get('invoice-penjualan', function(){
+            return view('pdfprint.invoice-penjualan');
+
+        });
+        Route::get('surat-jalan', function(){
+            return view('pdfprint.surat-jalan');
+
+        });
+
+    });
+
     Route::prefix('laporan')->group(function () {
         Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');
         Route::get('/hutang', [LaporanController::class, 'laporanHutang'])->name('laporan.hutang');

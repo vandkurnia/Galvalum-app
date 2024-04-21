@@ -77,7 +77,7 @@
     <div class="container-fluid">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Pelanggan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Nota Pesanan</h6>
             </div>
             <div class="card-body">
                 <form action="">
@@ -107,24 +107,19 @@
                             placeholder="Masukkan alamat" required>
                     </div>
 
+                    <div class="form-group">
+                        <label for="keterangan">
+                           <strong>Keterangan</strong>  
+                        </label>
+                        <textarea name="keterangan" id="editor" cols="30" rows="10"></textarea>
+                    </div>
+
 
                 </form>
             </div>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Pelanggan</h6>
-            </div>
-            <div class="card-body">
-                <form action="">
-                    <textarea name="" id="editor" cols="30" rows="10"></textarea>
-
-                </form>
-            </div>
-        </div>
-    </div>
+    
 
 
     <div class="container-fluid">
@@ -152,7 +147,7 @@
                                 <input type="number" class="form-control" id="jumlah_barang" min="0" max="0"
                                     name="jumlah_barang" required>
                             </div>
-                            <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Submit</button>
+                            <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah Pesanan</button>
                         </form>
                         <script>
                             function pemesananBarang() {
@@ -361,6 +356,8 @@
                                 <th>Tipe Barang</th>
                                 <th>Ukuran Barang</th>
                                 <th>Harga Barang</th>
+                                <th>Jenis Pelanggan</th>
+                                <th>Diskon</th>
                                 <th>Jumlah</th>
                                 <th>Aksi</th>
                             </tr>
@@ -368,6 +365,27 @@
                         <tbody>
 
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" rowspan="4">
+                                   
+                                </td>
+                                <td colspan="2">Sub Total Rp</td>
+                                <td colspan="2"><input type="number" class="form-control" name="sub_total" id="subTotal" value="1609000" readonly></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Diskon Rp</td>
+                                 <td colspan="2"><input type="number" class="form-control" name="diskon_total" id="diskonTotal" value="1609000" readonly></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Pajak Rp</td>
+                                 <td colspan="2"><input type="number" class="form-control" name="total_pajak" id="totalPajak" value="1609000" readonly></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Total Rp</strong></td>
+                                <td colspan="2"><strong><input type="number" class="form-control" name="total" id="total" value="1609000" readonly></strong></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div>

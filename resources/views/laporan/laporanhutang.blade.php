@@ -55,28 +55,60 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Hutang</h6>
+                <!-- Filter Tanggal -->
+                <div class="form-group">
+                    <label for="tanggal">Filter Tanggal:</label>
+                    <input type="date" id="tanggal" name="tanggal" class="form-control">
+                </div>
             </div>
             <div class="card-body">
-              
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Nama Supplier</th>
-                                <th>Total Hutang</th>
+                                <th>Barang Pesanan</th>
+                                <th>Total Pemesanan</th>
+                                <th>Tanggal Stock</th>
+                                <th>Harga Bayar</th>
+                                <th>Jumlah Terbayar</th>
+                                <th>Kekurangan</th>
+                                <th>Jatuh Tempo</th>
+                                <th>Status</th>
+                                <th>Lunas</th>
+                                <th>Update</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>1</td>
                                 <td>Supplier A</td>
-                                <td>Rp. 500.000</td>
+                                <td>Barang A</td>
+                                <td>$100</td>
+                                <td>2024-05-01</td>
+                                <td>$100</td>
+                                <td>$50</td>
+                                <td>$50</td>
+                                <td>2024-06-01</td>
+                                <td><span class="badge badge-warning">Belum Lunas</span></td>
+                                <td>Unpaid</td>
+                                <td><button class="btn btn-primary">Update</button></td>
                             </tr>
                             <tr>
                                 <td>2</td>
                                 <td>Supplier B</td>
-                                <td>Rp. 1.000.000</td>
+                                <td>Barang B</td>
+                                <td>$200</td>
+                                <td>2024-05-05</td>
+                                <td>$200</td>
+                                <td>$200</td>
+                                <td>$0</td>
+                                <td>2024-06-05</td>
+                                <td><span class="badge badge-success">Lunas</span></td>
+                                <td>Paid</td>
+                                <td><button class="btn btn-primary">Update</button></td>
                             </tr>
                         </tbody>
                     </table>

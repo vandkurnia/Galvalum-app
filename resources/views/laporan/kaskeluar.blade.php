@@ -64,22 +64,34 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Jumlah</th>
-                                <th>Keterangan</th>
+                                <th>Nama Pengeluaran</th>
+                                <th>Deskripsi</th>
+                                <th>Jumlah Pengeluaran</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>2024-04-20</td>
-                                <td>Rp. 500.000</td>
-                                <td>Pembelian Barang</td>
+                                <td>2024-05-01</td>
+                                <td>Pembelian Bahan Baku</td>
+                                <td>Pembelian bahan baku untuk produksi</td>
+                                <td>$100</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Hapus</button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td>2024-04-21</td>
-                                <td>Rp. 300.000</td>
+                                <td>2024-05-05</td>
                                 <td>Biaya Pengiriman</td>
+                                <td>Biaya pengiriman barang ke pelanggan</td>
+                                <td>$50</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Hapus</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    @livewireStyles
+   
 
 @endsection
 
@@ -55,33 +55,45 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Omzet</h6>
+                <!-- Filter Tanggal -->
+                <div class="form-group">
+                    <label for="tanggal">Filter Tanggal:</label>
+                    <input type="date" id="tanggal" name="tanggal" class="form-control">
+                </div>
+
             </div>
             <div class="card-body">
-              
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Jumlah</th>
-                                <th>Keterangan</th>
+                                <th>Barang Pembelian</th>
+                                <th>Jumlah Pembelian</th>
+                                <th>Jenis Pelanggan</th>
+                                <th>Omzet</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>2024-04-20</td>
-                                <td>Rp. 500.000</td>
-                                <td>Pembelian Barang</td>
+                                <td>Item 1</td>
+                                <td>10</td>
+                                <td>Pelanggan A</td>
+                                <td>$100</td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td>2024-04-21</td>
-                                <td>Rp. 300.000</td>
-                                <td>Biaya Pengiriman</td>
+                                <td>Item 2</td>
+                                <td>20</td>
+                                <td>Pelanggan B</td>
+                                <td>$200</td>
                             </tr>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">Total</td>
+                                <td>$300</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -118,7 +130,7 @@
 </div>
 
 
-@livewireScripts
+
 @section('javascript-custom')
 
 @endsection
