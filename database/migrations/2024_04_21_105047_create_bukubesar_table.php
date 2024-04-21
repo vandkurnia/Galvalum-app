@@ -14,17 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bukubesar', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_bukubesar');
+            $table->uuid('hash_id_bukubesar')->unique();
             $table->unsignedBigInteger('id_akunbayar')->nullable();
             $table->date('tanggal');
             $table->string('kategori', 255);
             $table->string('keterangan', 255);
             $table->double('debit', 14, 0)->default(0);
             $table->double('kredit', 14, 0)->default(0);
-            $table->unsignedBigInteger('id_transaksi')->nullable();
             $table->timestamps();
-
-            $table->foreign('id_akunbayar')->references('id')->on('akun_bayar')->onDelete('CASCADE');
+            $table->softDeletes();
+            $table->foreign('id_akunbayar')->references('id_akunbayar')->on('akun_bayar')->onDelete('CASCADE');
         });
     }
 

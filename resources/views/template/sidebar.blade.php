@@ -48,10 +48,15 @@
             <i class="fa fa-user" aria-hidden="true"></i>
             <span>Pembeli</span></a>
     </li>
-     <li class="nav-item {{ request()->is('diskon') ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('diskon') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/diskon') }}">
-            <i class="fa fa-plus aria-hidden="true"></i>
+            <i class="fa fa-plus" aria-hidden="true"></i>
             <span>Diskon</span></a>
+    </li>
+    <li class="nav-item {{ request()->is('bukubesar') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/bukubesar') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Buku Besar</span></a>
     </li>
 
     <!-- Divider -->
@@ -88,7 +93,7 @@
         </a>
     </li>
 
-  
+
     <div class="sidebar-heading">
         Laporan
     </div>

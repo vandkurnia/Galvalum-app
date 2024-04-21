@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\BukubesarController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
@@ -111,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id_retur}', [ReturPemasokController::class, 'destroy'])->name('retur.pemasok.destroy'); // Menghapus tipebarang berdasarkan ID
         });
         Route::prefix('pembeli')->group(function () {
-    
+
             Route::get('/add/{id_pesanan}', [ReturPembeliController::class, 'add'])->name('retur.pembeli.add');
             Route::post('/', [ReturPembeliController::class, 'store'])->name('retur.pembeli.store');
             // Route::get('/', [ReturPembeliController::class, 'index']);
@@ -121,7 +122,17 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
- 
+
+    // Master Diskon
+    Route::prefix('bukubesar')->group(function () {
+        Route::get('/', [BukubesarController::class, 'index'])->name('bukubesar.index'); // Menampilkan semua user
+        Route::get('/edit/{id}', [BukubesarController::class, 'edit'])->name('bukubesar.edit');
+        Route::post('/', [BukubesarController::class, 'store'])->name('bukubesar.store'); // Menyimpan user baru
+        Route::put('/{id}', [BukubesarController::class, 'update'])->name('bukubesar.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/{id}', [BukubesarController::class, 'destroy'])->name('bukubesar.destroy'); // Menghapus user berdasarkan ID
+    });
+
+
 
 
     // Master Diskon
@@ -132,7 +143,14 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{id}', [DiskonController::class, 'update'])->name('diskon.update'); // Mengupdate user berdasarkan ID
         Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
     });
-
+    Route::prefix('cetak')->group(function () {
+        Route::get('invoice-penjualan', function () {
+            return view('pdfprint.invoice-penjualan');
+        });
+        Route::get('surat-jalan', function () {
+            return view('pdfprint.surat-jalan');
+        });
+    });
     Route::prefix('laporan')->group(function () {
         Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');
         Route::get('/hutang', [LaporanController::class, 'laporanHutang'])->name('laporan.hutang');
