@@ -13,8 +13,24 @@
         #dataTable_paginate {
             display: none;
         }
+
+
+
+
+        /* Tampilan Table laba rugi */
+        table thead {
+            text-align: center;
+            background-color: #7091e6;
+            color: white;
+        }
+
+        .topic {
+            font-weight: bold;
+            background-color: grey;
+            color: white;
+        }
     </style>
-    @livewireStyles
+
 
 @endsection
 
@@ -55,36 +71,160 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan laba rugi</h6>
+                <form>
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Filter Tanggal</button>
+                    </div>
+                </form>
             </div>
             <div class="card-body">
-              
+
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-border">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Keterangan</th>
-                                <th>Jumlah</th>
+                                <th colspan="3"> REKAP RINCIAN PENJUALAN </th>
+                            </tr>
+                            <tr>
+                                <th colspan="3">JUMAT, 1 DESEMBER 2023</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Pendapatan</td>
-                                <td>Rp. 5.000.000</td>
+
+
+                            <tr class="topic">
+                                <th>PENJUALAN KOTOR</th>
+                                <td></td>
+
+                                <td>Rp 29.892.000</td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td>Biaya Operasional</td>
-                                <td>Rp. 2.000.000</td>
+                                <td>MODAL</td>
+                                <td></td>
+
+                                <td>Rp 361.000 (+)</td>
                             </tr>
                             <tr>
-                                <td>3</td>
-                                <td>Keuntungan Bersih</td>
-                                <td>Rp. 3.000.000</td>
+
+                                <th></th>
+                                <th></th>
+                                <th>Rp 30.253.000</th>
                             </tr>
+                            <tr>
+                                <th>TAMBAHAN MODAL</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(+) Dp Pak Baret</td>
+                                <td>Rp 3.000.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(+) Kembalian lebih Pak Heru</td>
+                                <td>Rp 1.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(+) Dp Pak Yanto Pasar Pvc</td>
+                                <td>Rp 3.000.000 (+)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>JUMLAH TAMBAHAN MODAL</th>
+                                <td></td>
+                                <td>Rp 6.001.000 (+)</td>
+                            </tr>
+                            <tr class="topic">
+                                <th>LABA KOTOR</th>
+                                <th></th>
+                                <th>Rp 36.254.000</th>
+                            </tr>
+                            <tr>
+                                <th>PENGURANGAN/PENGELUARAN</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Transfer Pak Daman</td>
+                                <td>Rp 1.230.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Transfer Pak Mariono</td>
+                                <td>Rp 90.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Bayar Skrup Pak Rembo</td>
+                                <td>Rp 720.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Sangu Kuli Star</td>
+                                <td>Rp 30.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Bayar Ornamen Pak Abdul</td>
+                                <td>Rp 870.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Sangu bongkar holo GT</td>
+                                <td>Rp 10.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Transfer Pak Deni Bulak</td>
+                                <td>Rp 1.140.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Diskon Pak Irfan</td>
+                                <td>Rp 1.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(-) Setor Modal Sore 30/11/2023 Jam 14.41</td>
+                                <td>Rp 7.700.000</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>(+) Setor Modal Sore 30/11/2023 Jam 15.34</td>
+                                <td>Rp 1.600.000 (+)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>JUMLAH PENGURANGAN/PENGELUARAN</th>
+                                <th></th>
+                                <th>Rp 13.391.000 (-)</th>
+                            </tr>
+                            <tr class="topic">
+                                <th>LABA BERSIH</th>
+                                <th></th>
+                                <th>Rp 22.863.000</th>
+                            </tr>
+                            <tr>
+                                <th>(-) MODAL HARI SABTU 2/12/2023</th>
+                                <th></th>
+                                <th>Rp 463.000 (-)</th>
+                            </tr>
+                            <tr>
+                                <th>TOTAL TRANSFER/SETOR TUNAI 1/12/2023</th>
+                                <th></th>
+                                <th>Rp 22.400.000</th>
+                            </tr>
+
+
+
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -99,45 +239,7 @@
 </a>
 
 
-{{-- Modal Tambah User --}}
-<div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Tipe Barang</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('pembeli.store') }}" id="formTambahUser" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="nama_pembeli" class="form-label">Nama Pembeli</label>
-                        <input type="text" class="form-control" id="nama_pembeli_store" name="nama_pembeli" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="alamat_pembeli" class="form-label">Alamat Pembeli</label>
-                        <input type="text" class="form-control" id="alamat_pembeli_store" name="alamat_pembeli"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="no_hp_pembeli" class="form-label">No HP Pembeli</label>
-                        <input type="text" class="form-control" id="no_hp_pembeli_store" name="no_hp_pembeli"
-                            required>
-                    </div>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="funcTambahUser()">Simpan</button>
-            </div>
-        </div>
-    </div>
-</div>
-{{-- End of Modal Tambah User --}}
 
 {{-- Modal Edit --}}
 <div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -212,7 +314,7 @@
 </div>
 
 
-@livewireScripts
+
 @section('javascript-custom')
     {{-- Livewire Script --}}
     <script>
