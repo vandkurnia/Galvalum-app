@@ -21,6 +21,7 @@
 
 
 @section('content')
+   
     <script>
         $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     </script>
@@ -107,19 +108,11 @@
                             placeholder="Masukkan alamat" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="keterangan">
-                           <strong>Keterangan</strong>  
-                        </label>
-                        <textarea name="keterangan" id="editor" cols="30" rows="10"></textarea>
-                    </div>
-
-
                 </form>
             </div>
         </div>
     </div>
-    
+
 
 
     <div class="container-fluid">
@@ -147,7 +140,17 @@
                                 <input type="number" class="form-control" id="jumlah_barang" min="0" max="0"
                                     name="jumlah_barang" required>
                             </div>
-                            <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah Pesanan</button>
+                            <div class="form-group">
+                                <label for="diskon">Diskon:</label>
+                                <select class="form-control" id="diskon" name="diskon">
+                                    <option value="">Pilih Diskon</option>
+                                    @foreach ($dataDiskon as $diskon)
+                                        <option value="{{ $diskon->id_diskon }}" data-amount="{{$diskon->besaran}}" data-type="{{$diskon->type}}">{{ $diskon->nama_diskon }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah
+                                Pesanan</button>
                         </form>
                         <script>
                             function pemesananBarang() {
@@ -243,15 +246,19 @@
                                     td_jumlah.classList.add('nilai_jumlah_barang');
                                     td_jumlah.innerText = jumlah_barang.value;
 
+                                    let td_total = document.createElement('td');
+                                    td_total.classList.add('total');
+                                    td_total.innerText = Math.floor(data_barang.harga_barang) * jumlah_barang.value;
 
-                                    // Membuat tombol Edit
-                                    const edit_button = document.createElement('button');
-                                    edit_button.href = '#';
-                                    edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
-                                    edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
-                                    edit_button.onclick = function() {
-                                        editPesananBarang(data_barang.hash_id_barang);
-                                    }
+
+                                    // // Membuat tombol Edit
+                                    // const edit_button = document.createElement('button');
+                                    // edit_button.href = '#';
+                                    // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
+                                    // edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                                    // edit_button.onclick = function() {
+                                    //     editPesananBarang(data_barang.hash_id_barang);
+                                    // }
 
                                     // Membuat tombol Delete
                                     const delete_button = document.createElement('button');
@@ -265,7 +272,7 @@
 
                                     // Membuat elemen td untuk menyimpan tombol-tombol
                                     let td_aksi = document.createElement('td');
-                                    td_aksi.appendChild(edit_button);
+                                    // td_aksi.appendChild(edit_button);
                                     td_aksi.appendChild(delete_button);
 
 
@@ -276,6 +283,7 @@
                                     tr_pesanan.appendChild(td_ukuran_barang);
                                     tr_pesanan.appendChild(td_harga_barang);
                                     tr_pesanan.appendChild(td_jumlah);
+                                    tr_pesanan.appendChild(td_total);
                                     tr_pesanan.appendChild(td_aksi);
 
 
@@ -356,9 +364,10 @@
                                 <th>Tipe Barang</th>
                                 <th>Ukuran Barang</th>
                                 <th>Harga Barang</th>
-                                <th>Jenis Pelanggan</th>
+                                {{-- <th>Jenis Pelanggan</th> Nanti di uncomment --}}
                                 <th>Diskon</th>
-                                <th>Jumlah</th>
+                                <th>Qty</th>
+                                <th>Total</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -368,22 +377,26 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5" rowspan="4">
-                                   
+
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
-                                <td colspan="2"><input type="number" class="form-control" name="sub_total" id="subTotal" value="1609000" readonly></td>
+                                <td colspan="2"><input type="number" class="form-control" name="sub_total"
+                                        id="subTotal" value="1609000" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
-                                 <td colspan="2"><input type="number" class="form-control" name="diskon_total" id="diskonTotal" value="1609000" readonly></td>
+                                <td colspan="2"><input type="number" class="form-control" name="diskon_total"
+                                        id="diskonTotal" value="1609000" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Pajak Rp</td>
-                                 <td colspan="2"><input type="number" class="form-control" name="total_pajak" id="totalPajak" value="1609000" readonly></td>
+                                <td colspan="2"><input type="number" class="form-control" name="total_pajak"
+                                        id="totalPajak" value="1609000" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
-                                <td colspan="2"><strong><input type="number" class="form-control" name="total" id="total" value="1609000" readonly></strong></td>
+                                <td colspan="2"><strong><input type="number" class="form-control" name="total"
+                                            id="total" value="1609000" readonly></strong></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -457,25 +470,6 @@
 </div>
 
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section('javascript-custom')
 
