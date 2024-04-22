@@ -47,7 +47,7 @@ class PembelianController extends Controller
         $notaPembeli->jenis_pembelian = $request->get('jenis_pembelian'); // Contoh nilai untuk jenis_pembelian
         $notaPembeli->status_pembelian = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
-        $notaPembeli->id_admin = Auth::id();; // Contoh nilai untuk id_admin
+        $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
 
         $notaPembeli->save();
 

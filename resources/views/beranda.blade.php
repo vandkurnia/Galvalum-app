@@ -21,7 +21,7 @@
 
 
 @section('content')
-   
+
     <script>
         $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     </script>
@@ -143,9 +143,10 @@
                             <div class="form-group">
                                 <label for="diskon">Diskon:</label>
                                 <select class="form-control" id="diskon" name="diskon">
-                                    <option value="">Pilih Diskon</option>
+                                    <option value="" data-amount="0" data-type="amount">Normal</option>
                                     @foreach ($dataDiskon as $diskon)
-                                        <option value="{{ $diskon->id_diskon }}" data-amount="{{$diskon->besaran}}" data-type="{{$diskon->type}}">{{ $diskon->nama_diskon }}</option>
+                                        <option value="{{ $diskon->id_diskon }}" data-amount="{{ $diskon->besaran }}"
+                                            data-type="{{ $diskon->type }}">{{ $diskon->nama_diskon }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -229,6 +230,31 @@
                                     false;
 
                                 if (!check_id_tr_sudah_ada) {
+                                    var selectElement = document.getElementById('diskon');
+                                    var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    var amount = 0;
+                                    var type = "amount";
+                                    var harga_barang = Math.floor(data_barang.harga_barang);
+                                    var harga_setelah_diskon = 0;
+                                    let harga_diskon = 0;
+                                    if (selectedOption) {
+                                        amount = selectedOption.getAttribute('data-amount');
+                                        type = selectedOption.getAttribute('data-type');
+                                        if (type === "percentage") {
+                                            let jumlah_diskon = (harga_barang * amount) / 100
+                                            harga_diskon = jumlah_diskon;
+                                            harga_setelah_diskon = harga_barang - jumlah_diskon
+                                        } else {
+                                            harga_diskon = amount;
+                                            harga_setelah_diskon = harga_barang - amount;
+                                        }
+                                        console.log('Amount:', amount);
+                                        console.log('Type:', type);
+                                    } else {
+                                        console.log('No option selected');
+                                    }
+
+
                                     var tr_pesanan = document.createElement('tr');
                                     tr_pesanan.setAttribute('data-id-barang', data_barang.hash_id_barang);
                                     // Pembuatan TD
@@ -241,14 +267,16 @@
                                     let td_ukuran_barang = document.createElement('td');
                                     td_ukuran_barang.innerText = data_barang.ukuran;
                                     let td_harga_barang = document.createElement('td');
-                                    td_harga_barang.innerText = Math.floor(data_barang.harga_barang);
+                                    td_harga_barang.innerText = harga_barang;
+                                    let td_diskon = document.createElement('td');
+                                    td_diskon.innerText = harga_diskon;
                                     let td_jumlah = document.createElement('td');
                                     td_jumlah.classList.add('nilai_jumlah_barang');
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = document.createElement('td');
                                     td_total.classList.add('total');
-                                    td_total.innerText = Math.floor(data_barang.harga_barang) * jumlah_barang.value;
+                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
 
 
                                     // // Membuat tombol Edit
@@ -282,6 +310,7 @@
                                     tr_pesanan.appendChild(td_tipe_barang);
                                     tr_pesanan.appendChild(td_ukuran_barang);
                                     tr_pesanan.appendChild(td_harga_barang);
+                                    tr_pesanan.appendChild(td_diskon);
                                     tr_pesanan.appendChild(td_jumlah);
                                     tr_pesanan.appendChild(td_total);
                                     tr_pesanan.appendChild(td_aksi);
@@ -481,9 +510,10 @@
             var totalHarga = 0;
             $('#dataTablePesanan tbody tr').each(function() {
 
+                console.log($(this).('td:nth-child(3)').text());
                 var harga = parseInt($(this).find('td:nth-child(5)').text().replace('Rp ', '').replace('.', ''));
                 let jumlah = parseInt($(this).find('td:nth-child(6)').text());
-
+             
                 totalHarga += (harga * jumlah);
             });
 
@@ -492,6 +522,21 @@
 
             // Tampilkan total harga dalam elemen span
             $('#total_pembayaran').text('Rp ' + totalHarga);
+
+            var table = document.getElementById('dataTablePesanan');
+            let sub_total = table.querySelector('tfoot #subTotal').innerText;
+            sub_total = 0;
+
+            // Loop melalui setiap baris di tbody
+            for (var i = 0, row; row = table.rows[i]; i++) {
+                // Ambil nilai dari kolom ke-7 (indeks 6) dan tambahkan ke total
+                var cell = row.cells[6];
+                if (cell) {
+            
+                    sub_total += parseInt(cell.innerHTML);
+                }
+            }
+
         }
     </script>
 
@@ -820,10 +865,10 @@
         }
 
 
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
+        // ClassicEditor
+        //     .create(document.querySelector('#editor'))
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
     </script>
 @endsection
