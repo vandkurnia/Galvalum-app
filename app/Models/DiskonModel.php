@@ -14,8 +14,7 @@ class DiskonModel extends Model
 
     protected $table = 'diskon';
     protected $primaryKey = 'id_diskon';
-    protected $keyType = 'string'; // Menggunakan UUID sebagai primary key
-    public $incrementing = false; // UUID tidak incrementable
+ 
     protected $fillable = [
         'hash_id_diskon',
         'kode_diskon',
