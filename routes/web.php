@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [BukubesarController::class, 'store'])->name('bukubesar.store'); // Menyimpan user baru
         Route::put('/{id}', [BukubesarController::class, 'update'])->name('bukubesar.update'); // Mengupdate user berdasarkan ID
         Route::delete('/{id}', [BukubesarController::class, 'destroy'])->name('bukubesar.destroy'); // Menghapus user berdasarkan ID
+        Route::get('/filter', [BukubesarController::class, 'filter'])->name('bukubesar.filter');
     });
 
 
@@ -157,7 +158,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hutang', [LaporanController::class, 'laporanHutang'])->name('laporan.hutang');
         Route::get('/piutang', [LaporanController::class, 'laporanPiutang'])->name('laporan.piutang');
         Route::get('/kas-keluar', [LaporanController::class, 'kasKeluar'])->name('laporan.kaskeluar');
+        Route::post('/', [LaporanController::class, 'simpanKas'])->name('laporan.simpankas'); 
+        Route::delete('/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
         Route::get('/modal-tambahan', [LaporanController::class, 'modalTambahan'])->name('laporan.modaltambahan');
         Route::get('/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.labarugi');
+        Route::get('/filter', [LaporanController::class, 'filter'])->name('laporan.filter');
     });
 });

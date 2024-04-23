@@ -16,6 +16,16 @@ class BukubesarController extends Controller
         return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar'));
     }
 
+    public function filter(Request $request)
+    {
+        $tanggal_awal = $request->tanggal_awal;
+        $dataAkunBayar = AkunBayarModel::all();
+
+        $dataBukuBesar = BukubesarModel::whereDate('tanggal','=',$tanggal_awal)->get();
+        // Logika untuk mengambil data dan menampilkan laporan kas keluar
+        return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar'));
+    }
+
     public function edit(Request $request, $id)
     {
         $dataBukuBesar = BukubesarModel::where('hash_id_bukubesar', $id)->first();

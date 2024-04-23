@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Laporan;
 
 use App\Http\Controllers\Controller;
+use App\Models\KasKeluar;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -27,8 +28,55 @@ class LaporanController extends Controller
 
     public function kasKeluar()
     {
+        $laporan_kas_keluar = KasKeluar::all();
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
-        return view('laporan.kaskeluar');
+        return view('laporan.kaskeluar', compact('laporan_kas_keluar'));
+    }
+
+    public function simpanKas(Request $request)
+    {
+        $request->validate([
+            'nama_pengeluaran' => 'required',
+            'deskripsi' => 'required',
+            'jumlah_pengeluaran' => 'required',
+            'tanggal' => 'required',
+
+        ]);
+
+        // Array data user dari request
+        $Keluar = [
+            'nama_pengeluaran' => $request->nama_pengeluaran,
+            'deskripsi' => $request->deskripsi,
+            'jumlah_pengeluaran' => $request->jumlah_pengeluaran,
+            'tanggal' => $request->tanggal,
+
+        ];
+        KasKeluar::create($Keluar);
+
+        return redirect()->route('laporan.kaskeluar')->with('success', 'Kas Keluar herhasil ditambahkan');
+    }
+
+    public function destroy($id)
+    {
+        // $user = User::findOrFail($id);
+        // $user->delete();
+        $dataTipeBarang = KasKeluar::where('id_kas_keluar', $id)->first();
+        if ($dataTipeBarang) {
+            $dataTipeBarang->delete();
+
+            return redirect()->route('laporan.kaskeluar')->with('success', 'Tipe barang dihapus');
+        } else {
+            return redirect()->route('laporan.kaskeluar')->with('error', 'Tipe barang gagal dihapus');
+        }
+    }
+
+    public function filter(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        
+        $users = User::whereDate('created_at','=',$tanggal)->get();
+        // Logika untuk mengambil data dan menampilkan laporan kas keluar
+        return view('laporan.kaskeluar',compact('users'));
     }
 
     public function modalTambahan()

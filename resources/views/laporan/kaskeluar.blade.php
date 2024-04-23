@@ -55,9 +55,17 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Kas Keluar</h6>
+                <form method="GET" action="/filter">
+                    <label for="tanggal">Filter Tanggal:</label>
+                    <input type="date" id="tanggal" name="tanggal" class="form-control">
+                    <button type="submit" class="btn btn-success">Filter</button>
+                </form>
             </div>
             <div class="card-body">
-               
+                <div>
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahKasKeluar"><i
+                            class="fa fa-plus"></i> Tambah Kas Keluar</button>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -71,28 +79,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach ($laporan_kas_keluar as $lprks)
                             <tr>
-                                <td>1</td>
-                                <td>2024-05-01</td>
-                                <td>Pembelian Bahan Baku</td>
-                                <td>Pembelian bahan baku untuk produksi</td>
-                                <td>$100</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $lprks->tanggal }}</td>
+                                <td>{{ $lprks->nama_pengeluaran }}</td>
+                                <td>{{ $lprks->deskripsi }}</td>
+                                <td>{{ $lprks->jumlah_pengeluaran }}</td>
                                 <td>
                                     <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="funcHapusUser('{{ route('laporan.destroy', ['id' => $lprks->id_kas_keluar]) }}', 0)"><i
+                                                class="fas fa-trash"></i>
+                                            Delete</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2024-05-05</td>
-                                <td>Biaya Pengiriman</td>
-                                <td>Biaya pengiriman barang ke pelanggan</td>
-                                <td>$50</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Hapus</button>
-                                </td>
-                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -112,6 +114,147 @@
 
 
 
-@section('javascript-custom')
+{{-- Modal Tambah Kas Keluar --}}
+<div class="modal fade" id="TambahKasKeluar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Tipe Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('laporan.simpankas') }}" id="formTambahUser" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Nama Pengeluaran</label>
+                        <input type="text" class="form-control" id="nama_pengeluaran" name="nama_pengeluaran" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Deskripsi</label>
+                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Jumlah Pemgeluaran</label>
+                        <input type="text" class="form-control" id="jumlah_pengeluaran" name="jumlah_pengeluaran" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                    </div>
 
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcTambahUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Tambah Kas Keluar  --}}
+
+{{-- Modal Delete --}}
+<div class="modal fade" id="HapusUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Tipe Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formHapusUser" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <h1>Apakah anda yakin ingin menghapus ?</h1>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcHapusUser(null, 1)">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Delete --}}
+
+@section('javascript-custom')
+   
+
+    <script>
+        function funcTambahUser() {
+            let formtambah = document.querySelector('#formTambahUser');
+            formtambah.submit();
+        }
+
+        function funcEditUser(url) {
+            var url = url;
+
+            // Kirim request Ajax
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(function(response) {
+                // Handle response
+                console.log(response.code);
+
+                if (response.ok) {
+                    response.json().then(function(data) {
+                        $('#EditUser .modal-body').html(data
+                            .data); // Menetapkan respons ke elemen HTML dengan ID editUser
+                        $('#EditUser').modal('show');
+                    });
+                } else {
+                    alert('Response was not ok');
+                }
+                // Memuat modal EditUser dengan data pengguna
+                // $('#editUserModal').html(response);
+
+            }).catch(function(error) {
+                // Handle error
+                alert('Terjadi kesalahan');
+            });
+
+        }
+
+        function funcUpdateUser() {
+            let formedit = $('#EditUser .modal-body #formEditUser');
+            formedit.submit();
+            $('#EditUser').modal('hide');
+        }
+
+
+        function funcHapusUser(url, typeoperasi) {
+            // 0 = Menampilkan modal, 1 = Submit penghapusan
+            if (typeof(typeoperasi) === "number") {
+                if (typeoperasi === 1) {
+                    let elementFormHapus = document.querySelector('#HapusUser #formHapusUser');
+                    elementFormHapus.submit();
+
+                } else {
+                    // Menampilkan modal delete
+                    $('#HapusUser').modal('show');
+
+                    // Mengatur nilai action formulir hapus user sesuai dengan hashIdAdmin
+                    $('#formHapusUser').attr('action', url);
+                }
+            } else {
+                console.error(typeoperasi);
+                alert('Kesalahan pada parameter typeoperasi');
+
+            }
+
+
+        }
+    </script>
 @endsection

@@ -55,6 +55,10 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Modal Tambahan</h6>
+                <div class="form-group">
+                    <label for="tanggal">Filter Tanggal:</label>
+                    <input type="date" id="tanggal" name="tanggal" class="form-control">
+                </div>
             </div>
             <div class="card-body">
 
