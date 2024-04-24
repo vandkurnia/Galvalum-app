@@ -154,14 +154,31 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     Route::prefix('laporan')->group(function () {
+
+        Route::get('/generate-csv', [LaporanController::class, 'generateCSV'])->name('laporan.generatecsv');
+        Route::get('/kas-csv', [LaporanController::class, 'kaskeluarCSV'])->name('laporan.kaskeluarcsv');
+
+        Route::get('/generate-pdf', [LaporanController::class, 'generatePDF'])->name('laporan.generatepdf');
+        Route::get('/kas-pdf', [LaporanController::class, 'kaskeluarPDF'])->name('laporan.kaskeluarpdf');
+
         Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');
         Route::get('/hutang', [LaporanController::class, 'laporanHutang'])->name('laporan.hutang');
         Route::get('/piutang', [LaporanController::class, 'laporanPiutang'])->name('laporan.piutang');
+
         Route::get('/kas-keluar', [LaporanController::class, 'kasKeluar'])->name('laporan.kaskeluar');
-        Route::post('/', [LaporanController::class, 'simpanKas'])->name('laporan.simpankas'); 
-        Route::delete('/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+        Route::post('/simpan-kas', [LaporanController::class, 'simpanKas'])->name('laporan.simpankas');
+        Route::get('/editKas/{id}', [LaporanController::class, 'editKas'])->name('laporan.editKas'); 
+        Route::put('/{id}', [LaporanController::class, 'updateKas'])->name('laporan.updateKas');
+        Route::delete('/deletekas/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+
         Route::get('/modal-tambahan', [LaporanController::class, 'modalTambahan'])->name('laporan.modaltambahan');
+        Route::post('/', [LaporanController::class, 'simpanModal'])->name('laporan.simpanModal');
+        Route::get('/edit/{id}', [LaporanController::class, 'editModal'])->name('laporan.editModal');
+        Route::put('/{id}', [LaporanController::class, 'updateModal'])->name('laporan.updateModal');
+        Route::delete('/{id}', [LaporanController::class, 'modaldestroy'])->name('laporan.modaldestroy');
+        Route::get('/filtermodal', [LaporanController::class, 'filterModal'])->name('laporan.filterModal');
+
         Route::get('/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.labarugi');
-        Route::get('/filter', [LaporanController::class, 'filter'])->name('laporan.filter');
+        Route::get('/filter', [LaporanController::class, 'filterKas'])->name('laporan.filterKas');
     });
 });

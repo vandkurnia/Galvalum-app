@@ -55,13 +55,26 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Modal Tambahan</h6>
-                <div class="form-group">
-                    <label for="tanggal">Filter Tanggal:</label>
-                    <input type="date" id="tanggal" name="tanggal" class="form-control">
-                </div>
+                <form method="GET" action="{{ route('laporan.filterModal') }}">
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Filter</button>
+                        <a class="btn btn-info" href="{{ url('laporan/modal-tambahan') }}">Refresh</a>
+                    </div>
+                </form>
             </div>
             <div class="card-body">
-
+                <div class="form-group">
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahModalTambahan"><i
+                            class="fa fa-plus"></i> Tambah Modal Tambahan</button>
+                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                        <a class="btn btn-danger float-right" href="{{ url('laporan/generate-pdf') }}"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                        <a class="btn btn-success float-right" href="{{ url('laporan/generate-csv') }}"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -75,28 +88,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach ($laporan_modal_tambahan as $lpmdl)
                             <tr>
-                                <td>1</td>
-                                <td>2024-05-01</td>
-                                <td>Modal Awal</td>
-                                <td>Modal awal untuk pembukaan usaha</td>
-                                <td>$1000</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $lpmdl->tanggal }}</td>
+                                <td>{{ $lpmdl->jenis_modal_tambahan }}</td>
+                                <td>{{ $lpmdl->deskripsi }}</td>
+                                <td>{{ $lpmdl->jumlah_modal }}</td>
                                 <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <button class="btn btn-primary btn-sm"
+                                            onclick="funcEditUser('{{ route('laporan.editModal', ['id' => $lpmdl->id_modal_tambahan]) }}')"><i
+                                                class="fas fa-edit"></i>
+                                            Edit</button>
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="funcHapusUser('{{ route('laporan.modaldestroy', ['id' => $lpmdl->id_modal_tambahan]) }}', 0)"><i
+                                                class="fas fa-trash"></i>
+                                            Delete</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2024-05-05</td>
-                                <td>Modal Tambahan</td>
-                                <td>Modal tambahan untuk ekspansi usaha</td>
-                                <td>$500</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Hapus</button>
-                                </td>
-                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -111,11 +121,169 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+{{-- Modal Tambah Modal Tambahan --}}
+<div class="modal fade" id="TambahModalTambahan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Modal Tambahan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('laporan.simpanModal') }}" id="formTambahUser" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Jenis Modal Tambahan</label>
+                        <input type="text" class="form-control" id="jenis_modal_tambahan" name="jenis_modal_tambahan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Deskripsi</label>
+                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Jumlah Modal</label>
+                        <input type="text" class="form-control" id="jumlah_modal" name="jumlah_modal" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tipe" class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcTambahUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Tambah Modal Tambahan  --}}
+
+{{-- Modal Edit --}}
+<div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Modal Tambahan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcUpdateUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Edit --}}
+
+{{-- Modal Delete --}}
+<div class="modal fade" id="HapusUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Modal Tambahan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formHapusUser" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <h1>Apakah anda yakin ingin menghapus ?</h1>
 
 
-
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcHapusUser(null, 1)">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Delete --}}
 
 
 @section('javascript-custom')
+    <script>
+        function funcTambahUser() {
+            let formtambah = document.querySelector('#formTambahUser');
+            formtambah.submit();
+        }
 
+        function funcEditUser(url) {
+            var url = url;
+
+            // Kirim request Ajax
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(function(response) {
+                // Handle response
+                console.log(response.code);
+
+                if (response.ok) {
+                    response.json().then(function(data) {
+                        $('#EditUser .modal-body').html(data
+                            .data); // Menetapkan respons ke elemen HTML dengan ID editUser
+                        $('#EditUser').modal('show');
+                    });
+                } else {
+                    alert('Response was not ok');
+                }
+                // Memuat modal EditUser dengan data pengguna
+                // $('#editUserModal').html(response);
+
+            }).catch(function(error) {
+                // Handle error
+                alert('Terjadi kesalahan');
+            });
+
+        }
+
+        function funcUpdateUser() {
+            let formedit = $('#EditUser .modal-body #formEditUser');
+            formedit.submit();
+            $('#EditUser').modal('hide');
+        }
+
+
+        function funcHapusUser(url, typeoperasi) {
+            // 0 = Menampilkan modal, 1 = Submit penghapusan
+            if (typeof(typeoperasi) === "number") {
+                if (typeoperasi === 1) {
+                    let elementFormHapus = document.querySelector('#HapusUser #formHapusUser');
+                    elementFormHapus.submit();
+
+                } else {
+                    // Menampilkan modal delete
+                    $('#HapusUser').modal('show');
+
+                    // Mengatur nilai action formulir hapus user sesuai dengan hashIdAdmin
+                    $('#formHapusUser').attr('action', url);
+                }
+            } else {
+                console.error(typeoperasi);
+                alert('Kesalahan pada parameter typeoperasi');
+
+            }
+
+
+        }
+    </script>
 @endsection

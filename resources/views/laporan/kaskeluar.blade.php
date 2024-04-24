@@ -55,16 +55,25 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Kas Keluar</h6>
-                <form method="GET" action="/filter">
-                    <label for="tanggal">Filter Tanggal:</label>
-                    <input type="date" id="tanggal" name="tanggal" class="form-control">
-                    <button type="submit" class="btn btn-success">Filter</button>
+                <form method="GET" action="{{ route('laporan.filterKas') }}">
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Filter</button>
+                        <a class="btn btn-info" href="{{ url('laporan/kas-keluar') }}">Refresh</a>
+                    </div>
                 </form>
             </div>
             <div class="card-body">
-                <div>
+                <div class="form-group">
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahKasKeluar"><i
                             class="fa fa-plus"></i> Tambah Kas Keluar</button>
+                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                        <a class="btn btn-danger float-right" href="{{ url('laporan/kas-pdf') }}"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                        <a class="btn btn-success float-right" href="{{ url('laporan/kas-csv') }}"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -87,7 +96,10 @@
                                 <td>{{ $lprks->deskripsi }}</td>
                                 <td>{{ $lprks->jumlah_pengeluaran }}</td>
                                 <td>
-                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-primary btn-sm"
+                                            onclick="funcEditUser('{{ route('laporan.editKas', ['id' => $lprks->id_kas_keluar]) }}')"><i
+                                                class="fas fa-edit"></i>
+                                            Edit</button>
                                     <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('laporan.destroy', ['id' => $lprks->id_kas_keluar]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
@@ -155,6 +167,30 @@
     </div>
 </div>
 {{-- End of Modal Tambah Kas Keluar  --}}
+
+
+{{-- Modal Edit --}}
+<div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Kas Keluar</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcUpdateUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Edit --}}
 
 {{-- Modal Delete --}}
 <div class="modal fade" id="HapusUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
