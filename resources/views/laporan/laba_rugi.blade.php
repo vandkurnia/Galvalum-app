@@ -74,7 +74,7 @@
                 <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control">
+                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="updateDate()">
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">Filter Tanggal</button>
@@ -90,18 +90,19 @@
                                 <th colspan="3"> REKAP RINCIAN PENJUALAN </th>
                             </tr>
                             <tr>
-                                <th colspan="3">JUMAT, 1 DESEMBER 2023</th>
+                                <th colspan="3" id="tanggal-hari"></th>
                             </tr>
                         </thead>
                         <tbody>
 
-
+                            @foreach($penjualan_kotor as $pk)
                             <tr class="topic">
                                 <th>PENJUALAN KOTOR</th>
                                 <td></td>
 
-                                <td>Rp 29.892.000</td>
+                                <td>Rp {{ $pk->debit }}</td>
                             </tr>
+                            @endforeach
                             <tr>
                                 <td>MODAL</td>
                                 <td></td>
@@ -119,25 +120,17 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @foreach($tambahan_modal as $th)
                             <tr>
-                                <td>(+) Dp Pak Baret</td>
-                                <td>Rp 3.000.000</td>
+                                <td>(+) {{ $th->jenis_modal_tambahan }}</td>
+                                <td>Rp {{ $th->jumlah_modal }} (+)</td>
                                 <td></td>
                             </tr>
-                            <tr>
-                                <td>(+) Kembalian lebih Pak Heru</td>
-                                <td>Rp 1.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(+) Dp Pak Yanto Pasar Pvc</td>
-                                <td>Rp 3.000.000 (+)</td>
-                                <td></td>
-                            </tr>
+                            @endforeach
                             <tr>
                                 <th>JUMLAH TAMBAHAN MODAL</th>
                                 <td></td>
-                                <td>Rp 6.001.000 (+)</td>
+                                <td>Rp {{$jumlah_tambahan_modal}} (+)</td>
                             </tr>
                             <tr class="topic">
                                 <th>LABA KOTOR</th>
@@ -149,60 +142,17 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @foreach($pengeluaran as $p)
                             <tr>
-                                <td>(-) Transfer Pak Daman</td>
-                                <td>Rp 1.230.000</td>
+                                <td>(-) {{$p->nama_pengeluaran}}</td>
+                                <td>Rp {{$p->jumlah_pengeluaran}} (+)</td>
                                 <td></td>
                             </tr>
-                            <tr>
-                                <td>(-) Transfer Pak Mariono</td>
-                                <td>Rp 90.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Bayar Skrup Pak Rembo</td>
-                                <td>Rp 720.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Sangu Kuli Star</td>
-                                <td>Rp 30.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Bayar Ornamen Pak Abdul</td>
-                                <td>Rp 870.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Sangu bongkar holo GT</td>
-                                <td>Rp 10.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Transfer Pak Deni Bulak</td>
-                                <td>Rp 1.140.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Diskon Pak Irfan</td>
-                                <td>Rp 1.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(-) Setor Modal Sore 30/11/2023 Jam 14.41</td>
-                                <td>Rp 7.700.000</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>(+) Setor Modal Sore 30/11/2023 Jam 15.34</td>
-                                <td>Rp 1.600.000 (+)</td>
-                                <td></td>
-                            </tr>
+                            @endforeach
                             <tr>
                                 <th>JUMLAH PENGURANGAN/PENGELUARAN</th>
                                 <th></th>
-                                <th>Rp 13.391.000 (-)</th>
+                                <th>Rp {{$total_pengeluaran}} (-)</th>
                             </tr>
                             <tr class="topic">
                                 <th>LABA BERSIH</th>
@@ -297,7 +247,61 @@
 
 
 @section('javascript-custom')
-   
+
+    <script>
+        // Function to update the date input to today's date
+        function updateDate() {
+            var today = new Date();
+
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth() + 1)).slice(-2); // Months are zero-based
+            var day = ('0' + today.getDate()).slice(-2);
+
+            var formattedDate = year + '-' + month + '-' + day;
+
+            document.getElementById('tanggal').value = formattedDate;
+        }
+
+        // Call the function to set today's date initially
+        updateDate();
+    </script>
+
+    <script>
+    // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
+    function getHariIndonesia(day) {
+        const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+        return hari[day];
+    }
+
+    // Fungsi untuk mendapatkan nama bulan dalam bahasa Indonesia
+    function getBulanIndonesia(month) {
+        const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        return bulan[month];
+    }
+
+    // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
+    function getTanggal() {
+        const sekarang = new Date();
+        const tanggal = sekarang.getDate();
+        const bulan = getBulanIndonesia(sekarang.getMonth());
+        const tahun = sekarang.getFullYear();
+        return `${tanggal} ${bulan} ${tahun}`;
+    }
+
+    // Fungsi untuk menampilkan hari dan tanggal saat ini di dalam elemen dengan id="tanggal-hari"
+    function tampilkanHariTanggal() {
+        const sekarang = new Date();
+        const hari = getHariIndonesia(sekarang.getDay());
+        const tanggal = getTanggal();
+        const element = document.getElementById("tanggal-hari");
+        element.innerHTML = `${hari}, ${tanggal}`;
+    }
+
+    // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
+    window.onload = function() {
+        tampilkanHariTanggal();
+    };
+    </script>
 
     <script>
         function funcTambahUser() {

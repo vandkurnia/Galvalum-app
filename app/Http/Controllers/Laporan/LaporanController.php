@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Laporan;
 use App\Http\Controllers\Controller;
 use App\Models\KasKeluar;
 use App\Models\ModalTambahanModel;
+use App\Models\BukubesarModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Carbon;
 use League\Csv\Writer;
 use PDF;
 
@@ -279,9 +281,22 @@ class LaporanController extends Controller
         return redirect()->route('laporan.modaltambahan')->with('success', 'Modal Tambahan herhasil ditambahkan');
     }
 
-    public function labaRugi()
+    public function labaRugi(Request $request)
     {
+        // $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
+        $tanggal = $request->input('tanggal', '2024-04-25');
+        $kategori = $request->input('kategori', 'transaksi'); // Kategori default adalah 'transaksi'
+
+        $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori)
+                    ->get();
+
+        $pengeluaran = KasKeluar::where('tanggal', $tanggal)->get();
+        $total_pengeluaran = $pengeluaran->sum('jumlah_pengeluaran');
+
+        $tambahan_modal = ModalTambahanModel::where('tanggal', $tanggal)->get();
+        $jumlah_tambahan_modal = $tambahan_modal->sum('jumlah_modal');
         // Logika untuk mengambil data dan menampilkan laporan laba rugi
-        return view('laporan.laba_rugi');
+        return view('laporan.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran'));
     }
 }

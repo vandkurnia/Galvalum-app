@@ -1,4 +1,4 @@
-<form action="{{ route('bukubesar.update', ['id' => $dataBukuBesar['hash_id_bukubesar']]) }}" id="formEditUser" method="POST">
+<form action="{{ route('bukubesar.update', ['id' => $dataBukuBesar['id_bukubesar']]) }}" id="formEditUser" method="POST">
     @csrf
     @method('PUT')
    

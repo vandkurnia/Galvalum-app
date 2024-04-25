@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\AkunBayarModel;
 use App\Models\BukubesarModel;
+use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 
 class BukubesarController extends Controller
@@ -12,18 +14,20 @@ class BukubesarController extends Controller
     {
         $dataBukuBesar = BukubesarModel::all();
         $dataAkunBayar = AkunBayarModel::all();
+        $dataKategori = KategoriModel::all();
 
-        return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar'));
+        return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar', 'dataKategori'));
     }
 
     public function filter(Request $request)
     {
         $tanggal_awal = $request->tanggal_awal;
         $dataAkunBayar = AkunBayarModel::all();
+        $dataKategori = KategoriModel::all();
 
         $dataBukuBesar = BukubesarModel::whereDate('tanggal','=',$tanggal_awal)->get();
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
-        return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar'));
+        return view('bukubesar.index', compact('dataBukuBesar', 'dataAkunBayar', 'dataKategori'));
     }
 
     public function edit(Request $request, $id)

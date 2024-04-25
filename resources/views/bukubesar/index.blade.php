@@ -56,10 +56,14 @@
 
                 <h6 class="m-0 font-weight-bold text-primary">Bukubesar</h6>
                 <form method="GET" action="{{ route('bukubesar.filter') }}">
-                    <label for="tanggal">Filter Tanggal:</label>
-                    <input type="date" name="tanggal_awal" class="form-control">
-                    <button type="submit" class="btn btn-success">Filter</button>
-                    <a class="btn btn-info" href="{{ url('/bukubesar') }}">Refresh</a>
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" name="tanggal_awal" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Filter</button>
+                        <a class="btn btn-info" href="{{ url('/bukubesar') }}">Refresh</a>
+                    </div>
                 </form>
             </div>
             <div class="card-body">
@@ -153,7 +157,11 @@
 
                     <div class="form-group">
                         <label for="kategori">Kategori</label>
-                        <input type="text" class="form-control" id="kategori" name="kategori">
+                        <select class="form-control" id="kategori" name="kategori">
+                            @foreach($dataKategori as $kategori)
+                                <option value="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="form-group">
