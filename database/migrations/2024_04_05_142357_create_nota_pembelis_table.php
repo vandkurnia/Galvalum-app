@@ -18,9 +18,14 @@ return new class extends Migration
             $table->string('no_nota')->unique();
             $table->unsignedBigInteger('id_pembeli');
             $table->unsignedBigInteger('id_admin');
-            $table->timestamps();
+          
             $table->string('metode_pembayaran'); // tambahan field metode_pembayaran
             $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
+            $table->string('sub_total', 45)->default(0);
+            $table->string('diskon', 45)->default(0);
+            $table->string('pajak', 45)->default(0);
+            $table->string('total', 45)->default(0);
+            $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_pembeli')->references('id_pembeli')->on('pembelis');
             $table->foreign('id_admin')->references('id_admin')->on('users');

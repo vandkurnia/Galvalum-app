@@ -183,7 +183,7 @@
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
                                 let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;
-                                ;
+                                console.log(cek_total_barang_kelebihan);
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
@@ -290,7 +290,7 @@
                                     td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
 
 
-                                    // Membuat tombol Edit
+                                    // // Membuat tombol Edit
                                     // const edit_button = document.createElement('button');
                                     // edit_button.href = '#';
                                     // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
@@ -372,13 +372,13 @@
                             function editPesananBarang(id_barang) {
                                 const tbody_table = document.querySelector('#dataTablePesanan tbody');
                                 const tr_element_select = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
-                                alert("id barang :" + id_barang);
                                 // Edit element nama barang
                                 $('#nama_barang').val(id_barang); // Select the option with a value of '1'
                                 $('#nama_barang').trigger('change'); // Notify any JS components that the value changed
 
                                 // Ambil nilai dari td ke 6
-                                const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan'); 
+                                const td_element_jumlah = tr_element_select.querySelectorAll('td')[
+                                    4]; // Indeks dimulai dari 0, jadi indeks ke-6 adalah 5
                                 let nilai_jumlah = td_element_jumlah.innerText;
 
                                 // Inisiasi dan Edit element jumlah barang 
@@ -405,7 +405,7 @@
 
                                 // Reset number pada no tr yang tersedia
                                 let total_tr = tbody_table.childElementCount;
-                                // ;
+                                // console.log(total_tr);
                                 const all_th_number = tbody_table.querySelectorAll('tr th');
                                 // atur number awal 1
                                 var nilaiawal = 1;
@@ -445,17 +445,17 @@
                                     <td>{{ $pesanan->Barang->nama_barang }}</td>
                                     <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
                                     <td>{{ $pesanan->Barang->ukuran }}</td>
-                                    <td class="harga_barang_pesanan">{{ (int) $pesanan->harga }}</td>
+                                    <td>{{ (int) $pesanan->harga }}</td>
                                     {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
-                                    <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
-                                    <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
-                                    <td class="total">{{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
+                                    <td>{{ (int) $pesanan->diskon }}</td>
+                                    <td>{{ (int) $pesanan->jumlah_pembelian }}</td>
+                                    <td>{{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
                                     <td>
 
-                                        {{-- <button class="btn btn-primary btn-sm"
+                                        <button class="btn btn-primary btn-sm"
                                             onclick="editPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
                                             <i class="fas fa-edit"></i> Edit
-                                        </button> --}}
+                                        </button>
                                         <button class="btn btn-danger btn-sm ml-2"
                                             onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
                                             <i class="fas fa-trash"></i> Delete
@@ -498,11 +498,11 @@
                         </tfoot>
                     </table>
                 </div>
-                {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
-                <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
-                    data-target="#modalBayar">Bayar</button>
             </div>
+            <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
+                data-target="#modalBayar">Bayar</button>
         </div>
+    </div>
     </div>
 @endsection
 <!-- End of Page Wrapper -->
@@ -537,8 +537,8 @@
                     <div class="form-group">
                         <label for="metodePembayaran">Metode Pembayaran</label>
                         <select name="metode_pembayaran" class="form-control" id="metodePembayaran">
-                            <option  {{ $notaPembelian->metode_pembayaran == 'lunas' ? 'CASH' : '' }} value="CASH">CASH</option>
-                            <option  {{ $notaPembelian->metode_pembayaran == 'Transfer' ? 'selected' : '' }} value="Transfer">Transfer</option>
+                            <option value="CASH">CASH</option>
+                            <option value="Transfer">Transfer</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -782,7 +782,7 @@
         }
 
         function formatBarangSelection(barang) {
-            // ;
+            // console.log(barang.stok);
             var jumlahStok = document.getElementById("jumlah_barang");
             jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
 
@@ -880,7 +880,7 @@
         }
 
         function formatPembeliSelection(pembeli) {
-            ;
+            console.log('test', pembeli);
 
             if (pembeli && pembeli.nama_pembeli !== undefined && pembeli.nama_pembeli !== null) {
 
@@ -895,7 +895,7 @@
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {
-                ;
+                console.log('test', pembeli);
                 // Remove readOnly attribute from alamat input if it exists
                 const alamat = document.querySelector('#alamat');
                 if (alamat.hasAttribute('readonly')) {
@@ -914,7 +914,7 @@
             }
 
 
-            // // ;
+            // // console.log(barang.stok);
             // var jumlahStok = document.getElementById("jumlah_barang");
             // jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
 

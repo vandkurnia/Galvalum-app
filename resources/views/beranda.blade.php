@@ -81,7 +81,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Data Nota Pesanan</h6>
             </div>
             <div class="card-body">
-                <form action="">
+                <form id="dataNota">
                     <div class="form-group">
                         <label for="NoNota">No Nota</label>
                         <input type="text" class="form-control" name="no_nota" id="NoNota" readonly
@@ -106,6 +106,17 @@
                         <label for="alamat">Alamat:</label>
                         <input type="text" class="form-control" id="alamat" name="alamat_pembeli"
                             placeholder="Masukkan alamat" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="jenisPembelian">Jenis Pembelian:</label>
+                        <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
+
+                            <option value="harga_normal">Harga Normal</option>
+                            <option value="reseller">Reseller</option>
+                            <option value="potongan">Potongan</option>
+                        </select>
                     </div>
 
                 </form>
@@ -168,8 +179,7 @@
                                 const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;
-                                console.log(cek_total_barang_kelebihan);
+                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
@@ -230,29 +240,24 @@
                                     false;
 
                                 if (!check_id_tr_sudah_ada) {
-                                    var selectElement = document.getElementById('diskon');
-                                    var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    var diskon_select_element = document.getElementById('diskon');
+                                    var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
                                     var amount = 0;
                                     var type = "amount";
                                     var harga_barang = Math.floor(data_barang.harga_barang);
                                     var harga_setelah_diskon = 0;
                                     let harga_diskon = 0;
-                                    if (selectedOption) {
-                                        amount = selectedOption.getAttribute('data-amount');
-                                        type = selectedOption.getAttribute('data-type');
-                                        if (type === "percentage") {
-                                            let jumlah_diskon = (harga_barang * amount) / 100
-                                            harga_diskon = jumlah_diskon;
-                                            harga_setelah_diskon = harga_barang - jumlah_diskon
-                                        } else {
-                                            harga_diskon = amount;
-                                            harga_setelah_diskon = harga_barang - amount;
-                                        }
-                                        console.log('Amount:', amount);
-                                        console.log('Type:', type);
+                                    amount = selected_diskon_element.getAttribute('data-amount');
+                                    type = selected_diskon_element.getAttribute('data-type');
+                                    if (type === "percentage") {
+                                        let jumlah_diskon = (harga_barang * amount) / 100
+                                        harga_diskon = jumlah_diskon;
+                                        harga_setelah_diskon = harga_barang - jumlah_diskon
                                     } else {
-                                        console.log('No option selected');
+                                        harga_diskon = amount;
+                                        harga_setelah_diskon = harga_barang - amount;
                                     }
+
 
 
                                     var tr_pesanan = document.createElement('tr');
@@ -267,11 +272,13 @@
                                     let td_ukuran_barang = document.createElement('td');
                                     td_ukuran_barang.innerText = data_barang.ukuran;
                                     let td_harga_barang = document.createElement('td');
+                                    td_harga_barang.classList.add('harga_barang_pesanan');
                                     td_harga_barang.innerText = harga_barang;
                                     let td_diskon = document.createElement('td');
-                                    td_diskon.innerText = harga_diskon;
+                                    td_diskon.classList.add('diskon_pesanan')
+                                    td_diskon.innerText = harga_diskon ;
                                     let td_jumlah = document.createElement('td');
-                                    td_jumlah.classList.add('nilai_jumlah_barang');
+                                    td_jumlah.classList.add('nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = document.createElement('td');
@@ -279,7 +286,7 @@
                                     td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
 
 
-                                    // // Membuat tombol Edit
+                                    // Membuat tombol Edit
                                     // const edit_button = document.createElement('button');
                                     // edit_button.href = '#';
                                     // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
@@ -328,8 +335,31 @@
 
 
                                 } else {
-                                    let td_jumlah = tr_pesanan.querySelectorAll('td')[4];
+                                    var diskon_select_element = document.getElementById('diskon');
+                                    var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
+
+                                    var amount = 0;
+                                    var type = "amount";
+                                    var harga_barang = Math.floor(data_barang.harga_barang);
+                                    var harga_setelah_diskon = 0;
+                                    let harga_diskon = 0;
+                                    amount = selected_diskon_element.getAttribute('data-amount');
+                                    type = selected_diskon_element.getAttribute('data-type');
+                                    if (type === "percentage") {
+                                        let jumlah_diskon = (harga_barang * amount) / 100
+                                        harga_diskon = jumlah_diskon;
+                                        harga_setelah_diskon = harga_barang - jumlah_diskon
+                                    } else {
+                                        harga_diskon = amount;
+                                        harga_setelah_diskon = harga_barang - amount;
+                                    }
+                                    let diskon = tr_pesanan.querySelector('.diskon_pesanan');
+                                    diskon.innerText = harga_diskon;
+                                    let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
+
+                                    let td_total = tr_pesanan.querySelector('.total');
+                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
                                 }
 
 
@@ -343,8 +373,8 @@
                                 $('#nama_barang').trigger('change'); // Notify any JS components that the value changed
 
                                 // Ambil nilai dari td ke 6
-                                const td_element_jumlah = tr_element_select.querySelectorAll('td')[
-                                    4]; // Indeks dimulai dari 0, jadi indeks ke-6 adalah 5
+                                const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan');
+
                                 let nilai_jumlah = td_element_jumlah.innerText;
 
                                 // Inisiasi dan Edit element jumlah barang 
@@ -371,7 +401,7 @@
 
                                 // Reset number pada no tr yang tersedia
                                 let total_tr = tbody_table.childElementCount;
-                                // console.log(total_tr);
+                                // ;
                                 const all_th_number = tbody_table.querySelectorAll('tr th');
                                 // atur number awal 1
                                 var nilaiawal = 1;
@@ -410,27 +440,27 @@
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="sub_total"
-                                        id="subTotal" value="1609000" readonly></td>
+                                        id="subTotal" value="0" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="diskon_total"
-                                        id="diskonTotal" value="1609000" readonly></td>
+                                        id="diskonTotal" value="0" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Pajak Rp</td>
-                                <td colspan="2"><input type="number" class="form-control" name="total_pajak"
-                                        id="totalPajak" value="1609000" readonly></td>
+                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
+                                        class="form-control" name="total_pajak" id="totalPajak" value="0"></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="1609000" readonly></strong></td>
+                                            id="total" value="0" readonly></strong></td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div>
+                {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
                 <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
                     data-target="#modalBayar">Bayar</button>
             </div>
@@ -461,15 +491,6 @@
                     @csrf
 
 
-                    <div class="form-group">
-                        <label for="jenisPembelian">Jenis Pembelian:</label>
-                        <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
-                            <option value="">Pilih jenis pembelian</option>
-                            <option value="harga_normal">Harga Normal</option>
-                            <option value="reseller">Reseller</option>
-                            <option value="potongan">Potongan</option>
-                        </select>
-                    </div>
                     <div class="form-group" id="jumlahBayarGroup" style="display: none;">
                         <label for="jumlahBayar">Jumlah Bayar:</label>
                         <input type="text" class="form-control" name="jumlah_bayar" id="jumlahBayar"
@@ -490,8 +511,9 @@
                             <option value="hutang">Hutang</option>
                         </select>
                     </div>
-                    <input type="hidden" name="pesanan[]" id="isiPesanan">
-                    <button type="submit" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
+                    {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
+                    {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
+                    <button type="button" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
                 </form>
             </div>
         </div>
@@ -508,34 +530,32 @@
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
             var totalHarga = 0;
-            $('#dataTablePesanan tbody tr').each(function() {
-
-                console.log($(this).('td:nth-child(3)').text());
-                var harga = parseInt($(this).find('td:nth-child(5)').text().replace('Rp ', '').replace('.', ''));
-                let jumlah = parseInt($(this).find('td:nth-child(6)').text());
-             
-                totalHarga += (harga * jumlah);
+            var totalDiskon = 0;
+            $('#dataTablePesanan tbody tr').each(function(rows) {
+                var harga = parseInt($(this).find('.harga_barang_pesanan').text())
+                var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
+                var diskon = parseInt($(this).find('.diskon_pesanan').text());
+                totalDiskon += diskon;
+                totalHarga += (harga - diskon) * jumlah;
             });
+
+
+            var tabletfoot = document.querySelector('#dataTablePesanan tfoot');
+            let sub_total = tabletfoot.querySelector('#subTotal');
+            sub_total.value = totalHarga;
+            let diskon = tabletfoot.querySelector('#diskonTotal');
+            diskon.value = totalDiskon;
+            let pajak = tabletfoot.querySelector('#totalPajak');
+            let total = tabletfoot.querySelector('#total');
+
+            total.value = parseInt(sub_total.value) - parseInt(diskon.value) - parseInt(pajak.value);
 
 
             // Ubah ke format Rp dengan dipisah rupiah
 
             // Tampilkan total harga dalam elemen span
-            $('#total_pembayaran').text('Rp ' + totalHarga);
+            // $('#total_pembayaran').text('Rp ' + totalHarga);
 
-            var table = document.getElementById('dataTablePesanan');
-            let sub_total = table.querySelector('tfoot #subTotal').innerText;
-            sub_total = 0;
-
-            // Loop melalui setiap baris di tbody
-            for (var i = 0, row; row = table.rows[i]; i++) {
-                // Ambil nilai dari kolom ke-7 (indeks 6) dan tambahkan ke total
-                var cell = row.cells[6];
-                if (cell) {
-            
-                    sub_total += parseInt(cell.innerHTML);
-                }
-            }
 
         }
     </script>
@@ -584,7 +604,18 @@
 
         function kirimPesanan() {
             const formPembeli = document.querySelector('#formPembeli');
-            const dataPembeli = new FormData();
+
+            // Ambil data Nota lalu simpan ke data Pembeli
+            document.querySelector('#dataNota').querySelectorAll('input, select').forEach(function(element) {
+
+                // Buat elemen input hidden
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = element.getAttribute('name');
+                input.value = element.value;
+                // Tambahkan input ke formulir pembeli
+                formPembeli.appendChild(input);
+            });
 
             // Inisiasi data pesanan
             const dataPesanan = {
@@ -594,22 +625,39 @@
             let tr_pesanan = document.querySelectorAll('#dataTablePesanan tbody tr');
             Array.from(tr_pesanan).forEach(function(tr) {
                 const itemPesanan = {
-                    jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang').innerText,
-                    id_barang: tr.getAttribute('data-id-barang')
+                    jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang_pesanan').innerText,
+                    id_barang: tr.getAttribute('data-id-barang'),
+                    id_diskon: tr.getAttribute('data-id-diskon'),
+
                 }
                 dataPesanan.pesanan.push(itemPesanan);
-            })
+            });
+
+            // Buat elemen input untuk menyimpan data pesanan sebagai JSON
+            const inputPesanan = document.createElement('input');
+            inputPesanan.type = 'hidden';
+            inputPesanan.name = 'pesanan'; // Nama input
+            inputPesanan.value = JSON.stringify(dataPesanan.pesanan); // Nilai input (data pesanan sebagai JSON)
+
+            // Tambahkan input ke formulir
+            formPembeli.appendChild(inputPesanan);
 
 
-            // Ubah array pesanan menjadi string JSON
-            const pesananJSON = JSON.stringify(dataPesanan.pesanan);
 
-            // Tambahkan string JSON ke FormData
-            // dataPembeli.append('pesanan', pesananJSON);
-            const isiPesanan = document.querySelector('#formPembeli #isiPesanan').value = pesananJSON;
+            // Menambahkan pajak ke form
+            const totalPajak = document.querySelector('#totalPajak');
+            const inputTotalPajakHidden = document.createElement('input');
+            inputTotalPajakHidden.type = 'hidden';
+            inputTotalPajakHidden.name = 'pajak'; // Menetapkan nama input ke 'totalPajak'
+            inputTotalPajakHidden.value = totalPajak
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalPajak'
+            formPembeli.appendChild(inputTotalPajakHidden); // Menambahkan input tersembunyi ke dalam form
 
 
 
+
+            formPembeli.submit();
+            // return true;
             // kirim ke pesanan
             // fetch(formPembeli.action, {
             //         method: 'POST',
@@ -693,7 +741,7 @@
         }
 
         function formatBarangSelection(barang) {
-            // console.log(barang.stok);
+            // ;
             var jumlahStok = document.getElementById("jumlah_barang");
             jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
 
@@ -791,10 +839,10 @@
         }
 
         function formatPembeliSelection(pembeli) {
-            console.log('test', pembeli);
+            ;
 
             if (pembeli && pembeli.nama_pembeli !== undefined && pembeli.nama_pembeli !== null) {
-                console.log("wibu", pembeli.nama_pembeli);
+
                 // Isi alamat
                 const alamat = document.querySelector('#alamat');
                 alamat.value = pembeli.alamat_pembeli;
@@ -806,7 +854,7 @@
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {
-                console.log('test', pembeli);
+                ;
                 // Remove readOnly attribute from alamat input if it exists
                 const alamat = document.querySelector('#alamat');
                 if (alamat.hasAttribute('readonly')) {
@@ -825,7 +873,7 @@
             }
 
 
-            // // console.log(barang.stok);
+            // // ;
             // var jumlahStok = document.getElementById("jumlah_barang");
             // jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
 
