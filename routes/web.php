@@ -147,9 +147,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::prefix('cetak')->group(function () {
         Route::get('invoice-penjualan', [ControllerInvoinceCetak::class, 'print_invoice']);
-        Route::get('surat-jalan', function () {
-            return view('pdfprint.surat-jalan');
-        });
+        Route::get('surat-jalan', [ControllerInvoinceCetak::class, 'print_suratJalan']);
     });
     Route::prefix('laporan')->group(function () {
         Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');

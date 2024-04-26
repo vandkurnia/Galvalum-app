@@ -9,7 +9,7 @@ class ControllerInvoinceCetak extends Controller
 {
     public function print_invoice()
     {
-        $data['title'] = 'Print Invoicehhhhh';
+        $data['title'] = 'Print Invoice';
 
         $dataPembeli = [
             [
@@ -35,7 +35,7 @@ class ControllerInvoinceCetak extends Controller
         ];
 
 
-        $dummyData = [
+        $productsData = [
             [
                 "item" => "001222",
                 "deskripsi" => "Dancow Cokelat 400gr",
@@ -70,7 +70,7 @@ class ControllerInvoinceCetak extends Controller
             'diskon' => '0',
             'pajak' => '0',
             'total' => '328.000',
-            'list_barang' => $dummyData
+            'list_barang' => $productsData
         ];
 
         return view('pdfprint.invoice-penjualan', [
@@ -79,6 +79,47 @@ class ControllerInvoinceCetak extends Controller
             'dataKasir' => $namaKasir,
             'dataPembayaran' => $dataPembayaran,
             'dataRincianBarang' => $rincian
+        ], $data);
+    }
+    public function print_suratJalan()
+    {
+        $data['title'] = 'Print Surat Jalan';
+
+        $dataPembeli = [
+            [
+                "nama" => "Haasstt",
+                "alamat" => "Ds. Lebak Ayu Kec. Sawahan, Kab. Madiun",
+                "telp" => "09832324323"
+            ]
+        ];
+
+        $dataSuratJalan = [
+            [
+                "tanggal" => "14-Nov-24",
+                "no_surat" => "JL00001001"
+            ]
+        ];
+
+
+        $productsData = [
+            [
+                "nama_barang" => "Dancow Cokelat 400gr",
+                "qty" => "4"
+            ],
+            [
+                "nama_barang" => "Dancow Full Cream 400gr",
+                "qty" => "4"
+            ],
+            [
+                "nama_barang" => "Dancow 5+ Coklat 800gr",
+                "qty" => "2"
+            ]
+        ];
+
+        return view('pdfprint.surat-jalan', [
+            'dataPembeli' => $dataPembeli,
+            'dataSuratJalan' => $dataSuratJalan,
+            'dataRincianBarang' => $productsData
         ], $data);
     }
 }
