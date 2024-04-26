@@ -839,7 +839,7 @@
         }
 
         function formatPembeliSelection(pembeli) {
-            ;
+
 
             if (pembeli && pembeli.nama_pembeli !== undefined && pembeli.nama_pembeli !== null) {
 
@@ -854,7 +854,7 @@
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {
-                ;
+        
                 // Remove readOnly attribute from alamat input if it exists
                 const alamat = document.querySelector('#alamat');
                 if (alamat.hasAttribute('readonly')) {
@@ -872,42 +872,6 @@
 
             }
 
-
-            // // ;
-            // var jumlahStok = document.getElementById("jumlah_barang");
-            // jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
-
-
-
-            // // Simpan ke session untuk digunakan pada pengisian beranda
-            // // Contoh data barang
-            // var hash_id_barang = barang.id || "";
-            // var nama_barang = barang.nama_barang || "";
-            // var harga_barang = barang.harga_barang || "";
-
-            // var tipe_barang = barang.tipe_barang ? barang.tipe_barang.nama_tipe || "" : "";
-
-            // var ukuran = barang.ukuran || "";
-            // var stok = barang.stok || "";
-
-            // // Mendapatkan array dari sessionStorage atau inisiasi array kosong jika belum ada
-            // var data_barang = [];
-
-            // // Menambahkan data barang ke dalam array
-            // data_barang.push({
-            //     hash_id_barang,
-            //     nama_barang,
-            //     harga_barang,
-            //     tipe_barang,
-            //     ukuran,
-            //     stok
-            // });
-
-
-
-
-            // // Menyimpan array kembali ke dalam sessionStorage
-            // sessionStorage.setItem('data_barang', JSON.stringify(data_barang));
 
 
         }

@@ -116,30 +116,43 @@ class PembelianController extends Controller
             }
         }
 
-
-        $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
-        $updateNotaPembeli->sub_total = $subTotal;
-        $updateNotaPembeli->diskon = $totalDiskon;
-        $updateNotaPembeli->pajak = $request->get('pajak');
-        $updateNotaPembeli->total = ($updateNotaPembeli->sub_total  - $updateNotaPembeli->diskon) - $updateNotaPembeli->pajak;
-        $updateNotaPembeli->save();
-
-
         // Mendapatkan tanggal hari ini
         $tanggal = Carbon::now();
-
         // Data yang akan diinput
         $data = [
             'id_akunbayar' => 1, // Ganti dengan id akun yang sesuai
             'tanggal' => $tanggal,
             'kategori' => 'Transaksi', // Ganti dengan kategori yang sesuai
-            'keterangan' => 'Keterangan transaksi', // Ganti dengan keterangan yang sesuai
-            'debit' => $updateNotaPembeli->total,
+            'keterangan' => '',
             'kredit' => 0, // Jika debit maka kredit harus 0
         ];
 
         // Input data ke dalam tabel bukubesar
-        BukubesarModel::create($data);
+        $bukubesar = BukubesarModel::create($data);
+
+        // Mengambil id_bukubesar dari data yang baru ditambahkan
+        $id_bukubesar = $bukubesar->id_bukubesar;
+
+
+
+        $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
+        $updateNotaPembeli->sub_total = $subTotal;
+        $updateNotaPembeli->diskon = $totalDiskon;
+        $updateNotaPembeli->id_bukubesar = $id_bukubesar;
+        $updateNotaPembeli->pajak = $request->get('pajak');
+        $updateNotaPembeli->total = ($updateNotaPembeli->sub_total  - $updateNotaPembeli->diskon) - $updateNotaPembeli->pajak;
+        $updateNotaPembeli->save();
+
+
+
+        $updatedBukubesar = BukubesarModel::find($id_bukubesar);
+        $updatedBukubesar->keterangan = 'NOTA ' . $updateNotaPembeli->no_nota; // Ganti dengan keterangan yang sesuai
+        $updatedBukubesar->debit = $updateNotaPembeli->total;
+        $updatedBukubesar->save();
+
+
+
+
 
         DB::commit();
 
@@ -194,7 +207,10 @@ class PembelianController extends Controller
         // $user = User::findOrFail($id);
         // $user->delete();
         $notaPembeli = notaPembeli::where('id_nota', $id)->first();
+        $bukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+
         if ($notaPembeli) {
+            $bukubesar->delete();
             $notaPembeli->delete();
 
             return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');

@@ -16,13 +16,19 @@ class NotaPembeli extends Model
         'no_nota',
         'id_pembeli',
         'id_admin',
+        'id_bukubesar',
         'metode_pembayaran',
         'status_pembayaran',
         'sub_total',
         'diskon',
         'pajak',
-        'total'
+        'total',
     ];
+
+    public function bukuBesar()
+    {
+        return $this->belongsTo(BukubesarModel::class, 'id_bukubesar');
+    }
 
     public function Pembeli()
     {
