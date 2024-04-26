@@ -157,7 +157,7 @@
                             <div class="form-group">
                                 <label for="diskon">Diskon:</label>
                                 <select class="form-control" id="diskon" name="diskon">
-                                    <option value="" data-amount="0" data-type="amount">Normal</option>
+                                    <option value="0" data-amount="0" data-type="amount">Normal</option>
                                     @foreach ($dataDiskon as $diskon)
                                         <option value="{{ $diskon->id_diskon }}" data-amount="{{ $diskon->besaran }}"
                                             data-type="{{ $diskon->type }}">{{ $diskon->nama_diskon }}</option>
@@ -182,12 +182,10 @@
                                 const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;
-                                ;
+                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
-
                                     // Ubah input ke available stok 
                                     jumlah_barang.value = total_available_stok;
                                     return false;
@@ -244,8 +242,12 @@
                                     false;
 
                                 if (!check_id_tr_sudah_ada) {
+
+
+
                                     var diskon_select_element = document.getElementById('diskon');
                                     var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
+
                                     var amount = 0;
                                     var type = "amount";
                                     var harga_barang = Math.floor(data_barang.harga_barang);
@@ -266,6 +268,7 @@
 
                                     var tr_pesanan = document.createElement('tr');
                                     tr_pesanan.setAttribute('data-id-barang', data_barang.hash_id_barang);
+                                    tr_pesanan.setAttribute('data-id-diskon', diskon_select_element.value);
                                     // Pembuatan TD
                                     let th_no = document.createElement('th');
                                     th_no.innerText = total_tr;
@@ -279,7 +282,7 @@
                                     td_harga_barang.classList.add('harga_barang_pesanan');
                                     td_harga_barang.innerText = harga_barang;
                                     let td_diskon = document.createElement('td');
-                                    td_diskon.classList.add('diskon_pesanan')
+                                    td_diskon.classList.add('diskon_pesanan');
                                     td_diskon.innerText = harga_diskon;
                                     let td_jumlah = document.createElement('td');
                                     td_jumlah.classList.add('nilai_jumlah_barang_pesanan');
@@ -331,14 +334,19 @@
                                     tbody_table.appendChild(tr_pesanan);
 
 
+                                    // Kalau gagal update ke database maka hapus element
+                                    updatePesanan(tr_pesanan);
 
+                                   
 
-                                    // Append ke TBODY table
-                                    tbody_table.appendChild(tr_pesanan);
-
-
+                                    // Update Pesanan
+                                    // End Update Pesanan
 
                                 } else {
+
+                                    // Update Pesanan
+                                    updatePesanan(tr_pesanan);
+                                    // End Update Pesanan
                                     var diskon_select_element = document.getElementById('diskon');
                                     var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
 
@@ -367,6 +375,11 @@
                                 }
 
 
+
+
+
+
+
                             }
 
                             function editPesananBarang(id_barang) {
@@ -378,7 +391,7 @@
                                 $('#nama_barang').trigger('change'); // Notify any JS components that the value changed
 
                                 // Ambil nilai dari td ke 6
-                                const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan'); 
+                                const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan');
                                 let nilai_jumlah = td_element_jumlah.innerText;
 
                                 // Inisiasi dan Edit element jumlah barang 
@@ -391,10 +404,13 @@
                             function hapusPesananBarang(id_barang) {
                                 // Element TBODY Table
                                 const tbody_table = document.querySelector('#dataTablePesanan tbody');
-                                const element_to_remove = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
+                                const tr_to_remove = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
                                 // Hapus element
-                                element_to_remove.remove();
+                                tr_to_remove.remove();
                                 resetNoPesananBarang();
+
+
+                                hapusPesanan(tr_to_remove);
 
                             }
 
@@ -440,7 +456,8 @@
                                 $harga = 0;
                             @endphp
                             @foreach ($dataPesanan as $pesanan)
-                                <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}">
+                                <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}"
+                                    data-id-pesanan="{{ $pesanan->id_pesanan }}">
                                     <th>{{ ++$no }}</th>
                                     <td>{{ $pesanan->Barang->nama_barang }}</td>
                                     <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
@@ -449,7 +466,8 @@
                                     {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
                                     <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
-                                    <td class="total">{{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
+                                    <td class="total">
+                                        {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
                                     <td>
 
                                         {{-- <button class="btn btn-primary btn-sm"
@@ -460,7 +478,6 @@
                                             onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
                                             <i class="fas fa-trash"></i> Delete
                                         </button>
-
                                     </td>
                                 </tr>
                                 @php
@@ -525,8 +542,10 @@
             </div>
             <div class="modal-body">
                 <!-- Formulir Pembayaran -->
-                <form action="{{ route('pemesanan.store') }}" id="formPembeli" method="POST">
+                <form action="{{ route('pemesanan.update', ['id' => $notaPembelian->id_nota]) }}" id="formPembeli"
+                    method="POST">
                     @csrf
+                    @method('PUT')
 
 
                     <div class="form-group" id="jumlahBayarGroup" style="display: none;">
@@ -537,8 +556,10 @@
                     <div class="form-group">
                         <label for="metodePembayaran">Metode Pembayaran</label>
                         <select name="metode_pembayaran" class="form-control" id="metodePembayaran">
-                            <option  {{ $notaPembelian->metode_pembayaran == 'lunas' ? 'CASH' : '' }} value="CASH">CASH</option>
-                            <option  {{ $notaPembelian->metode_pembayaran == 'Transfer' ? 'selected' : '' }} value="Transfer">Transfer</option>
+                            <option {{ $notaPembelian->metode_pembayaran == 'lunas' ? 'CASH' : '' }} value="CASH">
+                                CASH</option>
+                            <option {{ $notaPembelian->metode_pembayaran == 'Transfer' ? 'selected' : '' }}
+                                value="Transfer">Transfer</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -598,6 +619,87 @@
             // $('#total_pembayaran').text('Rp ' + totalHarga);
 
 
+        }
+    </script>
+    <script>
+        function hapusPesanan(trElement) {
+            // var idNota = $('#id_nota').val();
+            // var idPesanan = $('#id_pesanan').val();
+            // var trElements = document.querySelector('tr');
+            if (trElement.getAttribute('data-id-pesanan') !== null) {
+                let idPesanan = trElement.getAttribute('data-id-pesanan');
+                let nota = document.querySelector('#NoNota');
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('json.pesanan.hapuspesan') }}',
+                    data: {
+                        no_nota: nota.value,
+                        id_pesanan: idPesanan,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response, textStatus, jqXHR) {
+                        if (jqXHR.status === 200) {
+                            alert('Berhasil'); // Jika status code 200, tampilkan alert berhasil
+                            return true;
+                        } else {
+                            console.error('Request error:',
+                                textStatus); // Jika status code bukan 200, log pesan error
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Request error:', textStatus); // Log pesan error jika request gagal
+                        return false;
+                    }
+                });
+                console.log('Elemen <tr> memiliki atribut data-id-pesanan');
+                // return true
+            } else {
+                console.log('Elemen <tr> tidak memiliki atribut data-id-pesanan');
+                return true;
+            }
+
+        }
+
+        function updatePesanan(trElement) {
+            let idPesanan = trElement.getAttribute('data-id-pesanan');
+            idPesanan = idPesanan !== null ? idPesanan : 0;
+            let nota = document.querySelector('#NoNota');
+            let jumlahPesanan = trElement.querySelector('td.nilai_jumlah_barang_pesanan').innerText;
+
+            const itemPesanan = {
+                jumlah_pesanan: jumlahPesanan,
+                id_barang: trElement.getAttribute('data-id-barang'),
+                id_diskon: trElement.getAttribute('data-id-diskon'),
+
+            }
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('json.pesanan.updatepesanan') }}',
+                data: {
+                    id_pesanan: idPesanan,
+                    no_nota: nota.value,
+                    jumlah_pesanan: jumlahPesanan,
+                    pesanan: JSON.stringify(itemPesanan),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        alert('Berhasil menambahkan pesanan'); // Jika status code 200, tampilkan alert berhasil
+                        // trElement.setAttribute('data-id-pesanan')
+                    } else {
+                        console.error('Request error:',
+                            textStatus); // Jika status code bukan 200, log pesan error
+                   
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Request error:', textStatus); // Log pesan error jika request gagal
+                    trElement.remove(); // Menghapus elemen <tr> jika status_update adalah false
+                  
+                }
+            });
+
+            // return true
         }
     </script>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\DaftarTransaksiController;
 use App\Http\Controllers\DiskonController;
 use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
+use App\Http\Controllers\JsonType\PemesananBarangJsonController;
 use App\Http\Controllers\Laporan\LaporanController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
@@ -77,6 +78,12 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('jsontype')->group(function () {
         Route::get('/semuabarang', [BarangJsonController::class, 'getSemuaBarangData'])->name('json.semuabarang');
         Route::get('/semuapembeli', [PembeliJsonController::class, 'getSemuaPembeliData'])->name('json.semuapembeli');
+
+
+        Route::prefix('pemesanan')->group(function() {
+            Route::post('/hapus-pemesanan', [PemesananBarangJsonController::class, 'hapusPesanan'])->name('json.pesanan.hapuspesan');
+            Route::post('/update-pesanan', [PemesananBarangJsonController::class, 'updatePesanan'])->name('json.pesanan.updatepesanan');
+        });
     });
 
 
