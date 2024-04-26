@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\BukubesarController;
+use App\Http\Controllers\Cetak\ControllerInvoinceCetak;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
@@ -145,9 +146,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
     });
     Route::prefix('cetak')->group(function () {
-        Route::get('invoice-penjualan', function () {
-            return view('pdfprint.invoice-penjualan');
-        });
+        Route::get('invoice-penjualan', [ControllerInvoinceCetak::class, 'print_invoice']);
         Route::get('surat-jalan', function () {
             return view('pdfprint.surat-jalan');
         });
