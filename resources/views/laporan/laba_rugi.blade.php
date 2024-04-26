@@ -74,10 +74,15 @@
                 <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="updateDate()">
+                        <input type="date" id="tanggal" name="tanggal" class="form-control">
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary">Filter Tanggal</button>
+                        <button onclick="updateTanggal()" class="btn btn-primary">Filter Tanggal</button>
+                        <a class="btn btn-info" onclick="refreshHariIni()" href="{{ url('laporan/laba-rugi') }}">Reset</a>
+                        <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                        <a class="btn btn-danger float-right" onclick="cetakPDF()"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                        <a class="btn btn-success float-right" href="{{ url('laporan/kas-csv') }}"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                    </div>
                     </div>
                 </form>
             </div>
@@ -100,20 +105,21 @@
                                 <th>PENJUALAN KOTOR</th>
                                 <td></td>
 
-                                <td>Rp {{ $pk->debit }}</td>
+                                <td>Rp {{ number_format($pk->debit, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
+                            @foreach($modal as $m)
                             <tr>
                                 <td>MODAL</td>
                                 <td></td>
 
-                                <td>Rp 361.000 (+)</td>
+                                <td>Rp {{ number_format($m->debit, 0, ',', '.') }} (+)</td>
                             </tr>
+                            @endforeach
                             <tr>
-
                                 <th></th>
                                 <th></th>
-                                <th>Rp 30.253.000</th>
+                                <th>Rp {{ number_format($total1, 0, ',', '.') }}</th>
                             </tr>
                             <tr>
                                 <th>TAMBAHAN MODAL</th>
@@ -123,19 +129,19 @@
                             @foreach($tambahan_modal as $th)
                             <tr>
                                 <td>(+) {{ $th->jenis_modal_tambahan }}</td>
-                                <td>Rp {{ $th->jumlah_modal }} (+)</td>
+                                <td>Rp {{ number_format($th->jumlah_modal, 0, ',', '.') }} (+)</td>
                                 <td></td>
                             </tr>
                             @endforeach
                             <tr>
                                 <th>JUMLAH TAMBAHAN MODAL</th>
                                 <td></td>
-                                <td>Rp {{$jumlah_tambahan_modal}} (+)</td>
+                                <td>Rp {{ number_format($jumlah_tambahan_modal, 0, ',', '.') }} (+)</td>
                             </tr>
                             <tr class="topic">
                                 <th>LABA KOTOR</th>
                                 <th></th>
-                                <th>Rp 36.254.000</th>
+                                <th>Rp {{ number_format($laba_kotor, 0, ',', '.') }}</th>
                             </tr>
                             <tr>
                                 <th>PENGURANGAN/PENGELUARAN</th>
@@ -145,29 +151,31 @@
                             @foreach($pengeluaran as $p)
                             <tr>
                                 <td>(-) {{$p->nama_pengeluaran}}</td>
-                                <td>Rp {{$p->jumlah_pengeluaran}} (+)</td>
+                                <td>Rp {{ number_format($p->jumlah_pengeluaran, 0, ',', '.') }} (+)</td>
                                 <td></td>
                             </tr>
                             @endforeach
                             <tr>
                                 <th>JUMLAH PENGURANGAN/PENGELUARAN</th>
                                 <th></th>
-                                <th>Rp {{$total_pengeluaran}} (-)</th>
+                                <th>Rp {{ number_format($total_pengeluaran, 0, ',', '.') }} (-)</th>
                             </tr>
                             <tr class="topic">
                                 <th>LABA BERSIH</th>
                                 <th></th>
-                                <th>Rp 22.863.000</th>
+                                <th>Rp {{ number_format($laba_bersih, 0, ',', '.') }}</th>
                             </tr>
+                            @foreach($modal_darurat as $md)
                             <tr>
-                                <th>(-) MODAL HARI SABTU 2/12/2023</th>
+                                <th>(-) MODAL HARI INI</th>
                                 <th></th>
-                                <th>Rp 463.000 (-)</th>
+                                <th>Rp {{ number_format($md->kredit, 0, ',', '.') }} (-)</th>
                             </tr>
+                            @endforeach
                             <tr>
-                                <th>TOTAL TRANSFER/SETOR TUNAI 1/12/2023</th>
+                                <th>TOTAL TRANSFER/SETOR TUNAI</th>
                                 <th></th>
-                                <th>Rp 22.400.000</th>
+                                <th>Rp {{ number_format($total_transfer, 0, ',', '.') }}</th>
                             </tr>
 
 
@@ -248,25 +256,16 @@
 
 @section('javascript-custom')
 
-    <script>
-        // Function to update the date input to today's date
-        function updateDate() {
-            var today = new Date();
+<script>
+    // Fungsi untuk mengambil tanggal dari input dan membuat URL untuk mencetak PDF dengan tanggal filter
+    function cetakPDF() {
+        var tanggal = document.getElementById('tanggal').value;
+        var url = "{{ url('laporan/laba-rugi-pdf') }}?tanggal=" + tanggal;
+        window.location.href = url;
+    }
+</script>
 
-            var year = today.getFullYear();
-            var month = ('0' + (today.getMonth() + 1)).slice(-2); // Months are zero-based
-            var day = ('0' + today.getDate()).slice(-2);
-
-            var formattedDate = year + '-' + month + '-' + day;
-
-            document.getElementById('tanggal').value = formattedDate;
-        }
-
-        // Call the function to set today's date initially
-        updateDate();
-    </script>
-
-    <script>
+<script>
     // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
     function getHariIndonesia(day) {
         const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
@@ -280,28 +279,50 @@
     }
 
     // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
-    function getTanggal() {
-        const sekarang = new Date();
-        const tanggal = sekarang.getDate();
-        const bulan = getBulanIndonesia(sekarang.getMonth());
-        const tahun = sekarang.getFullYear();
-        return `${tanggal} ${bulan} ${tahun}`;
+    function getTanggal(tanggal) {
+        const bulan = getBulanIndonesia(tanggal.getMonth());
+        const tahun = tanggal.getFullYear();
+        return `${tanggal.getDate()} ${bulan} ${tahun}`;
     }
 
-    // Fungsi untuk menampilkan hari dan tanggal saat ini di dalam elemen dengan id="tanggal-hari"
-    function tampilkanHariTanggal() {
-        const sekarang = new Date();
-        const hari = getHariIndonesia(sekarang.getDay());
-        const tanggal = getTanggal();
+    // Fungsi untuk menampilkan hari dan tanggal di dalam elemen dengan id="tanggal-hari"
+    function tampilkanHariTanggal(tanggal) {
+        const hari = getHariIndonesia(tanggal.getDay());
+        const tanggalFormatted = getTanggal(tanggal);
         const element = document.getElementById("tanggal-hari");
-        element.innerHTML = `${hari}, ${tanggal}`;
+        element.innerHTML = `${hari}, ${tanggalFormatted}`;
+    }
+
+    // Fungsi untuk memperbarui tanggal yang ingin ditampilkan berdasarkan nilai input
+    function updateTanggal() {
+        const tanggalInput = new Date(document.getElementById('tanggal').value);
+        sessionStorage.setItem('tanggalPilihan', tanggalInput); // Simpan tanggal yang dipilih di sessionStorage
+        tampilkanHariTanggal(tanggalInput);
+    }
+
+    // Fungsi untuk me-refresh halaman ke tanggal hari ini
+    function refreshHariIni() {
+        sessionStorage.removeItem('tanggalPilihan'); // Hapus data dari sessionStorage
+        location.reload(); // Me-refresh halaman
     }
 
     // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
     window.onload = function() {
-        tampilkanHariTanggal();
+        const tanggalHariIni = new Date();
+        const tanggalDariSessionStorage = sessionStorage.getItem('tanggalPilihan');
+
+        if (tanggalDariSessionStorage) {
+            const tanggalPilihan = new Date(tanggalDariSessionStorage);
+            document.getElementById('tanggal').valueAsDate = tanggalPilihan;
+            tampilkanHariTanggal(tanggalPilihan);
+        } else {
+            document.getElementById('tanggal').valueAsDate = tanggalHariIni;
+            tampilkanHariTanggal(tanggalHariIni);
+        }
     };
-    </script>
+</script>
+
+
 
     <script>
         function funcTambahUser() {

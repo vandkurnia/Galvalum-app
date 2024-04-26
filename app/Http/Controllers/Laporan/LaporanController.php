@@ -74,12 +74,26 @@ class LaporanController extends Controller
         return $pdf->download('Laporan Modal Tambahan.pdf');
     }
 
-    public function kaskeluarPDF()
+    public function kaskeluarPDF(Request $request)
     {
-        $laporan_kas_keluar = KasKeluar::all();
+        // Ambil tanggal dari inputan form, jika tidak ada, gunakan null
+        $tanggal = $request->input('tanggal');
 
+        // Query data KasKeluar sesuai dengan tanggal yang diinputkan
+        $laporan_kas_keluar = KasKeluar::query();
+
+        // Jika tanggal diinputkan, tambahkan filter berdasarkan tanggal
+        if ($tanggal) {
+            $laporan_kas_keluar->whereDate('tanggal', $tanggal);
+        }
+
+        // Ambil data sesuai dengan filter yang sudah ditetapkan
+        $laporan_kas_keluar = $laporan_kas_keluar->get();
+
+        // Load view PDF dengan data yang sudah difilter
         $pdf = PDF::loadView('pdf.kas', compact('laporan_kas_keluar'));
 
+        // Download PDF
         return $pdf->download('Laporan Kas Keluar.pdf');
     }
 
@@ -184,7 +198,7 @@ class LaporanController extends Controller
 
     public function filterKas(Request $request)
     {
-        $tanggal = $request->tanggal;
+        $tanggal = $request->input('tanggal');
         
         $laporan_kas_keluar = KasKeluar::whereDate('tanggal','=',$tanggal)->get();
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
@@ -283,20 +297,90 @@ class LaporanController extends Controller
 
     public function labaRugi(Request $request)
     {
-        // $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
-        $tanggal = $request->input('tanggal', '2024-04-25');
+        $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
+       /*  $tanggal = $request->input('tanggal', '2024-04-25'); */
         $kategori = $request->input('kategori', 'transaksi'); // Kategori default adalah 'transaksi'
+        $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
 
         $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
                     ->where('kategori', $kategori)
                     ->get();
+
+        $modal = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+                    ->get();
+
+        $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+                    ->get();
+        $total_modal_darurat = $modal_darurat->sum('kredit');
 
         $pengeluaran = KasKeluar::where('tanggal', $tanggal)->get();
         $total_pengeluaran = $pengeluaran->sum('jumlah_pengeluaran');
 
         $tambahan_modal = ModalTambahanModel::where('tanggal', $tanggal)->get();
         $jumlah_tambahan_modal = $tambahan_modal->sum('jumlah_modal');
+
+        $total_penjualan_kotor = $penjualan_kotor->sum('debit');
+        $total_modal = $modal->sum('debit');
+
+        $total1 = $total_penjualan_kotor + $total_modal;
+        $laba_kotor = $total1 + $jumlah_tambahan_modal;
+        $laba_bersih = $laba_kotor - $total_pengeluaran;
+        $total_transfer = $laba_bersih - $total_modal_darurat;
+
         // Logika untuk mengambil data dan menampilkan laporan laba rugi
-        return view('laporan.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran'));
+        return view('laporan.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer'));
+    }
+
+    public function labaRugiPDF(Request $request)
+    {
+        $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
+        // $tanggal = $request->input('tanggal', '2024-04-25');
+        $kategori = $request->input('kategori', 'transaksi'); // Kategori default adalah 'transaksi'
+        $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
+
+        $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori)
+                    ->get();
+
+        $modal = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+                    ->get();
+
+        $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+                    ->get();
+        $total_modal_darurat = $modal_darurat->sum('kredit');
+
+        $pengeluaran = KasKeluar::where('tanggal', $tanggal)->get();
+        $total_pengeluaran = $pengeluaran->sum('jumlah_pengeluaran');
+
+        $tambahan_modal = ModalTambahanModel::where('tanggal', $tanggal)->get();
+        $jumlah_tambahan_modal = $tambahan_modal->sum('jumlah_modal');
+
+        $total_penjualan_kotor = $penjualan_kotor->sum('debit');
+        $total_modal = $modal->sum('debit');
+
+        $total1 = $total_penjualan_kotor + $total_modal;
+        $laba_kotor = $total1 + $jumlah_tambahan_modal;
+        $laba_bersih = $laba_kotor - $total_pengeluaran;
+        $total_transfer = $laba_bersih - $total_modal_darurat;
+
+        $namaHari = array(
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        );
+    
+        // Mendapatkan indeks hari dari tanggal yang diberikan
+        $indeksHari = date('w', strtotime($tanggal));
+    
+        // Mendapatkan nama hari dalam bahasa Indonesia
+        $hari = $namaHari[$indeksHari];
+        $tanggal = strftime("%d %B %Y", strtotime($tanggal));
+
+        // Logika untuk mengambil data dan menampilkan laporan laba rugi
+        $pdf = PDF::loadView('pdf.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'));
+
+        return $pdf->download('Laporan Laba Rugi.pdf');
     }
 }

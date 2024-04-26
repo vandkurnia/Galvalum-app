@@ -179,6 +179,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/filtermodal', [LaporanController::class, 'filterModal'])->name('laporan.filterModal');
 
         Route::get('/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.labarugi');
+        Route::get('/laba-rugi-pdf', [LaporanController::class, 'labaRugiPDF'])->name('laporan.labarugiPDF');
         Route::get('/filter', [LaporanController::class, 'filterKas'])->name('laporan.filterKas');
     });
 });
