@@ -81,7 +81,7 @@
                         <a class="btn btn-info" onclick="refreshHariIni()" href="{{ url('laporan/laba-rugi') }}">Reset</a>
                         <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
                         <a class="btn btn-danger float-right" onclick="cetakPDF()"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
-                        <a class="btn btn-success float-right" href="{{ url('laporan/kas-csv') }}"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                        <a class="btn btn-success float-right" onclick="cetakCSV()"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
                     </div>
                     </div>
                 </form>
@@ -261,6 +261,12 @@
     function cetakPDF() {
         var tanggal = document.getElementById('tanggal').value;
         var url = "{{ url('laporan/laba-rugi-pdf') }}?tanggal=" + tanggal;
+        window.location.href = url;
+    }
+
+    function cetakCSV() {
+        var tanggal = document.getElementById('tanggal').value;
+        var url = "{{ url('laporan/laba-rugi-csv') }}?tanggal=" + tanggal;
         window.location.href = url;
     }
 </script>

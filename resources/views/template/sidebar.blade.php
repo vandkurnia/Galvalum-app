@@ -58,6 +58,11 @@
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Buku Besar</span></a>
     </li>
+    <li class="nav-item {{ request()->is('kategori') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/kategori') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Kategori</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">

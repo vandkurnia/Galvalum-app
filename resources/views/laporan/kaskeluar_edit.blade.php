@@ -1,4 +1,6 @@
-<form action="{{ route('laporan.updateKas', ['id' => $laporan_kas_keluar['id_kas_keluar']]) }}" id="formEditUser" method="POST">
+
+<form action="{{ route('laporan.updatekas', ['id' => $laporan_kas_keluar['id_kas_keluar']]) }}" id="formEditUser" method="POST">
+
     @csrf
     @method('PUT')
     <div class="form-group">

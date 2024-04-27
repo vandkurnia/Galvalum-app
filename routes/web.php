@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\BukubesarController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
@@ -134,6 +135,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/filter', [BukubesarController::class, 'filter'])->name('bukubesar.filter');
     });
 
+    Route::prefix('kategori')->group(function () {
+        Route::get('/', [KategoriController::class, 'index'])->name('kategori.index'); // Menampilkan semua user
+        Route::get('/edit/{id}', [KategoriController::class, 'edit'])->name('kategori.edit');
+        Route::post('/', [KategoriController::class, 'simpanKategori'])->name('kategori.simpan'); // Menyimpan user baru
+        Route::put('/{id}', [KategoriController::class, 'update'])->name('kategori.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/{id}', [KategoriController::class, 'destroyKategori'])->name('kategori.destroy'); // Menghapus user berdasarkan ID
+    });
+
 
 
 
@@ -168,7 +177,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kas-keluar', [LaporanController::class, 'kasKeluar'])->name('laporan.kaskeluar');
         Route::post('/simpan-kas', [LaporanController::class, 'simpanKas'])->name('laporan.simpankas');
         Route::get('/editKas/{id}', [LaporanController::class, 'editKas'])->name('laporan.editKas'); 
-        Route::put('/{id}', [LaporanController::class, 'updateKas'])->name('laporan.updateKas');
+        Route::put('/updateKas/{id}', [LaporanController::class, 'updateKas'])->name('laporan.updatekas');
         Route::delete('/deletekas/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
 
         Route::get('/modal-tambahan', [LaporanController::class, 'modalTambahan'])->name('laporan.modaltambahan');
@@ -180,6 +189,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.labarugi');
         Route::get('/laba-rugi-pdf', [LaporanController::class, 'labaRugiPDF'])->name('laporan.labarugiPDF');
+        Route::get('/laba-rugi-csv', [LaporanController::class, 'labaRugiCSV'])->name('laporan.labarugiCSV');
         Route::get('/filter', [LaporanController::class, 'filterKas'])->name('laporan.filterKas');
     });
 });

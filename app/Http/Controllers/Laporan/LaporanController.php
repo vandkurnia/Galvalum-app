@@ -17,52 +17,46 @@ class LaporanController extends Controller
 
     public function generateCSV()
     {
-        $users = ModalTambahanModel::all();
-        $numbers = 1;
+        $modal_tambahan = ModalTambahanModel::all();
 
-        $csv = Writer::createFromString('');
-
-        // Add CSV header
-        $csv->insertOne(['No', 'tanggal', 'Jenis Modal Tambahan', 'Deskripsi', 'Jumlah Modal']);
-
-        // Add data
-        foreach ($users as $user) {
-            $csv->insertOne([$numbers++, $user->tanggal, $user->jenis_modal_tambahan, $user->deskripsi, $user->jumlah_modal]);
+        foreach ($modal_tambahan as $modal) {
+            $modal->tanggal = Carbon::parse($modal->tanggal);
         }
 
-        // Set HTTP headers
+        $csv = view('csv.modal_tambahan', compact('modal_tambahan'))->render();
+
+        // Set header untuk file CSV
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Modal Tambahan.csv"',
+            'Content-Disposition' => 'attachment; filename="Laporan Modal Tambahan.csv"',
         ];
 
-        // Return CSV file as response
-        return Response::make($csv->getContent(), 200, $headers);
+        // Mengembalikan response CSV ke browser
+        return Response::stream(function() use ($csv) {
+            echo $csv;
+        }, 200, $headers);
     }
 
     public function kaskeluarCSV()
     {
-        $users = KasKeluar::all();
-        $numbers = 1;
+        $kas_keluar = KasKeluar::all();
 
-        $csv = Writer::createFromString('');
-
-        // Add CSV header
-        $csv->insertOne(['No', 'tanggal', 'Nama Pengeluaran', 'Deskripsi', 'Jumlah Pengeluaran']);
-
-        // Add data
-        foreach ($users as $user) {
-            $csv->insertOne([$numbers++, $user->tanggal, $user->nama_pengeluaran, $user->deskripsi, $user->jumlah_pengeluaran]);
+        foreach ($kas_keluar as $kk) {
+            $kk->tanggal = Carbon::parse($kk->tanggal);
         }
 
-        // Set HTTP headers
+        $csv = view('csv.kas_keluar', compact('kas_keluar'))->render();
+
+        // Set header untuk file CSV
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Laporan kas Keluar.csv"',
+            'Content-Disposition' => 'attachment; filename="Laporan Kas Keluar.csv"',
         ];
 
-        // Return CSV file as response
-        return Response::make($csv->getContent(), 200, $headers);
+        // Mengembalikan response CSV ke browser
+        return Response::stream(function() use ($csv) {
+            echo $csv;
+        }, 200, $headers);
     }
 
     public function generatePDF()
@@ -382,5 +376,65 @@ class LaporanController extends Controller
         $pdf = PDF::loadView('pdf.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'));
 
         return $pdf->download('Laporan Laba Rugi.pdf');
+    }
+
+    public function LabaRugiCSV(Request $request)
+    {
+        $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
+        // $tanggal = $request->input('tanggal', '2024-04-25');
+        $kategori = $request->input('kategori', 'transaksi'); // Kategori default adalah 'transaksi'
+        $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
+
+        $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori)
+                    ->get();
+
+        $modal = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+                    ->get();
+
+        $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
+                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+                    ->get();
+        $total_modal_darurat = $modal_darurat->sum('kredit');
+
+        $pengeluaran = KasKeluar::where('tanggal', $tanggal)->get();
+        $total_pengeluaran = $pengeluaran->sum('jumlah_pengeluaran');
+
+        $tambahan_modal = ModalTambahanModel::where('tanggal', $tanggal)->get();
+        $jumlah_tambahan_modal = $tambahan_modal->sum('jumlah_modal');
+
+        $total_penjualan_kotor = $penjualan_kotor->sum('debit');
+        $total_modal = $modal->sum('debit');
+
+        $total1 = $total_penjualan_kotor + $total_modal;
+        $laba_kotor = $total1 + $jumlah_tambahan_modal;
+        $laba_bersih = $laba_kotor - $total_pengeluaran;
+        $total_transfer = $laba_bersih - $total_modal_darurat;
+
+        $namaHari = array(
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        );
+    
+        // Mendapatkan indeks hari dari tanggal yang diberikan
+        $indeksHari = date('w', strtotime($tanggal));
+    
+        // Mendapatkan nama hari dalam bahasa Indonesia
+        $hari = $namaHari[$indeksHari];
+        $tanggal = strftime("%d %B %Y", strtotime($tanggal));
+
+        // Buat string CSV dari data
+        $csv = view('csv.laba_rugi', compact('penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'))->render();
+
+        // Set header untuk file CSV
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="Laporan Laba Rugi.csv"',
+        ];
+
+        // Mengembalikan response CSV ke browser
+        return Response::stream(function() use ($csv) {
+            echo $csv;
+        }, 200, $headers);
     }
 }
