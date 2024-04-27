@@ -16,10 +16,11 @@ class NotaPembeli extends Model
         'no_nota',
         'id_pembeli',
         'id_admin',
-        'id_bukubesar',
         'metode_pembayaran',
         'status_pembayaran',
         'sub_total',
+        'nominal_terbayar',
+        'tenggat_bayar',
         'diskon',
         'pajak',
         'total',
@@ -43,6 +44,10 @@ class NotaPembeli extends Model
     public function PesananPembeli()
     {
         return $this->hasMany(PesananPembeli::class, 'id_nota');
+    }
+    public function bukubesars()
+    {
+        return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
     }
     // protected static function booted()
     // {

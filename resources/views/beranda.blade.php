@@ -276,7 +276,7 @@
                                     td_harga_barang.innerText = harga_barang;
                                     let td_diskon = document.createElement('td');
                                     td_diskon.classList.add('diskon_pesanan')
-                                    td_diskon.innerText = harga_diskon ;
+                                    td_diskon.innerText = harga_diskon;
                                     let td_jumlah = document.createElement('td');
                                     td_jumlah.classList.add('nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
@@ -511,6 +511,17 @@
                             <option value="hutang">Hutang</option>
                         </select>
                     </div>
+
+                    <div id="formCicilan" style="display: none;">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar" value="{{ date('Y-m-d') }}">
+                        </div>
+                    </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
                     <button type="button" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
@@ -526,6 +537,15 @@
 
 
     <script>
+        document.getElementById('statusPembayaran').addEventListener('change', function() {
+            var formCicilan = document.getElementById('formCicilan');
+            if (this.value === 'hutang') {
+                formCicilan.style.display = 'block';
+            } else {
+                formCicilan.style.display = 'none';
+            }
+        });
+
         function totalPembayaran() {
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
@@ -854,7 +874,7 @@
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {
-        
+
                 // Remove readOnly attribute from alamat input if it exists
                 const alamat = document.querySelector('#alamat');
                 if (alamat.hasAttribute('readonly')) {
