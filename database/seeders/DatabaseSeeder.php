@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             PemasokSeeder::class,
             BarangSeeder::class,
             AkunBayarSeeder::class,
-            DiskonSeeder::class
+            DiskonSeeder::class,
+            PesananSeeder::class
         ]);
     }
 }

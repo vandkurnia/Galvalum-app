@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    
+
 
 @endsection
 
@@ -65,7 +65,7 @@
                                 <th>No</th>
                                 <th>Nama Pembeli</th>
                                 <th>Handphone</th>
-                                <th>Barang Pembelian</th>
+                                {{-- <th>Barang Pembelian</th> --}}
                                 <th>Jumlah Pembelian</th>
                                 <th>Jenis Pelanggan</th>
                                 <th>Tanggal Pembelian</th>
@@ -79,23 +79,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Pembeli A</td>
-                                <td>08123456789</td>
-                                <td>Barang A</td>
-                                <td>10</td>
-                                <td>Pelanggan A</td>
-                                <td>2024-05-01</td>
-                                <td>$100</td>
-                                <td>$50</td>
-                                <td>$50</td>
-                                <td>2024-06-01</td>
-                                <td><span class="badge badge-warning">Belum Dibayar</span></td>
-                                <td>Hutang</td>
-                                <td><button class="btn btn-primary">Update</button></td>
-                            </tr>
-                            <tr>
+                            @foreach ($dataNotaPembelian as $notaPembelian)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $notaPembelian['nama_pembeli'] }}</td>
+                                    <td>{{ $notaPembelian['no_hp_pembeli'] }}</td>
+                                    {{-- <td>{{ "Barang Pembelian" }}</td> --}}
+                                    <td>{{ $notaPembelian['total_pembelian'] }}</td>
+                                    <td>{{ 'Unknown' }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
+                                    <td>{{ $notaPembelian['total'] }}</td>
+                                    <td>{{ $notaPembelian['terbayar'] }}</td>
+                                    <td>{{ $notaPembelian['total'] - $notaPembelian['terbayar'] }}</td>
+                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'])) }}</td>
+                                    <td>
+                                        @if ($notaPembelian['status_bayar'] == 'Lunas')
+                                            <span class="badge badge-success">{{ $notaPembelian['status_bayar'] }}</span>
+                                        @elseif ($notaPembelian['status_bayar'] == 'Belum Lunas')
+                                            <span class="badge badge-danger">{{ $notaPembelian['status_bayar'] }}</span>
+                                        @elseif ($notaPembelian['status_bayar'] == 'Kelebihan')
+                                            <span class="badge badge-warning">{{ $notaPembelian['status_bayar'] }}</span>
+                                        @else
+                                            {{ $notaPembelian['status_bayar'] }}
+                                        @endif
+                                    </td>
+                                    <td>Hutang</td>
+                                    <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}" class="btn btn-primary">Update cicilan</a></td>
+                                </tr>
+                            @endforeach
+
+                            {{-- <tr>
                                 <td>2</td>
                                 <td>Pembeli B</td>
                                 <td>08123456788</td>
@@ -110,7 +123,7 @@
                                 <td><span class="badge badge-success">Lunas</span></td>
                                 <td>Dibayar</td>
                                 <td><button class="btn btn-primary">Update</button></td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

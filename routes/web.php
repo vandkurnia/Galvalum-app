@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\BukubesarController;
+use App\Http\Controllers\CicilanPiutangController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
@@ -80,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/semuapembeli', [PembeliJsonController::class, 'getSemuaPembeliData'])->name('json.semuapembeli');
 
 
-        Route::prefix('pemesanan')->group(function() {
+        Route::prefix('pemesanan')->group(function () {
             Route::post('/hapus-pemesanan', [PemesananBarangJsonController::class, 'hapusPesanan'])->name('json.pesanan.hapuspesan');
             Route::post('/update-pesanan', [PemesananBarangJsonController::class, 'updatePesanan'])->name('json.pesanan.updatepesanan');
         });
@@ -158,6 +159,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('surat-jalan', function () {
             return view('pdfprint.surat-jalan');
         });
+    });
+
+
+
+    Route::prefix('cicilanpiutang')->name('')->group(function () {
+        Route::get('/{id_nota}', [CicilanPiutangController::class, 'index' ])->name('cicilan.index');
+        Route::get('/edit/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'edit'])->name('cicilan.edit');
+        Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
+        Route::put('/update/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/hapus/{id_bukubesar}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
     });
     Route::prefix('laporan')->group(function () {
         Route::get('/omzet', [LaporanController::class, 'laporanOmzet'])->name('laporan.omzet');

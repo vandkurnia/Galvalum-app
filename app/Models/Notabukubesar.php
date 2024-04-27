@@ -9,16 +9,15 @@ class Notabukubesar extends Model
 {
     use HasFactory;
     protected $table = 'nota_bukubesar';
-    protected $primaryKey = ['id_nota', 'id_bukubesar'];
-    public $incrementing = false;
+    protected $primaryKey = 'id_notabukubesar';
     protected $fillable = ['id_nota', 'id_bukubesar'];
 
-    public function nota_pembeli()
+    public function notaPembeli()
     {
         return $this->belongsTo(NotaPembeli::class, 'id_nota', 'id_nota');
     }
 
-    public function bukubesar()
+    public function bukuBesar()
     {
         return $this->belongsTo(BukubesarModel::class, 'id_bukubesar', 'id_bukubesar');
     }

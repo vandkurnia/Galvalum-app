@@ -58,15 +58,10 @@ class PembelianController extends Controller
         $notaPembeli->metode_pembayaran = $request->get('metode_pembayaran');
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
-
+        $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
+        $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         // Nominal Terbayar
-        if ($notaPembeli->status_pembayaran == 'lunas') {
-            $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
-            $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        } else {
-            $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
-            $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        }
+
 
         // Nominal Terbayar
         $notaPembeli->save();
@@ -140,6 +135,14 @@ class PembelianController extends Controller
         $updateNotaPembeli->pajak = $request->get('pajak');
         $updateNotaPembeli->total = ($updateNotaPembeli->sub_total  - $updateNotaPembeli->diskon) - $updateNotaPembeli->pajak;
         $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
+
+        if ($updateNotaPembeli->status_pembayaran == 'lunas') {
+            $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
+            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
+        } else {
+            $updateNotaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
+            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
+        }
         $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         $updateNotaPembeli->save();
 
@@ -167,10 +170,9 @@ class PembelianController extends Controller
             $notaBukubesar->save();
         } else {
 
-            if ($notaPembeli->nominal_terbayar >  $notaPembeli->total) {
+            if ($updateNotaPembeli->nominal_terbayar >  $updateNotaPembeli->total) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Nominal terbayar lebih besar dari total pembelian');
-                
             }
             // Membuat satu data baru
             $bukubesar = new BukubesarModel();

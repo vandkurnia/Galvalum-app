@@ -19,17 +19,17 @@ class NotaPembeli extends Model
         'metode_pembayaran',
         'status_pembayaran',
         'sub_total',
-        'nominal_terbayar',
+        'totalTerbayar',
         'tenggat_bayar',
         'diskon',
         'pajak',
         'total',
     ];
 
-    public function bukuBesar()
-    {
-        return $this->belongsTo(BukubesarModel::class, 'id_bukubesar');
-    }
+    // public function bukuBesar()
+    // {
+    //     return $this->belongsTo(BukubesarModel::class, 'id_bukubesar');
+    // }
 
     public function Pembeli()
     {
@@ -45,7 +45,7 @@ class NotaPembeli extends Model
     {
         return $this->hasMany(PesananPembeli::class, 'id_nota');
     }
-    public function bukubesars()
+    public function bukuBesar()
     {
         return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
     }
