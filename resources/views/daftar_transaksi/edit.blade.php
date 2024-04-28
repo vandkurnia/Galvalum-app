@@ -294,13 +294,13 @@
 
 
                                     // Membuat tombol Edit
-                                    // const edit_button = document.createElement('button');
-                                    // edit_button.href = '#';
-                                    // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
-                                    // edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
-                                    // edit_button.onclick = function() {
-                                    //     editPesananBarang(data_barang.hash_id_barang);
-                                    // }
+                                    const edit_button = document.createElement('button');
+                                    edit_button.href = '#';
+                                    edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
+                                    edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                                    edit_button.onclick = function() {
+                                        editPesananBarang(data_barang.hash_id_barang);
+                                    }
 
                                     // Membuat tombol Delete
                                     const delete_button = document.createElement('button');
@@ -314,7 +314,7 @@
 
                                     // Membuat elemen td untuk menyimpan tombol-tombol
                                     let td_aksi = document.createElement('td');
-                                    // td_aksi.appendChild(edit_button);
+                                    td_aksi.appendChild(edit_button);
                                     td_aksi.appendChild(delete_button);
 
 
@@ -470,10 +470,10 @@
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
                                     <td>
 
-                                        {{-- <button class="btn btn-primary btn-sm"
+                                        <button class="btn btn-primary btn-sm"
                                             onclick="editPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
                                             <i class="fas fa-edit"></i> Edit
-                                        </button> --}}
+                                        </button>
                                         <button class="btn btn-danger btn-sm ml-2"
                                             onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
                                             <i class="fas fa-trash"></i> Delete

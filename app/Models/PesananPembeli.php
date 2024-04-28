@@ -18,9 +18,12 @@ class PesananPembeli extends Model
         'diskon',
         'id_nota',
         'id_barang',
-        'id_jenis_pelanggan',
+        'jenis_pembelian',
+        'harga_potongan',
         'id_diskon',
     ];
+    
+
 
     public function NotaPembeli()
     {

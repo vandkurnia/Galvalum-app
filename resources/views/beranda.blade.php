@@ -118,6 +118,25 @@
                             <option value="potongan">Potongan</option>
                         </select>
                     </div>
+                    <div id="harga_khusus_input" class="form-group" style="display: none;">
+                        <label for="harga_khusus">Harga Potongan Khusus:</label>
+                        <input type="number" min="0" class="form-control" name="harga_khusus" id="harga_khusus"
+                            value="0">
+                    </div>
+                    <script>
+                        document.getElementById('jenis_pembelian').addEventListener('change', function() {
+                            var hargaKhususInput = document.getElementById('harga_khusus_input');
+                            if (this.value === 'reseller' || this.value === 'potongan') {
+                                hargaKhususInput.style.display = 'block';
+                                document.getElementById('harga_khusus').setAttribute('required', 'required');
+
+                            } else {
+                                hargaKhususInput.style.display = 'none';
+                                document.getElementById('harga_khusus').removeAttribute('required');
+                                document.getElementById('harga_khusus').value = 0;
+                            }
+                        });
+                    </script>
 
                 </form>
             </div>
@@ -148,8 +167,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="jumlah_barang">Jumlah Barang:</label>
-                                <input type="number" class="form-control" id="jumlah_barang" min="0" max="0"
-                                    name="jumlah_barang" required>
+                                <input type="number" class="form-control" id="jumlah_barang" min="0"
+                                    max="0" name="jumlah_barang" required>
                             </div>
                             <div class="form-group">
                                 <label for="diskon">Diskon:</label>
@@ -258,6 +277,10 @@
                                         harga_setelah_diskon = harga_barang - amount;
                                     }
 
+                                    // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                                    const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                                    const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                                    const hargaKhususInput = document.getElementById('harga_khusus');
 
 
                                     var tr_pesanan = document.createElement('tr');
@@ -273,7 +296,9 @@
                                     td_ukuran_barang.innerText = data_barang.ukuran;
                                     let td_harga_barang = document.createElement('td');
                                     td_harga_barang.classList.add('harga_barang_pesanan');
-                                    td_harga_barang.innerText = harga_barang;
+                                    td_harga_barang.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                                    td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+                                    td_harga_barang.innerText = harga_barang - parseInt(hargaKhususInput.value);
                                     let td_diskon = document.createElement('td');
                                     td_diskon.classList.add('diskon_pesanan')
                                     td_diskon.innerText = harga_diskon;
@@ -283,7 +308,7 @@
 
                                     let td_total = document.createElement('td');
                                     td_total.classList.add('total');
-                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                                    td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
 
 
                                     // Membuat tombol Edit
@@ -335,6 +360,12 @@
 
 
                                 } else {
+
+                                    // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                                    const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                                    const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                                    const hargaKhususInput = document.getElementById('harga_khusus');
+                                    // Diskon
                                     var diskon_select_element = document.getElementById('diskon');
                                     var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
 
@@ -353,13 +384,20 @@
                                         harga_diskon = amount;
                                         harga_setelah_diskon = harga_barang - amount;
                                     }
+
+                                    const harga = tr_pesanan.querySelector('.harga_barang_pesanan');
+                                    harga.innerText = harga_barang - parseInt(hargaKhususInput.value);
+                                    harga.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                                    harga.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+
+
                                     let diskon = tr_pesanan.querySelector('.diskon_pesanan');
                                     diskon.innerText = harga_diskon;
                                     let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = tr_pesanan.querySelector('.total');
-                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                                    td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
                                 }
 
 
@@ -444,13 +482,14 @@
                             </tr>
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
-                                <td colspan="2"><input type="number" class="form-control" name="diskon_total"
-                                        id="diskonTotal" value="0" readonly></td>
+                                <td colspan="2"><input type="number" oninput="totalPembayaran()"
+                                        class="form-control" name="diskon_total" id="diskonTotal" value="0"></td>
                             </tr>
                             <tr>
-                                <td colspan="2">Pajak Rp</td>
+                                <td colspan="2">Pajak (%)</td>
                                 <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="total_pajak" id="totalPajak" value="0"></td>
+                                        class="form-control" name="total_pajak" min="0" max="100"
+                                        id="totalPajak" value="0"></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
@@ -515,11 +554,13 @@
                     <div id="formCicilan" style="display: none;">
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
-                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar" value="0">
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="0">
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
-                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar" value="{{ date('Y-m-d') }}">
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
@@ -546,7 +587,19 @@
             }
         });
 
+        function validateTotalPajak() {
+            var totalPajakInput = document.getElementById('totalPajak');
+            var value = parseFloat(totalPajakInput.value);
+
+            if (isNaN(value) || value < 0) {
+                totalPajakInput.value = 0;
+            } else if (value > 100) {
+                totalPajakInput.value = 100;
+            }
+        }
+
         function totalPembayaran() {
+            validateTotalPajak();
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
             var totalHarga = 0;
@@ -564,11 +617,15 @@
             let sub_total = tabletfoot.querySelector('#subTotal');
             sub_total.value = totalHarga;
             let diskon = tabletfoot.querySelector('#diskonTotal');
-            diskon.value = totalDiskon;
+            // diskon.value = totalDiskon;
             let pajak = tabletfoot.querySelector('#totalPajak');
             let total = tabletfoot.querySelector('#total');
 
-            total.value = parseInt(sub_total.value) - parseInt(diskon.value) - parseInt(pajak.value);
+            let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
+            let nilaiPajak = nilaiTotal * ( parseInt(pajak.value) / 100);
+
+       
+            total.value = nilaiTotal + nilaiPajak;
 
 
             // Ubah ke format Rp dengan dipisah rupiah
@@ -648,6 +705,10 @@
                     jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang_pesanan').innerText,
                     id_barang: tr.getAttribute('data-id-barang'),
                     id_diskon: tr.getAttribute('data-id-diskon'),
+                    jenis_pelanggan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-jenis-pelanggan'),
+                    harga_potongan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-harga-potongan-khusus'),
 
                 }
                 dataPesanan.pesanan.push(itemPesanan);

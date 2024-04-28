@@ -117,13 +117,13 @@
         </div>
         <div class="card shadow mb-4">
             <div class="card-header py-4">
-                <h6 class="m-0 font-weight-bold text-primary">Pesanan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">
                 <div class="row">
 
                     <div class="col-md-5 mr-5">
-                        <h2>Barang Pembelian</h2>
+                    
                         <form id="pesanan" method="POST">
                             @csrf
 
@@ -453,9 +453,9 @@
                                     {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
                                     <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
-                                    <td><input type="number" data-id-pesanan="{{ $pesanan->id_pesanan }}"
+                                    <td><input type="number" class="form-control" data-id-pesanan="{{ $pesanan->id_pesanan }}"
                                             class="" oninput="updateTotal(this)"
-                                            max="{{ (int) $pesanan->jumlah_pembelian }}" class="form-control"
+                                            min="0" max="{{ (int) $pesanan->jumlah_pembelian }}" class="form-control"
                                             value="0"></td>
                                     <td class="total">
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
@@ -513,7 +513,7 @@
         </div>
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Ganti Barang</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -583,7 +583,14 @@
             let tbody_table = document.querySelector('#dataTablePesanan tbody');
             var tr_pesanan = tbody_table.querySelector(`tr[data-id-pesanan="${id_pesanan}"]`);
 
+            // Pesanan
             const qtyPesananInput = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
+            const hargaPesanan = tr_pesanan.querySelector('.harga_barang_pesanan');
+            const diskonPesanan = tr_pesanan.querySelector('.diskon_pesanan');
+            const totalPesanan = tr_pesanan.querySelector('.total');
+
+
+
             const qtyReturInput = input;
             const qtyPesananValue = parseFloat(qtyPesananInput.innerText);
 
@@ -600,8 +607,14 @@
 
 
             let newQtyPesananValue = qtyReturInput.max - qtyReturValue;
-            console.log(newQtyPesananValue);
-            qtyPesananInput.innerText = newQtyPesananValue < 0 ? 0 : newQtyPesananValue;
+            
+            qtyPesananInput.innerText = newQtyPesananValue <= 0 ? 0 : newQtyPesananValue;
+            
+            totalPesanan.innerText = (parseInt(hargaPesanan.innerText) - parseInt(diskonPesanan.innerText)) * qtyPesananInput.innerText;
+            
+            
+            resetNoPesananBarang();
+            totalPembayaran();
         }
     </script>
 

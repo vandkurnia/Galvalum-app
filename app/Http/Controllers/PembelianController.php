@@ -48,6 +48,7 @@ class PembelianController extends Controller
                 'nama_pembeli' => $request->id_pembeli,
                 'alamat_pembeli' => $request->alamat_pembeli,
                 'no_hp_pembeli' => $request->no_hp,
+                
             ] // Isi dengan data default jika pembeli baru dibuat
         );
 
@@ -100,6 +101,9 @@ class PembelianController extends Controller
                 $hargaDiskon = $amountDiskon;
                 $hargaSetelahDiskon = $barangData->harga_barang - $hargaDiskon;
             }
+
+
+            $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
             $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
             $totalDiskon += $hargaDiskon;
             // Buat data baru untuk PesananPembeli yang terhubung dengan NotaPembeli dan Barang
@@ -109,6 +113,8 @@ class PembelianController extends Controller
             $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
             $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
             $pesananPembeli->harga = $hargaSetelahDiskon;
+            $pesananPembeli->jenis_pembelian = $pesanan['jenis_pelanggan'];
+            $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
             $pesananPembeli->diskon = $hargaDiskon;
             $pesananPembeli->save();
             // Array data user dari request

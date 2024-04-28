@@ -76,9 +76,9 @@
                                                 class="fas fa-info-circle"></i></button>
 
 
-                                        <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"
+                                        {{-- <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"
                                             class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                                            Edit</a>
+                                            Edit</a> --}}
                                         <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('pemesanan.destroy', ['id' => $notaPembeli['id_nota']]) }}', 0)"><i
                                                 class="fas fa-trash"></i>

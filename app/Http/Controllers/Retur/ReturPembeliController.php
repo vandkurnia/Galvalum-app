@@ -35,8 +35,8 @@ class ReturPembeliController extends Controller
 
 
         $dataDiskon = DiskonModel::all();
-        $dataPesanan = PesananPembeli::where('id_nota','2')->with('Barang', 'Barang.TipeBarang')->get();
-        $notaPembelian = NotaPembeli::where('id_nota', '2')->with('Pembeli', 'PesananPembeli')->first();
+        $dataPesanan = PesananPembeli::where('id_nota','1')->with('Barang', 'Barang.TipeBarang')->get();
+        $notaPembelian = NotaPembeli::where('id_nota', '1')->with('Pembeli', 'PesananPembeli')->first();
         return view('retur.pembeli.add', compact('id_pesanan', 'dataPembeli', 'noReturPembeli', 'dataDiskon', 'dataPesanan', 'notaPembelian'));
     }
     public function store(Request $request)
