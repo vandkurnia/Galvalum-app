@@ -14,10 +14,22 @@ class NotaPembeli extends Model
     protected $primaryKey = 'id_nota';
     protected $fillable = [
         'no_nota',
-        'status_pembelian',
         'id_pembeli',
         'id_admin',
+        'metode_pembayaran',
+        'status_pembayaran',
+        'sub_total',
+        'totalTerbayar',
+        'tenggat_bayar',
+        'diskon',
+        'pajak',
+        'total',
     ];
+
+    // public function bukuBesar()
+    // {
+    //     return $this->belongsTo(BukubesarModel::class, 'id_bukubesar');
+    // }
 
     public function Pembeli()
     {
@@ -33,14 +45,18 @@ class NotaPembeli extends Model
     {
         return $this->hasMany(PesananPembeli::class, 'id_nota');
     }
-    protected static function booted()
+    public function bukuBesar()
     {
-        static::creating(function ($notaPembeli) {
-            $lastId = static::max('id');
-            $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
-            $lastId++;
-
-            $notaPembeli->no_nota = 'NT' . date('Y') . date('mdHis') . str_pad($lastId, 4, '0', STR_PAD_LEFT);
-        });
+        return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
     }
+    // protected static function booted()
+    // {
+    //     static::creating(function ($notaPembeli) {
+    //         $lastId = static::max('id');
+    //         $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
+    //         $lastId++;
+
+    //         $notaPembeli->no_nota = 'NT' . date('Y') . date('mdHis') . str_pad($lastId, 4, '0', STR_PAD_LEFT);
+    //     });
+    // }
 }

@@ -14,15 +14,15 @@ class BukubesarModel extends Model
     protected $primaryKey = 'id_bukubesar';
 
     protected $fillable = [
-        'id_bukubesar',
         'hash_id_bukubesar',
         'id_akunbayar',
         'tanggal',
         'kategori',
+        'sub_kategori',
         'keterangan',
         'debit',
         'kredit',
-    
+
     ];
 
     protected static function booted()
@@ -35,4 +35,10 @@ class BukubesarModel extends Model
     {
         return $this->belongsTo(AkunBayarModel::class, 'id_akunbayar');
     }
+    public function notaPembeli()
+    {
+        return $this->belongsToMany(NotaPembeli::class, 'nota_bukubesar', 'id_bukubesar', 'id_nota');
+    }
+
+   
 }

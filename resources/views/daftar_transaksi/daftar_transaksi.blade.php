@@ -28,48 +28,24 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    {{-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Tipe Barang</th>
-                                <th>Ukuran Barang</th>
-                                <th>Harga Barang</th>
-                                <th>Jumlah</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>Galvalum Sheet 0.3mm</td>
-                                <td>Sheet</td>
-                                <td>0.3mm</td>
-                                <td>150000</td>
-                                <td>100</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> --}}
+                 
                     <table class="table table-bordered" id="dataTransaksi" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>No Nota</th>
                                 <th>Handphone</th>
                                 <th>Nama</th>
-                                <th>Barang Pembelian</th>
                                 <th>Jumlah Pembelian</th>
                                 <th>Tanggal Beli</th>
                                 <th>Jam</th>
                                 <th>Jenis Pelanggan</th>
-                                <th>Harga</th>
+                                <th>Total</th>
                                 <th>Lunas</th>
                                 <th>Waktu Payment</th>
                                 <th>Payment Methode</th>
                                 <th>Cetak</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,24 +55,32 @@
                             @endphp
                             @foreach ($dataNotaPembeli as $notaPembeli)
                                 <tr>
+
                                     <td>{{ ++$no }}</td>
-                                    <td>{{ $notaPembeli->Pembeli->nama_pembeli }}</td>
-                                    <td>{{ $notaPembeli->jenis_pembelian }}</td>
-                                    <td>{{ $notaPembeli->status_pembelian }}</td>
-                                    <td>{{ $notaPembeli->created_at }}</td>
-                                    <td>{{ "Not defined!" }}</td>
+                                    <td>{{ $notaPembeli['no_nota'] }}</td>
+                                    <td>{{ $notaPembeli['pembeli']['no_hp_pembeli'] }}</td>
+                                    <td>{{ $notaPembeli['pembeli']['nama_pembeli'] }}</td>
+                                
+                                    <td>{{ $notaPembeli['total_pesanan'] }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
+                                    <td>{{ date('H:i', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>Unknown</td>
-                                    <td>{{ $notaPembeli->Admin->nama_admin }}</td>
+                                    <td>{{ $notaPembeli['total'] }}</td>
+                                    <td>{{ $notaPembeli['status_pembayaran'] }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
+                                    <td>{{ $notaPembeli['metode_pembayaran'] }}</td>
+                                    <td>Cetak##</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm p-2" onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli->id_nota]) }}')"><i
+                                        <button class="btn btn-info btn-sm p-2"
+                                            onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli['id_nota']]) }}')"><i
                                                 class="fas fa-info-circle"></i></button>
 
 
-                                        <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli->id_nota]) }}"
+                                        <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"
                                             class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
                                             Edit</a>
                                         <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('pemesanan.destroy', ['id' => $notaPembeli->id_nota]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('pemesanan.destroy', ['id' => $notaPembeli['id_nota']]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>
