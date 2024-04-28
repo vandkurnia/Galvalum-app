@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Retur;
 
 use App\Http\Controllers\Controller;
+use App\Models\DiskonModel;
+use App\Models\NotaPembeli;
 use App\Models\Pembeli;
+use App\Models\PesananPembeli;
 use App\Models\Retur\ReturPembeliModel;
 use Illuminate\Http\Request;
 
@@ -24,9 +27,17 @@ class ReturPembeliController extends Controller
     }
     public function add($id_pesanan)
     {
-
+        $lastId = ReturPembeliModel::max('id_retur_pembeli');
+        $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
+        $lastId++;
+        $noReturPembeli= 'RETUR' . date('Y') . date('mdHis') . str_pad($lastId, 4, '0', STR_PAD_LEFT);
         $dataPembeli = Pembeli::all();
-        return view('retur.pembeli.add', compact('id_pesanan', 'dataPembeli'));
+
+
+        $dataDiskon = DiskonModel::all();
+        $dataPesanan = PesananPembeli::where('id_nota','2')->with('Barang', 'Barang.TipeBarang')->get();
+        $notaPembelian = NotaPembeli::where('id_nota', '2')->with('Pembeli', 'PesananPembeli')->first();
+        return view('retur.pembeli.add', compact('id_pesanan', 'dataPembeli', 'noReturPembeli', 'dataDiskon', 'dataPesanan', 'notaPembelian'));
     }
     public function store(Request $request)
     {

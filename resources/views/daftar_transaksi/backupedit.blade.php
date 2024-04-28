@@ -85,7 +85,7 @@
                     <div class="form-group">
                         <label for="NoNota">No Nota</label>
                         <input type="text" class="form-control" name="no_nota" id="NoNota" readonly
-                            value="{{ $no_nota }}">
+                            value="{{ $notaPembelian->no_nota }}">
                     </div>
 
                     <div class="form-group d-flex flex-column">
@@ -93,14 +93,15 @@
                         {{-- <input type="text" class="form-control" id="namaPembeli" placeholder="Masukkan nama pembeli"
                     required> --}}
                         <select class="form-control" name="id_pembeli" id="namaPembeli" required>
-                            <option value="">Pilih atau buat nama pembeli</option>
+                            <option value="{{ $notaPembelian->Pembeli->hash_id_pembeli }}" selected>
+                                {{ $notaPembelian->Pembeli->nama_pembeli }}</option>
                         </select>
 
                     </div>
                     <div class="form-group">
                         <label for="noHp">Nomor HP:</label>
                         <input type="text" class="form-control" id="noHp" name="no_hp"
-                            placeholder="Masukkan nomor HP" required>
+                            placeholder="Masukkan nomor HP" value="{{ $notaPembelian->Pembeli->alamat_pembeli }}" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat:</label>
@@ -112,10 +113,12 @@
                     <div class="form-group">
                         <label for="jenisPembelian">Jenis Pembelian:</label>
                         <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
-
-                            <option value="harga_normal">Harga Normal</option>
-                            <option value="reseller">Reseller</option>
-                            <option value="potongan">Potongan</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'harga_normal' ? 'selected' : '' }}
+                                value="harga_normal">Harga Normal</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'reseller' ? 'selected' : '' }} value="reseller">
+                                Reseller</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'potongan' ? 'selected' : '' }} value="potongan">
+                                Potongan</option>
                         </select>
                     </div>
 
@@ -179,7 +182,8 @@
                                 const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
+                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;
+                                console.log(cek_total_barang_kelebihan);
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
@@ -286,7 +290,7 @@
                                     td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
 
 
-                                    // Membuat tombol Edit
+                                    // // Membuat tombol Edit
                                     // const edit_button = document.createElement('button');
                                     // edit_button.href = '#';
                                     // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
@@ -373,8 +377,8 @@
                                 $('#nama_barang').trigger('change'); // Notify any JS components that the value changed
 
                                 // Ambil nilai dari td ke 6
-                                const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan');
-
+                                const td_element_jumlah = tr_element_select.querySelectorAll('td')[
+                                    4]; // Indeks dimulai dari 0, jadi indeks ke-6 adalah 5
                                 let nilai_jumlah = td_element_jumlah.innerText;
 
                                 // Inisiasi dan Edit element jumlah barang 
@@ -401,7 +405,7 @@
 
                                 // Reset number pada no tr yang tersedia
                                 let total_tr = tbody_table.childElementCount;
-                                // ;
+                                // console.log(total_tr);
                                 const all_th_number = tbody_table.querySelectorAll('tr th');
                                 // atur number awal 1
                                 var nilaiawal = 1;
@@ -431,7 +435,38 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $no = 0;
+                                $harga = 0;
+                            @endphp
+                            @foreach ($dataPesanan as $pesanan)
+                                <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}">
+                                    <th>{{ ++$no }}</th>
+                                    <td>{{ $pesanan->Barang->nama_barang }}</td>
+                                    <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
+                                    <td>{{ $pesanan->Barang->ukuran }}</td>
+                                    <td>{{ (int) $pesanan->harga }}</td>
+                                    {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
+                                    <td>{{ (int) $pesanan->diskon }}</td>
+                                    <td>{{ (int) $pesanan->jumlah_pembelian }}</td>
+                                    <td>{{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
+                                    <td>
 
+                                        <button class="btn btn-primary btn-sm"
+                                            onclick="editPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger btn-sm ml-2"
+                                            onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+
+                                    </td>
+                                </tr>
+                                @php
+                                    $harga += $pesanan->Barang->harga_barang * $pesanan->jumlah_pembelian;
+                                @endphp
+                            @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
@@ -440,31 +475,34 @@
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="sub_total"
-                                        id="subTotal" value="0" readonly></td>
+                                        id="subTotal" value="{{ $notaPembelian->sub_total }}" readonly>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="diskon_total"
-                                        id="diskonTotal" value="0" readonly></td>
+                                        id="diskonTotal" value="{{ $notaPembelian->diskon }}" readonly>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">Pajak Rp</td>
                                 <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="total_pajak" id="totalPajak" value="0"></td>
+                                        class="form-control" name="total_pajak" id="totalPajak"
+                                        value="{{ $notaPembelian->pajak }}"></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="0" readonly></strong></td>
+                                            id="total" value="{{ $notaPembelian->total }}" readonly></strong></td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
-                <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
-                    data-target="#modalBayar">Bayar</button>
             </div>
+            <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
+                data-target="#modalBayar">Bayar</button>
         </div>
+    </div>
     </div>
 @endsection
 <!-- End of Page Wrapper -->
@@ -507,20 +545,12 @@
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
-                            <option value="lunas">Lunas</option>
-                            <option value="hutang">Hutang</option>
+                            <option value="lunas"
+                                {{ $notaPembelian->status_pembelian == 'lunas' ? 'selected' : '' }}>Lunas</option>
+                            <option
+                                value="hutang {{ $notaPembelian->status_pembelian == 'hutang' ? 'selected' : '' }}">
+                                Hutang</option>
                         </select>
-                    </div>
-
-                    <div id="formCicilan" style="display: none;">
-                        <div class="form-group">
-                            <label for="nominalTerbayar">Nominal Terbayar:</label>
-                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
-                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar" value="{{ date('Y-m-d') }}">
-                        </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
@@ -537,15 +567,6 @@
 
 
     <script>
-        document.getElementById('statusPembayaran').addEventListener('change', function() {
-            var formCicilan = document.getElementById('formCicilan');
-            if (this.value === 'hutang') {
-                formCicilan.style.display = 'block';
-            } else {
-                formCicilan.style.display = 'none';
-            }
-        });
-
         function totalPembayaran() {
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
@@ -761,7 +782,7 @@
         }
 
         function formatBarangSelection(barang) {
-            // ;
+            // console.log(barang.stok);
             var jumlahStok = document.getElementById("jumlah_barang");
             jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
 
@@ -859,7 +880,7 @@
         }
 
         function formatPembeliSelection(pembeli) {
-
+            console.log('test', pembeli);
 
             if (pembeli && pembeli.nama_pembeli !== undefined && pembeli.nama_pembeli !== null) {
 
@@ -874,7 +895,7 @@
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {
-
+                console.log('test', pembeli);
                 // Remove readOnly attribute from alamat input if it exists
                 const alamat = document.querySelector('#alamat');
                 if (alamat.hasAttribute('readonly')) {
@@ -892,6 +913,42 @@
 
             }
 
+
+            // // console.log(barang.stok);
+            // var jumlahStok = document.getElementById("jumlah_barang");
+            // jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
+
+
+
+            // // Simpan ke session untuk digunakan pada pengisian beranda
+            // // Contoh data barang
+            // var hash_id_barang = barang.id || "";
+            // var nama_barang = barang.nama_barang || "";
+            // var harga_barang = barang.harga_barang || "";
+
+            // var tipe_barang = barang.tipe_barang ? barang.tipe_barang.nama_tipe || "" : "";
+
+            // var ukuran = barang.ukuran || "";
+            // var stok = barang.stok || "";
+
+            // // Mendapatkan array dari sessionStorage atau inisiasi array kosong jika belum ada
+            // var data_barang = [];
+
+            // // Menambahkan data barang ke dalam array
+            // data_barang.push({
+            //     hash_id_barang,
+            //     nama_barang,
+            //     harga_barang,
+            //     tipe_barang,
+            //     ukuran,
+            //     stok
+            // });
+
+
+
+
+            // // Menyimpan array kembali ke dalam sessionStorage
+            // sessionStorage.setItem('data_barang', JSON.stringify(data_barang));
 
 
         }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('retur_pembeli', function (Blueprint $table) {
             $table->id('id_retur_pembeli');
             $table->uuid('hash_id_retur_pembeli')->unique();
+            $table->unsignedBigInteger('id_nota');
             $table->string('no_retur_pembeli');
             $table->string('faktur_retur_pembeli');
             $table->string('tanggal_retur_pembeli');

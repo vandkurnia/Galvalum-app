@@ -76,6 +76,8 @@ class BukubesarController extends Controller
             // Simpan perubahan saldo di AkunBayar
             $akunBayar->save();
 
+            
+
             $dataBukuBesar = [
                 'id_akunbayar' => $akunBayar->id_akunbayar,
                 'tanggal' => $data['tanggal'],
