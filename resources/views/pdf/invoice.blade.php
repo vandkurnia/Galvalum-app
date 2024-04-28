@@ -12,7 +12,6 @@
         <tr>
             <th>No</th>
             <th>Tanggal</th>
-            <th>Jenis Modal Tambahan</th>
             <th>Deskripsi</th>
             <th>Jumlah Modal</th>
         </tr>
@@ -20,9 +19,8 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $s->tanggal }}</td>
-            <td>{{ $s->jenis_modal_tambahan}}</td>
-            <td>{{ $s->deskripsi }}</td>
-            <td>{{ $s->jumlah_modal }}</td>
+            <td>{{ $s->keterangan }}</td>
+            <td>{{ $s->debit }}</td>
         </tr>
         @endforeach
     </table>
