@@ -61,7 +61,7 @@
 <body>
     <header>
         <div class="left-header">
-            <h2>Jakarta</h2>
+            <h2>{{ $notaPembelian->Pembeli->alamat_pembeli }}</h2>
 
             <div class="informasi-surat-jalan" style="
     display: flex;
@@ -75,11 +75,11 @@
         <div class="right-header">
             <p style="
     display: flex;
-">Jakarta ,<span class="isian-tanggal"
+">{{ $notaPembelian->Pembeli->alamat_pembeli }} ,<span class="isian-tanggal"
                     style="
     border-bottom: 1px dotted;
     flex-grow: 1;
-">Minggu 21 April 2024</span> </p>
+">{{ date('Y-m-d', strtotime($notaPembelian->Pembeli->created_at)) }}</span> </p>
             <div class="informasi-pelanggan" style="
     display: flex;
     flex-direction: column;
@@ -91,7 +91,7 @@
     text-decoration-line: underline;
     text-decoration-style: dotted;
 ">
-                    dsadasdada</p>
+                    {{ $notaPembelian->Pembeli->nama_pembeli }}</p>
                 <p>.....................................................</p>
 
             </div>
@@ -110,22 +110,13 @@
             </thead>
 
             <tbody>
+                @foreach ($dataPesanan as $pesanan)
                 <tr>
 
-                    <td>10</td>
-                    <td>Item 1</td>
+                    <td>{{ (int) $pesanan->jumlah_pembelian }}</td>
+                    <td>{{ $pesanan->Barang->nama_barang }}</td>
                 </tr>
-
-                <tr>
-
-                    <td>10</td>
-                    <td>Item 1</td>
-                </tr>
-                <tr>
-
-                    <td>10</td>
-                    <td>Item 1</td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
         <span style="

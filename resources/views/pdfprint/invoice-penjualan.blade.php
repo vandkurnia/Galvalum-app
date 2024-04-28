@@ -213,7 +213,7 @@
             <div class="informasi-pembeli ">
                 <h2 class="label-pembeli">Kepada Yth.:</h2>
                 <div class="nama-pembeli">
-                    <p>Ibu Dewi</p>
+                    <p>{{ $notaPembelian->Pembeli->nama_pembeli }}</p>
                 </div>
 
             </div>
@@ -240,7 +240,7 @@
 ">
                     <h2>Tanggal</h2>
                     <div class="isi-tanggal box-border-top">
-                        <p> 14-Nov-15</p>
+                        <p>{{ date('Y-m-d', strtotime($notaPembelian->Pembeli->created_at)) }}</p>
                     </div>
                 </div>
                 <div class="nomor-nota" style="
@@ -252,7 +252,7 @@
     solid color: black;
     border-top: 1px solid black;
 ">
-                        <p> JL00001001</p>
+                        <p> {{ $notaPembelian->no_nota }}</p>
                     </div>
                 </div>
 
@@ -303,56 +303,25 @@
                     <th>Disc</th>
                     <th>Subtotal</th>
                 </tr>
+                @php
+                    $no = 0;
+                    $harga = 0;
+                @endphp
+                @foreach ($dataPesanan as $pesanan)
                 <tr>
-                    <td>1</td>
+                    <td>{{ ++$no }}</td>
                     <td>001222</td>
-                    <td>Dancow Cokelat 400gr</td>
-                    <td>4</td>
-                    <td>DUS</td>
-                    <td>27,000</td>
-                    <td>10%</td>
-                    <td>108,000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>001225</td>
-                    <td>Dancow Full Cream 400gr</td>
-                    <td>4</td>
-                    <td>DUS</td>
-                    <td>26,500</td>
-                    <td>10%</td>
-                    <td>106,000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>001230</td>
-                    <td>Dancow 5+ Coklat 800gr</td>
-                    <td>2</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>114,000</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>001231</td>
-                    <td>Dancow 5+ Vanila 800gr</td>
-                    <td>5</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>285,000</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>001232</td>
-                    <td>Dancow 5+ Madu 800gr</td>
-                    <td>8</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>456,000</td>
-                </tr>
+                    <td>{{ $pesanan->Barang->nama_barang }}</td>
+                    <td>{{ (int) $pesanan->jumlah_pembelian }}</td>
+                    <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
+                    <td>{{ (int) $pesanan->harga }}</td>
+                    <td>{{ (int) $pesanan->diskon }}</td>
+                    <td>{{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
+                </tr> 
+                @php
+                    $harga += $pesanan->Barang->harga_barang * $pesanan->jumlah_pembelian;
+                @endphp
+                @endforeach       
                 <tr>
                     <td rowspan="4" colspan="3" style="
 ">
@@ -365,19 +334,19 @@
 
                     </td>
                     <td colspan="4">Subtotal</td>
-                    <td>Rp. 1.069.000</td>
+                    <td>Rp. {{ $notaPembelian->sub_total }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Diskon</td>
-                    <td>Rp. 0</td>
+                    <td>Rp. {{ $notaPembelian->diskon }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Pajak</td>
-                    <td>Rp. 0</td>
+                    <td>Rp. {{ $notaPembelian->pajak }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Total</td>
-                    <td>Rp. 1.069.000</td>
+                    <td>Rp. {{ $notaPembelian->total }}</td>
                 </tr>
             </tbody>
         </table>
