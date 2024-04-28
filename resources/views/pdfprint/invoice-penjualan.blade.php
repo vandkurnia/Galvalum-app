@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Belanja</title>
+    <title>{{$title}}</title>
     <style>
         /* FOrmat Body */
         body {
@@ -16,10 +16,11 @@
             /* Center the content horizontally and vertically */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            /* justify-content: center; */
             align-items: center;
-            min-height: 100vh;
+            min-height: 95vh;
             min-width: 80vw;
+            box-sizing: border-box;
             border: 1px dotted black;
             /* Set background color or image */
             background-color: #fff;
@@ -109,12 +110,18 @@
         }
 
         .nama-pembeli {
-            border-top: 1px solid black;
-            margin-top: 10px;
+            /* border-top: 1px solid black; */
+            /* margin-top: 10px; */
             box-sizing: border-box;
             display: flex;
-            padding: 0px 5px 5px 5px;
+            flex-direction: column;
+            padding: 10px 5px 5px 10px;
             min-height: 100px;
+        }
+
+        
+        .nama-pembeli span{
+            padding-bottom: 1rem;
         }
 
         /* Flex */
@@ -160,7 +167,6 @@
             justify-content: space-between;
             padding: 10px;
             box-sizing: border-box;
-            margin-right: 68px;
         }
 
         .logo-toko,
@@ -170,7 +176,8 @@
         }
 
         .logo-toko img {
-            width: 100%;
+            margin: 5;
+            width: 75%;
             height: auto;
         }
 
@@ -193,30 +200,43 @@
         <div class="info-pembeli-dan-penjual">
             <div class="informasi-nota">
                 <div class="logo-toko">
-                    <img src="https://aqbgvzzymp.cloudimg.io/v7/barokahabadi.co.id/wp-content/uploads/2020/11/dummy-logo-1b.png"
+                    <img src="https://i0.wp.com/goridemoto.com/wp-content/uploads/2022/09/logo4.png?ssl=1"
                         alt="Logo Beer Bee">
                 </div>
-
-
 
                 <div class="informasi-toko">
                     <h2 class="nama-toko">PT Bima Sakti</h2>
                     <p class="alamat-toko">Magetan</p>
                     <p class="nomor-telepon-toko">Telp: 03183103; Fax</p>
                 </div>
-
-
-
-
             </div>
-
-            <div class="informasi-pembeli ">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Kepada Yth.:</th>
+                    </tr>
+                </thead>
+                <tbody class="text-dark" style="background-color: #e9ecef">
+                    <tr class="fw-light">
+                        <td class="nama-pembeli">
+                            @foreach ($dataPembeli as $index => $data)
+                            <span>{{$data['nama']}}</span>
+                            <span>{{$data['alamat']}}</span>
+                            <span>{{$data['telp']}}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="informasi-pembeli ">
                 <h2 class="label-pembeli">Kepada Yth.:</h2>
                 <div class="nama-pembeli">
-                    <p>Ibu Dewi</p>
+                    <span>Ibu Dewi</span>
+                    <span>Desa Lebak Ayu Sawahan Madiun</span>
+                    <span>0895359508913</span>
                 </div>
 
-            </div>
+            </div> -->
         </div>
 
         <div class="informasi-surat-lain"
@@ -227,45 +247,79 @@
     padding: 0px 5px 10px 5px;
     max-width: 400px;
     flex-grow: 1;
-">
+            ">
             <h1>
                 Invoice Penjualan
             </h1>
-
-            <div class="detail-nota box-border" style="
-    display: flex;
-">
-                <div class="tanggal-nota" style="
-    flex-grow: 1;
-">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Tanggal</th>
+                        <th class="text-center">Nomor Nota</th>
+                    </tr>
+                </thead>
+                <tbody class="text-dark" style="background-color: #e9ecef">
+                    <tr class="fw-light">
+                        @foreach ($dataNota as $data)
+                            <td class="text-center">{{$data['tanggal']}}</td>
+                            <td class="text-center">{{$data['no_nota']}}</td>
+                        @endforeach
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Admin/Kasir</th>
+                    </tr>
+                </thead>
+                <tbody class="text-dark" style="background-color: #e9ecef">
+                    <tr class="fw-light">
+                        <td class="text-center">{{$dataKasir}}</td>
+                    </tr>
+                </tbody>
+            </table>
+                            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Termin</th>
+                        <th class="text-center">Jatuh Tempo</th>
+                    </tr>
+                </thead>
+                <tbody class="text-dark" style="background-color: #e9ecef">
+                    <tr class="fw-light">
+                    @foreach ($dataPembayaran as $data)
+                        <td class="text-center">{{$data['termin']}}</td>
+                        <td class="text-center">{{$data['jatuh_tempo']}}</td>
+                    @endforeach
+                    </tr>
+                </tbody>
+            </table>
+<!-- 
+            <div class="detail-nota box-border" style="display: flex;">
+                <div class="tanggal-nota" style="flex-grow: 1;">
                     <h2>Tanggal</h2>
                     <div class="isi-tanggal box-border-top">
                         <p> 14-Nov-15</p>
                     </div>
                 </div>
-                <div class="nomor-nota" style="
-    flex-grow: 1;
-    border-left: 1px solid black;
-">
+                <div class="nomor-nota" style="flex-grow: 1;border-left: 1px solid black;">
                     <h2>No.Nota</h2>
-                    <div class="isi-nomor-nota" style="1px
-    solid color: black;
-    border-top: 1px solid black;
-">
+                    <div class="isi-nomor-nota" style="1pxsolid color: black;border-top: 1px solid black;">
                         <p> JL00001001</p>
                     </div>
                 </div>
+            </div> -->
 
-            </div>
-            <div class="admin-kasir box-border">
+            <!-- <div class="admin-kasir box-border">
                 <h2>Admin / Kasir</h2>
                 <div class="box-border-top">
                     <p>Sasa</p>
                 </div>
-            </div>
-            <div class="detail-nota" style="
-    display: flex;
-">
+            </div> -->
+            <!-- <div class="detail-nota" style="display: flex;"> 
+
                 <div class="termin-pembayaran box-border" style="
     flex-grow: 1;
 ">
@@ -283,16 +337,12 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
         </div>
     </header>
-    <main style="
-    width: 100%;
-">
-
-
+    <main style="width: 100%;">
         <table>
-            <tbody>
+            <thead>
                 <tr>
                     <th>No</th>
                     <th>Item</th>
@@ -301,9 +351,66 @@
                     <th>Unit</th>
                     <th>Harga</th>
                     <th>Disc</th>
-                    <th>Subtotal</th>
+                    <th>Total Harga</th>
+                </tr>
+            </thead> 
+            <tbody>
+            @foreach ($dataRincianBarang['list_barang'] as $index => $data)
+                <tr>
+                    <td>{{$index + 1}}</td>
+                    <td>{{$data['item']}}</td>
+                    <td>{{$data['deskripsi']}}</td>
+                    <td>{{$data['qty']}}</td>
+                    <td>{{$data['unit']}}</td>
+                    <td>{{$data['harga']}}</td>
+                    <td>{{$data['disc']}}</td>
+                    <td>{{$data['subtotal']}}</td>
+                </tr>
+                @endforeach
+                <tr>
+                    <td rowspan="4" colspan="3" style="
+">
+                        <h2>Keterangan</h2>
+                        <ol>
+                            <li>Barang yang sudah dibeli tidak bisa ditukar</li>
+                            <li>Pembayaran dengan BG/CEK dianggap lunas bila sudah dicairkan</li>
+                            <li>Tanda ** menunjukan bonus</li>
+                        </ol>
+
+                    </td>
+                    <td colspan="4">Subtotal Harga</td>
+                    <td>Rp{{$dataRincianBarang['subtotalHarga']}}</td>
                 </tr>
                 <tr>
+                    <td colspan="4">Diskon</td>
+                    <td>Rp{{$dataRincianBarang['diskon']}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">Pajak</td>
+                    <td>Rp{{$dataRincianBarang['pajak']}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td>Rp{{$dataRincianBarang['total']}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="keterangan-tambahan" style="
+    text-align: right;">
+            <p>* Harga termasuk pajak</p>
+        </div>
+
+
+    </main>
+
+
+
+
+</body>
+
+</html>
+<!-- 
+<tr>
                     <td>1</td>
                     <td>001222</td>
                     <td>Dancow Cokelat 400gr</td>
@@ -352,46 +459,4 @@
                     <td>57,000</td>
                     <td>10%</td>
                     <td>456,000</td>
-                </tr>
-                <tr>
-                    <td rowspan="4" colspan="3" style="
-">
-                        <h2>Keterangan</h2>
-                        <ol>
-                            <li>Barang yang sudah dibeli tidak bisa ditukar</li>
-                            <li>Pembayaran dengan BG/CEK dianggap lunas bila sudah dicairkan</li>
-                            <li>Tanda ** menunjukan bonus</li>
-                        </ol>
-
-                    </td>
-                    <td colspan="4">Subtotal</td>
-                    <td>Rp. 1.069.000</td>
-                </tr>
-                <tr>
-                    <td colspan="4">Diskon</td>
-                    <td>Rp. 0</td>
-                </tr>
-                <tr>
-                    <td colspan="4">Pajak</td>
-                    <td>Rp. 0</td>
-                </tr>
-                <tr>
-                    <td colspan="4">Total</td>
-                    <td>Rp. 1.069.000</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="keterangan-tambahan" style="
-    text-align: right;">
-            <p>* Harga termasuk pajak</p>
-        </div>
-
-
-    </main>
-
-
-
-
-</body>
-
-</html>
+                </tr> -->
