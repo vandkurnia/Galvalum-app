@@ -13,16 +13,14 @@ class Barang extends Model
     use SoftDeletes;
     protected $table = 'barangs';
     protected $primaryKey = 'id_barang';
-    protected $fillable = [
-        'hash_id_barang',
-        'nama_barang',
-        'harga_barang',
-        'stok',
-        'ukuran',
-        'id_pemasok',
-        'id_tipe_barang',
-    ];
+    protected $fillable = ['hash_id_barang', 'kode_barang', 'nama_barang', 'harga_barang', 'harga_barang_pemasok', 'stok', 'ukuran', 'id_pemasok', 'id_tipe_barang'];
 
+
+
+    public function bukuBesar()
+    {
+        return $this->belongsToMany(BukubesarModel::class, 'bukubesar_barang', 'id_barang', 'id_bukubesar');
+    }
     public function Pemasok()
     {
         return $this->belongsTo(PemasokBarang::class, 'id_pemasok');

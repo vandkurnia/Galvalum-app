@@ -11,14 +11,26 @@
             @endforeach
         </select>
     </div>
+
+    <div class="form-group">
+        <label for="kode_barang">Kode Barang</label>
+        <input id="kode_barang" type="text" class="form-control @error('kode_barang') is-invalid @enderror"
+            name="kode_barang" value="{{ $dataBarang['kode_barang'] }}" required>
+        @error('kode_barang')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
     <div class="form-group">
         <label for="nama_barang">Nama Barang:</label>
         <input type="text" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang"
-        value="{{ $dataBarang['nama_barang'] }}" required >
+            value="{{ $dataBarang['nama_barang'] }}" required>
     </div>
     <div class="form-group">
         <label for="ukuran">Ukuran Barang:</label>
-        <input type="text" class="form-control" name="ukuran" id="ukuran" placeholder="Ukuran Barang" value="{{ $dataBarang['ukuran'] }}" required>
+        <input type="text" class="form-control" name="ukuran" id="ukuran" placeholder="Ukuran Barang"
+            value="{{ $dataBarang['ukuran'] }}" required>
     </div>
     <div class="form-group">
         <label for="id_tipe_barang">Tipe Barang:</label>
@@ -31,14 +43,24 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="harga_barang">Harga Barang:</label>
+        <label for="harga_barang">Harga Jual:</label>
         <input type="number" class="form-control" name="harga_barang" id="harga_barang" placeholder="Harga Barang"
-        value="{{ $dataBarang['harga_barang'] }}" required>
+            value="{{(int) $dataBarang['harga_barang'] }}" required>
     </div>
-    <div class="form-group">
+    {{-- <div class="form-group">
+        <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
+        <input id="harga_barang_pemasok" type="text" class="form-control @error('harga_barang_pemasok') is-invalid @enderror" name="harga_barang_pemasok" value="{{ (int) $dataBarang['harga_barang_pemasok'] }}" required>
+        @error('harga_barang_pemasok')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div> --}}
+    {{-- <div class="form-group">
         <label for="stok">Jumlah Stok:</label>
-        <input type="number" class="form-control" name="stok" id="stok" placeholder="Jumlah Stok" value="{{ $dataBarang['stok'] }}" required>
-    </div>
+        <input type="number" class="form-control" name="stok" id="stok" placeholder="Jumlah Stok"
+            value="{{ $dataBarang['stok'] }}" required>
+    </div> --}}
 
 
 </form>

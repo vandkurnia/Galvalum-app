@@ -58,6 +58,7 @@
                                 <th>Tipe Barang</th>
                                 <th>Ukuran Barang</th>
                                 <th>Harga Barang</th>
+                                <th>Harga Supplier</th>
                                 <th>Jumlah Stok</th>
                                 <th>Aksi</th>
                             </tr>
@@ -85,7 +86,8 @@
                                     <td>{{ $databarang->nama_barang }}</td>
                                     <td>{{ $databarang->tipeBarang->nama_tipe }}</td>
                                     <td>{{ $databarang->ukuran }}</td>
-                                    <td>{{ $databarang->harga_barang }}</td>
+                                    <td>{{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
                                     <td>{{ $databarang->stok }}</td>
                                     <td>
                                         <button class="btn btn-primary btn-sm"
@@ -100,7 +102,7 @@
                                 </tr>
                             @endforeach
 
-                          
+
 
                         </tbody>
                     </table>
@@ -136,6 +138,18 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="kode_barang">Kode Barang</label>
+                        <input id="kode_barang" type="text"
+                            class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang"
+                            value="{{ old('kode_barang') }}" required>
+                        @error('kode_barang')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="nama_barang">Nama Barang:</label>
                         <input type="text" class="form-control" name="nama_barang" id="nama_barang"
                             placeholder="Nama Barang" required>
@@ -155,9 +169,18 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="harga_barang">Harga Barang:</label>
+                        <label for="harga_barang">Harga Jual:</label>
                         <input type="number" class="form-control" name="harga_barang" id="harga_barang"
                             placeholder="Harga Barang" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
+                        <input id="harga_barang_pemasok" type="text" class="form-control @error('harga_barang_pemasok') is-invalid @enderror" name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required>
+                        @error('harga_barang_pemasok')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="stok">Jumlah Stok:</label>

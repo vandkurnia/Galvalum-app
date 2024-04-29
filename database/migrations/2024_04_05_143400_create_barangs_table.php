@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('barangs', function (Blueprint $table) {
             $table->id('id_barang');
             $table->string('hash_id_barang')->unique();
+            $table->string('kode_barang')->unique(); // Tambahkan kolom kode_barang
             $table->string('nama_barang');
-            $table->decimal('harga_barang', 15, 2);
+            $table->decimal('harga_barang', 25, 2);
+            $table->decimal('harga_barang_pemasok', 25, 2);
             $table->integer('stok');
             $table->string('ukuran');
             $table->unsignedBigInteger('id_pemasok');

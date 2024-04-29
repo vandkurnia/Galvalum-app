@@ -39,6 +39,8 @@ class BukubesarModel extends Model
     {
         return $this->belongsToMany(NotaPembeli::class, 'nota_bukubesar', 'id_bukubesar', 'id_nota');
     }
-
-   
+    public function barang()
+    {
+        return $this->belongsToMany(Barang::class, 'bukubesar_barang', 'id_bukubesar', 'id_barang');
+    }
 }

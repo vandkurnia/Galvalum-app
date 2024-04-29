@@ -14,6 +14,7 @@ use League\Csv\Writer;
 use PDF;
 use App\Models\NotaPembeli;
 use Illuminate\Support\Facades\DB;
+
 class LaporanController extends Controller
 {
 
@@ -22,9 +23,9 @@ class LaporanController extends Controller
         $kategori = $request->input('kategori', 'modal tambahan');
         $dataAkunBayar = AkunBayarModel::all();
         $modal_tambahan = BukubesarModel::where('kategori', $kategori)->get();
-                            foreach ($modal_tambahan as $kk) {
-                                $kk->tanggal = Carbon::parse($kk->tanggal);
-                            }
+        foreach ($modal_tambahan as $kk) {
+            $kk->tanggal = Carbon::parse($kk->tanggal);
+        }
 
         $csv = view('csv.modal_tambahan', compact('modal_tambahan'))->render();
 
@@ -35,7 +36,7 @@ class LaporanController extends Controller
         ];
 
         // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
+        return Response::stream(function () use ($csv) {
             echo $csv;
         }, 200, $headers);
     }
@@ -59,7 +60,7 @@ class LaporanController extends Controller
         ];
 
         // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
+        return Response::stream(function () use ($csv) {
             echo $csv;
         }, 200, $headers);
     }
@@ -69,7 +70,7 @@ class LaporanController extends Controller
         $kategori = $request->input('kategori', 'modal tambahan');
         $dataAkunBayar = AkunBayarModel::all();
         $laporan_modal_tambahan = BukubesarModel::where('kategori', $kategori)
-                            ->get();
+            ->get();
 
         $pdf = PDF::loadView('pdf.invoice', compact('laporan_modal_tambahan'));
 
@@ -81,7 +82,7 @@ class LaporanController extends Controller
         $kategori = $request->input('kategori', 'pengeluaran');
         $dataAkunBayar = AkunBayarModel::all();
         $laporan_kas_keluar = BukubesarModel::where('kategori', $kategori)
-                            ->get();
+            ->get();
         // Ambil tanggal dari inputan form, jika tidak ada, gunakan null
 
         // Load view PDF dengan data yang sudah difilter
@@ -122,8 +123,51 @@ class LaporanController extends Controller
         return view('laporan.laporanomzet', compact('dataNotaPembelian'));
     }
 
-    public function laporanHutang()
+    public function laporanHutang(Request $request)
     {
+
+
+        $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
+
+        $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
+        // $dataNotaPembelian = DB::select(
+        //     '
+        //     SELECT 
+        //     barangs.hash_id_barang as id_barang,
+        //     barangs.nama_barang,
+        //     pembelis.no_hp_pembeli,
+        //     COUNT(pesanan_pembelis.id_pesanan) AS total_pembelian,
+        //     DATE(nota_pembelis.created_at) AS tanggal_pembelian,
+        //     nota_pembelis.total,
+        //     nota_pembelis.nominal_terbayar as terbayar,
+        //     nota_pembelis.tenggat_bayar as jatuh_tempo,
+        //     CASE
+        //         WHEN nota_pembelis.total > nota_pembelis.nominal_terbayar THEN "Belum Lunas"
+        //         WHEN nota_pembelis.total < nota_pembelis.nominal_terbayar THEN "Kelebihan"
+        //         ELSE "Lunas"
+        //     END AS status_bayar
+        // FROM 
+        //      barangs
+        // JOIN 
+        //     pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
+        // JOIN 
+        //     pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
+        // JOIN
+        //     nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
+        // JOIN
+        //     bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
+        // WHERE 
+        //     bukubesar.kategori = "transaksi" AND bukubesar.sub_kategori = "PIUTANG" 
+        // GROUP BY
+        //     nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar
+        
+  
+        //     ',
+        //     []
+        // );
+
+
+        // $dataNotaPembelian = json_decode(json_encode($dataNotaPembelian), true);
         // Logika untuk mengambil data dan menampilkan laporan hutang
         return view('laporan.laporanhutang');
     }
@@ -174,7 +218,7 @@ class LaporanController extends Controller
 
 
         $dataNotaPembelian = json_decode(json_encode($dataNotaPembelian), true);
-        
+
         // Logika untuk mengambil data dan menampilkan laporan piutang
         return view('laporan.laporanpiutang', compact('dataNotaPembelian'));
     }
@@ -185,8 +229,8 @@ class LaporanController extends Controller
         $kategori = $request->input('kategori', 'pengeluaran');
         $dataAkunBayar = AkunBayarModel::all();
         $laporan_kas_keluar = BukubesarModel::where('tanggal', $tanggal)
-        ->where('kategori', $kategori)
-        ->get();
+            ->where('kategori', $kategori)
+            ->get();
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
         return view('laporan.kaskeluar', compact('laporan_kas_keluar', 'dataAkunBayar'));
     }
@@ -248,7 +292,7 @@ class LaporanController extends Controller
         // dd("heheha");
 
         $laporan_kas_keluar = BukubesarModel::where('id_bukubesar', $id)->first();
-      
+
         $laporan_kas_keluar->update($request->all());
 
         return redirect()->route('laporan.kaskeluar')->with('success', 'Tipe barang berhasil diupdate');
@@ -274,11 +318,11 @@ class LaporanController extends Controller
         $dataAkunBayar = AkunBayarModel::all();
 
         $tanggal = $request->input('tanggal');
-        
 
-        $laporan_kas_keluar = KasKeluar::where('kategori', $kategori)->whereDate('tanggal','=',$tanggal)->get();
+
+        $laporan_kas_keluar = KasKeluar::where('kategori', $kategori)->whereDate('tanggal', '=', $tanggal)->get();
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
-        return view('laporan.kaskeluar',compact('laporan_kas_keluar', 'dataAkunBayar'));
+        return view('laporan.kaskeluar', compact('laporan_kas_keluar', 'dataAkunBayar'));
     }
 
     public function modalTambahan(Request $request)
@@ -321,7 +365,7 @@ class LaporanController extends Controller
         // dd("heheha");
 
         $laporan_modal_tambahan = BukubesarModel::where('id_bukubesar', $id)->first();
-      
+
         $laporan_modal_tambahan->update($request->all());
 
         return redirect()->route('laporan.modaltambahan')->with('success', 'Modal Tambahan berhasil diupdate');
@@ -344,15 +388,15 @@ class LaporanController extends Controller
     public function filterModal(Request $request)
     {
         $tanggal = $request->tanggal;
-        
-        $laporan_modal_tambahan = BukubesarModel::whereDate('tanggal','=',$tanggal)->get();
+
+        $laporan_modal_tambahan = BukubesarModel::whereDate('tanggal', '=', $tanggal)->get();
 
         $kategori = $request->input('kategori', 'modal tambahan');
         $dataAkunBayar = AkunBayarModel::all();
         $laporan_modal_tambahan = BukubesarModel::where('kategori', $kategori)->get();
 
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
-        return view('laporan.modal_tambahan',compact('laporan_modal_tambahan', 'kategori', 'dataAkunBayar'));
+        return view('laporan.modal_tambahan', compact('laporan_modal_tambahan', 'kategori', 'dataAkunBayar'));
     }
 
     public function simpanModal(Request $request)
@@ -385,31 +429,31 @@ class LaporanController extends Controller
     public function labaRugi(Request $request)
     {
         $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
-       /*  $tanggal = $request->input('tanggal', '2024-04-25'); */
+        /*  $tanggal = $request->input('tanggal', '2024-04-25'); */
         $kategori = $request->input('kategori', 'transaksi'); // Kategori default adalah 'transaksi'
         $kategori_modal_tambahan = $request->input('kategori', 'modal tambahan'); // Kategori default adalah 'transaksi'
         $kategori_pengeluaran = $request->input('kategori', 'pengeluaran'); // Kategori default adalah 'transaksi'
         $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
 
         $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori)
-                    ->get();
+            ->where('kategori', $kategori)
+            ->get();
 
         $modal_tambahan = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal_tambahan)
-                    ->get();
+            ->where('kategori', $kategori_modal_tambahan)
+            ->get();
 
         $keluar = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_pengeluaran)
-                    ->get();
+            ->where('kategori', $kategori_pengeluaran)
+            ->get();
 
         $modal = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+            ->get();
 
         $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+            ->get();
 
         $total_modal_darurat = $modal_darurat->sum('kredit');
         $total_modal_tambahan = $modal_tambahan->sum('debit');
@@ -443,24 +487,24 @@ class LaporanController extends Controller
         $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
 
         $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori)
-                    ->get();
+            ->where('kategori', $kategori)
+            ->get();
 
         $modal_tambahan = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal_tambahan)
-                    ->get();
+            ->where('kategori', $kategori_modal_tambahan)
+            ->get();
 
         $keluar = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_pengeluaran)
-                    ->get();
+            ->where('kategori', $kategori_pengeluaran)
+            ->get();
 
         $modal = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+            ->get();
 
         $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+            ->get();
 
         $total_modal_darurat = $modal_darurat->sum('kredit');
         $total_modal_tambahan = $modal_tambahan->sum('debit');
@@ -483,10 +527,10 @@ class LaporanController extends Controller
         $namaHari = array(
             'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
         );
-    
+
         // Mendapatkan indeks hari dari tanggal yang diberikan
         $indeksHari = date('w', strtotime($tanggal));
-    
+
         // Mendapatkan nama hari dalam bahasa Indonesia
         $hari = $namaHari[$indeksHari];
         $tanggal = strftime("%d %B %Y", strtotime($tanggal));
@@ -507,24 +551,24 @@ class LaporanController extends Controller
         $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
 
         $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori)
-                    ->get();
+            ->where('kategori', $kategori)
+            ->get();
 
         $modal_tambahan = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal_tambahan)
-                    ->get();
+            ->where('kategori', $kategori_modal_tambahan)
+            ->get();
 
         $keluar = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_pengeluaran)
-                    ->get();
+            ->where('kategori', $kategori_pengeluaran)
+            ->get();
 
         $modal = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('debit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('debit', '>', 0)
+            ->get();
 
         $modal_darurat = BukubesarModel::where('tanggal', $tanggal)
-                    ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
-                    ->get();
+            ->where('kategori', $kategori_modal)->where('kredit', '>', 0)
+            ->get();
 
         $total_modal_darurat = $modal_darurat->sum('kredit');
         $total_modal_tambahan = $modal_tambahan->sum('debit');
@@ -547,10 +591,10 @@ class LaporanController extends Controller
         $namaHari = array(
             'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
         );
-    
+
         // Mendapatkan indeks hari dari tanggal yang diberikan
         $indeksHari = date('w', strtotime($tanggal));
-    
+
         // Mendapatkan nama hari dalam bahasa Indonesia
         $hari = $namaHari[$indeksHari];
         $tanggal = strftime("%d %B %Y", strtotime($tanggal));
@@ -565,7 +609,7 @@ class LaporanController extends Controller
         ];
 
         // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
+        return Response::stream(function () use ($csv) {
             echo $csv;
         }, 200, $headers);
     }
