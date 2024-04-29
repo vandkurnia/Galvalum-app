@@ -64,7 +64,7 @@
     </style>
 </head>
 
-<body>
+<body onload="window.print()">
     <!-- Header kosongan -->
     <header>
         <div class="left-header">

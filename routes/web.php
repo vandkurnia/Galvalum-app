@@ -166,8 +166,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
     });
     Route::prefix('cetak')->group(function () {
-        Route::get('invoice-penjualan', [ControllerInvoinceCetak::class, 'print_invoice']);
-        Route::get('surat-jalan', [ControllerInvoinceCetak::class, 'print_suratJalan']);
+        Route::get('invoice-penjualan/{no_nota}', [ControllerInvoinceCetak::class, 'print_invoice'])->name('cetak.invoice');
+        Route::get('surat-jalan/{no_nota}', [ControllerInvoinceCetak::class, 'print_suratJalan'])->name('cetak.surat-jalan');
     });
 
 

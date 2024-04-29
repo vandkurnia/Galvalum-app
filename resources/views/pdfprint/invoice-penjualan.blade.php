@@ -195,7 +195,7 @@
     </style>
 </head>
 
-<body>
+<body onload="window.print()">
     <header>
         <div class="info-pembeli-dan-penjual">
             <div class="informasi-nota">
@@ -301,7 +301,7 @@
                 <div class="tanggal-nota" style="flex-grow: 1;">
                     <h2>Tanggal</h2>
                     <div class="isi-tanggal box-border-top">
-                        <p>{{ date('Y-m-d', strtotime($notaPembelian->Pembeli->created_at)) }}</p>
+                        <p> 14-Nov-15</p>
                     </div>
                 </div>
                 <div class="nomor-nota" style="flex-grow: 1;border-left: 1px solid black;">
@@ -360,9 +360,9 @@
                     <td>{{$index + 1}}</td>
                     <td>{{$data['item']}}</td>
                     <td>{{$data['deskripsi']}}</td>
-                    <td>{{$data['qty']}}</td>
-                    <td>{{$data['unit']}}</td>
-                    <td>{{$data['harga']}}</td>
+                    <td>{{(int) $data['qty']}}</td>
+                    <td>{{$data['pesanan']}}</td>
+                    <td>{{number_format($data['harga'], 0, ',', '.')}}</td>
                     <td>{{$data['disc']}}</td>
                     <td>{{$data['subtotal']}}</td>
                 </tr>
@@ -379,24 +379,19 @@
 
                     </td>
                     <td colspan="4">Subtotal Harga</td>
-                    <td>Rp{{$dataRincianBarang['subtotalHarga']}}</td>
+                    <td>Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.')}}</td>
                 </tr>
-                @php
-                    $no = 0;
-                    $harga = 0;
-                @endphp
-                @foreach ($dataPesanan as $pesanan)
                 <tr>
                     <td colspan="4">Diskon</td>
-                    <td>Rp{{$dataRincianBarang['diskon']}}</td>
+                    <td>Rp. {{number_format($dataRincianBarang['diskon'], 0, ',', '.')}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Pajak</td>
-                    <td>Rp{{$dataRincianBarang['pajak']}}</td>
+                    <td colspan="4">Pajak (%)</td>
+                    <td>{{ $dataRincianBarang['pajak'] . "%" }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Total</td>
-                    <td>Rp{{$dataRincianBarang['total']}}</td>
+                    <td>Rp. {{number_format($dataRincianBarang['total'], 0, ',', '.')}}</td>
                 </tr>
             </tbody>
         </table>

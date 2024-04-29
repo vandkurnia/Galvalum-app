@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                 
+
                     <table class="table table-bordered" id="dataTransaksi" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -60,7 +60,7 @@
                                     <td>{{ $notaPembeli['no_nota'] }}</td>
                                     <td>{{ $notaPembeli['pembeli']['no_hp_pembeli'] }}</td>
                                     <td>{{ $notaPembeli['pembeli']['nama_pembeli'] }}</td>
-                                
+
                                     <td>{{ $notaPembeli['total_pesanan'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>{{ date('H:i', strtotime($notaPembeli['created_at'])) }}</td>
@@ -69,14 +69,19 @@
                                     <td>{{ $notaPembeli['status_pembayaran'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>{{ $notaPembeli['metode_pembayaran'] }}</td>
-                                    <td><a href="{{ route('pemesanan.penjualanPDF', ['id' => $notaPembeli['id_nota']]) }}"
+                                    {{-- <td><a href="{{ route('pemesanan.penjualanPDF', ['id' => $notaPembeli['id_nota']]) }}"
                                             class="btn btn-info btn-sm">
                                             Penjualan</a>
-                                            <a href="{{ route('pemesanan.suratjalanPDF', ['id' => $notaPembeli['id_nota']]) }}"
+                                        <a href="{{ route('pemesanan.suratjalanPDF', ['id' => $notaPembeli['id_nota']]) }}"
                                             class="btn btn-primary btn-sm">
-                                            Surat Jalan</a></td>
+                                            Surat Jalan</a>
+                                    </td> --}}
                                     <td>
-                                        <a href="{{ route('retur.pembeli.add', ['id_nota' => $notaPembeli['id_nota']]) }}" class="btn btn-info btn-sm">Retur</a>
+                                        <button class="btn btn-warning" onclick="print('{{ route('cetak.invoice', ['no_nota' => $notaPembeli['no_nota']]) }}', '{{ route('cetak.surat-jalan',  ['no_nota' => $notaPembeli['no_nota']]) }}')"> <i class="fas fa-print"></i></button>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('retur.pembeli.add', ['id_nota' => $notaPembeli['id_nota']]) }}"
+                                            class="btn btn-info btn-sm">Retur</a>
                                         {{-- <button class="btn btn-info btn-sm p-2"
                                             onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli['id_nota']]) }}')"><i
                                                 class="fas fa-info-circle"></i></button> --}}
@@ -167,6 +172,17 @@
 @section('javascript-custom')
 
     <script>
+        function print(urlinvoice, urlsuratjalan) {
+            var w = 805;
+            var h = 502;
+            var left = (screen.width / 2) - (w / 2);
+            var top = (screen.height / 2) - (h / 2);
+
+            window.open(urlinvoice, 'invoice', 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+            window.open(urlsuratjalan, 'suratjalan ', 'width=' + w + ', height=' + h + ', top=' + top + ', left=' +
+                left);
+        }
+
         function funcInfoNota(url) {
 
             // Lakukan AJAX ke /user/
