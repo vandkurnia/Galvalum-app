@@ -55,14 +55,14 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Kas Keluar</h6>
-                <form method="GET" action="{{ route('laporan.filterKas') }}">
+                <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
                         <input type="date" id="tanggal" name="tanggal" class="form-control">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success">Filter</button>
-                        <a class="btn btn-info" href="{{ url('laporan/kas-keluar') }}">Refresh</a>
+                        <button onclick="updateTanggal()" class="btn btn-success">Filter</button>
+                        <a class="btn btn-info" onclick="refreshHariIni()" href="{{ url('laporan/kas-keluar') }}">Refresh</a>
                     </div>
                 </form>
             </div>
@@ -71,8 +71,8 @@
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahKasKeluar"><i
                             class="fa fa-plus"></i> Tambah Kas Keluar</button>
                     <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                        <a class="btn btn-danger float-right" href="{{ url('laporan/kas-pdf') }}"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
-                        <a class="btn btn-success float-right" href="{{ url('laporan/kas-csv') }}"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                        <a class="btn btn-danger float-right" onclick="cetakPDF()"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                        <a class="btn btn-success float-right" onclick="cetakCSV()"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -81,7 +81,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Nama Pengeluaran</th>
                                 <th>Deskripsi</th>
                                 <th>Jumlah Pengeluaran</th>
                                 <th>Aksi</th>
@@ -92,16 +91,15 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $lprks->tanggal }}</td>
-                                <td>{{ $lprks->nama_pengeluaran }}</td>
-                                <td>{{ $lprks->deskripsi }}</td>
-                                <td>{{ $lprks->jumlah_pengeluaran }}</td>
+                                <td>{{ $lprks->keterangan }}</td>
+                                <td>{{ $lprks->kredit }}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('laporan.editKas', ['id' => $lprks->id_kas_keluar]) }}')"><i
+                                            onclick="funcEditUser('{{ route('laporan.editKas', ['id' => $lprks->id_bukubesar]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
                                     <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('laporan.destroy', ['id' => $lprks->id_kas_keluar]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('laporan.destroy', ['id' => $lprks->id_bukubesar]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                 </td>
@@ -141,16 +139,20 @@
                 <form action="{{ route('laporan.simpankas') }}" id="formTambahUser" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="nama_tipe" class="form-label">Nama Pengeluaran</label>
-                        <input type="text" class="form-control" id="nama_pengeluaran" name="nama_pengeluaran" required>
+                        <label for="id_akunbayar">Akun Bayar</label>
+                        <select class="form-control" id="id_akunbayar" name="id_akunbayar">
+                            @foreach($dataAkunBayar as $akunBayar)
+                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="nama_tipe" class="form-label">Deskripsi</label>
-                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" required>
                     </div>
                     <div class="form-group">
-                        <label for="nama_tipe" class="form-label">Jumlah Pemgeluaran</label>
-                        <input type="text" class="form-control" id="jumlah_pengeluaran" name="jumlah_pengeluaran" required>
+                        <label for="nama_tipe" class="form-label">Jumlah Modal</label>
+                        <input type="text" class="form-control" id="kredit" name="kredit" required>
                     </div>
                     <div class="form-group">
                         <label for="nama_tipe" class="form-label">Tanggal</label>
@@ -222,7 +224,77 @@
 {{-- End of Modal Delete --}}
 
 @section('javascript-custom')
-   
+
+<script>
+    // Fungsi untuk mengambil tanggal dari input dan membuat URL untuk mencetak PDF dengan tanggal filter
+    function cetakPDF() {
+        var tanggal = document.getElementById('tanggal').value;
+        var url = "{{ url('laporan/kas-pdf') }}?tanggal=" + tanggal;
+        window.location.href = url;
+    }
+
+    function cetakCSV() {
+        var tanggal = document.getElementById('tanggal').value;
+        var url = "{{ url('laporan/kas-csv') }}?tanggal=" + tanggal;
+        window.location.href = url;
+    }
+</script>
+<script>
+    // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
+    function getHariIndonesia(day) {
+        const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+        return hari[day];
+    }
+
+    // Fungsi untuk mendapatkan nama bulan dalam bahasa Indonesia
+    function getBulanIndonesia(month) {
+        const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        return bulan[month];
+    }
+
+    // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
+    function getTanggal(tanggal) {
+        const bulan = getBulanIndonesia(tanggal.getMonth());
+        const tahun = tanggal.getFullYear();
+        return `${tanggal.getDate()} ${bulan} ${tahun}`;
+    }
+
+    // Fungsi untuk menampilkan hari dan tanggal di dalam elemen dengan id="tanggal-hari"
+    function tampilkanHariTanggal(tanggal) {
+        const hari = getHariIndonesia(tanggal.getDay());
+        const tanggalFormatted = getTanggal(tanggal);
+        const element = document.getElementById("tanggal-hari");
+        element.innerHTML = `${hari}, ${tanggalFormatted}`;
+    }
+
+    // Fungsi untuk memperbarui tanggal yang ingin ditampilkan berdasarkan nilai input
+    function updateTanggal() {
+        const tanggalInput = new Date(document.getElementById('tanggal').value);
+        sessionStorage.setItem('tanggalPilihan', tanggalInput); // Simpan tanggal yang dipilih di sessionStorage
+        tampilkanHariTanggal(tanggalInput);
+    }
+
+    // Fungsi untuk me-refresh halaman ke tanggal hari ini
+    function refreshHariIni() {
+        sessionStorage.removeItem('tanggalPilihan'); // Hapus data dari sessionStorage
+        location.reload(); // Me-refresh halaman
+    }
+
+    // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
+    window.onload = function() {
+        const tanggalHariIni = new Date();
+        const tanggalDariSessionStorage = sessionStorage.getItem('tanggalPilihan');
+
+        if (tanggalDariSessionStorage) {
+            const tanggalPilihan = new Date(tanggalDariSessionStorage);
+            document.getElementById('tanggal').valueAsDate = tanggalPilihan;
+            tampilkanHariTanggal(tanggalPilihan);
+        } else {
+            document.getElementById('tanggal').valueAsDate = tanggalHariIni;
+            tampilkanHariTanggal(tanggalHariIni);
+        }
+    };
+</script>
 
     <script>
         function funcTambahUser() {

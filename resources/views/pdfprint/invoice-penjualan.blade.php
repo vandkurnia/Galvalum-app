@@ -301,7 +301,7 @@
                 <div class="tanggal-nota" style="flex-grow: 1;">
                     <h2>Tanggal</h2>
                     <div class="isi-tanggal box-border-top">
-                        <p> 14-Nov-15</p>
+                        <p>{{ date('Y-m-d', strtotime($notaPembelian->Pembeli->created_at)) }}</p>
                     </div>
                 </div>
                 <div class="nomor-nota" style="flex-grow: 1;border-left: 1px solid black;">
@@ -381,6 +381,11 @@
                     <td colspan="4">Subtotal Harga</td>
                     <td>Rp{{$dataRincianBarang['subtotalHarga']}}</td>
                 </tr>
+                @php
+                    $no = 0;
+                    $harga = 0;
+                @endphp
+                @foreach ($dataPesanan as $pesanan)
                 <tr>
                     <td colspan="4">Diskon</td>
                     <td>Rp{{$dataRincianBarang['diskon']}}</td>

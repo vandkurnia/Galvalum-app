@@ -55,13 +55,13 @@
             <div class="card-header py-3">
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Modal Tambahan</h6>
-                <form method="GET" action="{{ route('laporan.filterModal') }}">
+                <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
                         <input type="date" id="tanggal" name="tanggal" class="form-control">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success">Filter</button>
+                        <button onclick="updateTanggal()" class="btn btn-success">Filter</button>
                         <a class="btn btn-info" href="{{ url('laporan/modal-tambahan') }}">Refresh</a>
                     </div>
                 </form>
@@ -81,7 +81,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Jenis Modal Tambahan</th>
                                 <th>Deskripsi</th>
                                 <th>Jumlah Modal</th>
                                 <th>Aksi</th>
@@ -92,16 +91,15 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $lpmdl->tanggal }}</td>
-                                <td>{{ $lpmdl->jenis_modal_tambahan }}</td>
-                                <td>{{ $lpmdl->deskripsi }}</td>
-                                <td>{{ $lpmdl->jumlah_modal }}</td>
+                                <td>{{ $lpmdl->keterangan }}</td>
+                                <td>{{ $lpmdl->debit }}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('laporan.editModal', ['id' => $lpmdl->id_modal_tambahan]) }}')"><i
+                                            onclick="funcEditUser('{{ route('laporan.editModal', ['id' => $lpmdl->id_bukubesar]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
                                     <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('laporan.modaldestroy', ['id' => $lpmdl->id_modal_tambahan]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('laporan.modaldestroy', ['id' => $lpmdl->id_bukubesar]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                 </td>
@@ -136,16 +134,20 @@
                 <form action="{{ route('laporan.simpanModal') }}" id="formTambahUser" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="nama_tipe" class="form-label">Jenis Modal Tambahan</label>
-                        <input type="text" class="form-control" id="jenis_modal_tambahan" name="jenis_modal_tambahan" required>
+                        <label for="id_akunbayar">Akun Bayar</label>
+                        <select class="form-control" id="id_akunbayar" name="id_akunbayar">
+                            @foreach($dataAkunBayar as $akunBayar)
+                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="nama_tipe" class="form-label">Deskripsi</label>
-                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" required>
                     </div>
                     <div class="form-group">
                         <label for="nama_tipe" class="form-label">Jumlah Modal</label>
-                        <input type="text" class="form-control" id="jumlah_modal" name="jumlah_modal" required>
+                        <input type="text" class="form-control" id="debit" name="debit" required>
                     </div>
                     <div class="form-group">
                         <label for="nama_tipe" class="form-label">Tanggal</label>
@@ -217,7 +219,65 @@
 
 
 @section('javascript-custom')
+<script>
+    // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
+    function getHariIndonesia(day) {
+        const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+        return hari[day];
+    }
+
+    // Fungsi untuk mendapatkan nama bulan dalam bahasa Indonesia
+    function getBulanIndonesia(month) {
+        const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+        return bulan[month];
+    }
+
+    // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
+    function getTanggal(tanggal) {
+        const bulan = getBulanIndonesia(tanggal.getMonth());
+        const tahun = tanggal.getFullYear();
+        return `${tanggal.getDate()} ${bulan} ${tahun}`;
+    }
+
+    // Fungsi untuk menampilkan hari dan tanggal di dalam elemen dengan id="tanggal-hari"
+    function tampilkanHariTanggal(tanggal) {
+        const hari = getHariIndonesia(tanggal.getDay());
+        const tanggalFormatted = getTanggal(tanggal);
+        const element = document.getElementById("tanggal-hari");
+        element.innerHTML = `${hari}, ${tanggalFormatted}`;
+    }
+
+    // Fungsi untuk memperbarui tanggal yang ingin ditampilkan berdasarkan nilai input
+    function updateTanggal() {
+        const tanggalInput = new Date(document.getElementById('tanggal').value);
+        sessionStorage.setItem('tanggalPilihan', tanggalInput); // Simpan tanggal yang dipilih di sessionStorage
+        tampilkanHariTanggal(tanggalInput);
+    }
+
+    // Fungsi untuk me-refresh halaman ke tanggal hari ini
+    function refreshHariIni() {
+        sessionStorage.removeItem('tanggalPilihan'); // Hapus data dari sessionStorage
+        location.reload(); // Me-refresh halaman
+    }
+
+    // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
+    window.onload = function() {
+        const tanggalHariIni = new Date();
+        const tanggalDariSessionStorage = sessionStorage.getItem('tanggalPilihan');
+
+        if (tanggalDariSessionStorage) {
+            const tanggalPilihan = new Date(tanggalDariSessionStorage);
+            document.getElementById('tanggal').valueAsDate = tanggalPilihan;
+            tampilkanHariTanggal(tanggalPilihan);
+        } else {
+            document.getElementById('tanggal').valueAsDate = tanggalHariIni;
+            tampilkanHariTanggal(tanggalHariIni);
+        }
+    };
+</script>
+
     <script>
+
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');
             formtambah.submit();

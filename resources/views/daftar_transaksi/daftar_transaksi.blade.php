@@ -69,7 +69,12 @@
                                     <td>{{ $notaPembeli['status_pembayaran'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>{{ $notaPembeli['metode_pembayaran'] }}</td>
-                                    <td>Cetak##</td>
+                                    <td><a href="{{ route('pemesanan.penjualanPDF', ['id' => $notaPembeli['id_nota']]) }}"
+                                            class="btn btn-info btn-sm">
+                                            Penjualan</a>
+                                            <a href="{{ route('pemesanan.suratjalanPDF', ['id' => $notaPembeli['id_nota']]) }}"
+                                            class="btn btn-primary btn-sm">
+                                            Surat Jalan</a></td>
                                     <td>
                                         <a href="{{ route('retur.pembeli.add', ['id_nota' => $notaPembeli['id_nota']]) }}" class="btn btn-info btn-sm">Retur</a>
                                         {{-- <button class="btn btn-info btn-sm p-2"

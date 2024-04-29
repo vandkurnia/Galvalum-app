@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\NotaPembeli;
 use App\Models\PesananPembeli;
+use App\Models\DiskonModel;
 use Illuminate\Http\Request;
+use PDF;
 
 class DaftarTransaksiController extends Controller
 {
@@ -46,5 +48,27 @@ class DaftarTransaksiController extends Controller
             'message' => 'Berhasil menampilkan data',
             'data' => view('daftar_transaksi.info', compact('dataBarangNotaPembeli'))->render()
         ]);
+    }
+
+    public function penjualanPDF(Request $request, $id)
+    {
+        $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli', 'PesananPembeli')->first();
+        $dataPesanan = PesananPembeli::where('id_nota', $notaPembelian->id_nota)->with('Barang', 'Barang.TipeBarang')->get();
+        $dataDiskon = DiskonModel::all();
+
+        $pdf = PDF::loadView('pdfprint.invoice-penjualan', compact('notaPembelian', 'dataPesanan', 'dataDiskon'));
+
+        return $pdf->download('Penjualan.pdf');
+    }
+
+    public function suratjalanPDF(Request $request, $id)
+    {
+        $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli', 'PesananPembeli')->first();
+        $dataPesanan = PesananPembeli::where('id_nota', $notaPembelian->id_nota)->with('Barang', 'Barang.TipeBarang')->get();
+        $dataDiskon = DiskonModel::all();
+
+        $pdf = PDF::loadView('pdfprint.surat-jalan', compact('notaPembelian', 'dataPesanan', 'dataDiskon'));
+
+        return $pdf->download('Surat Jalan.pdf');
     }
 }

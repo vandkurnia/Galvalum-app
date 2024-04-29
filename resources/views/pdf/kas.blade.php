@@ -12,7 +12,6 @@
         <tr>
             <th>No</th>
             <th>Tanggal</th>
-            <th>Nama Pengeluaran</th>
             <th>Deskripsi</th>
             <th>Jumlah Pengeluaran</th>
         </tr>
@@ -20,9 +19,8 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $s->tanggal }}</td>
-            <td>{{ $s->nama_pengeluaran }}</td>
-            <td>{{ $s->deskripsi }}</td>
-            <td>{{ $s->jumlah_pengeluaran }}</td>
+            <td>{{ $s->keterangan }}</td>
+            <td>{{ $s->kredit }}</td>
         </tr>
         @endforeach
     </table>

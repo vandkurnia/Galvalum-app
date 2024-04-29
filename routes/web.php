@@ -109,6 +109,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('laporan_penjualan')->group(function () {
         Route::get('/', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
+        Route::get('/penjualan/{id}', [DaftarTransaksiController::class, 'penjualanPDF'])->name('pemesanan.penjualanPDF');
+        Route::get('/surat-jalan/{id}', [DaftarTransaksiController::class, 'suratjalanPDF'])->name('pemesanan.suratjalanPDF');
         Route::get('/info/{id}', [DaftarTransaksiController::class, 'daftarBarangPesanan'])->name('pemesanan.infobarang');
     });
     Route::prefix('retur')->group(function () {

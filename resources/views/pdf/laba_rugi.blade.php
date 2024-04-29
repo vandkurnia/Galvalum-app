@@ -51,14 +51,14 @@
         </thead>
         <tbody>
 
-            @foreach($penjualan_kotor as $pk)
+            
             <tr class="topic">
                 <th style="text-align: left;">PENJUALAN KOTOR</th>
                 <td></td>
 
-                <td><center>Rp {{ number_format($pk->debit, 0, ',', '.') }}</center></td>
+                <td><center>Rp {{ number_format($total_penjualan_kotor, 0, ',', '.') }}</center></td>
             </tr>
-            @endforeach
+            
             @foreach($modal as $m)
             <tr>
                 <td>MODAL</td>
@@ -77,17 +77,17 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach($tambahan_modal as $th)
+            @foreach($modal_tambahan as $th)
             <tr>
-                <td>(+) {{ $th->jenis_modal_tambahan }}</td>
-                <td>Rp {{ number_format($th->jumlah_modal, 0, ',', '.') }} (+)</td>
+                <td>(+) {{ $th->keterangan }}</td>
+                <td>Rp {{ number_format($th->debit, 0, ',', '.') }} (+)</td>
                 <td></td>
             </tr>
             @endforeach
             <tr>
                 <th style="text-align: left;">JUMLAH TAMBAHAN MODAL</th>
                 <td></td>
-                <td><center>Rp {{ number_format($jumlah_tambahan_modal, 0, ',', '.') }} (+)</center></td>
+                <td><center>Rp {{ number_format($total_modal_tambahan, 0, ',', '.') }} (+)</center></td>
             </tr>
             <tr class="topic">
                 <th style="text-align: left;">LABA KOTOR</th>
@@ -99,17 +99,17 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach($pengeluaran as $p)
+            @foreach($keluar as $p)
             <tr>
-                <td>(-) {{$p->nama_pengeluaran}}</td>
-                <td>Rp {{ number_format($p->jumlah_pengeluaran, 0, ',', '.') }} (+)</td>
+                <td>(-) {{$p->keterangan}}</td>
+                <td>Rp {{ number_format($p->kredit, 0, ',', '.') }} (+)</td>
                 <td></td>
             </tr>
             @endforeach
             <tr>
                 <th style="text-align: left;">JUMLAH PENGURANGAN/PENGELUARAN</th>
                 <th></th>
-                <th>Rp {{ number_format($total_pengeluaran, 0, ',', '.') }} (-)</th>
+                <th>Rp {{ number_format($total_keluar, 0, ',', '.') }} (-)</th>
             </tr>
             <tr class="topic">
                 <th style="text-align: left;">LABA BERSIH</th>
