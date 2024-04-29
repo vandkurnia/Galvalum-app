@@ -33,7 +33,9 @@ class PembelianController extends Controller
             'pesanan' => 'required',
             'no_nota' => 'required',
             'nominal_terbayar' => 'required',
-            'tenggat_bayar' => 'required'
+            'tenggat_bayar' => 'required',
+            'pajak' => 'required',
+            'diskon' => 'required'
 
 
         ]);
@@ -137,9 +139,13 @@ class PembelianController extends Controller
         $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
 
         $updateNotaPembeli->sub_total = $subTotal;
-        $updateNotaPembeli->diskon = $totalDiskon;
+        $updateNotaPembeli->diskon = $request->get('diskon');
         $updateNotaPembeli->pajak = $request->get('pajak');
-        $updateNotaPembeli->total = ($updateNotaPembeli->sub_total  - $updateNotaPembeli->diskon) - $updateNotaPembeli->pajak;
+
+        // Perhitungan Pajak
+        $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
+        $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+        $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
         $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
 
         if ($updateNotaPembeli->status_pembayaran == 'lunas') {

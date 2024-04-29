@@ -25,7 +25,7 @@ class ReturPembeliController extends Controller
         $dataPembeli = Pembeli::all();
         return view('retur.pembeli.edit', compact('dataReturPembeli', 'dataPembeli'));
     }
-    public function add($id_pesanan)
+    public function add($id_nota)
     {
         $lastId = ReturPembeliModel::max('id_retur_pembeli');
         $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
@@ -35,26 +35,24 @@ class ReturPembeliController extends Controller
 
 
         $dataDiskon = DiskonModel::all();
-        $dataPesanan = PesananPembeli::where('id_nota','1')->with('Barang', 'Barang.TipeBarang')->get();
-        $notaPembelian = NotaPembeli::where('id_nota', '1')->with('Pembeli', 'PesananPembeli')->first();
-        return view('retur.pembeli.add', compact('id_pesanan', 'dataPembeli', 'noReturPembeli', 'dataDiskon', 'dataPesanan', 'notaPembelian'));
+        $dataPesanan = PesananPembeli::where('id_nota',$id_nota)->with('Barang', 'Barang.TipeBarang')->get();
+        $notaPembelian = NotaPembeli::where('id_nota', $id_nota)->with('Pembeli', 'PesananPembeli')->first();
+        return view('retur.pembeli.add', compact( 'dataPembeli', 'noReturPembeli', 'dataDiskon', 'dataPesanan', 'notaPembelian'));
     }
     public function store(Request $request)
     {
 
         $request->validate([
+            'id_nota' => 'required',
             'no_retur_pembeli' => 'required',
-            'faktur_retur_pembeli' => 'required',
             'tanggal_retur_pembeli' => 'required',
             'bukti_retur_pembeli' => 'required',
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
-            'total_nilai_retur' => 'required|numeric',
-            'pengembalian_data' => 'nullable|string',
-            'kekurangan' => 'nullable|string',
             'status' => 'required|in:Belum Selesai,Selesai',
-            'id_pembeli' => 'required|exists:pembelis,id_pembeli',
         ]);
 
+
+        $notaPembelian = NotaPembeli::find($request->id_nota);
         $dataReturPembeli = new ReturPembeliModel();
         $dataReturPembeli->no_retur_pembeli = $request->no_retur_pembeli;
         $dataReturPembeli->faktur_retur_pembeli = $request->faktur_retur_pembeli;

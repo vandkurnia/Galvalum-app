@@ -124,7 +124,7 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('pembeli')->group(function () {
 
-            Route::get('/add/{id_pesanan}', [ReturPembeliController::class, 'add'])->name('retur.pembeli.add');
+            Route::get('/add/{id_nota}', [ReturPembeliController::class, 'add'])->name('retur.pembeli.add');
             Route::post('/', [ReturPembeliController::class, 'store'])->name('retur.pembeli.store');
             // Route::get('/', [ReturPembeliController::class, 'index']);
             Route::get('/edit/{id_retur}', [ReturPembeliController::class, 'edit'])->name('retur.pembeli.edit');

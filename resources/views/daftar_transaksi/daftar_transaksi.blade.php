@@ -39,7 +39,7 @@
                                 <th>Jumlah Pembelian</th>
                                 <th>Tanggal Beli</th>
                                 <th>Jam</th>
-                                <th>Jenis Pelanggan</th>
+                                {{-- <th>Jenis Pelanggan</th> --}}
                                 <th>Total</th>
                                 <th>Lunas</th>
                                 <th>Waktu Payment</th>
@@ -64,16 +64,17 @@
                                     <td>{{ $notaPembeli['total_pesanan'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>{{ date('H:i', strtotime($notaPembeli['created_at'])) }}</td>
-                                    <td>Unknown</td>
+                                    {{-- <td>Unknown</td> --}}
                                     <td>{{ $notaPembeli['total'] }}</td>
                                     <td>{{ $notaPembeli['status_pembayaran'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembeli['created_at'])) }}</td>
                                     <td>{{ $notaPembeli['metode_pembayaran'] }}</td>
                                     <td>Cetak##</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm p-2"
+                                        <a href="{{ route('retur.pembeli.add', ['id_nota' => $notaPembeli['id_nota']]) }}" class="btn btn-info btn-sm">Retur</a>
+                                        {{-- <button class="btn btn-info btn-sm p-2"
                                             onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli['id_nota']]) }}')"><i
-                                                class="fas fa-info-circle"></i></button>
+                                                class="fas fa-info-circle"></i></button> --}}
 
 
                                         {{-- <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"

@@ -622,9 +622,9 @@
             let total = tabletfoot.querySelector('#total');
 
             let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
-            let nilaiPajak = nilaiTotal * ( parseInt(pajak.value) / 100);
+            let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
 
-       
+
             total.value = nilaiTotal + nilaiPajak;
 
 
@@ -733,6 +733,15 @@
             inputTotalPajakHidden.value = totalPajak
                 .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalPajak'
             formPembeli.appendChild(inputTotalPajakHidden); // Menambahkan input tersembunyi ke dalam form
+
+            // Menambahkan pajak ke form
+            const TotalDiskon = document.querySelector('#diskonTotal');
+            const inputTotalDiskonHidden = document.createElement('input');
+            inputTotalDiskonHidden.type = 'hidden';
+            inputTotalDiskonHidden.name = 'diskon'; // Menetapkan nama input ke 'TotalDiskon'
+            inputTotalDiskonHidden.value = TotalDiskon
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'TotalDiskon'
+            formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
 
