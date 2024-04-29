@@ -120,20 +120,28 @@ class CicilanPiutangController extends Controller
 
         // dd("heheha");
 
-        $totalTerbayar = 0;
+
 
         $notaBukuBesar = NotaPembeli::with('bukuBesar')->where('id_nota', $id_nota)->first();
 
-        foreach ($notaBukuBesar->bukuBesar as $dtnotaBukuBesar) {
+
+
+
+        DB::beginTransaction();
+
+       
+        $bukuBesar = BukubesarModel::find($id_bukubesar);
+        $bukuBesar->debit = $request->get('nominal');
+        $bukuBesar->save();
+
+        // Cek total bayar
+        $totalTerbayar = 0;
+        $notaBukuBesarUpdate = NotaPembeli::with('bukuBesar')->where('id_nota', $id_nota)->first();
+        foreach ($notaBukuBesarUpdate->bukuBesar as $dtnotaBukuBesar) {
 
             $totalTerbayar += $dtnotaBukuBesar->debit;
         }
 
-
-        DB::beginTransaction();
-        $bukuBesar = BukubesarModel::find($id_bukubesar);
-        $bukuBesar->debit = $request->get('nominal');
-        $bukuBesar->save();
 
 
         if ($totalTerbayar > $notaBukuBesar->total) {
@@ -145,10 +153,10 @@ class CicilanPiutangController extends Controller
 
         $updateNotaPembelian1->save();
 
-        $this->cekLunasAtauHutang($id_nota);
+
         DB::commit();
 
-
+        $this->cekLunasAtauHutang($id_nota);
         return redirect()->route('cicilan.index', ['id_nota' => $id_nota])->with('success', 'Cicilan piutang berhasil diupdate');
     }
 

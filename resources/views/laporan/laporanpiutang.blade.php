@@ -88,9 +88,9 @@
                                     <td>{{ $notaPembelian['total_pembelian'] }}</td>
                                     <td>{{ 'Unknown' }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
-                                    <td>{{ $notaPembelian['total'] }}</td>
-                                    <td>{{ $notaPembelian['terbayar'] }}</td>
-                                    <td>{{ $notaPembelian['total'] - $notaPembelian['terbayar'] }}</td>
+                                    <td>{{ number_format($notaPembelian['total'], 0,',', '.')}}</td>
+                                    <td>{{ number_format($notaPembelian['terbayar'], 0,',', '.') }}</td>
+                                    <td>{{number_format(($notaPembelian['total'] - $notaPembelian['terbayar'] ), 0,',', '.') }}</td>
                                     <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'])) }}</td>
                                     <td>
                                         @if ($notaPembelian['status_bayar'] == 'Lunas')
