@@ -22,6 +22,10 @@ return new class extends Migration
             $table->decimal('harga_barang_pemasok', 25, 2);
             $table->integer('stok');
             $table->string('ukuran');
+            $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
+            $table->decimal('total', 25, 2);
+            $table->decimal('nominal_terbayar', 10, 2)->default(0);
+            $table->date('tenggat_bayar')->nullable();
             $table->unsignedBigInteger('id_pemasok');
             $table->unsignedBigInteger('id_tipe_barang');
             $table->timestamps();

@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    
+
 
 @endsection
 
@@ -82,21 +82,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Supplier A</td>
-                                <td>Barang A</td>
-                                <td>$100</td>
-                                <td>2024-05-01</td>
-                                <td>$100</td>
-                                <td>$50</td>
-                                <td>$50</td>
-                                <td>2024-06-01</td>
-                                <td><span class="badge badge-warning">Belum Lunas</span></td>
-                                <td>Unpaid</td>
-                                <td><button class="btn btn-primary">Update</button></td>
-                            </tr>
-                            <tr>
+                            @foreach ($dataLaporanHutang as $laporan)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $laporan['nama_pemasok'] }}</td>
+                                    <td>{{ $laporan['nama_barang'] }}</td>
+                                    <td>{{ $laporan['total_pesanan'] }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok'])) }}</td>
+                                    <td>{{ (int) $laporan['harga_bayar'] }}</td>
+                                    <td>{{ (int) $laporan['jumlah_terbayar'] }}</td>
+                                    <td>{{ $laporan['harga_bayar'] - $laporan['jumlah_terbayar'] }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'])) }}</td>
+                                    <td><span class="badge badge-warning">Belum Lunas</span></td>
+                                    <td>Unpaid</td>
+                                    <td><a href="{{ route('cicilan.hutang.index', ['id_barang' => $laporan['id_barang']]) }}"
+                                            class="btn btn-primary">Update cicilan</a></td>
+                                </tr>
+                            @endforeach
+
+                            {{-- <tr>
                                 <td>2</td>
                                 <td>Supplier B</td>
                                 <td>Barang B</td>
@@ -109,7 +113,7 @@
                                 <td><span class="badge badge-success">Lunas</span></td>
                                 <td>Paid</td>
                                 <td><button class="btn btn-primary">Update</button></td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

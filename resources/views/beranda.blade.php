@@ -126,7 +126,7 @@
                     <script>
                         document.getElementById('jenis_pembelian').addEventListener('change', function() {
                             var hargaKhususInput = document.getElementById('harga_khusus_input');
-                            if (this.value === 'reseller' || this.value === 'potongan') {
+                            if (this.value === 'aplicator' || this.value === 'potongan') {
                                 hargaKhususInput.style.display = 'block';
                                 document.getElementById('harga_khusus').setAttribute('required', 'required');
 

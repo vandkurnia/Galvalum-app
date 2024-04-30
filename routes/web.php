@@ -6,6 +6,7 @@ use App\Http\Controllers\BukubesarController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\CicilanPiutangController;
 use App\Http\Controllers\Cetak\ControllerInvoinceCetak;
+use App\Http\Controllers\CicilanHutangController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
@@ -178,6 +179,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
         Route::put('/update/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
         Route::delete('/hapus/{id_bukubesar}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
+    });
+    Route::prefix('cicilanhutang')->name('')->group(function () {
+        Route::get('/{id_barang}', [CicilanHutangController::class, 'index' ])->name('cicilan.hutang.index');
+        Route::get('/edit/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'edit'])->name('cicilan.hutang.edit');
+        Route::post('/tambah', [CicilanHutangController::class, 'store'])->name('cicilan.hutang.store');
+        Route::put('/update/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'update'])->name('cicilan.hutang.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/hapus/{id_bukubesar}/{id_barang}', [CicilanHutangController::class, 'destroy'])->name('cicilan.hutang.destroy');
     });
     Route::prefix('laporan')->group(function () {
 

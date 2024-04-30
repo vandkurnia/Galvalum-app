@@ -130,46 +130,40 @@ class LaporanController extends Controller
         $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
 
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
-        // $dataNotaPembelian = DB::select(
-        //     '
-        //     SELECT 
-        //     barangs.hash_id_barang as id_barang,
-        //     barangs.nama_barang,
-        //     pembelis.no_hp_pembeli,
-        //     COUNT(pesanan_pembelis.id_pesanan) AS total_pembelian,
-        //     DATE(nota_pembelis.created_at) AS tanggal_pembelian,
-        //     nota_pembelis.total,
-        //     nota_pembelis.nominal_terbayar as terbayar,
-        //     nota_pembelis.tenggat_bayar as jatuh_tempo,
-        //     CASE
-        //         WHEN nota_pembelis.total > nota_pembelis.nominal_terbayar THEN "Belum Lunas"
-        //         WHEN nota_pembelis.total < nota_pembelis.nominal_terbayar THEN "Kelebihan"
-        //         ELSE "Lunas"
-        //     END AS status_bayar
-        // FROM 
-        //      barangs
-        // JOIN 
-        //     pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
-        // JOIN 
-        //     pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
-        // JOIN
-        //     nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
-        // JOIN
-        //     bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
-        // WHERE 
-        //     bukubesar.kategori = "transaksi" AND bukubesar.sub_kategori = "PIUTANG" 
-        // GROUP BY
-        //     nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar
+        $dataLaporanHutang = DB::select(
+            '
+            SELECT
+                barangs.hash_id_barang as id_barang,
+                pemasok_barangs.nama_pemasok,
+                barangs.nama_barang,
+                barangs.stok as total_pesanan,
+                pemasok_barangs.created_at as tanggal_stok,
+                SUM(bukubesar.kredit) as harga_bayar,
+                SUM(bukubesar.debit) as jumlah_terbayar,
+                barangs.tenggat_bayar as jatuh_tempo,
+                barangs.status_pembayaran
+            FROM
+                `barangs`
+            JOIN
+                pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
+            JOIN
+                bukubesar_barang ON bukubesar_barang.id_barang = barangs.id_barang
+            JOIN
+                bukubesar ON bukubesar.id_bukubesar = bukubesar_barang.id_bukubesar
+            WHERE
+                bukubesar.tanggal = ?
+            GROUP BY
+                barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang,barangs.stok, pemasok_barangs.created_at, barangs.tenggat_bayar, barangs.status_pembayaran; -- Anda dapat mengganti kolom ini sesuai kebutuhan
+            ',
+            [$tanggalSaatIni]
+        );
         
-  
-        //     ',
-        //     []
-        // );
-
-
-        // $dataNotaPembelian = json_decode(json_encode($dataNotaPembelian), true);
-        // Logika untuk mengambil data dan menampilkan laporan hutang
-        return view('laporan.laporanhutang');
+        // Mengubah hasil query menjadi array
+        $dataLaporanHutangArray = collect($dataLaporanHutang)->map(function ($item) {
+            return (array) $item;
+        })->toArray();
+        
+        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray]);
     }
 
     public function laporanPiutang()

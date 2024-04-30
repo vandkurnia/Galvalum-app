@@ -117,7 +117,7 @@
 {{-- Modal Tambah User --}}
 <div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
@@ -128,65 +128,96 @@
             <div class="modal-body">
                 <form action="{{ route('stok.store') }}" id="formTambahUser" method="POST">
                     @csrf
-                    <div class="form-group">
-                        <label for="pemasok">Pemasok:</label>
-                        <select class="form-control" id="pemasok" name="id_pemasok" required>
-                            @foreach ($dataPemasok as $pemasok)
-                                <option value="{{ $pemasok['id_pemasok'] }}">
-                                    {{ $pemasok['nama_pemasok'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="kode_barang">Kode Barang</label>
-                        <input id="kode_barang" type="text"
-                            class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang"
-                            value="{{ old('kode_barang') }}" required>
-                        @error('kode_barang')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pemasok">Pemasok:</label>
+                                <select class="form-control" id="pemasok" name="id_pemasok" required>
+                                    @foreach ($dataPemasok as $pemasok)
+                                        <option value="{{ $pemasok['id_pemasok'] }}">
+                                            {{ $pemasok['nama_pemasok'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="kode_barang">Kode Barang</label>
+                                <input id="kode_barang" type="text"
+                                    class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang"
+                                    value="{{ old('kode_barang') }}" required>
+                                @error('kode_barang')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nama_barang">Nama Barang:</label>
+                                <input type="text" class="form-control" name="nama_barang" id="nama_barang"
+                                    placeholder="Nama Barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ukuran">Ukuran Barang:</label>
+                                <input type="text" class="form-control" name="ukuran" id="ukuran"
+                                    placeholder="Ukuran Barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_tipe_barang">Tipe Barang:</label>
+                                <select class="form-control" id="id_tipe_barang" name="id_tipe_barang" required>
+                                    @foreach ($dataTipeBarang as $tipeBarang)
+                                        <option value="{{ $tipeBarang['id_tipe_barang'] }}">
+                                            {{ $tipeBarang['nama_tipe'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="harga_barang">Harga Jual:</label>
+                                <input type="number" class="form-control" name="harga_barang" id="harga_barang"
+                                    placeholder="Harga Barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
+                                <input id="harga_barang_pemasok" type="text"
+                                    class="form-control @error('harga_barang_pemasok') is-invalid @enderror"
+                                    name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required>
+                                @error('harga_barang_pemasok')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stok">Jumlah Stok:</label>
+                                <input type="number" class="form-control" name="stok" id="stok"
+                                    placeholder="Jumlah Stok" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="statusPembayaran">Status Pembayaran:</label>
+                                <select class="form-control" name="status_pembelian" id="statusPembayaran"
+                                    required="">
+
+                                    <option value="lunas">Lunas</option>
+                                    <option value="hutang">Hutang</option>
+                                </select>
+                            </div>
+                            <div id="formCicilan" style="display: none;">
+                                <div class="form-group">
+                                    <label for="nominalTerbayar">Nominal Terbayar:</label>
+                                    <input type="text" class="form-control" name="nominal_terbayar"
+                                        id="nominalTerbayar" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                                    <input type="date" class="form-control" name="tenggat_bayar"
+                                        id="tenggatBayar" value="2024-04-30">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="nama_barang">Nama Barang:</label>
-                        <input type="text" class="form-control" name="nama_barang" id="nama_barang"
-                            placeholder="Nama Barang" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="ukuran">Ukuran Barang:</label>
-                        <input type="text" class="form-control" name="ukuran" id="ukuran"
-                            placeholder="Ukuran Barang" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_tipe_barang">Tipe Barang:</label>
-                        <select class="form-control" id="id_tipe_barang" name="id_tipe_barang" required>
-                            @foreach ($dataTipeBarang as $tipeBarang)
-                                <option value="{{ $tipeBarang['id_tipe_barang'] }}">
-                                    {{ $tipeBarang['nama_tipe'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="harga_barang">Harga Jual:</label>
-                        <input type="number" class="form-control" name="harga_barang" id="harga_barang"
-                            placeholder="Harga Barang" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
-                        <input id="harga_barang_pemasok" type="text" class="form-control @error('harga_barang_pemasok') is-invalid @enderror" name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required>
-                        @error('harga_barang_pemasok')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="stok">Jumlah Stok:</label>
-                        <input type="number" class="form-control" name="stok" id="stok"
-                            placeholder="Jumlah Stok" required>
-                    </div>
+
 
                 </form>
             </div>
@@ -299,6 +330,16 @@
     </div>
 </div>
 @section('javascript-custom')
+    <script>
+        document.getElementById('statusPembayaran').addEventListener('change', function() {
+            var formCicilan = document.getElementById('formCicilan');
+            if (this.value === 'hutang') {
+                formCicilan.style.display = 'block';
+            } else {
+                formCicilan.style.display = 'none';
+            }
+        });
+    </script>
     <script>
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');

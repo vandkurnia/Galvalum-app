@@ -86,7 +86,7 @@
                                     <td>{{ $notaPembelian['no_hp_pembeli'] }}</td>
                                     {{-- <td>{{ "Barang Pembelian" }}</td> --}}
                                     <td>{{ $notaPembelian['total_pembelian'] }}</td>
-                                    <td>{{ 'Unknown' }}</td>
+                                    <td>{{ $notaPembelian['jenis_pelanggan'] }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
                                     <td>{{ number_format($notaPembelian['total'], 0,',', '.')}}</td>
                                     <td>{{ number_format($notaPembelian['terbayar'], 0,',', '.') }}</td>

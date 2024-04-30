@@ -73,6 +73,15 @@ class StokController extends Controller
         $barang->ukuran = $request->ukuran;
         $barang->id_pemasok = $request->id_pemasok;
         $barang->id_tipe_barang = $request->id_tipe_barang;
+        $barang->total = $barang->harga_barang_pemasok * $barang->stok;
+
+        if ($barang->status_pembayaran == 'lunas') {
+            $barang->nominal_terbayar =  $barang->total;
+            $barang->tenggat_bayar = $request->get('tenggat_bayar');
+        } else {
+            $barang->nominal_terbayar =  $request->get('nominal_terbayar');
+            $barang->tenggat_bayar = $request->get('tenggat_bayar');
+        }
         $barang->save();
 
         // Buat record baru untuk BukuBesar
@@ -86,8 +95,20 @@ class StokController extends Controller
         $bukuBesar->kredit = $request->stok * $request->harga_barang_pemasok; // Isi dengan nilai kredit yang sesuai
         $bukuBesar->sub_kategori = 'hutang'; // Isi dengan sub kategori yang sesuai
         $bukuBesar->save();
-        // Hubungkan Barang dengan BukuBesar
         $barang->bukuBesar()->attach($bukuBesar->id_bukubesar);
+
+        $bukuBesar2 = new BukubesarModel();
+        $bukuBesar2->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
+        $bukuBesar2->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
+        $bukuBesar2->kategori = "barang"; // Isi dengan kategori yang sesuai
+        $bukuBesar2->keterangan = 'PELUNASAN STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        $bukuBesar2->debit = $barang->nominal_terbayar; // Isi dengan nilai debit yang sesuai
+        $bukuBesar2->kredit = 0; // Isi dengan nilai kredit yang sesuai
+        $bukuBesar2->sub_kategori = 'pelunasan'; // Isi dengan sub kategori yang sesuai
+        $bukuBesar2->save();
+        // Hubungkan Barang dengan BukuBesar
+
+        $barang->bukuBesar()->attach($bukuBesar2->id_bukubesar);
         DB::commit();
 
 
