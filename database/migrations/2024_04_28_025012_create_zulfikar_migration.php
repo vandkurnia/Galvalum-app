@@ -13,25 +13,25 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('modal_tambahan', function (Blueprint $table) {
-        //     $table->id('id_modal_tambahan');
-        //     $table->string('jenis_modal_tambahan');
-        //     $table->string('deskripsi');
-        //     $table->string('jumlah_modal');
-        //     $table->string('tanggal');
-        //     $table->timestamps();
-        //     $table->softDeletes();
-        // });
+        Schema::create('modal_tambahan', function (Blueprint $table) {
+            $table->id('id_modal_tambahan');
+            $table->string('jenis_modal_tambahan');
+            $table->string('deskripsi');
+            $table->string('jumlah_modal');
+            $table->string('tanggal');
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
-        // Schema::create('kas_keluar', function (Blueprint $table) {
-        //     $table->bigIncrements('id_kas_keluar');
-        //     $table->string('nama_pengeluaran');
-        //     $table->string('deskripsi');
-        //     $table->string('jumlah_pengeluaran');
-        //     $table->date('tanggal');
-        //     $table->timestamps();
-        //     $table->softDeletes();
-        // });
+        Schema::create('kas_keluar', function (Blueprint $table) {
+            $table->bigIncrements('id_kas_keluar');
+            $table->string('nama_pengeluaran');
+            $table->string('deskripsi');
+            $table->string('jumlah_pengeluaran');
+            $table->date('tanggal');
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
         Schema::create('kategori', function (Blueprint $table) {
             $table->bigIncrements('id_kategori');

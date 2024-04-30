@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
           
             DiskonSeeder::class,
             // PesananSeeder::class,
-            // ZulfikarData::class
+            ZulfikarData::class
         ]);
     }
 }
