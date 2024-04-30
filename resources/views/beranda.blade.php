@@ -114,7 +114,7 @@
                         <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
 
                             <option value="harga_normal">Harga Normal</option>
-                            <option value="reseller">Reseller</option>
+                            <option value="aplicator">Aplicator</option>
                             <option value="potongan">Potongan</option>
                         </select>
                     </div>

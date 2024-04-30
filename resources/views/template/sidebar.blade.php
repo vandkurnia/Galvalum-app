@@ -23,6 +23,85 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
+    <div class="sidebar-heading">
+        Transaksi
+    </div>
+    <!-- Nav Item - Penjualan -->
+    <li class="nav-item {{ request()->is('beranda') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/beranda') }}">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span>Penjualan Barang</span></a>
+    </li>
+
+    <li class="nav-item {{ request()->is('laporan_penjualan') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ url('/laporan_penjualan') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Laporan Penjualan</span>
+        </a>
+    </li>
+
+
+    <!-- Nav Item - Retur -->
+    <li class="nav-item {{ request()->is('retur') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/retur') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Retur</span></a>
+    </li>
+
+    <!-- Divider -->
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Laporan
+    </div>
+
+    <li class="nav-item {{ request()->is('laporan/hutang') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.hutang') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Hutang</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/piutang') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.piutang') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Piutang</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/kas-keluar') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.kaskeluar') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Kas Keluar</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/modal-tambahan') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.modaltambahan') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Modal Tambahan</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/omzet') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.omzet') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Omzet</span>
+        </a>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Keuangan
+    </div>
+    <li class="nav-item {{ request()->is('bukubesar') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/bukubesar') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Buku Besar</span></a>
+    </li>
+    <li class="nav-item {{ request()->is('laporan/laba-rugi') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="{{ route('laporan.labarugi') }}">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Laporan Laba Rugi</span>
+        </a>
+    </li>
+    <hr class="sidebar-divider ">
 
 
     <div class="sidebar-heading">
@@ -53,35 +132,16 @@
             <i class="fa fa-plus" aria-hidden="true"></i>
             <span>Diskon</span></a>
     </li>
-    <li class="nav-item {{ request()->is('bukubesar') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/bukubesar') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Buku Besar</span></a>
-    </li>
+
     <li class="nav-item {{ request()->is('kategori') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/kategori') }}">
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Kategori</span></a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Nav Item - Penjualan -->
-    <li class="nav-item {{ request()->is('beranda') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/beranda') }}">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span>Nota Penjualan</span></a>
-    </li>
 
-    <!-- Nav Item - Retur -->
-    <li class="nav-item {{ request()->is('retur') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/retur') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Retur</span></a>
-    </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->is('stok') ? 'active' : '' }}">
@@ -90,56 +150,9 @@
             <span>Stok Barang</span>
         </a>
     </li>
-
-    <li class="nav-item {{ request()->is('laporan_penjualan') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ url('/laporan_penjualan') }}">
-            <i class="fa fa-list" aria-hidden="true"></i>
-            <span>Laporan Penjualan</span>
-        </a>
-    </li>
-
-
-    <div class="sidebar-heading">
-        Laporan
-    </div>
-    <li class="nav-item {{ request()->is('laporan/omzet') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.omzet') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Omzet</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->is('laporan/hutang') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.hutang') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Hutang</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->is('laporan/piutang') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.piutang') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Piutang</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->is('laporan/kas-keluar') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.kaskeluar') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Kas Keluar</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->is('laporan/modal-tambahan') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.modaltambahan') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Modal Tambahan</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->is('laporan/laba-rugi') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="{{ route('laporan.labarugi') }}">
-            <i class="fa fa-book" aria-hidden="true"></i>
-            <span>Laporan Laba Rugi</span>
-        </a>
-    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
+
 
 </ul>
 <!-- End of Sidebar -->

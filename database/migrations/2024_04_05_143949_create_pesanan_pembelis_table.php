@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('diskon', 24, 2); // 24 digit total, 2 digit di belakang koma            
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
-            $table->enum('jenis_pembelian', ['harga_normal', 'reseller', 'potongan'])->nullable();
+            $table->enum('jenis_pembelian', ['harga_normal', 'aplicator', 'potongan'])->nullable();
             $table->decimal('harga_potongan', 24, 2)->default(0);
             // $table->unsignedBigInteger('id_jenis_pelanggan')->nullable();
             $table->unsignedBigInteger('id_diskon')->nullable();
