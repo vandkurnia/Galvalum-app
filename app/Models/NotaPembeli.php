@@ -22,7 +22,7 @@ class NotaPembeli extends Model
         'totalTerbayar',
         'tenggat_bayar',
         'diskon',
-        'pajak',
+        'ongkir',
         'total',
     ];
 

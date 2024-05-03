@@ -27,14 +27,14 @@ class PembelianController extends Controller
     {
 
         $request->validate([
-            'jenis_pembelian' => 'required|string',
+            'jenis_pelanggan' => 'required|string',
             'status_pembelian' => 'required|string',
             'id_pembeli' => 'required|string',
             'pesanan' => 'required',
             'no_nota' => 'required',
             'nominal_terbayar' => 'required',
             'tenggat_bayar' => 'required',
-            'pajak' => 'required',
+            'total_ongkir' => 'required',
             'diskon' => 'required'
 
 
@@ -140,12 +140,13 @@ class PembelianController extends Controller
 
         $updateNotaPembeli->sub_total = $subTotal;
         $updateNotaPembeli->diskon = $request->get('diskon');
-        $updateNotaPembeli->pajak = $request->get('pajak');
+        $updateNotaPembeli->ongkir = $request->get('total_ongkir');
 
         // Perhitungan Pajak
         $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
-        $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
-        $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
+        // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+        // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
+        $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
         $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
 
         if ($updateNotaPembeli->status_pembayaran == 'lunas') {

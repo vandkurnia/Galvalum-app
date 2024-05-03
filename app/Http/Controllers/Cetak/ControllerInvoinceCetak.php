@@ -98,7 +98,7 @@ class ControllerInvoinceCetak extends Controller
         $rincian = [
             'subtotalHarga' => $notaPembeliModel->sub_total,
             'diskon' => $notaPembeliModel->diskon,
-            'pajak' => $notaPembeliModel->pajak,
+            'ongkir' => $notaPembeliModel->ongkir,
             'total' => $notaPembeliModel->total,
             'list_barang' => $productsData
         ];

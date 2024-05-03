@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{$title}}</title>
+    <title>{{ $title }}</title>
     <style>
         /* FOrmat Body */
         body {
@@ -95,9 +95,21 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding: 0px 5px 0px 5px;
+            padding: 0px 5px 10px 5px;
+
         }
 
+        .informasi-surat-lain {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0px 5px 10px 5px;
+            max-width: 400px;
+            flex-grow: 1;
+        }
+        .informasi-surat-lain table {
+            flex-grow: 1;
+        }
 
         .informasi-pembeli {
             border: 1px solid black;
@@ -119,8 +131,8 @@
             min-height: 100px;
         }
 
-        
-        .nama-pembeli span{
+
+        .nama-pembeli span {
             padding-bottom: 1rem;
         }
 
@@ -179,6 +191,7 @@
             margin: 5;
             width: 75%;
             height: auto;
+            border-radius: 20%;
         }
 
         .nama-toko {
@@ -200,14 +213,14 @@
         <div class="info-pembeli-dan-penjual">
             <div class="informasi-nota">
                 <div class="logo-toko">
-                    <img src="https://i0.wp.com/goridemoto.com/wp-content/uploads/2022/09/logo4.png?ssl=1"
-                        alt="Logo Beer Bee">
+                    <img src="{{ secure_asset('assets/logogalvalum.jpg') }}" alt="Logo Galvalum">
                 </div>
 
                 <div class="informasi-toko">
                     <h2 class="nama-toko">PT Bima Sakti</h2>
                     <p class="alamat-toko">Magetan</p>
-                    <p class="nomor-telepon-toko">Telp: 03183103; Fax</p>
+                    {{-- <p class="nomor-telepon-toko">Telp: 03183103; Fax</p> --}}
+                    <p class="nomor-telepon-toko">Wa / Telp : 085733823107</p>
                 </div>
             </div>
             <table class="table">
@@ -220,9 +233,9 @@
                     <tr class="fw-light">
                         <td class="nama-pembeli">
                             @foreach ($dataPembeli as $index => $data)
-                            <span>{{$data['nama']}}</span>
-                            <span>{{$data['alamat']}}</span>
-                            <span>{{$data['telp']}}</span>
+                                <span>{{ $data['nama'] }}</span>
+                                <span>{{ $data['alamat'] }}</span>
+                                <span>{{ $data['telp'] }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -239,15 +252,8 @@
             </div> -->
         </div>
 
-        <div class="informasi-surat-lain"
-            style="
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0px 5px 10px 5px;
-    max-width: 400px;
-    flex-grow: 1;
-            ">
+
+        <div class="informasi-surat-lain">
             <h1>
                 Invoice Penjualan
             </h1>
@@ -261,8 +267,8 @@
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
                         @foreach ($dataNota as $data)
-                            <td class="text-center">{{$data['tanggal']}}</td>
-                            <td class="text-center">{{$data['no_nota']}}</td>
+                            <td class="text-center">{{ $data['tanggal'] }}</td>
+                            <td class="text-center">{{ $data['no_nota'] }}</td>
                         @endforeach
                     </tr>
                 </tbody>
@@ -275,11 +281,11 @@
                 </thead>
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
-                        <td class="text-center">{{$dataKasir}}</td>
+                        <td class="text-center">{{ $dataKasir }}</td>
                     </tr>
                 </tbody>
             </table>
-                            
+{{-- 
             <table class="table">
                 <thead>
                     <tr>
@@ -289,14 +295,14 @@
                 </thead>
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
-                    @foreach ($dataPembayaran as $data)
-                        <td class="text-center">{{$data['termin']}}</td>
-                        <td class="text-center">{{$data['jatuh_tempo']}}</td>
-                    @endforeach
+                        @foreach ($dataPembayaran as $data)
+                            <td class="text-center">{{ $data['termin'] }}</td>
+                            <td class="text-center">{{ $data['jatuh_tempo'] }}</td>
+                        @endforeach
                     </tr>
                 </tbody>
-            </table>
-<!-- 
+            </table> --}}
+            <!--
             <div class="detail-nota box-border" style="display: flex;">
                 <div class="tanggal-nota" style="flex-grow: 1;">
                     <h2>Tanggal</h2>
@@ -318,7 +324,7 @@
                     <p>Sasa</p>
                 </div>
             </div> -->
-            <!-- <div class="detail-nota" style="display: flex;"> 
+            <!-- <div class="detail-nota" style="display: flex;">
 
                 <div class="termin-pembayaran box-border" style="
     flex-grow: 1;
@@ -353,52 +359,65 @@
                     <th>Disc</th>
                     <th>Total Harga</th>
                 </tr>
-            </thead> 
+            </thead>
             <tbody>
-            @foreach ($dataRincianBarang['list_barang'] as $index => $data)
-                <tr>
-                    <td>{{$index + 1}}</td>
-                    <td>{{$data['item']}}</td>
-                    <td>{{$data['deskripsi']}}</td>
-                    <td>{{(int) $data['qty']}}</td>
-                    <td>{{$data['pesanan']}}</td>
-                    <td>{{number_format($data['harga'], 0, ',', '.')}}</td>
-                    <td>{{$data['disc']}}</td>
-                    <td>{{$data['subtotal']}}</td>
-                </tr>
+                @foreach ($dataRincianBarang['list_barang'] as $index => $data)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $data['item'] }}</td>
+                        <td>{{ $data['deskripsi'] }}</td>
+                        <td>{{ (int) $data['qty'] }}</td>
+                        <td>{{ $data['pesanan'] }}</td>
+                        <td>{{ number_format($data['harga'], 0, ',', '.') }}</td>
+                        <td>{{ $data['disc'] }}</td>
+                        <td>{{ $data['subtotal'] }}</td>
+                    </tr>
                 @endforeach
                 <tr>
                     <td rowspan="4" colspan="3" style="
 ">
                         <h2>Keterangan</h2>
-                        <ol>
+                        {{-- <ol>
                             <li>Barang yang sudah dibeli tidak bisa ditukar</li>
                             <li>Pembayaran dengan BG/CEK dianggap lunas bila sudah dicairkan</li>
                             <li>Tanda ** menunjukan bonus</li>
+                        </ol> --}}
+                        <ol>
+                            <li>No Rek : An. Budiono</li>
+                            <li>BRI : 388401024665532</li>
+                            <li>BCA : 1771837226</li>
+
+
                         </ol>
+
+
+
+
+
+
 
                     </td>
                     <td colspan="4">Subtotal Harga</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.')}}</td>
+                    <td>Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Diskon</td>
-                    <td>Rp. {{number_format($dataRincianBarang['diskon'], 0, ',', '.')}}</td>
+                    <td>Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Pajak (%)</td>
-                    <td>{{ $dataRincianBarang['pajak'] . "%" }}</td>
+                    <td colspan="4">Ongkir</td>
+                    <td>{{ $dataRincianBarang['ongkir'] . '%' }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Total</td>
-                    <td>Rp. {{number_format($dataRincianBarang['total'], 0, ',', '.')}}</td>
+                    <td>Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
-        <div class="keterangan-tambahan" style="
+        {{-- <div class="keterangan-tambahan" style="
     text-align: right;">
             <p>* Harga termasuk pajak</p>
-        </div>
+        </div> --}}
 
 
     </main>
@@ -409,7 +428,7 @@
 </body>
 
 </html>
-<!-- 
+<!--
 <tr>
                     <td>1</td>
                     <td>001222</td>

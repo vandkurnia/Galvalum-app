@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TipeBarangSeeder::class,
             PemasokSeeder::class,
-            // BarangSeeder::class,
+            BarangSeeder::class,
           
             DiskonSeeder::class,
             // PesananSeeder::class,

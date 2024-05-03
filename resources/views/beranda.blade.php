@@ -108,35 +108,16 @@
                             placeholder="Masukkan alamat" required>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="jenisPembelian">Jenis Pembelian:</label>
-                        <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
+                        <label for="jenisPelanggan">Jenis Pelanggan:</label>
+                        <select class="form-control" name="jenis_pelanggan" id="jenisPelanggan" required>
 
                             <option value="harga_normal">Harga Normal</option>
                             <option value="aplicator">Aplicator</option>
                             <option value="potongan">Potongan</option>
                         </select>
                     </div>
-                    <div id="harga_khusus_input" class="form-group" style="display: none;">
-                        <label for="harga_khusus">Harga Potongan Khusus:</label>
-                        <input type="number" min="0" class="form-control" name="harga_khusus" id="harga_khusus"
-                            value="0">
-                    </div>
-                    <script>
-                        document.getElementById('jenis_pembelian').addEventListener('change', function() {
-                            var hargaKhususInput = document.getElementById('harga_khusus_input');
-                            if (this.value === 'aplicator' || this.value === 'potongan') {
-                                hargaKhususInput.style.display = 'block';
-                                document.getElementById('harga_khusus').setAttribute('required', 'required');
 
-                            } else {
-                                hargaKhususInput.style.display = 'none';
-                                document.getElementById('harga_khusus').removeAttribute('required');
-                                document.getElementById('harga_khusus').value = 0;
-                            }
-                        });
-                    </script>
 
                 </form>
             </div>
@@ -154,7 +135,6 @@
                 <div class="row">
 
                     <div class="col-md-5 mr-5">
-                        <h2>Barang Pembelian</h2>
                         <form id="pesanan" method="POST">
                             @csrf
 
@@ -167,8 +147,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="jumlah_barang">Jumlah Barang:</label>
-                                <input type="number" class="form-control" id="jumlah_barang" min="0"
-                                    max="0" name="jumlah_barang" required>
+                                <input type="number" class="form-control" id="jumlah_barang" min="0" max="0"
+                                    name="jumlah_barang" required>
                             </div>
                             <div class="form-group">
                                 <label for="diskon">Diskon:</label>
@@ -180,6 +160,34 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="jenisPembelian">Jenis Pembelian:</label>
+                                <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
+
+                                    <option value="harga_normal">Harga Normal</option>
+                                    <option value="aplicator">Aplicator</option>
+                                    <option value="potongan">Potongan</option>
+                                </select>
+                            </div>
+                            <div id="harga_khusus_input" class="form-group" style="display: none;">
+                                <label for="harga_khusus">Harga Potongan Khusus:</label>
+                                <input type="number" min="0" class="form-control" name="harga_khusus"
+                                    id="harga_khusus" value="0">
+                            </div>
+                            <script>
+                                document.getElementById('jenis_pembelian').addEventListener('change', function() {
+                                    var hargaKhususInput = document.getElementById('harga_khusus_input');
+                                    if (this.value === 'aplicator' || this.value === 'potongan') {
+                                        hargaKhususInput.style.display = 'block';
+                                        document.getElementById('harga_khusus').setAttribute('required', 'required');
+
+                                    } else {
+                                        hargaKhususInput.style.display = 'none';
+                                        document.getElementById('harga_khusus').removeAttribute('required');
+                                        document.getElementById('harga_khusus').value = 0;
+                                    }
+                                });
+                            </script>
                             <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah
                                 Pesanan</button>
                         </form>
@@ -486,10 +494,10 @@
                                         class="form-control" name="diskon_total" id="diskonTotal" value="0"></td>
                             </tr>
                             <tr>
-                                <td colspan="2">Pajak (%)</td>
+                                <td colspan="2">Ongkir</td>
                                 <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="total_pajak" min="0" max="100"
-                                        id="totalPajak" value="0"></td>
+                                        class="form-control" name="total_ongkir" min="0" id="totalOngkir"
+                                        value="0"></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
@@ -587,19 +595,19 @@
             }
         });
 
-        function validateTotalPajak() {
-            var totalPajakInput = document.getElementById('totalPajak');
-            var value = parseFloat(totalPajakInput.value);
+        // function validatetotalOngkir() {
+        //     var totalOngkirInput = document.getElementById('totalOngkir');
+        //     var value = parseFloat(totalOngkirInput.value);
 
-            if (isNaN(value) || value < 0) {
-                totalPajakInput.value = 0;
-            } else if (value > 100) {
-                totalPajakInput.value = 100;
-            }
-        }
+        //     if (isNaN(value) || value < 0) {
+        //         totalOngkirInput.value = 0;
+        //     } else if (value > 100) {
+        //         totalOngkirInput.value = 100;
+        //     }
+        // }
 
         function totalPembayaran() {
-            validateTotalPajak();
+            // validatetotalOngkir();
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
             var totalHarga = 0;
@@ -618,14 +626,15 @@
             sub_total.value = totalHarga;
             let diskon = tabletfoot.querySelector('#diskonTotal');
             // diskon.value = totalDiskon;
-            let pajak = tabletfoot.querySelector('#totalPajak');
+            let ongkir = tabletfoot.querySelector('#totalOngkir');
             let total = tabletfoot.querySelector('#total');
 
             let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
-            let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
+            // let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
+            let nilaiOngkir =  parseInt(ongkir.value);
 
 
-            total.value = nilaiTotal + nilaiPajak;
+            total.value = nilaiTotal + nilaiOngkir;
 
 
             // Ubah ke format Rp dengan dipisah rupiah
@@ -726,13 +735,13 @@
 
 
             // Menambahkan pajak ke form
-            const totalPajak = document.querySelector('#totalPajak');
-            const inputTotalPajakHidden = document.createElement('input');
-            inputTotalPajakHidden.type = 'hidden';
-            inputTotalPajakHidden.name = 'pajak'; // Menetapkan nama input ke 'totalPajak'
-            inputTotalPajakHidden.value = totalPajak
-                .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalPajak'
-            formPembeli.appendChild(inputTotalPajakHidden); // Menambahkan input tersembunyi ke dalam form
+            const totalOngkir = document.querySelector('#totalOngkir');
+            const inputtotalOngkirHidden = document.createElement('input');
+            inputtotalOngkirHidden.type = 'hidden';
+            inputtotalOngkirHidden.name = 'total_ongkir'; // Menetapkan nama input ke 'totalOngkir'
+            inputtotalOngkirHidden.value = totalOngkir
+            .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalOngkir'
+            formPembeli.appendChild(inputtotalOngkirHidden); // Menambahkan input tersembunyi ke dalam form
 
             // Menambahkan pajak ke form
             const TotalDiskon = document.querySelector('#diskonTotal');

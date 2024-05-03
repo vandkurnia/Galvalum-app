@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('nominal_terbayar', 10, 2)->default(0);
             $table->date('tenggat_bayar')->nullable();
             $table->string('diskon', 45)->default(0);
-            $table->string('pajak', 45)->default(0);
+            $table->string('ongkir', 45)->default(0);
             $table->string('total', 45)->default(0);
             $table->timestamps();
             $table->softDeletes();
