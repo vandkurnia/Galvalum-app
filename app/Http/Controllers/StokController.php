@@ -41,6 +41,7 @@ class StokController extends Controller
     }
     public function store(Request $request)
     {
+
         $request->validate([
             'kode_barang' => 'required|unique:barangs,kode_barang',
             'nama_barang' => 'required',
@@ -118,8 +119,8 @@ class StokController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $request->validate([
-            'kode_barang' => 'required|unique:barangs,kode_barang',
             'nama_barang' => 'required',
             'harga_barang' => 'required',
             'harga_barang_pemasok' => 'required',
@@ -147,6 +148,7 @@ class StokController extends Controller
         return redirect()->route('stok.index')->with('success', 'Data Barang berhasil diupdate');
     }
 
+
     public function destroy($id)
     {
         $dataBarang = Barang::where('hash_id_barang', $id)->first();
@@ -157,5 +159,107 @@ class StokController extends Controller
         } else {
             return redirect()->route('stok.index')->with('error', 'Barang gagal dihapus');
         }
+    }
+
+
+    public function showStokBarang($id)
+    {
+
+        $dataBarang = Barang::where('hash_id_barang', $id)->first();
+        if (!$dataBarang) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Not found',
+                'data' => null
+            ], 404);
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'Success',
+            'data' => $dataBarang
+        ], 200);
+    }
+
+    public function addStock(Request $request)
+
+    {
+
+
+        $validatedData = $request->validate([
+            'stok_tambah' => 'required|numeric|min:0',
+            'id_barang' => 'required|exists:barangs,hash_id_barang',
+        ], [
+            'stok_tambah.required' => 'Stok tambah harus diisi.',
+            'stok_tambah.numeric' => 'Stok tambah harus berupa angka.',
+            'stok_tambah.min' => 'Stok tambah harus lebih dari atau sama dengan 0.',
+            'id_barang.exists' => 'Barang tidak ditemukan.',
+        ]);
+
+        $barang = Barang::where('hash_id_barang', $validatedData['id_barang'])->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        if ($validatedData['stok_tambah'] <= 0) {
+            return redirect()->back()->with('error', 'Penambahan tidak valid.');
+        }
+
+        DB::beginTransaction();
+        $barang->stok += $validatedData['stok_tambah'];
+        $barang->save();
+
+        $bukuBesar = new BukubesarModel();
+        $bukuBesar->tanggal = date('Y-m-d');
+        $bukuBesar->kategori =  "barang";
+        $bukuBesar->sub_kategori = "hutang";
+        $bukuBesar->kredit = $validatedData['stok_tambah'];
+        $bukuBesar->keterangan = "penambahan stok " . $validatedData['stok_tambah'];
+        $bukuBesar->save();
+
+        DB::commit();
+
+        return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
+    }
+    public function minusStok(Request $request)
+    {
+
+
+        $validatedData = $request->validate([
+            'stok_kurang' => 'required|numeric|min:0',
+            'id_barang' => 'required|exists:barangs,hash_id_barang',
+        ], [
+            'stok_kurang.required' => 'Pengurangan Stok harus diisi.',
+            'stok_kurang.numeric' => 'Pengurangan Stok harus berupa angka.',
+            'stok_kurang.min' => 'Pengurangan Stok harus lebih dari atau sama dengan 0.',
+            'id_barang.exists' => 'Barang tidak ditemukan.',
+        ]);
+
+        $barang = Barang::where('hash_id_barang', $validatedData['id_barang'])->first();
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+
+        if ($validatedData['stok_kurang'] <= 0) {
+            return redirect()->back()->with('error', 'Pengurangan tidak valid atau 0.');
+        }
+
+
+        DB::beginTransaction();
+        $barang->stok -= $validatedData['stok_kurang'];
+        $barang->save();
+
+        $bukuBesar = new BukubesarModel();
+        $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
+        $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        $bukuBesar->tanggal = date('Y-m-d');
+        $bukuBesar->sub_kategori = "hutang";
+        $bukuBesar->debit = $validatedData['stok_kurang'];
+        $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
+        $bukuBesar->save();
+        DB::commit();
+
+        return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
     }
 }

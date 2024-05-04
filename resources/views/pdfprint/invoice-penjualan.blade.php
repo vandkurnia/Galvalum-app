@@ -198,9 +198,9 @@
             font-weight: bold;
         }
 
-        .alamat-toko {
+        /* .alamat-toko {
             width: 40px;
-        }
+        } */
 
         .nomor-telepon-toko {
             margin-top: 0;
@@ -217,8 +217,8 @@
                 </div>
 
                 <div class="informasi-toko">
-                    <h2 class="nama-toko">PT Bima Sakti</h2>
-                    <p class="alamat-toko">Magetan</p>
+                    <h2 class="nama-toko">Tk. Bima Sakti Perkasa </h2>
+                    <p class="alamat-toko">Jl. Raya Barat Jiwan, Utara Lampu Merah Madiun</p>
                     {{-- <p class="nomor-telepon-toko">Telp: 03183103; Fax</p> --}}
                     <p class="nomor-telepon-toko">Wa / Telp : 085733823107</p>
                 </div>
@@ -356,7 +356,7 @@
                     <th>Qty</th>
                     <th>Unit</th>
                     <th>Harga</th>
-                    <th>Disc</th>
+                    {{-- <th>Disc</th> --}}
                     <th>Total Harga</th>
                 </tr>
             </thead>
@@ -368,13 +368,13 @@
                         <td>{{ $data['deskripsi'] }}</td>
                         <td>{{ (int) $data['qty'] }}</td>
                         <td>{{ $data['pesanan'] }}</td>
-                        <td>{{ number_format($data['harga'], 0, ',', '.') }}</td>
-                        <td>{{ $data['disc'] }}</td>
-                        <td>{{ $data['subtotal'] }}</td>
+                        <td>Rp. {{ number_format($data['harga'], 0, ',', '.') }}</td>
+                        {{-- <td>{{ $data['disc'] }}</td> --}}
+                        <td>Rp. {{  number_format($data['subtotal'], 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td rowspan="4" colspan="3" style="
+                    <td rowspan="4" colspan="2" style="
 ">
                         <h2>Keterangan</h2>
                         {{-- <ol>
@@ -383,9 +383,9 @@
                             <li>Tanda ** menunjukan bonus</li>
                         </ol> --}}
                         <ol>
-                            <li>No Rek : An. Budiono</li>
-                            <li>BRI : 388401024665532</li>
-                            <li>BCA : 1771837226</li>
+                            <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
+                            <li>BRI : 388401024665532 /  An. Budiono</li>
+                            <li>BCA : 1771837226 / An. Budiono</li>
 
 
                         </ol>
@@ -406,7 +406,7 @@
                 </tr>
                 <tr>
                     <td colspan="4">Ongkir</td>
-                    <td>{{ $dataRincianBarang['ongkir'] . '%' }}</td>
+                    <td>Rp. {{  number_format($dataRincianBarang['ongkir'], 0, ',', '.')  }}</td>
                 </tr>
                 <tr>
                     <td colspan="4">Total</td>

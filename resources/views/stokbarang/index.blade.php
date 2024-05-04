@@ -90,6 +90,16 @@
                                     <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
                                     <td>{{ $databarang->stok }}</td>
                                     <td>
+                                        <button class="btn btn-primary"
+                                            onclick="funcTambahStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+
+                                        <button class="btn btn-danger"
+                                            onclick="funcKurangStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+
                                         <button class="btn btn-primary btn-sm"
                                             onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
                                                 class="fas fa-edit"></i>
@@ -115,8 +125,7 @@
 @endsection
 
 {{-- Modal Tambah User --}}
-<div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="tambahUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -230,6 +239,89 @@
 </div>
 {{-- End of Modal Tambah User --}}
 
+{{-- Modal Kurang Stok --}}
+<div class="modal fade" id="KurangStokModal" tabindex="-1" role="dialog" aria-labelledby="KurangStokModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pengurangan Stok Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('stok.minusstok.new') }}" id="formKurangStokModal" method="POST">
+                 
+                    @csrf
+
+                    <input type="hidden" name="id_barang" id="id_barangKurangStok" value="null">
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Sekarang</label>
+                        <input type="text" class="form-control" id="stok_referensiKurangStok" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Hasil</label>
+                        <input type="text" class="form-control" id="stok_referensiHasilKurangStok" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_kurang" class="form-label">Pengurangan Stok</label>
+                        <input type="number" class="form-control" id="stok_kurangKurangStok" name="stok_kurang"
+                            min="0" oninput="updateStokKurang()" value="0">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcKurangStokSubmit()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Kurang Stok --}}
+
+{{-- Modal Tambah Stok --}}
+<div class="modal fade" id="tambahStokModal" tabindex="-1" role="dialog" aria-labelledby="tambahStokModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Stok Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('stok.addstok.new') }}" id="formtambahStokModal" method="POST">
+               
+                    @csrf
+
+                    <input type="hidden" name="id_barang" id="id_barangTambahStok" value="null">
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Referensi</label>
+                        <input type="text" class="form-control" id="stok_referensiTambahStok" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Hasil</label>
+                        <input type="text" class="form-control" id="stok_referensiHasil" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_tambah" class="form-label">Stok Tambah</label>
+                        <input type="number" class="form-control" id="stok_tambahTambahStok" name="stok_tambah"
+                            min="0" oninput="updateStokTambah()" value="0">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcTambahStokSubmit()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Tambah Stok --}}
+
 {{-- Modal Edit --}}
 <div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -331,6 +423,69 @@
 </div>
 @section('javascript-custom')
     <script>
+        function funcTambahStokSubmit() {
+            var form = document.querySelector('#formtambahStokModal');
+            console.log(form);
+            if (form.length > 0) {
+                form.submit();
+            } else {
+                console.error('Form not found!');
+            }
+
+
+        }
+
+        function funcKurangStokSubmit() {
+            var form = document.querySelector('#formKurangStokModal');
+           
+            if (form.length > 0) {
+                form.submit();
+       
+
+            } else {
+                console.error('Form not found!');
+            }
+            return;
+        }
+
+        function updateStokTambah() {
+            var stokReferensiHasil = $('#stok_referensiHasil');
+            var stokTambah = parseInt($('#stok_tambahTambahStok').val());
+
+            if (!isNaN(stokTambah)) {
+
+
+                let maxReferensi = parseInt(stokReferensiHasil.attr('max'));
+
+                $('#stok_referensiHasil').val(maxReferensi + stokTambah);
+            }
+        }
+
+        function updateStokKurang() {
+            var stokReferensiHasil = $('#stok_referensiHasilKurangStok');
+            var stokKurang = $('#stok_kurangKurangStok');
+
+            if (!isNaN(stokKurang.val())) {
+
+
+                let maxReferensi = parseInt(stokReferensiHasil.attr('max'));
+                if ((maxReferensi - stokKurang.val()) <= 0) {
+
+
+                    stokKurang.val(maxReferensi);
+                    $('#stok_referensiHasilKurangStok').val(0);
+
+
+                } else {
+                    $('#stok_referensiHasilKurangStok').val(maxReferensi - stokKurang.val());
+
+                }
+            } else if (stokKurang == 0 || stokKurang < 0) {
+
+            }
+        }
+    </script>
+    <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
             if (this.value === 'hutang') {
@@ -341,6 +496,46 @@
         });
     </script>
     <script>
+        function funcTambahStok(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    $('#id_barangTambahStok').val(response.data.hash_id_barang);
+                    // Mengisi nilai modal dengan data yang diterima
+                    $('#stok_referensiTambahStok').val(response.data.stok);
+                    $('#stok_referensiHasil').val(response.data.stok);
+                    $('#stok_referensiHasil').attr('max', response.data.stok); // Set nilai maksimum
+                    $('#tambahStokModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+        }
+
+        function funcKurangStok(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    $('#id_barangKurangStok').val(response.data.hash_id_barang);
+                    // Mengisi nilai modal dengan data yang diterima
+                    $('#stok_referensiKurangStok').val(response.data.stok);
+                    $('#stok_referensiHasilKurangStok').val(response.data.stok);
+                    $('#stok_referensiHasilKurangStok').attr('max', response.data.stok); // Set nilai maksimum
+                    $('#KurangStokModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+        }
+
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');
             formtambah.submit();

@@ -106,6 +106,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [StokController::class, 'store'])->name('stok.store'); // Menyimpan tipebarang baru
         Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
         Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
+        Route::get('/stokbarang/{id}', [StokController::class, 'showStokBarang'])->name('stok.detail');
+        Route::post('/addstok', [StokController::class, 'addStock'])->name('stok.addstok.new');
+        Route::post('/minusstok', [StokController::class, 'minusStok'])->name('stok.minusstok.new');
+
     });
 
     Route::prefix('laporan_penjualan')->group(function () {
