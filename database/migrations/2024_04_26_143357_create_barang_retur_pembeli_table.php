@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('retur_pesanan_pembeli', function (Blueprint $table) {
             $table->id('id_retur_pesanan');
+            $table->unsignedBigInteger('id_retur_pembeli');
             $table->unsignedBigInteger('id_pesanan_pembeli');
             $table->decimal('harga', 20, 2);
             $table->decimal('total', 20, 2);
             $table->decimal('qty', 20, 2);
             $table->timestamps();
-            $table->foreign('id_pesanan_pembeli')->references('id_pesanan')->on('pesanan_pembelis');
+
+            $table->foreign('id_retur_pembeli')->references('id_retur_pembeli')->on('retur_pembeli')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_pesanan_pembeli')->references('id_pesanan')->on('pesanan_pembelis')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

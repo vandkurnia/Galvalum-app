@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Stok barang')
+@section('title', 'Retur Stok Barang')
 @section('header-custom')
 
 
@@ -37,101 +37,12 @@
                 </div>
             @endforeach
         @endif
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Ajuan Retur</h6>
-            </div>
-            <div class="card-body">
 
-
-                <form action="{{ route('retur.pembeli.store') }}" method="POST" id="formRetur"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id_nota" value="{{ $notaPembelian->id_nota }}">
-
-                    {{-- <input type="hidden" name="id_pembeli" value="{{ $id_pembeli }}"> --}}
-
-
-                    {{-- <div class="form-group">
-                        <label for="no_retur_pembeli">No. Retur Pembeli</label>
-                        <input type="text" class="form-control" id="no_retur_pembeli" name="no_retur_pembeli"
-                            value="{{ $noReturPembeli }}" readonly required>
-                    </div> --}}
-
-                    <div class="form-group">
-                        <label for="tanggal_retur_pembeli">Tanggal Retur Pembeli</label>
-                        <input type="date" class="form-control" id="tanggal_retur_pembeli" name="tanggal_retur_pembeli"
-                            required value="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="bukti_retur_pembeli">Bukti Retur Pembeli</label>
-                        <input type="file" class="form-control" id="bukti_retur_pembeli" name="bukti_retur_pembeli"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="jenis_retur">Jenis Retur</label>
-                        <select class="form-control" id="jenis_retur" name="jenis_retur" required>
-                            <option value="Rusak">Rusak</option>
-                            <option value="Tidak Rusak">Tidak Rusak</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status" required>
-                            <option value="Belum Selesai">Belum Selesai</option>
-                            <option value="Selesai">Selesai</option>
-                        </select>
-                    </div>
-                    {{-- <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div> --}}
-                </form>
-
-
-            </div>
-        </div>
         <div class="card shadow mb-4">
             <div class="card-header py-4">
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">
-                {{-- <div class="row">
-
-                    <div class="col-md-5 mr-5">
-
-                        <form id="pesanan" method="POST">
-                            @csrf
-
-                            <div class="form-group">
-
-                                <label for="nama_barang">Nama Barang:</label>
-                                <select class="form-control" id="nama_barang" name="nama_barang" required>
-
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="jumlah_barang">Jumlah Barang:</label>
-                                <input type="number" class="form-control" id="jumlah_barang" min="0" max="0"
-                                    name="jumlah_barang" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="diskon">Diskon:</label>
-                                <select class="form-control" id="diskon" name="diskon">
-                                    <option value="0" data-amount="0" data-type="amount">Normal</option>
-                                    @foreach ($dataDiskon as $diskon)
-                                        <option value="{{ $diskon->id_diskon }}" data-amount="{{ $diskon->besaran }}"
-                                            data-type="{{ $diskon->type }}">{{ $diskon->nama_diskon }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="button mb-4" onclick="pemesananBarang()" class="btn btn-primary">Tambah
-                                Pesanan</button>
-                        </form>
-
-
-                    </div>
-                </div> --}}
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTablePesanan" width="100%" cellspacing="0">
                         <thead>
@@ -208,7 +119,7 @@
                                 </td>
                                 <td colspan="1">Sub Total Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="sub_total"
-                                        id="subTotal" value="{{ $notaPembelian->sub_total }}" readonly>
+                                        id="subTotal1" value="{{ $notaPembelian->sub_total }}" readonly>
                                 </td>
                                 <td colspan="2"><input type="number" class="form-control" name="sub_total"
                                         id="subTotalRetur" value="0" readonly>
@@ -216,9 +127,9 @@
                             </tr>
                             <tr>
                                 <td colspan="1">Diskon Rp</td>
-                                <td colspan="2"><input type="number" class="form-control"
-                                        oninput="totalPembayaran()" name="diskon_total" id="diskonTotal"
-                                        value="{{ $notaPembelian->diskon }}" readonly>
+                                <td colspan="2"><input type="number" class="form-control" oninput="totalPembayaran()"
+                                        name="diskon_total" id="diskonTotal1" value="{{ $notaPembelian->diskon }}"
+                                        readonly>
                                 </td>
                                 <td colspan="2"><input type="number" class="form-control" name="diskon_total"
                                         id="diskonTotalRetur" oninput="totalPembayaran()"
@@ -226,18 +137,18 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="1">Pajak (%)</td>
-                                <td colspan="2"><input type="number" class="form-control" name="total_pajak"
-                                        id="totalPajak" value="{{ $notaPembelian->pajak }}" min="0"
-                                        max="100" readonly></td>
-                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="total_pajak" id="totalPajakRetur"
-                                        value="{{ $notaPembelian->pajak }}" min="0" max="100" readonly></td>
+                                <td colspan="1">Ongkir</td>
+                                <td colspan="2"><input type="number" class="form-control" name="total_ongkir"
+                                        id="totalOngkir1" value="{{ $notaPembelian->ongkir }}" min="0" readonly>
+                                </td>
+                                <td colspan="2"><input oninput="totalPembayaran()" type="number" class="form-control"
+                                        name="total_ongkir" id="totalOngkirRetur" value="{{ $notaPembelian->ongkir }}"
+                                        min="0" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="1"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="{{ $notaPembelian->total }}" readonly></strong></td>
+                                            id="total1" value="{{ $notaPembelian->total }}" readonly></strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
                                             id="totalRetur" value="0" readonly></strong></td>
                             </tr>
@@ -245,7 +156,185 @@
                     </table>
                 </div>
                 {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
-                <button type="submit" class="btn btn-primary mt-4 float-right" onclick="kirimPesanan()">Bayar</button>
+
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-4">
+                <h6 class="m-0 font-weight-bold text-primary">Retur Ganti Barang / Tambah Barang</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+
+                    <div class="col-md-5 mr-5">
+
+                        <form id="pesanan" method="POST">
+                            @csrf
+
+                            <div class="form-group">
+
+                                <label for="nama_barang">Nama Barang:</label>
+                                <select class="form-control" id="nama_barang" name="nama_barang" required>
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jumlah_barang">Jumlah Barang:</label>
+                                <input type="number" class="form-control" id="jumlah_barang" min="0"
+                                    max="0" name="jumlah_barang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="diskon">Diskon:</label>
+                                <select class="form-control" id="diskon" name="diskon">
+                                    <option value="" data-amount="0" data-type="amount">Normal</option>
+                                    @foreach ($dataDiskon as $diskon)
+                                        <option value="{{ $diskon->id_diskon }}" data-amount="{{ $diskon->besaran }}"
+                                            data-type="{{ $diskon->type }}">{{ $diskon->nama_diskon }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jenisPembelian">Jenis Pembelian:</label>
+                                <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
+
+                                    <option value="harga_normal">Harga Normal</option>
+                                    <option value="aplicator">Aplicator</option>
+                                    <option value="potongan">Potongan</option>
+                                </select>
+                            </div>
+                            <div id="harga_khusus_input" class="form-group" style="display: none;">
+                                <label for="harga_khusus">Harga Potongan Khusus:</label>
+                                <input type="number" min="0" class="form-control" name="harga_khusus"
+                                    id="harga_khusus" value="0">
+                            </div>
+                            <script>
+                                document.getElementById('jenis_pembelian').addEventListener('change', function() {
+                                    var hargaKhususInput = document.getElementById('harga_khusus_input');
+                                    if (this.value === 'aplicator' || this.value === 'potongan') {
+                                        hargaKhususInput.style.display = 'block';
+                                        document.getElementById('harga_khusus').setAttribute('required', 'required');
+
+                                    } else {
+                                        hargaKhususInput.style.display = 'none';
+                                        document.getElementById('harga_khusus').removeAttribute('required');
+                                        document.getElementById('harga_khusus').value = 0;
+                                    }
+                                });
+                            </script>
+                            <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah
+                                Pesanan</button>
+                        </form>
+
+
+                    </div>
+                </div>
+                <table class="table table-bordered" id="datatableGantiPesanandanRetur" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Barang</th>
+                            <th>Tipe Barang</th>
+                            <th>Ukuran Barang</th>
+                            <th>Harga Barang</th>
+                            {{-- <th>Jenis Pelanggan</th> Nanti di uncomment --}}
+                            <th>Diskon</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" rowspan="4">
+
+                            </td>
+                            <td colspan="2">Sub Total Rp</td>
+                            <td colspan="2"><input type="number" class="form-control" name="sub_total"
+                                    id="subTotal" value="0" readonly></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Diskon Rp</td>
+                            <td colspan="2"><input type="number" oninput="totalPembayaran()" class="form-control"
+                                    name="diskon_total" id="diskonTotal" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Ongkir</td>
+                            <td colspan="2"><input oninput="totalPembayaran()" type="number" class="form-control"
+                                    name="total_ongkir" min="0" id="totalOngkir" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Total Rp</strong></td>
+                            <td colspan="2"><strong><input type="number" class="form-control" name="total"
+                                        id="total" value="0" readonly></strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Detail Retur</h6>
+            </div>
+            <div class="card-body">
+
+
+                <form action="{{ route('retur.pembeli.store') }}" method="POST" id="formRetur"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id_nota" value="{{ $notaPembelian->id_nota }}">
+
+                    {{-- <input type="hidden" name="id_pembeli" value="{{ $id_pembeli }}"> --}}
+
+
+                    {{-- <div class="form-group">
+                        <label for="no_retur_pembeli">No. Retur Pembeli</label>
+                        <input type="text" class="form-control" id="no_retur_pembeli" name="no_retur_pembeli"
+                            value="{{ $noReturPembeli }}" readonly required>
+                    </div> --}}
+
+                    <div class="form-group">
+                        <label for="tanggal_retur_pembeli">Tanggal Retur Pembeli</label>
+                        <input type="date" class="form-control" id="tanggal_retur_pembeli"
+                            name="tanggal_retur_pembeli" required value="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bukti_retur_pembeli">Bukti Retur Pembeli</label>
+                        <input type="file" class="form-control" id="bukti_retur_pembeli" name="bukti_retur_pembeli"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis_retur">Jenis Retur</label>
+                        <select class="form-control" id="jenis_retur" name="jenis_retur" required>
+                            <option value="Rusak">Rusak</option>
+                            <option value="Tidak Rusak">Tidak Rusak</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="Belum Selesai">Belum Selesai</option>
+                            <option value="Selesai">Selesai</option>
+                        </select>
+                    </div>
+                    {{-- <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div> --}}
+
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary mt-4 float-right"
+                            onclick="kirimPesanan()">Retur</button>
+                    </div>
+                </form>
+
+
             </div>
         </div>
 
@@ -296,7 +385,7 @@
 
 
             // Pembautan Table
-            let tbody_table = document.querySelector('#dataTablePesanan tbody');
+            let tbody_table = document.querySelector('#datatableGantiPesanandanRetur tbody');
 
             // Hitung child pada tr untuk mengetahui totalnya berapa 
             let total_tr = tbody_table.childElementCount;
@@ -428,8 +517,8 @@
                 tbody_table.appendChild(tr_pesanan);
 
 
-                // Kalau gagal update ke database maka hapus element
-                updatePesanan(tr_pesanan);
+                // // Kalau gagal update ke database maka hapus element
+                // updatePesanan(tr_pesanan);
 
 
 
@@ -439,7 +528,7 @@
             } else {
 
                 // Update Pesanan
-                updatePesanan(tr_pesanan);
+                // updatePesanan(tr_pesanan);
                 // End Update Pesanan
                 var diskon_select_element = document.getElementById('diskon');
                 var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
@@ -477,7 +566,7 @@
         }
 
         function editPesananBarang(id_barang) {
-            const tbody_table = document.querySelector('#dataTablePesanan tbody');
+            const tbody_table = document.querySelector('#datatableGantiPesanandanRetur tbody');
             const tr_element_select = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
             alert("id barang :" + id_barang);
             // Edit element nama barang
@@ -497,7 +586,7 @@
 
         function hapusPesananBarang(id_barang) {
             // Element TBODY Table
-            const tbody_table = document.querySelector('#dataTablePesanan tbody');
+            const tbody_table = document.querySelector('#datatableGantiPesanandanRetur tbody');
             const tr_to_remove = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
             // Hapus element
             tr_to_remove.remove();
@@ -511,7 +600,7 @@
         function resetNoPesananBarang() {
             totalPembayaran();
 
-            const tbody_table = document.querySelector('#dataTablePesanan tbody');
+            const tbody_table = document.querySelector('#datatableGantiPesanandanRetur tbody');
 
             // Reset number pada no tr yang tersedia
             let total_tr = tbody_table.childElementCount;
@@ -561,30 +650,14 @@
                 parseInt(qtyPesananInput.value);
 
             resetNoPesananBarang();
-            totalPembayaran();
-        }
-    </script>
+            // retur Section 
 
 
-    <script>
-        function validateTotalPajak() {
-            var totalPajakInput = document.getElementById('totalPajakRetur');
-            var value = parseFloat(totalPajakInput.value);
 
-            if (isNaN(value) || value < 0) {
-                totalPajakInput.value = 0;
-            } else if (value > 100) {
-                totalPajakInput.value = 100;
-            }
-        }
-
-        function totalPembayaran() {
-            validateTotalPajak();
-            // window.history.back(1);
-            // Ambil semua harga barang dari tabel dan hitung totalnya
-            var totalHarga = 0;
             var totalDiskon = 0;
-            var totalNilaiRetur = 0;
+            var totalHarga = 0;
+            totalNilaiRetur = 0;
+            // Perhitungan Sub Total
             $('#dataTablePesanan tbody tr').each(function(rows) {
                 var harga = parseInt($(this).find('.harga_barang_pesanan').text())
                 var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
@@ -593,34 +666,82 @@
                 totalDiskon += diskon;
                 totalHarga += (harga - diskon) * jumlah;
                 totalNilaiRetur += (harga - diskon) * qtyRetur;
-
-
             });
 
-
-            var tabletfoot = document.querySelector('#dataTablePesanan tfoot');
-            let sub_total = tabletfoot.querySelector('#subTotal');
-            sub_total.value = totalHarga;
-            let diskon = tabletfoot.querySelector('#diskonTotal');
-            // diskon.value = totalDiskon;
-            let pajak = tabletfoot.querySelector('#totalPajak');
-            let total = tabletfoot.querySelector('#total');
-
-
-
-            // retur Section 
+            const tabletfoot = document.querySelector('#dataTablePesanan tfoot');
             let sub_total_retur = tabletfoot.querySelector('#subTotalRetur');
             sub_total_retur.value = totalNilaiRetur;
             let diskon_retur = tabletfoot.querySelector('#diskonTotalRetur');
             // diskon_retur.value = totalDiskon;
             let pajak_retur = tabletfoot.querySelector('#totalPajakRetur');
             let total_retur = tabletfoot.querySelector('#totalRetur');
-
+            let ongkir = tabletfoot.querySelector('#totalOngkirRetur');
 
             let nilaiTotal = parseInt(sub_total_retur.value) - parseInt(diskon_retur.value);
-            let nilaiPajak = nilaiTotal * (parseInt(pajak_retur.value) / 100);
+            // let nilaiPajak = nilaiTotal * (parseInt(pajak_retur.value) / 100);
+            let nilaiOngkir = parseInt(ongkir.value);
+            let totalSeluruh = nilaiTotal + nilaiOngkir;
+            if ((totalSeluruh) > 0) {
+                total_retur.value = totalSeluruh;
+            } else {
+                total_retur.value = 0;
+            }
 
-            total_retur.value = nilaiTotal + nilaiPajak;
+
+        }
+    </script>
+
+
+    <script>
+        function validateTotalPajak() {
+            // var totalPajakInput = document.getElementById('totalPajakRetur');
+            // var value = parseFloat(totalPajakInput.value);
+
+            // if (isNaN(value) || value < 0) {
+            //     totalPajakInput.value = 0;
+            // } else if (value > 100) {
+            //     totalPajakInput.value = 100;
+            // }
+        }
+
+        function totalPembayaran() {
+            // validateTotalPajak();
+            // window.history.back(1);
+            // Ambil semua harga barang dari tabel dan hitung totalnya
+            var totalHarga = 0;
+            var totalDiskon = 0;
+            var totalNilaiRetur = 0;
+            $('#datatableGantiPesanandanRetur tbody tr').each(function(rows) {
+                var harga = parseInt($(this).find('.harga_barang_pesanan').text())
+                var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
+                var diskon = parseInt($(this).find('.diskon_pesanan').text());
+                totalDiskon += diskon;
+                totalHarga += (harga - diskon) * jumlah;
+
+
+            });
+
+
+
+
+            var tabletfoot = document.querySelector('#datatableGantiPesanandanRetur tfoot');
+            let sub_total = tabletfoot.querySelector('#subTotal');
+
+            sub_total.value = totalHarga;
+            let diskon = tabletfoot.querySelector('#diskonTotal');
+            // diskon.value = totalDiskon;
+            let ongkir = tabletfoot.querySelector('#totalOngkir');
+            let total = tabletfoot.querySelector('#total');
+
+            let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
+            // let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
+            let nilaiOngkir = parseInt(ongkir.value);
+
+
+            total.value = nilaiTotal + nilaiOngkir;
+
+
+
             // Ubah ke format Rp dengan dipisah rupiah
 
             // Tampilkan total harga dalam elemen span
@@ -688,47 +809,55 @@
             // });
 
             // Inisiasi data pesanan
-            const dataPesanan = {
-                pesanan: []
-            };
+            const dataReturMurni = [];
             // Ambil TR untuk iterasi
             let tr_pesanan = document.querySelectorAll('#dataTablePesanan tbody tr');
+        
             Array.from(tr_pesanan).forEach(function(tr) {
                 const itemPesanan = {
-                    jumlah_pesanan: tr.querySelector('td.qtyRetur').value,
-                    id_barang: tr.getAttribute('data-id-barang'),
-                    id_diskon: tr.getAttribute('data-id-diskon'),
+                    id_pesanan: tr.getAttribute('data-id-pesanan'),
+                    qty_retur: tr.querySelector('#qtyRetur').value,
 
                 }
-                dataPesanan.pesanan.push(itemPesanan);
+                dataReturMurni.push(itemPesanan);
             });
 
             // Buat elemen input untuk menyimpan data pesanan sebagai JSON
-            const inputPesanan = document.createElement('input');
-            inputPesanan.type = 'hidden';
-            inputPesanan.name = 'pesanan'; // Nama input
-            inputPesanan.value = JSON.stringify(dataPesanan.pesanan); // Nilai input (data pesanan sebagai JSON)
+            const inputReturMurni = document.createElement('input');
+            inputReturMurni.type = 'hidden';
+            inputReturMurni.name = 'retur_murni'; // Nama input
+            inputReturMurni.value = JSON.stringify(dataReturMurni); // Nilai input (data pesanan sebagai JSON)
 
             // Tambahkan input ke formulir
-            formRetur.appendChild(inputPesanan);
+            formRetur.appendChild(inputReturMurni);
 
+            // Inisiasi data pesanan
+            const dataReturGantidanTambah = [];
+            // Ambil TR untuk iterasi
+            let tr_gantidantambah = document.querySelectorAll('#datatableGantiPesanandanRetur tbody tr');
+            Array.from(tr_gantidantambah).forEach(function(tr) {
+                const itemPesanan = {
+                    jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang_pesanan').innerText,
+                    id_barang: tr.getAttribute('data-id-barang'),
+                    id_diskon: tr.getAttribute('data-id-diskon'),
+                    jenis_pelanggan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-jenis-pelanggan'),
+                    harga_potongan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-harga-potongan-khusus'),
 
+                }
+                dataReturGantidanTambah.push(itemPesanan);
+            });
 
-            // Menambahkan pajak ke form
-            const totalPajak = document.querySelector('#totalPajakRetur');
-            const inputTotalPajakHidden = document.createElement('input');
-            inputTotalPajakHidden.type = 'hidden';
-            inputTotalPajakHidden.name = 'pajak'; // Menetapkan nama input ke 'totalPajak'
-            formRetur.appendChild(inputTotalPajakHidden); // Menambahkan input tersembunyi ke dalam form
-            // Menambahkan pajak ke form
-            const totalDiskonRetur = document.querySelector('#diskonTotalRetur');
-            const inputtotalDiskonReturHidden = document.createElement('input');
-            inputtotalDiskonReturHidden.type = 'hidden';
-            inputtotalDiskonReturHidden.name = 'diskon'; // Menetapkan nama input ke 'totalDiskonRetur'
+            // Buat elemen input untuk menyimpan data pesanan sebagai JSON
+            const inputReturGantidanTambah = document.createElement('input');
+            inputReturGantidanTambah.type = 'hidden';
+            inputReturGantidanTambah.name = 'retur_tambahan'; // Nama input
+            inputReturGantidanTambah.value = JSON.stringify(
+            dataReturGantidanTambah); // Nilai input (data pesanan sebagai JSON)
 
-            formRetur.appendChild(inputtotalDiskonReturHidden); // Menambahkan input tersembunyi ke dalam form
-
-
+            // Tambahkan input ke formulir
+            formRetur.appendChild(inputReturGantidanTambah);
 
 
             formRetur.submit();

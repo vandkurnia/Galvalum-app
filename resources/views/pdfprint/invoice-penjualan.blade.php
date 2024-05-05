@@ -148,7 +148,7 @@
         td {
             text-align: left;
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #000;
         }
 
         th {

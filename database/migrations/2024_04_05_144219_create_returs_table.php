@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('retur', function (Blueprint $table) {
             $table->id('id_retur');
             $table->dateTime('tanggal_retur');
-            $table->string('bukti');
-            $table->enum('jenis_retur', ['Rusak', 'Tidak Rusak']);
-            $table->string('keterangan');
-            $table->unsignedBigInteger('id_pesanan');
-            $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('id_pesanan')->references('id_pesanan')->on('pesanan_pembelis')->onUpdate('CASCADE')->onDelete('cascade');
+            // $table->string('bukti');
+            // $table->enum('jenis_retur', ['Rusak', 'Tidak Rusak']);
+            // $table->string('keterangan');
+            // $table->unsignedBigInteger('id_pesanan');
+            // $table->timestamps();
+            // $table->softDeletes();
+            // $table->foreign('id_pesanan')->references('id_pesanan')->on('pesanan_pembelis')->onUpdate('CASCADE')->onDelete('cascade');
         });
     }
 
