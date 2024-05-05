@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.7",
         "league/csv": "^9.15",
         "livewire/livewire": "^2.12",
+        "phpoffice/phpspreadsheet": "^2.0",
         "ramsey/uuid": "^4.7"
     },
     "require-dev": {

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class UserSeeder extends Seeder
 {
@@ -19,22 +20,31 @@ class UserSeeder extends Seeder
 
 
 
-        // Ambil ID terakhir dari tabel users
-        $lastId = User::max('id_admin');
+        // // Ambil ID terakhir dari tabel users
+        // $lastId = User::max('id_admin');
 
-        // Jika tidak ada data, atur ID ke 1
-        $idAdmin = $lastId ? $lastId + 1 : 1;
-        // Kombinasi id_admin + user + timestamp
-        $combinedString =  $idAdmin . '|users|' . time();
+        // // Jika tidak ada data, atur ID ke 1
+        // $idAdmin = $lastId ? $lastId + 1 : 1;
+        // // Kombinasi id_admin + user + timestamp
+        // $combinedString =  $idAdmin . '|users|' . time();
 
-        // Buat hash SHA-256
-        $hash = hash('sha256', (string) $combinedString);
+        // // Buat hash SHA-256
+        // $hash = hash('sha256', (string) $combinedString);
         User::create([
             'nama_admin' => 'Admin',
             'no_telp_admin' => '123456789',
             'email_admin' => 'admin@galvalum.com',
             'password' => Hash::make('password'),
-            'hash_id_admin' => $hash,
+            'role' => 'admin',
+            'hash_id_admin' => Uuid::uuid4()->toString(),
+        ]);
+        User::create([
+            'nama_admin' => 'Karyawan',
+            'no_telp_admin' => '123456789',
+            'email_admin' => 'karyawan@galvalum.com',
+            'password' => Hash::make('password'),
+            'role' => 'karyawan',
+            'hash_id_admin' => Uuid::uuid4()->toString(),
         ]);
         // $admin = [
         //     [

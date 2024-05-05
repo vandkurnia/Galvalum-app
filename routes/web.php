@@ -45,16 +45,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Master User
-    Route::prefix('user')->group(function () {
+    Route::middleware('role:admin')->prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user.index'); // Menampilkan semua user
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/', [UserController::class, 'store'])->name('user.store'); // Menyimpan user baru
         Route::put('/{id}', [UserController::class, 'update'])->name('user.update'); // Mengupdate user berdasarkan ID
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy'); // Menghapus user berdasarkan ID
     });
-
     // Master Tipe Barang
-    Route::prefix('tipe-barang')->group(function () {
+    Route::middleware('role:admin')->prefix('tipe-barang')->group(function () {
         Route::get('/', [TipeBarangController::class, 'index'])->name('tipebarang.index'); // Menampilkan semua user
         Route::get('/edit/{id}', [TipeBarangController::class, 'edit'])->name('tipebarang.edit');
         Route::post('/', [TipeBarangController::class, 'store'])->name('tipebarang.store'); // Menyimpan tipebarang baru
@@ -62,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [TipeBarangController::class, 'destroy'])->name('tipebarang.destroy'); // Menghapus tipebarang berdasarkan ID
     });
     // Master Pemasok Barang
-    Route::prefix('pemasok-barang')->group(function () {
+    Route::middleware('role:admin')->prefix('pemasok-barang')->group(function () {
         Route::get('/', [PemasokBarangController::class, 'index'])->name('pemasokbarang.index');
         Route::get('/edit/{id}', [PemasokBarangController::class, 'edit'])->name('pemasokbarang.edit');
         Route::post('/', [PemasokBarangController::class, 'store'])->name('pemasokbarang.store'); // Menyimpan tipebarang baru
@@ -70,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [PemasokBarangController::class, 'destroy'])->name('pemasokbarang.destroy'); // Menghapus tipebarang berdasarkan ID
     });
     // Master Pemasok Barang
-    Route::prefix('pembeli')->group(function () {
+    Route::middleware('role:admin')->prefix('pembeli')->group(function () {
         Route::get('/', [PembeliController::class, 'index'])->name('pembeli.index');
         Route::get('/edit/{id}', [PembeliController::class, 'edit'])->name('pembeli.edit');
         Route::post('/', [PembeliController::class, 'store'])->name('pembeli.store'); // Menyimpan tipebarang baru
@@ -100,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
-    Route::prefix('stok')->group(function () {
+    Route::middleware('role:admin')->prefix('stok')->group(function () {
         Route::get('/', [StokController::class, 'index'])->name('stok.index');
         Route::get('/edit/{id}', [StokController::class, 'edit'])->name('stok.edit');
         Route::post('/', [StokController::class, 'store'])->name('stok.store'); // Menyimpan tipebarang baru
@@ -142,7 +141,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Master Diskon
-    Route::prefix('bukubesar')->group(function () {
+    Route::middleware('role:admin')->prefix('bukubesar')->group(function () {
         Route::get('/', [BukubesarController::class, 'index'])->name('bukubesar.index'); // Menampilkan semua user
         Route::get('/edit/{id}', [BukubesarController::class, 'edit'])->name('bukubesar.edit');
         Route::post('/', [BukubesarController::class, 'store'])->name('bukubesar.store'); // Menyimpan user baru
@@ -151,7 +150,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/filter', [BukubesarController::class, 'filter'])->name('bukubesar.filter');
     });
 
-    Route::prefix('kategori')->group(function () {
+    Route::middleware('role:admin')->prefix('kategori')->group(function () {
         Route::get('/', [KategoriController::class, 'index'])->name('kategori.index'); // Menampilkan semua user
         Route::get('/edit/{id}', [KategoriController::class, 'edit'])->name('kategori.edit');
         Route::post('/', [KategoriController::class, 'simpanKategori'])->name('kategori.simpan'); // Menyimpan user baru
@@ -163,7 +162,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Master Diskon
-    Route::prefix('diskon')->group(function () {
+    Route::middleware('role:admin')->prefix('diskon')->group(function () {
         Route::get('/', [DiskonController::class, 'index'])->name('diskon.index'); // Menampilkan semua user
         Route::get('/edit/{id}', [DiskonController::class, 'edit'])->name('diskon.edit');
         Route::post('/', [DiskonController::class, 'store'])->name('diskon.store'); // Menyimpan user baru

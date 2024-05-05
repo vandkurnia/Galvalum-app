@@ -22,13 +22,11 @@ return new class extends Migration
             $table->string('no_telp_admin');
             $table->string('email_admin')->unique();
             $table->string('password');
+            $table->enum('role', ['admin', 'karyawan'])->default('karyawan');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });
-
-
-
     }
 
     /**

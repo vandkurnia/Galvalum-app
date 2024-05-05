@@ -60,7 +60,14 @@
 
 
         <!-- Sidebar -->
-        @include('template.sidebar')
+
+        @if (Auth::user()->role == 'admin')
+            @include('template.sidebar-admin')
+
+        @else
+        @include('template.sidebar-karyawan')
+        @endif
+
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
