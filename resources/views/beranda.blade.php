@@ -631,7 +631,7 @@
 
             let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
             // let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
-            let nilaiOngkir =  parseInt(ongkir.value);
+            let nilaiOngkir = parseInt(ongkir.value);
 
 
             total.value = nilaiTotal + nilaiOngkir;
@@ -740,7 +740,7 @@
             inputtotalOngkirHidden.type = 'hidden';
             inputtotalOngkirHidden.name = 'total_ongkir'; // Menetapkan nama input ke 'totalOngkir'
             inputtotalOngkirHidden.value = totalOngkir
-            .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalOngkir'
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalOngkir'
             formPembeli.appendChild(inputtotalOngkirHidden); // Menambahkan input tersembunyi ke dalam form
 
             // Menambahkan pajak ke form
@@ -950,6 +950,24 @@
                 const no_hp = document.querySelector('#noHp');
                 no_hp.readOnly = true;
                 no_hp.value = pembeli.no_hp_pembeli;
+
+
+                const jenis_pelanggan = document.getElementById('jenisPelanggan');
+                const options_jenis_pelanggan = jenis_pelanggan.options;
+                const jenis_pembelian = document.getElementById('jenis_pembelian');
+                const options_jenis_pembelian = jenis_pembelian.options;
+                for (let i = 0; i < options_jenis_pelanggan.length; i++) {
+
+                    if (options_jenis_pelanggan[i].value === pembeli.jenis_pembeli) {
+                        options_jenis_pelanggan[i].selected = true;
+                        options_jenis_pembelian[i].selected = true;
+                        break; // Keluar dari loop setelah opsi terpilih ditandai
+                    }
+                }
+                // Membuat dan melewatkan event 'change' setelah opsi terpilih diatur
+                const changeEvent = new Event('change');
+                jenis_pembelian.dispatchEvent(changeEvent);
+
 
                 return pembeli.nama_pembeli || pembeli.text;
             } else {

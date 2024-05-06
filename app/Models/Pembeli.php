@@ -19,6 +19,7 @@ class Pembeli extends Model
         'nama_pembeli',
         'alamat_pembeli',
         'no_hp_pembeli',
+        'jenis_pembeli'
     ];
 
     public function NotaPembelian()

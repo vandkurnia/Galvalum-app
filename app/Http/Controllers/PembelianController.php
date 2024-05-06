@@ -39,7 +39,7 @@ class PembelianController extends Controller
 
 
         ]);
-
+        // dd($request->all());
         DB::beginTransaction();
         // dd($request->get('pesanan'));
         $pesananData = json_decode($request->get('pesanan'), true);
@@ -50,7 +50,8 @@ class PembelianController extends Controller
                 'nama_pembeli' => $request->id_pembeli,
                 'alamat_pembeli' => $request->alamat_pembeli,
                 'no_hp_pembeli' => $request->no_hp,
-                
+                'jenis_pembeli' => $request->jenis_pelanggan
+
             ] // Isi dengan data default jika pembeli baru dibuat
         );
 
