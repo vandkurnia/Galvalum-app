@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cetak;
 
 use App\Http\Controllers\Controller;
 use App\Models\NotaPembeli;
+use App\Models\pdf\SuratJalanModel;
 use Illuminate\Http\Request;
 
 class ControllerInvoinceCetak extends Controller
@@ -12,6 +13,7 @@ class ControllerInvoinceCetak extends Controller
     {
         $data['title'] = 'Print Invoice ' . $no_nota;
         $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
+
 
         $dataPembeli = [
             [
@@ -115,7 +117,8 @@ class ControllerInvoinceCetak extends Controller
     {
 
         $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
-
+        $suratJalanModel = SuratJalanModel::firstOrCreate(['id_nota' => $notaPembeliModel->id_nota], ['id_nota' => $notaPembeliModel->id_nota]);
+   
         $data['title'] = 'Print Surat Jalan' . $no_nota;
         $dataPembeli = [
             [
@@ -127,9 +130,13 @@ class ControllerInvoinceCetak extends Controller
 
         $dataSuratJalan = [
             [
-                "tanggal" => date("Y-m-d", strtotime($notaPembeliModel->created_at)),
-                "no_surat" => $notaPembeliModel->no_nota
+                "tanggal" => date("Y-m-d", strtotime($suratJalanModel->created_at)),
+                "no_surat" => $suratJalanModel->no_surat_jalan
             ]
+        ];
+
+        $dataAdmin = [
+            'nama_admin' => $notaPembeliModel->Admin->nama_admin
         ];
         // $dataSuratJalan = [
         //     [
@@ -151,7 +158,8 @@ class ControllerInvoinceCetak extends Controller
         return view('pdfprint.surat-jalan', [
             'dataPembeli' => $dataPembeli,
             'dataSuratJalan' => $dataSuratJalan,
-            'dataRincianBarang' => $productsData
+            'dataRincianBarang' => $productsData,
+            'dataAdmin' => $dataAdmin
         ], $data);
     }
 }

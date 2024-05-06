@@ -2,12 +2,18 @@
 
 @section('title', 'Retur Stok Barang')
 @section('header-custom')
-
-
-
+    <!-- Filepond stylesheet -->
+    <link href="{{ secure_asset('library/filepond/dist/filepond.css') }}" rel="stylesheet">
+    {{-- Filepond image preview --}}
+    <link href="{{ secure_asset('library/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css') }}"
+        rel="stylesheet" />
+    <link href="{{ secure_asset('library/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css') }}"
+        rel="stylesheet" />
 @endsection
 
 @section('content')
+
+
     <!-- Begin Page Content -->
     <div class="container-fluid">
         @if (session('success'))
@@ -305,9 +311,18 @@
                     </div>
                     <div class="form-group">
                         <label for="bukti_retur_pembeli">Bukti Retur Pembeli</label>
-                        <input type="file" class="form-control" id="bukti_retur_pembeli" name="bukti_retur_pembeli"
-                            required>
+                        <input type="file" class="filepond" 
+                            data-max-file-size="10MB"  id="bukti_retur_pembeli"
+                            name="bukti_retur_pembeli" required>
+                        {{-- <input type="file" class="filepond" multiple data-allow-reorder="true"
+                            data-max-file-size="10MB" data-max-files="3" id="bukti_retur_pembeli"
+                            name="bukti_retur_pembeli" required> --}}
+                        <button type="button" onclick="cekUpload()">
+                            Coba cek
+                        </button>
+                        <input type="text" id="bukti_retur_pembeli">
                     </div>
+
                     <div class="form-group">
                         <label for="jenis_retur">Jenis Retur</label>
                         <select class="form-control" id="jenis_retur" name="jenis_retur" required>
@@ -340,7 +355,6 @@
 
     </div>
 
-
 @endsection
 
 
@@ -350,6 +364,60 @@
 
 
 @section('javascript-custom')
+    <script src="{{ secure_asset('library/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js') }}"></script>
+    <script
+        src="{{ secure_asset('library/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js') }}">
+    </script>
+    <script src="{{ secure_asset('library/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
+    </script>
+    <!-- add before </body> -->
+    <script
+        src="{{ secure_asset('library/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js') }}">
+    </script>
+    <!-- Load FilePond library -->
+    <script src="{{ secure_asset('library/filepond/dist/filepond.js') }}"></script>
+
+    <script>
+        // We want to preview images, so we register
+        // the Image Preview plugin, We also register 
+        // exif orientation (to correct mobile image
+        // orientation) and size validation, to prevent
+        // large files from being added
+        FilePond.registerPlugin(
+            FilePondPluginImagePreview,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginFileValidateSize,
+            FilePondPluginImageEdit
+        );
+
+        // FilePond.setOptions({
+        //     styleItemPanelAspectRatio: null // Ukuran gambar menyesuaikan dengan kotak preview
+        // });
+        // Select the file input and use 
+        // create a FilePond instance at the fieldset element location
+        const pond = FilePond.create(
+            document.querySelector('#bukti_retur_pembeli'), {
+                imagePreviewMinHeight: 80
+            }
+        );
+
+        // files have been gathered
+        // Listen for when files are added
+        function cekUpload() {
+            const files = pond.getFiles();
+            if (files.length > 0) {
+                const file = files[0]; // Ambil file pertama, Anda bisa mengubahnya sesuai kebutuhan
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const base64data = reader.result; // Data file dalam format base64
+                    document.querySelector('#bukti_retur_pembeli').value =
+                    base64data; // Set nilai input hidden dengan data base64
+                };
+                reader.readAsDataURL(file.file); // Baca file sebagai data URL
+            }
+        }
+    </script>
+
     <script>
         function pemesananBarang() {
             let barang = document.querySelector('#nama_barang');
@@ -812,7 +880,7 @@
             const dataReturMurni = [];
             // Ambil TR untuk iterasi
             let tr_pesanan = document.querySelectorAll('#dataTablePesanan tbody tr');
-        
+
             Array.from(tr_pesanan).forEach(function(tr) {
                 const itemPesanan = {
                     id_pesanan: tr.getAttribute('data-id-pesanan'),
@@ -854,7 +922,7 @@
             inputReturGantidanTambah.type = 'hidden';
             inputReturGantidanTambah.name = 'retur_tambahan'; // Nama input
             inputReturGantidanTambah.value = JSON.stringify(
-            dataReturGantidanTambah); // Nilai input (data pesanan sebagai JSON)
+                dataReturGantidanTambah); // Nilai input (data pesanan sebagai JSON)
 
             // Tambahkan input ke formulir
             formRetur.appendChild(inputReturGantidanTambah);
