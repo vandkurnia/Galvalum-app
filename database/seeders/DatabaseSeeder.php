@@ -27,13 +27,14 @@ class DatabaseSeeder extends Seeder
             AkunBayarSeeder::class,
             // BukubesarSeeder::class,
             UserSeeder::class,
-            TipeBarangSeeder::class,
-            PemasokSeeder::class,
-            BarangSeeder::class,
+            // TipeBarangSeeder::class,
+            // PemasokSeeder::class,
+            // BarangSeeder::class,
           
             DiskonSeeder::class,
-            PesananSeeder::class,
-            ZulfikarData::class
+            // PesananSeeder::class,
+            ZulfikarData::class,
+            MigrasiData::class
         ]);
     }
 }

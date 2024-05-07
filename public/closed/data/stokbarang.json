@@ -1,0 +1,2168 @@
+[
+    {
+        "No": "1",
+        "Nama Barang": "Kanal C 0,55 Pms",
+        "Satuan": "Btg",
+        " Harga ": " Rp56.000 "
+    },
+    {
+        "No": "2",
+        "Nama Barang": "Kanal C 0,55 Dino Truss",
+        "Satuan": "Btg",
+        " Harga ": " Rp58.000 "
+    },
+    {
+        "No": "3",
+        "Nama Barang": "Kanal C 0,65 Dino Truss",
+        "Satuan": "Btg",
+        " Harga ": " Rp67.000 "
+    },
+    {
+        "No": "4",
+        "Nama Barang": "Kanal C 0,70 Dino Truss",
+        "Satuan": "Btg",
+        " Harga ": " Rp70.000 "
+    },
+    {
+        "No": "5",
+        "Nama Barang": "Kanal C 0,75 Dino Truss",
+        "Satuan": "Btg",
+        " Harga ": " Rp77.000 "
+    },
+    {
+        "No": "6",
+        "Nama Barang": "Kanal C 0,75 Aplus",
+        "Satuan": "Btg",
+        " Harga ": " Rp84.000 "
+    },
+    {
+        "No": "7",
+        "Nama Barang": "Kanal C 0,60 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp75.000 "
+    },
+    {
+        "No": "8",
+        "Nama Barang": "Kanal C 0,70 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp85.000 "
+    },
+    {
+        "No": "9",
+        "Nama Barang": "Kanal C 0,75 75 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp90.000 "
+    },
+    {
+        "No": "10",
+        "Nama Barang": "Kanal C 0,75 80 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "11",
+        "Nama Barang": "Kanal C 75 1mm Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp136.000 "
+    },
+    {
+        "No": "12",
+        "Nama Barang": "Kanal C 80 1mm Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp146.000 "
+    },
+    {
+        "No": "13",
+        "Nama Barang": "Reng 0,35 Aplus",
+        "Satuan": "Btg",
+        " Harga ": " Rp28.000 "
+    },
+    {
+        "No": "14",
+        "Nama Barang": "Reng 0,40 Aplus",
+        "Satuan": "Btg",
+        " Harga ": " Rp31.000 "
+    },
+    {
+        "No": "15",
+        "Nama Barang": "Reng 0,40 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp38.000 "
+    },
+    {
+        "No": "16",
+        "Nama Barang": "Reng 0,45 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp42.000 "
+    },
+    {
+        "No": "17",
+        "Nama Barang": "Spandek 1m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp25.000 "
+    },
+    {
+        "No": "18",
+        "Nama Barang": "Spandek 1,5m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp37.500 "
+    },
+    {
+        "No": "19",
+        "Nama Barang": "Spandek 2m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp50.000 "
+    },
+    {
+        "No": "20",
+        "Nama Barang": "Spandek 2,5m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp62.500 "
+    },
+    {
+        "No": "21",
+        "Nama Barang": "Spandek 3m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp75.000 "
+    },
+    {
+        "No": "22",
+        "Nama Barang": "Spandek 3,5m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp87.500 "
+    },
+    {
+        "No": "23",
+        "Nama Barang": "Spandek 4m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "24",
+        "Nama Barang": "Spandek 5m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp125.000 "
+    },
+    {
+        "No": "25",
+        "Nama Barang": "Spandek 6m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp150.000 "
+    },
+    {
+        "No": "26",
+        "Nama Barang": "Spandek 7m x 0,25 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp175.000 "
+    },
+    {
+        "No": "27",
+        "Nama Barang": "Spandek 1m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp31.000 "
+    },
+    {
+        "No": "28",
+        "Nama Barang": "Spandek 1,5m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp46.500 "
+    },
+    {
+        "No": "29",
+        "Nama Barang": "Spandek 2m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp62.000 "
+    },
+    {
+        "No": "30",
+        "Nama Barang": "Spandek 2,5m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp77.500 "
+    },
+    {
+        "No": "31",
+        "Nama Barang": "Spandek 3m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp93.000 "
+    },
+    {
+        "No": "32",
+        "Nama Barang": "Spandek 3,5m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp108.500 "
+    },
+    {
+        "No": "33",
+        "Nama Barang": "Spandek 4m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp124.000 "
+    },
+    {
+        "No": "34",
+        "Nama Barang": "Spandek 5m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp155.000 "
+    },
+    {
+        "No": "35",
+        "Nama Barang": "Spandek 6m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp186.000 "
+    },
+    {
+        "No": "36",
+        "Nama Barang": "Spandek 7m x 0,30 Disato",
+        "Satuan": "Lbr",
+        " Harga ": " Rp217.000 "
+    },
+    {
+        "No": "37",
+        "Nama Barang": "Spandek 1m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "38",
+        "Nama Barang": "Spandek 1,5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp43.500 "
+    },
+    {
+        "No": "39",
+        "Nama Barang": "Spandek 2m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp58.000 "
+    },
+    {
+        "No": "40",
+        "Nama Barang": "Spandek 2,5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp72.500 "
+    },
+    {
+        "No": "41",
+        "Nama Barang": "Spandek 3m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp87.000 "
+    },
+    {
+        "No": "42",
+        "Nama Barang": "Spandek 3,5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp101.500 "
+    },
+    {
+        "No": "43",
+        "Nama Barang": "Spandek 4m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp116.000 "
+    },
+    {
+        "No": "44",
+        "Nama Barang": "Spandek 4,5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp130.500 "
+    },
+    {
+        "No": "45",
+        "Nama Barang": "Spandek 5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp145.000 "
+    },
+    {
+        "No": "46",
+        "Nama Barang": "Spandek 5,5m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp159.500 "
+    },
+    {
+        "No": "47",
+        "Nama Barang": "Spandek 6m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp174.000 "
+    },
+    {
+        "No": "48",
+        "Nama Barang": "Spandek 7m x 0,25 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp203.000 "
+    },
+    {
+        "No": "49",
+        "Nama Barang": "Spandek 1m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp34.000 "
+    },
+    {
+        "No": "50",
+        "Nama Barang": "Spandek 1,5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp51.000 "
+    },
+    {
+        "No": "51",
+        "Nama Barang": "Spandek 2m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp68.000 "
+    },
+    {
+        "No": "52",
+        "Nama Barang": "Spandek 2,5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp85.000 "
+    },
+    {
+        "No": "53",
+        "Nama Barang": "Spandek 3m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp102.000 "
+    },
+    {
+        "No": "54",
+        "Nama Barang": "Spandek 3,5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp119.000 "
+    },
+    {
+        "No": "55",
+        "Nama Barang": "Spandek 4m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp136.000 "
+    },
+    {
+        "No": "56",
+        "Nama Barang": "Spandek 4,5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp153.000 "
+    },
+    {
+        "No": "57",
+        "Nama Barang": "Spandek 5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "58",
+        "Nama Barang": "Spandek 5,5m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp187.000 "
+    },
+    {
+        "No": "59",
+        "Nama Barang": "Spandek 6m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp204.000 "
+    },
+    {
+        "No": "60",
+        "Nama Barang": "Spandek 7m x 0,30 Platinum",
+        "Satuan": "Lbr",
+        " Harga ": " Rp238.000 "
+    },
+    {
+        "No": "61",
+        "Nama Barang": "Spandek 1m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp38.000 "
+    },
+    {
+        "No": "62",
+        "Nama Barang": "Spandek 1,5m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp57.000 "
+    },
+    {
+        "No": "63",
+        "Nama Barang": "Spandek 2m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp76.000 "
+    },
+    {
+        "No": "64",
+        "Nama Barang": "Spandek 2,5m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp95.000 "
+    },
+    {
+        "No": "65",
+        "Nama Barang": "Spandek 3m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp114.000 "
+    },
+    {
+        "No": "66",
+        "Nama Barang": "Spandek 3,5m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp133.000 "
+    },
+    {
+        "No": "67",
+        "Nama Barang": "Spandek 4m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp152.000 "
+    },
+    {
+        "No": "68",
+        "Nama Barang": "Spandek 5m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp190.000 "
+    },
+    {
+        "No": "69",
+        "Nama Barang": "Spandek 6m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp228.000 "
+    },
+    {
+        "No": "70",
+        "Nama Barang": "Spandek 7m x 0,25 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp266.000 "
+    },
+    {
+        "No": "71",
+        "Nama Barang": "Spandek 1m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp46.000 "
+    },
+    {
+        "No": "72",
+        "Nama Barang": "Spandek 1,5m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp69.000 "
+    },
+    {
+        "No": "73",
+        "Nama Barang": "Spandek 2m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp92.000 "
+    },
+    {
+        "No": "74",
+        "Nama Barang": "Spandek 2,5m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp115.000 "
+    },
+    {
+        "No": "75",
+        "Nama Barang": "Spandek 3m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp138.000 "
+    },
+    {
+        "No": "76",
+        "Nama Barang": "Spandek 3,5m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp161.000 "
+    },
+    {
+        "No": "77",
+        "Nama Barang": "Spandek 4m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp184.000 "
+    },
+    {
+        "No": "78",
+        "Nama Barang": "Spandek 5m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp230.000 "
+    },
+    {
+        "No": "79",
+        "Nama Barang": "Spandek 6m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp276.000 "
+    },
+    {
+        "No": "80",
+        "Nama Barang": "Spandek 7m x 0,30 Kencana",
+        "Satuan": "Lbr",
+        " Harga ": " Rp322.000 "
+    },
+    {
+        "No": "81",
+        "Nama Barang": "Spandek Pasir 1m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "82",
+        "Nama Barang": "Spandek Pasir 1,5m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp55.500 "
+    },
+    {
+        "No": "83",
+        "Nama Barang": "Spandek Pasir 2m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp74.000 "
+    },
+    {
+        "No": "84",
+        "Nama Barang": "Spandek Pasir 2,5m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp92.500 "
+    },
+    {
+        "No": "85",
+        "Nama Barang": "Spandek Pasir 3m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp111.000 "
+    },
+    {
+        "No": "86",
+        "Nama Barang": "Spandek Pasir 3,5m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp129.500 "
+    },
+    {
+        "No": "87",
+        "Nama Barang": "Spandek Pasir 4m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp148.000 "
+    },
+    {
+        "No": "88",
+        "Nama Barang": "Spandek Pasir 5m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp185.000 "
+    },
+    {
+        "No": "89",
+        "Nama Barang": "Spandek Pasir 6m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp222.000 "
+    },
+    {
+        "No": "90",
+        "Nama Barang": "Spandek Pasir 7m x 0,30 B",
+        "Satuan": "Lbr",
+        " Harga ": " Rp259.000 "
+    },
+    {
+        "No": "91",
+        "Nama Barang": "Spandek Pasir 1m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp39.000 "
+    },
+    {
+        "No": "92",
+        "Nama Barang": "Spandek Pasir 1,5m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp58.500 "
+    },
+    {
+        "No": "93",
+        "Nama Barang": "Spandek Pasir 2m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp78.000 "
+    },
+    {
+        "No": "94",
+        "Nama Barang": "Spandek Pasir 2,5m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp97.500 "
+    },
+    {
+        "No": "95",
+        "Nama Barang": "Spandek Pasir 3m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp117.000 "
+    },
+    {
+        "No": "96",
+        "Nama Barang": "Spandek Pasir 3,5m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp136.500 "
+    },
+    {
+        "No": "97",
+        "Nama Barang": "Spandek Pasir 4m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp156.000 "
+    },
+    {
+        "No": "98",
+        "Nama Barang": "Spandek Pasir 5m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp195.000 "
+    },
+    {
+        "No": "99",
+        "Nama Barang": "Spandek Pasir 6m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp234.000 "
+    },
+    {
+        "No": "100",
+        "Nama Barang": "Spandek Pasir 7m x 0,30 Eco",
+        "Satuan": "Lbr",
+        " Harga ": " Rp273.000 "
+    },
+    {
+        "No": "101",
+        "Nama Barang": "Spandek Pasir 1m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp44.000 "
+    },
+    {
+        "No": "102",
+        "Nama Barang": "Spandek Pasir 1,5m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp66.000 "
+    },
+    {
+        "No": "103",
+        "Nama Barang": "Spandek Pasir 2m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp88.000 "
+    },
+    {
+        "No": "104",
+        "Nama Barang": "Spandek Pasir 2,5m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp110.000 "
+    },
+    {
+        "No": "105",
+        "Nama Barang": "Spandek Pasir 3m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp132.000 "
+    },
+    {
+        "No": "106",
+        "Nama Barang": "Spandek Pasir 3,5m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp154.000 "
+    },
+    {
+        "No": "107",
+        "Nama Barang": "Spandek Pasir 4m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp176.000 "
+    },
+    {
+        "No": "108",
+        "Nama Barang": "Spandek Pasir 5m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp220.000 "
+    },
+    {
+        "No": "109",
+        "Nama Barang": "Spandek Pasir 6m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp264.000 "
+    },
+    {
+        "No": "110",
+        "Nama Barang": "Spandek Pasir 7m x 0,30 Premium",
+        "Satuan": "Lbr",
+        " Harga ": " Rp308.000 "
+    },
+    {
+        "No": "111",
+        "Nama Barang": "Spandek Bening 1m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp90.000 "
+    },
+    {
+        "No": "112",
+        "Nama Barang": "Spandek Bening 1,5m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp135.000 "
+    },
+    {
+        "No": "113",
+        "Nama Barang": "Spandek Bening 2m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp180.000 "
+    },
+    {
+        "No": "114",
+        "Nama Barang": "Spandek Bening 2,5m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp225.000 "
+    },
+    {
+        "No": "115",
+        "Nama Barang": "Spandek Bening 3m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp270.000 "
+    },
+    {
+        "No": "116",
+        "Nama Barang": "Spandek Bening 3,5m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp315.000 "
+    },
+    {
+        "No": "117",
+        "Nama Barang": "Spandek Bening 4m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp360.000 "
+    },
+    {
+        "No": "118",
+        "Nama Barang": "Spandek Bening 5m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp450.000 "
+    },
+    {
+        "No": "119",
+        "Nama Barang": "Spandek Bening 6m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp540.000 "
+    },
+    {
+        "No": "120",
+        "Nama Barang": "Spandek Bening 7m x 0,80 ",
+        "Satuan": "Lbr",
+        " Harga ": " Rp630.000 "
+    },
+    {
+        "No": "121",
+        "Nama Barang": "Asbes 1,80m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp53.000 "
+    },
+    {
+        "No": "122",
+        "Nama Barang": "Asbes 2,10m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp63.000 "
+    },
+    {
+        "No": "123",
+        "Nama Barang": "Asbes 2,40m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp71.000 "
+    },
+    {
+        "No": "124",
+        "Nama Barang": "Asbes 3m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp88.000 "
+    },
+    {
+        "No": "125",
+        "Nama Barang": "Fiber Bening Gelombang 2.10m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp78.000 "
+    },
+    {
+        "No": "126",
+        "Nama Barang": "Atap Upvc Double Layer 1m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp142.000 "
+    },
+    {
+        "No": "127",
+        "Nama Barang": "Atap Upvc Double Layer 2m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp284.000 "
+    },
+    {
+        "No": "128",
+        "Nama Barang": "Atap Upvc Double Layer 3m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp426.000 "
+    },
+    {
+        "No": "129",
+        "Nama Barang": "Atap Upvc Double Layer 3,5m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp497.000 "
+    },
+    {
+        "No": "130",
+        "Nama Barang": "Atap Upvc Double Layer 4m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp568.000 "
+    },
+    {
+        "No": "131",
+        "Nama Barang": "Atap Upvc Double Layer 5m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp710.000 "
+    },
+    {
+        "No": "132",
+        "Nama Barang": "Atap Upvc Double Layer 6m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp852.000 "
+    },
+    {
+        "No": "133",
+        "Nama Barang": "Atap Upvc Double Layer 7m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp994.000 "
+    },
+    {
+        "No": "134",
+        "Nama Barang": "Hollo 2x4 STD",
+        "Satuan": "Btg",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "135",
+        "Nama Barang": "Hollo 2x4 Gasco",
+        "Satuan": "Btg",
+        " Harga ": " Rp16.000 "
+    },
+    {
+        "No": "136",
+        "Nama Barang": "Hollo 2x4 Dakota",
+        "Satuan": "Btg",
+        " Harga ": " Rp22.000 "
+    },
+    {
+        "No": "137",
+        "Nama Barang": "Hollo 2x4 0,25 Full Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp25.500 "
+    },
+    {
+        "No": "138",
+        "Nama Barang": "Hollo 2x4 0,30 Full Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp31.000 "
+    },
+    {
+        "No": "139",
+        "Nama Barang": "Hollo 2x4 GT",
+        "Satuan": "Btg",
+        " Harga ": " Rp26.500 "
+    },
+    {
+        "No": "140",
+        "Nama Barang": "Hollo 4x4 STD",
+        "Satuan": "Btg",
+        " Harga ": " Rp17.000 "
+    },
+    {
+        "No": "141",
+        "Nama Barang": "Hollo 4x4 Dakota",
+        "Satuan": "Btg",
+        " Harga ": " Rp26.000 "
+    },
+    {
+        "No": "142",
+        "Nama Barang": "Hollo 4x4 0,25 Full Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "143",
+        "Nama Barang": "Hollo 4x4 Full 0,30 Kencana",
+        "Satuan": "Btg",
+        " Harga ": " Rp39.000 "
+    },
+    {
+        "No": "144",
+        "Nama Barang": "Hollo 4x4 GT",
+        "Satuan": "Btg",
+        " Harga ": " Rp34.000 "
+    },
+    {
+        "No": "145",
+        "Nama Barang": "PVC 3M",
+        "Satuan": "Lbr",
+        " Harga ": " Rp34.500 "
+    },
+    {
+        "No": "146",
+        "Nama Barang": "PVC 4M",
+        "Satuan": "Lbr",
+        " Harga ": " Rp46.000 "
+    },
+    {
+        "No": "147",
+        "Nama Barang": "PVC 6M",
+        "Satuan": "Lbr",
+        " Harga ": " Rp69.000 "
+    },
+    {
+        "No": "148",
+        "Nama Barang": "Kalsiboard 3,5 mm Nb",
+        "Satuan": "Lbr",
+        " Harga ": " Rp45.000 "
+    },
+    {
+        "No": "149",
+        "Nama Barang": "Kalsiboard 6 mm",
+        "Satuan": "Lbr",
+        " Harga ": " Rp88.000 "
+    },
+    {
+        "No": "150",
+        "Nama Barang": "Kalsiboard 8 mm",
+        "Satuan": "Lbr",
+        " Harga ": " Rp143.000 "
+    },
+    {
+        "No": "151",
+        "Nama Barang": "Gypsum Aplus",
+        "Satuan": "Lbr",
+        " Harga ": " Rp45.000 "
+    },
+    {
+        "No": "152",
+        "Nama Barang": "Gypsum Knauf",
+        "Satuan": "Lbr",
+        " Harga ": " Rp47.000 "
+    },
+    {
+        "No": "153",
+        "Nama Barang": "Gypsum Star",
+        "Satuan": "Lbr",
+        " Harga ": " Rp49.000 "
+    },
+    {
+        "No": "154",
+        "Nama Barang": "Gypsum Heastop WaterProof",
+        "Satuan": "Lbr",
+        " Harga ": " Rp73.000 "
+    },
+    {
+        "No": "155",
+        "Nama Barang": "List Tempel Molding 5cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "156",
+        "Nama Barang": "List Tempel Molding 6cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp12.000 "
+    },
+    {
+        "No": "157",
+        "Nama Barang": "List Tempel Molding 7cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "158",
+        "Nama Barang": "List Tempel Motif Garis",
+        "Satuan": "Btg",
+        " Harga ": " Rp12.000 "
+    },
+    {
+        "No": "159",
+        "Nama Barang": "List Tempel dadung",
+        "Satuan": "Btg",
+        " Harga ": " Rp12.000 "
+    },
+    {
+        "No": "160",
+        "Nama Barang": "List Gypsum Polos 7cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp9.000 "
+    },
+    {
+        "No": "161",
+        "Nama Barang": "List Gypsum Polos 8cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "162",
+        "Nama Barang": "List Gypsum Polos 10cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp11.000 "
+    },
+    {
+        "No": "163",
+        "Nama Barang": "List Gypsum Polos 12cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "164",
+        "Nama Barang": "List Gypsum Polos 15cm",
+        "Satuan": "Btg",
+        " Harga ": " Rp16.000 "
+    },
+    {
+        "No": "165",
+        "Nama Barang": "List Gypsum Siku Polos",
+        "Satuan": "Btg",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "166",
+        "Nama Barang": "List Gypsum Bunga Kecil",
+        "Satuan": "Btg",
+        " Harga ": " Rp18.000 "
+    },
+    {
+        "No": "167",
+        "Nama Barang": "List Gypsum Kumis",
+        "Satuan": "Btg",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "168",
+        "Nama Barang": "List Gypsum Wajik",
+        "Satuan": "Btg",
+        " Harga ": " Rp15.000 "
+    },
+    {
+        "No": "169",
+        "Nama Barang": "List Gypsum Tugu",
+        "Satuan": "Btg",
+        " Harga ": " Rp17.000 "
+    },
+    {
+        "No": "170",
+        "Nama Barang": "List Gypsum Bunga Besar",
+        "Satuan": "Btg",
+        " Harga ": " Rp18.000 "
+    },
+    {
+        "No": "171",
+        "Nama Barang": "List Gypsum nok",
+        "Satuan": "Btg",
+        " Harga ": " Rp18.000 "
+    },
+    {
+        "No": "172",
+        "Nama Barang": "OR Gypsum Oval Bunga",
+        "Satuan": "pcs",
+        " Harga ": " Rp50.000 "
+    },
+    {
+        "No": "173",
+        "Nama Barang": "OR Gypsum Kotak Labirin",
+        "Satuan": "pcs",
+        " Harga ": " Rp25.000 "
+    },
+    {
+        "No": "174",
+        "Nama Barang": "OR Gypsum Bintang Cekung",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "175",
+        "Nama Barang": "OR Gypsum Bintang Matahari",
+        "Satuan": "pcs",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "176",
+        "Nama Barang": "OR Gypsum Kotak Kawung",
+        "Satuan": "pcs",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "177",
+        "Nama Barang": "OR Gypsum Kotak Garis",
+        "Satuan": "pcs",
+        " Harga ": " Rp25.000 "
+    },
+    {
+        "No": "178",
+        "Nama Barang": "OR Gypsum Bulat Kecil",
+        "Satuan": "pcs",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "179",
+        "Nama Barang": "OR Gypsum Oval Merak",
+        "Satuan": "pcs",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "180",
+        "Nama Barang": "OR Gypsum Segi 8 ",
+        "Satuan": "pcs",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "181",
+        "Nama Barang": "Sudutan Gypsum kecil",
+        "Satuan": "pcs",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "182",
+        "Nama Barang": "Sudutan gypsum lis",
+        "Satuan": "pcs",
+        " Harga ": " Rp12.000 "
+    },
+    {
+        "No": "183",
+        "Nama Barang": "DOM Gypsum Kecil",
+        "Satuan": "pcs",
+        " Harga ": " Rp45.000 "
+    },
+    {
+        "No": "184",
+        "Nama Barang": "DOM Gypsum Besar",
+        "Satuan": "pcs",
+        " Harga ": " Rp80.000 "
+    },
+    {
+        "No": "185",
+        "Nama Barang": "Risplang 20cmx3m Polos",
+        "Satuan": "Lbr",
+        " Harga ": " Rp36.000 "
+    },
+    {
+        "No": "186",
+        "Nama Barang": "Risplang 20cmx4m Motif",
+        "Satuan": "Lbr",
+        " Harga ": " Rp47.000 "
+    },
+    {
+        "No": "187",
+        "Nama Barang": "Risplang 20cmx4m Polos",
+        "Satuan": "Lbr",
+        " Harga ": " Rp46.000 "
+    },
+    {
+        "No": "188",
+        "Nama Barang": "Risplang 20cmx3m Motif",
+        "Satuan": "Lbr",
+        " Harga ": " Rp38.000 "
+    },
+    {
+        "No": "189",
+        "Nama Barang": "Risplang 30cmx3m Motif",
+        "Satuan": "Lbr",
+        " Harga ": " Rp50.000 "
+    },
+    {
+        "No": "190",
+        "Nama Barang": "Risplang 30cmx3m Polos",
+        "Satuan": "Lbr",
+        " Harga ": " Rp48.000 "
+    },
+    {
+        "No": "191",
+        "Nama Barang": "Risplang 30cmx4m Motif",
+        "Satuan": "Lbr",
+        " Harga ": " Rp65.000 "
+    },
+    {
+        "No": "192",
+        "Nama Barang": "Risplang 30cmx4m Polos",
+        "Satuan": "Lbr",
+        " Harga ": " Rp63.000 "
+    },
+    {
+        "No": "193",
+        "Nama Barang": "GMP Merah",
+        "Satuan": "Lbr",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "194",
+        "Nama Barang": "GMP Hitam",
+        "Satuan": "Lbr",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "195",
+        "Nama Barang": "GMP Coklat",
+        "Satuan": "Lbr",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "196",
+        "Nama Barang": "GMP Hijau",
+        "Satuan": "Lbr",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "197",
+        "Nama Barang": "Genteng Metal Merah",
+        "Satuan": "Lbr",
+        " Harga ": " Rp27.000 "
+    },
+    {
+        "No": "198",
+        "Nama Barang": "Genteng Bening",
+        "Satuan": "Lbr",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "199",
+        "Nama Barang": "Wuwung GMP Merah",
+        "Satuan": "Lbr",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "200",
+        "Nama Barang": "Wuwung GMP Hijau",
+        "Satuan": "Lbr",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "201",
+        "Nama Barang": "Wuwung GMP Coklat",
+        "Satuan": "Lbr",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "202",
+        "Nama Barang": "Wuwung GMP Hitam",
+        "Satuan": "Lbr",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "203",
+        "Nama Barang": "Wuwung Genteng Metal",
+        "Satuan": "Lbr",
+        " Harga ": " Rp18.000 "
+    },
+    {
+        "No": "204",
+        "Nama Barang": "Wuwung Spandek 3m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp50.000 "
+    },
+    {
+        "No": "205",
+        "Nama Barang": "Wuwung Spandek Pasir 3m",
+        "Satuan": "Lbr",
+        " Harga ": " Rp75.000 "
+    },
+    {
+        "No": "206",
+        "Nama Barang": "Talang U Galvalum",
+        "Satuan": "Btg",
+        " Harga ": " Rp85.000 "
+    },
+    {
+        "No": "207",
+        "Nama Barang": "Warl Angel",
+        "Satuan": "Btg",
+        " Harga ": " Rp8.000 "
+    },
+    {
+        "No": "208",
+        "Nama Barang": "Showndoline",
+        "Satuan": "Btg",
+        " Harga ": " Rp13.000 "
+    },
+    {
+        "No": "209",
+        "Nama Barang": "Metal Stut",
+        "Satuan": "Btg",
+        " Harga ": " Rp31.000 "
+    },
+    {
+        "No": "210",
+        "Nama Barang": "Uraner",
+        "Satuan": "Btg",
+        " Harga ": " Rp25.000 "
+    },
+    {
+        "No": "211",
+        "Nama Barang": "Kawat Las 1kg",
+        "Satuan": "Pcs",
+        " Harga ": " Rp41.000 "
+    },
+    {
+        "No": "212",
+        "Nama Barang": "Kawat Las 2kg",
+        "Satuan": "Pcs",
+        " Harga ": " Rp73.000 "
+    },
+    {
+        "No": "213",
+        "Nama Barang": "Enka Poles",
+        "Satuan": "Pcs",
+        " Harga ": " Rp7.500 "
+    },
+    {
+        "No": "214",
+        "Nama Barang": "Engsel GK",
+        "Satuan": "Pcs",
+        " Harga ": " Rp6.000 "
+    },
+    {
+        "No": "215",
+        "Nama Barang": "List Pigura 4cm Silver",
+        "Satuan": "Btg",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "216",
+        "Nama Barang": "List Pigura 6cm Silver",
+        "Satuan": "Btg",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "217",
+        "Nama Barang": "List Pigura 4cm Kuning/Gold",
+        "Satuan": "Btg",
+        " Harga ": " Rp29.000 "
+    },
+    {
+        "No": "218",
+        "Nama Barang": "List Pigura 6cm Kuning/Gold",
+        "Satuan": "Btg",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "219",
+        "Nama Barang": "List Siku Pigura Silver",
+        "Satuan": "Btg",
+        " Harga ": " Rp34.000 "
+    },
+    {
+        "No": "220",
+        "Nama Barang": "List Siku Pigura Kuning/Gold",
+        "Satuan": "Btg",
+        " Harga ": " Rp34.000 "
+    },
+    {
+        "No": "221",
+        "Nama Barang": "List PVC Putih Polos",
+        "Satuan": "Btg",
+        " Harga ": " Rp52.000 "
+    },
+    {
+        "No": "222",
+        "Nama Barang": "List PVC A47BP",
+        "Satuan": "Btg",
+        " Harga ": " Rp52.000 "
+    },
+    {
+        "No": "223",
+        "Nama Barang": "List PVC Emas Polos",
+        "Satuan": "Btg",
+        " Harga ": " Rp52.000 "
+    },
+    {
+        "No": "224",
+        "Nama Barang": "List PVC Silver",
+        "Satuan": "Btg",
+        " Harga ": " Rp52.000 "
+    },
+    {
+        "No": "225",
+        "Nama Barang": "List PVC Coklat",
+        "Satuan": "Btg",
+        " Harga ": " Rp52.000 "
+    },
+    {
+        "No": "226",
+        "Nama Barang": "List H/Sambung Coklat",
+        "Satuan": "Btg",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "227",
+        "Nama Barang": "List H/Sambung Putih",
+        "Satuan": "Btg",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "228",
+        "Nama Barang": "List Tutup Coklat",
+        "Satuan": "Btg",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "229",
+        "Nama Barang": "List Tutup Putih",
+        "Satuan": "Btg",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "230",
+        "Nama Barang": "List Trap Coklat",
+        "Satuan": "Btg",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "231",
+        "Nama Barang": "List Trap Putih",
+        "Satuan": "Btg",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "232",
+        "Nama Barang": "OR 30x30 Segi 8 Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "233",
+        "Nama Barang": "OR 30x30 Segi 8 Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "234",
+        "Nama Barang": "OR 30x30 Bintang Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "235",
+        "Nama Barang": "OR 30x30 Bintang Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "236",
+        "Nama Barang": "OR 30x30 Kotak Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "237",
+        "Nama Barang": "OR 30x30 Kotak Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "238",
+        "Nama Barang": "OR 30x30 Bulat Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "239",
+        "Nama Barang": "OR 30x30 Bulat Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "240",
+        "Nama Barang": "OR 60x60 Kotak Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "241",
+        "Nama Barang": "OR 60x60 Kotak Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "242",
+        "Nama Barang": "OR 60x60 Bintang Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "243",
+        "Nama Barang": "OR 60x60 Bintang Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "244",
+        "Nama Barang": "OR 60x60 Bulat Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "245",
+        "Nama Barang": "Fitting Lampu Kuning",
+        "Satuan": "pcs",
+        " Harga ": " Rp15.000 "
+    },
+    {
+        "No": "246",
+        "Nama Barang": "Fitting Lampu Silver",
+        "Satuan": "pcs",
+        " Harga ": " Rp15.000 "
+    },
+    {
+        "No": "247",
+        "Nama Barang": "Seng Talang 50cmx0,22mm",
+        "Satuan": "m",
+        " Harga ": " Rp23.000 "
+    },
+    {
+        "No": "248",
+        "Nama Barang": "Seng Talang 50cmx0,25mm",
+        "Satuan": "m",
+        " Harga ": " Rp25.000 "
+    },
+    {
+        "No": "249",
+        "Nama Barang": "Seng Talang 50cmx0,30mm",
+        "Satuan": "m",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "250",
+        "Nama Barang": "Seng Talang 60cmx0,25mm",
+        "Satuan": "m",
+        " Harga ": " Rp26.000 "
+    },
+    {
+        "No": "251",
+        "Nama Barang": "Seng Talang 60cmx0,30mm",
+        "Satuan": "m",
+        " Harga ": " Rp34.000 "
+    },
+    {
+        "No": "252",
+        "Nama Barang": "Seng Talang 70cmx0,25mm",
+        "Satuan": "m",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "253",
+        "Nama Barang": "Seng Talang 70cmx0,30mm",
+        "Satuan": "m",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "254",
+        "Nama Barang": "Seng Talang 90cmx0,25mm",
+        "Satuan": "m",
+        " Harga ": " Rp37.000 "
+    },
+    {
+        "No": "255",
+        "Nama Barang": "Seng Talang 90cmx0,30mm",
+        "Satuan": "m",
+        " Harga ": " Rp48.000 "
+    },
+    {
+        "No": "256",
+        "Nama Barang": "Besi Hitam 2x4 Kecil 0,7",
+        "Satuan": "Btg",
+        " Harga ": " Rp56.000 "
+    },
+    {
+        "No": "257",
+        "Nama Barang": "Besi Hitam 2x4 Kecil 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp64.000 "
+    },
+    {
+        "No": "258",
+        "Nama Barang": "Besi Hitam 2x4 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp81.000 "
+    },
+    {
+        "No": "259",
+        "Nama Barang": "Besi Hitam 4x4 Kecil 0,7",
+        "Satuan": "Btg",
+        " Harga ": " Rp76.000 "
+    },
+    {
+        "No": "260",
+        "Nama Barang": "Besi Hitam 4x4 Kecil 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp87.000 "
+    },
+    {
+        "No": "261",
+        "Nama Barang": "Besi Hitam 4x4 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp112.000 "
+    },
+    {
+        "No": "262",
+        "Nama Barang": "Besi Hitam 4x6 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp136.000 "
+    },
+    {
+        "No": "263",
+        "Nama Barang": "Besi Hitam 4x4 Full 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp95.000 "
+    },
+    {
+        "No": "264",
+        "Nama Barang": "Besi Hitam 4x4 Full 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp120.000 "
+    },
+    {
+        "No": "265",
+        "Nama Barang": "Galvanis 2x4 Kecil 0,6",
+        "Satuan": "Btg",
+        " Harga ": " Rp48.000 "
+    },
+    {
+        "No": "266",
+        "Nama Barang": "Galvanis 2x4 Kecil 0,7",
+        "Satuan": "Btg",
+        " Harga ": " Rp53.000 "
+    },
+    {
+        "No": "267",
+        "Nama Barang": "Galvanis 2x4 Kecil 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp61.000 "
+    },
+    {
+        "No": "268",
+        "Nama Barang": "Galvanis 2x4 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp76.000 "
+    },
+    {
+        "No": "269",
+        "Nama Barang": "Galvanis 3x3 Kecil 0,6",
+        "Satuan": "Btg",
+        " Harga ": " Rp48.000 "
+    },
+    {
+        "No": "270",
+        "Nama Barang": "Galvanis 2x4 Full 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp73.000 "
+    },
+    {
+        "No": "271",
+        "Nama Barang": "Galvanis 4x4 Kecil 0,6",
+        "Satuan": "Btg",
+        " Harga ": " Rp66.000 "
+    },
+    {
+        "No": "272",
+        "Nama Barang": "Galvanis 4x4 Kecil 0,7",
+        "Satuan": "Btg",
+        " Harga ": " Rp73.500 "
+    },
+    {
+        "No": "273",
+        "Nama Barang": "Galvanis 4x4 Kecil 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp84.000 "
+    },
+    {
+        "No": "274",
+        "Nama Barang": "Galvanis 4x4 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp107.000 "
+    },
+    {
+        "No": "275",
+        "Nama Barang": "Galvanis 4x4 Full 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp99.000 "
+    },
+    {
+        "No": "276",
+        "Nama Barang": "Galvanis 4x4 Full 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp125.000 "
+    },
+    {
+        "No": "277",
+        "Nama Barang": "Galvanis 4x6 Kecil 0,7",
+        "Satuan": "Btg",
+        " Harga ": " Rp95.000 "
+    },
+    {
+        "No": "278",
+        "Nama Barang": "Galvanis 4x6 Kecil 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp109.000 "
+    },
+    {
+        "No": "279",
+        "Nama Barang": "Galvanis 4x6 Kecil 1,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp140.000 "
+    },
+    {
+        "No": "280",
+        "Nama Barang": "Galvanis 4x6 Full 0,8",
+        "Satuan": "Btg",
+        " Harga ": " Rp123.000 "
+    },
+    {
+        "No": "281",
+        "Nama Barang": "Galvanis 4x6 Full 01,0",
+        "Satuan": "Btg",
+        " Harga ": " Rp156.000 "
+    },
+    {
+        "No": "282",
+        "Nama Barang": "Casting Aplus",
+        "Satuan": "Sak",
+        " Harga ": " Rp33.000 "
+    },
+    {
+        "No": "283",
+        "Nama Barang": "Casting Elephant",
+        "Satuan": "Sak",
+        " Harga ": " Rp38.000 "
+    },
+    {
+        "No": "284",
+        "Nama Barang": "Compon Aplus",
+        "Satuan": "Sak",
+        " Harga ": " Rp60.000 "
+    },
+    {
+        "No": "285",
+        "Nama Barang": "Compon Elephant",
+        "Satuan": "Sak",
+        " Harga ": " Rp60.000 "
+    },
+    {
+        "No": "286",
+        "Nama Barang": "Drilling Baja 10x19",
+        "Satuan": "pcs",
+        " Harga ": " Rp280 "
+    },
+    {
+        "No": "287",
+        "Nama Barang": "Drilling Baja 10x19 (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp14.000 "
+    },
+    {
+        "No": "288",
+        "Nama Barang": "Drilling Baja 10x19 (200)",
+        "Satuan": "Box",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "289",
+        "Nama Barang": "Drilling Baja 10x19 (500)",
+        "Satuan": "Box",
+        " Harga ": " Rp108.000 "
+    },
+    {
+        "No": "290",
+        "Nama Barang": "Drilling Baja 10x19 (1000)",
+        "Satuan": "Box",
+        " Harga ": " Rp190.000 "
+    },
+    {
+        "No": "291",
+        "Nama Barang": "Drilling Baja 10x16",
+        "Satuan": "pcs",
+        " Harga ": " Rp200 "
+    },
+    {
+        "No": "292",
+        "Nama Barang": "Drilling Baja 10x16 (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "293",
+        "Nama Barang": "Drilling Baja 10x16 (200)",
+        "Satuan": "Box",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "294",
+        "Nama Barang": "Drilling Baja 10x16 (500)",
+        "Satuan": "Box",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "295",
+        "Nama Barang": "Drilling Baja 10x16 (1000)",
+        "Satuan": "Box",
+        " Harga ": " Rp170.000 "
+    },
+    {
+        "No": "296",
+        "Nama Barang": "Drilling Spandek 5cm",
+        "Satuan": "pcs",
+        " Harga ": " Rp520 "
+    },
+    {
+        "No": "297",
+        "Nama Barang": "Drilling Spandek 5cm (25)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp13.000 "
+    },
+    {
+        "No": "298",
+        "Nama Barang": "Drilling Spandek 5cm (200)",
+        "Satuan": "Box",
+        " Harga ": " Rp90.000 "
+    },
+    {
+        "No": "299",
+        "Nama Barang": "Drlling Spandek 7cm",
+        "Satuan": "pcs",
+        " Harga ": " Rp700 "
+    },
+    {
+        "No": "300",
+        "Nama Barang": "Drilling Baja Karet",
+        "Satuan": "pcs",
+        " Harga ": " Rp320 "
+    },
+    {
+        "No": "301",
+        "Nama Barang": "Drilling Baja (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp16.000 "
+    },
+    {
+        "No": "302",
+        "Nama Barang": "Drilling Baja Karet",
+        "Satuan": "Box",
+        " Harga ": " Rp165.000 "
+    },
+    {
+        "No": "303",
+        "Nama Barang": "Drilling Baja Tanggung",
+        "Satuan": "pcs",
+        " Harga ": " Rp400 "
+    },
+    {
+        "No": "304",
+        "Nama Barang": "Drilling Baja Tanggung (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp20.000 "
+    },
+    {
+        "No": "305",
+        "Nama Barang": "Drilling Baja Tanggung",
+        "Satuan": "Box",
+        " Harga ": " Rp160.000 "
+    },
+    {
+        "No": "306",
+        "Nama Barang": "Drilling Baja K6",
+        "Satuan": "pcs",
+        " Harga ": " Rp200 "
+    },
+    {
+        "No": "307",
+        "Nama Barang": "Drilling Baja K6",
+        "Satuan": "Plastik",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "308",
+        "Nama Barang": "Drilling Baja K7",
+        "Satuan": "Box",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "309",
+        "Nama Barang": "Kunci Drilling 8",
+        "Satuan": "",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "310",
+        "Nama Barang": "Kunci Drlling 6",
+        "Satuan": "",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "311",
+        "Nama Barang": "Kunci Soket Skrup Magnet",
+        "Satuan": "",
+        " Harga ": " Rp12.000 "
+    },
+    {
+        "No": "312",
+        "Nama Barang": "Kunci Soket Skrup",
+        "Satuan": "",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "313",
+        "Nama Barang": "Mata Bor 3,5mm",
+        "Satuan": "",
+        " Harga ": " Rp8.000 "
+    },
+    {
+        "No": "314",
+        "Nama Barang": "Tembak Silen",
+        "Satuan": "",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "315",
+        "Nama Barang": "Maeteran 5m",
+        "Satuan": "",
+        " Harga ": " Rp28.000 "
+    },
+    {
+        "No": "316",
+        "Nama Barang": "Meteran 7,5m",
+        "Satuan": "",
+        " Harga ": " Rp38.000 "
+    },
+    {
+        "No": "317",
+        "Nama Barang": "Gunting Galvalum",
+        "Satuan": "",
+        " Harga ": " Rp70.000 "
+    },
+    {
+        "No": "318",
+        "Nama Barang": "Gunting Galvalum Tekiro",
+        "Satuan": "",
+        " Harga ": " Rp95.000 "
+    },
+    {
+        "No": "319",
+        "Nama Barang": "Gunting Hollo",
+        "Satuan": "",
+        " Harga ": " Rp40.000 "
+    },
+    {
+        "No": "320",
+        "Nama Barang": "Skrup 6x1 ",
+        "Satuan": "pcs",
+        " Harga ": " Rp100 "
+    },
+    {
+        "No": "321",
+        "Nama Barang": "Skrup 6x1 (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp5.000 "
+    },
+    {
+        "No": "322",
+        "Nama Barang": "Skrup 6x1 (500)",
+        "Satuan": "box",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "323",
+        "Nama Barang": "Skrup Tanggung",
+        "Satuan": "pcs",
+        " Harga ": " Rp150 "
+    },
+    {
+        "No": "324",
+        "Nama Barang": "Skrup Tanggung (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp7.500 "
+    },
+    {
+        "No": "325",
+        "Nama Barang": "Skrup Tanggung ",
+        "Satuan": "Box",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "326",
+        "Nama Barang": "Skrup 6x2",
+        "Satuan": "pcs",
+        " Harga ": " Rp200 "
+    },
+    {
+        "No": "327",
+        "Nama Barang": "Skrup 6x2 (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "328",
+        "Nama Barang": "Skrup 6x2",
+        "Satuan": "box",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "329",
+        "Nama Barang": "Skrup Kalsiboard",
+        "Satuan": "pcs",
+        " Harga ": " Rp100 "
+    },
+    {
+        "No": "330",
+        "Nama Barang": "Skrup Kalsiboard (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp5.000 "
+    },
+    {
+        "No": "331",
+        "Nama Barang": "Skrup Kalsiboard",
+        "Satuan": "box",
+        " Harga ": " Rp75.000 "
+    },
+    {
+        "No": "332",
+        "Nama Barang": "Skrup Risplang",
+        "Satuan": "pcs",
+        " Harga ": " Rp200.000 "
+    },
+    {
+        "No": "333",
+        "Nama Barang": "Skrup Risplang (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "334",
+        "Nama Barang": "Skrup Risplang ",
+        "Satuan": "Box",
+        " Harga ": " Rp150.000 "
+    },
+    {
+        "No": "335",
+        "Nama Barang": "Rivet Kecil",
+        "Satuan": "Pcs",
+        " Harga ": " Rp100 "
+    },
+    {
+        "No": "336",
+        "Nama Barang": "Rivet Kecil (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp5.000 "
+    },
+    {
+        "No": "337",
+        "Nama Barang": "Rivet Kecil",
+        "Satuan": "Box",
+        " Harga ": " Rp65.000 "
+    },
+    {
+        "No": "338",
+        "Nama Barang": "Rivet Tanggung",
+        "Satuan": "Pcs",
+        " Harga ": " Rp150 "
+    },
+    {
+        "No": "339",
+        "Nama Barang": "Rivet Tanggung (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp7.500 "
+    },
+    {
+        "No": "340",
+        "Nama Barang": "Rivet Tanggung",
+        "Satuan": "Box",
+        " Harga ": " Rp100.000 "
+    },
+    {
+        "No": "341",
+        "Nama Barang": "Rivet Besar",
+        "Satuan": "pcs",
+        " Harga ": " Rp200 "
+    },
+    {
+        "No": "342",
+        "Nama Barang": "Rivet Besar (50)",
+        "Satuan": "Plastik",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "343",
+        "Nama Barang": "Paku Payung 1/4",
+        "Satuan": "Plastik",
+        " Harga ": " Rp9.000 "
+    },
+    {
+        "No": "344",
+        "Nama Barang": "Paku Payung 1/2",
+        "Satuan": "Plastik",
+        " Harga ": " Rp18.000 "
+    },
+    {
+        "No": "345",
+        "Nama Barang": "Paku Payung 1kg",
+        "Satuan": "Plastik",
+        " Harga ": " Rp35.000 "
+    },
+    {
+        "No": "346",
+        "Nama Barang": "Karet Payung",
+        "Satuan": "pcs",
+        " Harga ": " Rp2.000 "
+    },
+    {
+        "No": "347",
+        "Nama Barang": "Paku Beton 1\"",
+        "Satuan": "Box",
+        " Harga ": " Rp13.000 "
+    },
+    {
+        "No": "348",
+        "Nama Barang": "Paku Beton 1,5\"",
+        "Satuan": "Box",
+        " Harga ": " Rp13.000 "
+    },
+    {
+        "No": "349",
+        "Nama Barang": "Paku Beton 2\"",
+        "Satuan": "Box",
+        " Harga ": " Rp13.000 "
+    },
+    {
+        "No": "350",
+        "Nama Barang": "Paku Beton 2\" Hitam",
+        "Satuan": "Box",
+        " Harga ": " Rp23.000 "
+    },
+    {
+        "No": "351",
+        "Nama Barang": "Pisau Potong (WD)",
+        "Satuan": "pcs",
+        " Harga ": " Rp4.000 "
+    },
+    {
+        "No": "352",
+        "Nama Barang": "Pisau Potong (WD) Isi 3 ",
+        "Satuan": "Paket",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "353",
+        "Nama Barang": "Pisau Potong (WD) ",
+        "Satuan": "Box",
+        " Harga ": " Rp70.000 "
+    },
+    {
+        "No": "354",
+        "Nama Barang": "Pisau Potong (BWS) ",
+        "Satuan": "pcs",
+        " Harga ": " Rp3.000 "
+    },
+    {
+        "No": "355",
+        "Nama Barang": "Pisau Potong (BWS) Isi 4",
+        "Satuan": "paket",
+        " Harga ": " Rp10.000 "
+    },
+    {
+        "No": "356",
+        "Nama Barang": "Silent Putih",
+        "Satuan": "pcs",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "357",
+        "Nama Barang": "Silent Hitam",
+        "Satuan": "pcs",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "358",
+        "Nama Barang": "Silent Clear",
+        "Satuan": "pcs",
+        " Harga ": " Rp30.000 "
+    },
+    {
+        "No": "359",
+        "Nama Barang": "Cet Paragon Putih 5kg",
+        "Satuan": "Kaleng",
+        " Harga ": " Rp135.000 "
+    },
+    {
+        "No": "360",
+        "Nama Barang": "Cet Paragon Putih 20kg",
+        "Satuan": "Pail",
+        " Harga ": " Rp490.000 "
+    },
+    {
+        "No": "361",
+        "Nama Barang": "Cet Risplang 1kg",
+        "Satuan": "Kaleng",
+        " Harga ": " Rp80.000"
+    }
+]

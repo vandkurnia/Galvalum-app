@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cetak;
 use App\Http\Controllers\Controller;
 use App\Models\NotaPembeli;
 use App\Models\pdf\SuratJalanModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ControllerInvoinceCetak extends Controller
@@ -18,7 +19,7 @@ class ControllerInvoinceCetak extends Controller
         $dataPembeli = [
             [
                 "nama" => $notaPembeliModel->Pembeli->nama_pembeli,
-                "alamat" => $notaPembeliModel->alamat_pembeli,
+                "alamat" => $notaPembeliModel->Pembeli->alamat_pembeli,
                 "telp" => $notaPembeliModel->Pembeli->no_hp_pembeli
             ]
         ];
@@ -118,12 +119,12 @@ class ControllerInvoinceCetak extends Controller
 
         $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
         $suratJalanModel = SuratJalanModel::firstOrCreate(['id_nota' => $notaPembeliModel->id_nota], ['id_nota' => $notaPembeliModel->id_nota]);
-   
-        $data['title'] = 'Print Surat Jalan' . $no_nota;
+
+        $title = 'Print Surat Jalan' . $no_nota;
         $dataPembeli = [
             [
                 "nama" => $notaPembeliModel->Pembeli->nama_pembeli,
-                "alamat" => $notaPembeliModel->alamat_pembeli,
+                "alamat" => $notaPembeliModel->Pembeli->alamat_pembeli,
                 "telp" => $notaPembeliModel->Pembeli->no_hp_pembeli
             ]
         ];
@@ -155,11 +156,26 @@ class ControllerInvoinceCetak extends Controller
             ];
         }
 
+
+
+        $data = [
+            'title' => $title,
+            'dataPembeli' => $dataPembeli,
+            'dataSuratJalan' => $dataSuratJalan,
+            'dataRincianBarang' => $productsData,
+            'dataAdmin' => $dataAdmin
+        ];
+
+
+
         return view('pdfprint.surat-jalan', [
             'dataPembeli' => $dataPembeli,
             'dataSuratJalan' => $dataSuratJalan,
             'dataRincianBarang' => $productsData,
             'dataAdmin' => $dataAdmin
         ], $data);
+        // $pdf = Pdf::loadView('pdfprint.surat-jalan', $data)->setOptions(['defaultFont' => 'sans-serif']);
+        // return $pdf->download('invoice.pdf');
+        // return $pdf->stream(); -->
     }
 }

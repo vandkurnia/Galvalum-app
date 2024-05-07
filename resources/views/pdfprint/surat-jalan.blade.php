@@ -72,7 +72,7 @@
     <!-- Header kosongan -->
     <header>
         <div class="left-header">
-            <span style="font-size:16pt;">M A G E T A N</span>
+            <span style="font-size:16pt;">M A D I U N</span>
             <div class="informasi-surat-jalan" style="display: flex;align-items: center;gap: 10px;">
                 <span style="font-size:20pt;font-weight:bold;padding-top:1rem">SURAT JALAN</span>
                 <span style="font-size:16pt;padding-top:1rem">No {{ $dataSuratJalan[0]['no_surat'] }}</span>
@@ -81,7 +81,7 @@
 
         <div class="right-header">
             <div style="display: flex;flex-direction: row;">
-                <span style="font-size:12pt">Magetan,</span>
+                <span style="font-size:12pt">Madiun,</span>
                 @php
                     setlocale(LC_TIME, 'id_ID');
                     $tanggal = new DateTime($dataSuratJalan[0]['tanggal']);
@@ -92,8 +92,10 @@
             </div>
             <div class="informasi-pelanggan" style="display: flex;flex-direction: column;">
                 <span style="font-size:12pt;padding-top:1rem">Kepada Yth:</span>
-                <span class="isian-tanggal" style="border-bottom: 1px dotted;padding-top:1rem">{{ $dataPembeli[0]['nama'] }} <br>{{ $dataPembeli[0]['alamat']}} <br> {{ $dataPembeli[0]['telp'] }}</span>   
-                <span style="border-bottom: 1px dotted;padding-top:2rem"> </span>
+                {{-- <span class="isian-tanggal" style="border-bottom: 1px dotted;padding-top:1rem"></span>    --}}
+                <span style="border-bottom: 1px dotted;padding-top:5px">{{ $dataPembeli[0]['nama'] }}</span>
+                <span style="border-bottom: 1px dotted;padding-top:5px">{{ $dataPembeli[0]['alamat']}}</span>
+                <span style="border-bottom: 1px dotted;padding-top:5px">{{ $dataPembeli[0]['telp'] }}</span>
                 <span style="border-bottom: 1px solid;padding-top:2rem;margin-left:50%;width:50%"></span>
                 <span style="border-bottom: 1px solid;padding-top:2px;margin-left:50%;width:50%;"></span>
 
@@ -157,7 +159,7 @@
         </table>
 
         <div style=" display: flex;justify-content: space-around;height: 120px;margin-top:2rem">
-            <div class="tanda-terima">
+            {{-- <div class="tanda-terima">
                 <h2>Tanda terima</h2>
                 <br>
 
@@ -169,7 +171,7 @@
                 <br>
 
                 <p style="padding-top: 30px;text-align: center; border-bottom: 1px dotted;">{{ $dataAdmin['nama_admin'] }}</p>
-            </div>
+            </div> --}}
         </div>
     </section>
 

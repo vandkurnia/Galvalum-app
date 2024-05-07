@@ -26,13 +26,13 @@ return new class extends Migration
             $table->decimal('total', 25, 2)->default(0);
             $table->decimal('nominal_terbayar', 10, 2)->default(0);
             $table->date('tenggat_bayar')->nullable();
-            $table->unsignedBigInteger('id_pemasok');
+            $table->unsignedBigInteger('id_pemasok')->nullable();
             $table->unsignedBigInteger('id_tipe_barang');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs');
-            $table->foreign('id_tipe_barang')->references('id_tipe_barang')->on('tipe_barangs');
+            $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_tipe_barang')->references('id_tipe_barang')->on('tipe_barangs')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
