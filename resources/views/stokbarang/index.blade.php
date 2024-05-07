@@ -49,7 +49,7 @@
                             class="fa fa-plus"></i> Tambah Barang</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="pemasok" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -77,8 +77,10 @@
                         </tfoot> --}}
                         <tbody>
                             @php
+                          
                                 $no = 0;
                             @endphp
+
                             @foreach ($dataSemuaBarang as $databarang)
                                 <tr>
                                     <th>{{ ++$no }}</th>
