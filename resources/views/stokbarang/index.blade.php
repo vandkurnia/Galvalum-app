@@ -82,7 +82,7 @@
                             @foreach ($dataSemuaBarang as $databarang)
                                 <tr>
                                     <th>{{ ++$no }}</th>
-                                    <td>{{ $databarang->pemasok->nama_pemasok }}</td>
+                                    <td>{{ isset($databarang->pemasok->nama_pemasok) ? $databarang->pemasok->nama_pemasok : '-' }}</td>
                                     <td>{{ $databarang->nama_barang }}</td>
                                     <td>{{ $databarang->tipeBarang->nama_tipe }}</td>
                                     <td>{{ $databarang->ukuran }}</td>
