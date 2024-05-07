@@ -14,6 +14,10 @@ use League\Csv\Writer;
 use PDF;
 use App\Models\NotaPembeli;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
 class LaporanController extends Controller
 {
 
@@ -430,7 +434,7 @@ class LaporanController extends Controller
         $total_transfer = $laba_bersih - $total_modal_darurat;
 
         // Logika untuk mengambil data dan menampilkan laporan laba rugi
-        return view('laporan.laba_rugi', compact('modal_tambahan', 'keluar', 'total_modal_tambahan', 'total_keluar', 'total_penjualan_kotor', 'penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer'));
+        return view('laporan.laba_rugi', compact('total_modal_darurat', 'total_modal', 'modal_tambahan', 'keluar', 'total_modal_tambahan', 'total_keluar', 'total_penjualan_kotor', 'penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer'));
     }
 
     public function labaRugiPDF(Request $request)
@@ -492,7 +496,7 @@ class LaporanController extends Controller
         $tanggal = strftime("%d %B %Y", strtotime($tanggal));
 
         // Logika untuk mengambil data dan menampilkan laporan laba rugi
-        $pdf = PDF::loadView('pdf.laba_rugi', compact('modal_tambahan', 'keluar', 'total_modal_tambahan', 'total_keluar', 'total_penjualan_kotor', 'penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'));
+        $pdf = PDF::loadView('pdf.laba_rugi', compact('total_modal_darurat', 'total_modal', 'modal_tambahan', 'keluar', 'total_modal_tambahan', 'total_keluar', 'total_penjualan_kotor', 'penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'));
 
         return $pdf->download('Laporan Laba Rugi.pdf');
     }
@@ -555,18 +559,195 @@ class LaporanController extends Controller
         $hari = $namaHari[$indeksHari];
         $tanggal = strftime("%d %B %Y", strtotime($tanggal));
 
-        // Buat string CSV dari data
-        $csv = view('csv.laba_rugi', compact('modal_tambahan', 'keluar', 'total_modal_tambahan', 'total_keluar', 'total_penjualan_kotor', 'penjualan_kotor', 'tambahan_modal', 'jumlah_tambahan_modal', 'pengeluaran', 'total_pengeluaran', 'modal', 'modal_darurat', 'total1', 'laba_kotor', 'laba_bersih', 'total_transfer', 'hari', 'tanggal'))->render();
-
-        // Set header untuk file CSV
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Laporan Laba Rugi.csv"',
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+        $style_col = [
+          'font' => ['bold' => true], // Set font nya jadi bold
+          'borders' => [
+            'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+            'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+            'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+            'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+          ]
         ];
 
-        // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
-            echo $csv;
-        }, 200, $headers);
+        $style_top1 = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+              'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+            'borders' => [
+              'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+              'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+              'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+            ]
+        ];
+
+        $style_top2 = [
+            'alignment' => [
+              'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+              'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+            'borders' => [
+              'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+              'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+              'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+            ]
+        ];
+        $sheet->setCellValue('A1', "REKAP RINCIAN PENJUALAN"); // Set kolom A1 dengan tulisan "DATA SISWA"
+        $sheet->mergeCells('A1:C1'); // Set Merge Cell pada kolom A1 sampai E1
+        $sheet->getStyle('A1')->getFont()->setBold(true); // Set bold kolom A1
+        $sheet->getStyle('A1:C1')->applyFromArray($style_top1);
+        $sheet->getStyle('A1:C1')->getFill()
+          ->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB('FFB43C');
+
+        $sheet->setCellValue('A2', $hari.", ".$tanggal);
+        $sheet->mergeCells('A2:C2');
+        $sheet->getStyle('A2:C2')->applyFromArray($style_top2);
+        $sheet->getStyle('A2:C2')->getFill()
+          ->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB('FFB43C');
+
+        $sheet->setCellValue('A3', "PENJUALAN KOTOR");
+        $sheet->setCellValue('C3', "Rp ".number_format($total_penjualan_kotor, 0, ',', '.'));
+
+        $sheet->getStyle('A3')->applyFromArray($style_col);
+        $sheet->getStyle('B3')->applyFromArray($style_col);
+        $sheet->getStyle('C3')->applyFromArray($style_col);
+        $sheet->getStyle('A3:C3')->getFill()
+          ->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB('E3E3E3');
+
+        $numrow = 4;
+        
+        $sheet->setCellValue('A'.$numrow, "MODAL");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total_modal, 0, ',', '.')." (+)");
+
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+        
+        
+        $sheet->setCellValue('A'.$numrow, "");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total1, 0, ',', '.'));
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "TAMBAHAN MODAL");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "");
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        foreach($modal_tambahan as $th){
+            $sheet->setCellValue('A'.$numrow, "(+) ".$th->keterangan);
+            $sheet->setCellValue('B'.$numrow, "Rp ".number_format($th->debit, 0, ',', '.')." (+)");
+
+            $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+            $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+            $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+
+            $numrow++;
+        }
+
+        $sheet->setCellValue('A'.$numrow, "JUMLAH TAMBAHAN MODAL");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total_modal_tambahan, 0, ',', '.')." (+)");
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "LABA KOTOR");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($laba_kotor, 0, ',', '.'));
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('A'.$numrow.':C'.$numrow)->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->getStartColor()->setRGB('E3E3E3');
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "PENGURANGAN/PENGELUARAN");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "");
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        foreach($keluar as $th){
+            $sheet->setCellValue('A'.$numrow, "(-) ".$th->keterangan);
+            $sheet->setCellValue('B'.$numrow, "Rp ".number_format($th->kredit, 0, ',', '.')." (+)");
+
+            $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+            $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+            $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+
+            $numrow++;
+        }
+
+        $sheet->setCellValue('A'.$numrow, "JUMLAH PENGURANGAN/PENGELUARAN");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total_keluar, 0, ',', '.')." (-)");
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "LABA BERSIH");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($laba_bersih, 0, ',', '.'));
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('A'.$numrow.':C'.$numrow)->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->getStartColor()->setRGB('E3E3E3');
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "(-) MODAL HARI INI");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total_modal_darurat, 0, ',', '.')." (-)");
+
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $numrow++;
+
+        $sheet->setCellValue('A'.$numrow, "TOTAL TRANSFER/SETOR TUNAI");
+        $sheet->setCellValue('B'.$numrow, "");
+        $sheet->setCellValue('C'.$numrow, "Rp ".number_format($total_transfer, 0, ',', '.'));
+        $sheet->getStyle('A'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('B'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('C'.$numrow)->applyFromArray($style_col);
+        $sheet->getStyle('A'.$numrow.':C'.$numrow)->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->getStartColor()->setRGB('FFC531');
+        $numrow++;
+
+        $sheet->getColumnDimension('A')->setWidth(45); // Set width kolom A
+        $sheet->getColumnDimension('B')->setWidth(25); // Set width kolom B
+        $sheet->getColumnDimension('C')->setWidth(25);
+
+        $sheet->getDefaultRowDimension()->setRowHeight(-1);
+        // Set orientasi kertas jadi LANDSCAPE
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        // Set judul file excel nya
+        $sheet->setTitle("Laporan Data Siswa");
+        // Proses file excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Laporan Laba Rugi.xlsx"'); // Set nama file excel nya
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 }

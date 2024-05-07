@@ -107,15 +107,12 @@
 
                                 <td>Rp {{ number_format($total_penjualan_kotor, 0, ',', '.') }}</td>
                             </tr>
-                           
-                            @foreach($modal as $m)
                             <tr>
                                 <td>MODAL</td>
                                 <td></td>
 
-                                <td>Rp {{ number_format($m->debit, 0, ',', '.') }} (+)</td>
+                                <td>Rp {{ number_format($total_modal, 0, ',', '.') }} (+)</td>
                             </tr>
-                            @endforeach
                             <tr>
                                 <th></th>
                                 <th></th>
@@ -165,13 +162,11 @@
                                 <th></th>
                                 <th>Rp {{ number_format($laba_bersih, 0, ',', '.') }}</th>
                             </tr>
-                            @foreach($modal_darurat as $md)
                             <tr>
                                 <th>(-) MODAL HARI INI</th>
                                 <th></th>
-                                <th>Rp {{ number_format($md->kredit, 0, ',', '.') }} (-)</th>
+                                <th>Rp {{ number_format($total_modal_darurat, 0, ',', '.') }} (-)</th>
                             </tr>
-                            @endforeach
                             <tr>
                                 <th>TOTAL TRANSFER/SETOR TUNAI</th>
                                 <th></th>

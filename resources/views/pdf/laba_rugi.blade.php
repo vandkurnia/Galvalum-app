@@ -25,7 +25,7 @@
         /* Tampilan Table laba rugi */
         table thead {
             text-align: center;
-            background-color: #7091e6;
+            background-color: #FFB43C;
             color: white;
         }
 
@@ -58,15 +58,12 @@
 
                 <td><center>Rp {{ number_format($total_penjualan_kotor, 0, ',', '.') }}</center></td>
             </tr>
-            
-            @foreach($modal as $m)
             <tr>
                 <td>MODAL</td>
                 <td></td>
 
-                <td><center>Rp {{ number_format($m->debit, 0, ',', '.') }} (+)</center></td>
+                <td><center>Rp {{ number_format($total_modal, 0, ',', '.') }} (+)</center></td>
             </tr>
-            @endforeach
             <tr>
                 <th></th>
                 <th></th>
@@ -116,14 +113,12 @@
                 <th></th>
                 <th>Rp {{ number_format($laba_bersih, 0, ',', '.') }}</th>
             </tr>
-            @foreach($modal_darurat as $md)
             <tr>
                 <th style="text-align: left;">(-) MODAL HARI INI</th>
                 <th></th>
-                <th>Rp {{ number_format($md->kredit, 0, ',', '.') }} (-)</th>
+                <th>Rp {{ number_format($total_modal_darurat, 0, ',', '.') }} (-)</th>
             </tr>
-            @endforeach
-            <tr>
+            <tr style="background-color: #FFC531;">
                 <th style="text-align: left;">TOTAL TRANSFER/SETOR TUNAI</th>
                 <th></th>
                 <th>Rp {{ number_format($total_transfer, 0, ',', '.') }}</th>
