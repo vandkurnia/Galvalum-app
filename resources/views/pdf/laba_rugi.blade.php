@@ -16,23 +16,15 @@
         #dataTable_paginate {
             display: none;
         }
-
-        .table {
-            background-color : #dcdcdc;
-        }
-
-
         /* Tampilan Table laba rugi */
         table thead {
             text-align: center;
             background-color: #FFB43C;
-            color: white;
         }
 
         .topic {
             font-weight: bold;
-            background-color: grey;
-            color: white;
+            background-color:#E3E3E3;
         }
     </style>
 </head>
@@ -40,7 +32,7 @@
 <div class="card-body" style="width: 100%;">
 
 <div class="table-responsive" style="width: 100%;">
-    <table class="table table-border" style="width: 100%;">
+    <table class="table table-border" style="width: 100%;" border="1" cellspacing="0" cellpadding="5">
         <thead>
             <tr>
                 <th colspan="3"> REKAP RINCIAN PENJUALAN </th>

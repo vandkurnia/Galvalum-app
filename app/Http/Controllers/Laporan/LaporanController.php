@@ -26,22 +26,83 @@ class LaporanController extends Controller
         $kategori = $request->input('kategori', 'modal tambahan');
         $dataAkunBayar = AkunBayarModel::all();
         $modal_tambahan = BukubesarModel::where('kategori', $kategori)->get();
-                            foreach ($modal_tambahan as $kk) {
-                                $kk->tanggal = Carbon::parse($kk->tanggal);
-                            }
-
-        $csv = view('csv.modal_tambahan', compact('modal_tambahan'))->render();
-
-        // Set header untuk file CSV
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Laporan Modal Tambahan.csv"',
+                            
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+        $style_col = [
+          'font' => ['bold' => true], // Set font nya jadi bold
+          'alignment' => [
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+            'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+          ],
+          'borders' => [
+            'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+            'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+            'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+            'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+          ]
         ];
+        $style_row = [
+            'alignment' => [
+              'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+            'borders' => [
+              'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+              'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+              'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+              'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+            ]
+        ];
+        $sheet->setCellValue('A1', "LAPORAN MODAL TAMBAHAN"); // Set kolom A1 dengan tulisan "DATA SISWA"
+        $sheet->mergeCells('A1:D1'); // Set Merge Cell pada kolom A1 sampai E1
+        $sheet->getStyle('A1')->getFont()->setBold(true); // Set bold kolom A1
+        $sheet->getStyle('A1')->applyFromArray($style_col);
+        // Buat header tabel nya pada baris ke 3
+        $sheet->setCellValue('A2', "NO"); // Set kolom A3 dengan tulisan "NO"
+        $sheet->setCellValue('B2', "TANGGAL"); // Set kolom B3 dengan tulisan "NIS"
+        $sheet->setCellValue('C2', "DESKRIPSI"); // Set kolom C3 dengan tulisan "NAMA"
+        $sheet->setCellValue('D2', "JUMLAH PENGELUARAN"); // Set kolom D3 dengan tulisan "JENIS KELAMIN"
+        // Apply style header yang telah kita buat tadi ke masing-masing kolom header
+        $sheet->getStyle('A2')->applyFromArray($style_col);
+        $sheet->getStyle('B2')->applyFromArray($style_col);
+        $sheet->getStyle('C2')->applyFromArray($style_col);
+        $sheet->getStyle('D2')->applyFromArray($style_col);
 
-        // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
-            echo $csv;
-        }, 200, $headers);
+        $no = 1; // Untuk penomoran tabel, di awal set dengan 1
+        $numrow = 3; // Set baris pertama untuk isi tabel adalah baris ke 4
+        foreach($modal_tambahan as $data){ // Lakukan looping pada variabel siswa
+          $sheet->setCellValue('A'.$numrow, $no);
+          $sheet->setCellValue('B'.$numrow, $data->tanggal);
+          $sheet->setCellValue('C'.$numrow, $data->keterangan);
+          $sheet->setCellValue('D'.$numrow, "Rp ".number_format($data->debit, 0, ',', '.'));
+          
+          // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+          $sheet->getStyle('A'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('B'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('C'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('D'.$numrow)->applyFromArray($style_row);
+          
+          $no++; // Tambah 1 setiap kali looping
+          $numrow++; // Tambah 1 setiap kali looping
+        }
+        $sheet->getColumnDimension('A')->setWidth(5); // Set width kolom A
+        $sheet->getColumnDimension('B')->setWidth(15); // Set width kolom B
+        $sheet->getColumnDimension('C')->setWidth(50); // Set width kolom C
+        $sheet->getColumnDimension('D')->setWidth(30); // Set width kolom D
+        
+        // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+        $sheet->getDefaultRowDimension()->setRowHeight(-1);
+        // Set orientasi kertas jadi LANDSCAPE
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        // Set judul file excel nya
+        $sheet->setTitle("Laporan Modal Tambahan");
+        // Proses file excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Laporan Modal Tambahan.xlsx"'); // Set nama file excel nya
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
     public function kaskeluarCSV(Request $request)
@@ -50,22 +111,83 @@ class LaporanController extends Controller
         $dataAkunBayar = AkunBayarModel::all();
         $kas_keluar = BukubesarModel::where('kategori', $kategori)->get();
 
-        foreach ($kas_keluar as $kk) {
-            $kk->tanggal = Carbon::parse($kk->tanggal);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+        $style_col = [
+          'font' => ['bold' => true], // Set font nya jadi bold
+          'alignment' => [
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+            'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+          ],
+          'borders' => [
+            'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+            'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+            'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+            'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+          ]
+        ];
+        $style_row = [
+            'alignment' => [
+              'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+            'borders' => [
+              'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+              'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+              'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+              'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+            ]
+        ];
+        $sheet->setCellValue('A1', "LAPORAN KAS KELUAR"); // Set kolom A1 dengan tulisan "DATA SISWA"
+        $sheet->mergeCells('A1:D1'); // Set Merge Cell pada kolom A1 sampai E1
+        $sheet->getStyle('A1')->getFont()->setBold(true); // Set bold kolom A1
+        $sheet->getStyle('A1')->applyFromArray($style_col);
+        // Buat header tabel nya pada baris ke 3
+        $sheet->setCellValue('A2', "NO"); // Set kolom A3 dengan tulisan "NO"
+        $sheet->setCellValue('B2', "TANGGAL"); // Set kolom B3 dengan tulisan "NIS"
+        $sheet->setCellValue('C2', "DESKRIPSI"); // Set kolom C3 dengan tulisan "NAMA"
+        $sheet->setCellValue('D2', "JUMLAH PENGELUARAN"); // Set kolom D3 dengan tulisan "JENIS KELAMIN"
+        // Apply style header yang telah kita buat tadi ke masing-masing kolom header
+        $sheet->getStyle('A2')->applyFromArray($style_col);
+        $sheet->getStyle('B2')->applyFromArray($style_col);
+        $sheet->getStyle('C2')->applyFromArray($style_col);
+        $sheet->getStyle('D2')->applyFromArray($style_col);
+
+        $no = 1; // Untuk penomoran tabel, di awal set dengan 1
+        $numrow = 3; // Set baris pertama untuk isi tabel adalah baris ke 4
+        foreach($kas_keluar as $data){ // Lakukan looping pada variabel siswa
+          $sheet->setCellValue('A'.$numrow, $no);
+          $sheet->setCellValue('B'.$numrow, $data->tanggal);
+          $sheet->setCellValue('C'.$numrow, $data->keterangan);
+          $sheet->setCellValue('D'.$numrow, "Rp ".number_format($data->kredit, 0, ',', '.'));
+          
+          // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+          $sheet->getStyle('A'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('B'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('C'.$numrow)->applyFromArray($style_row);
+          $sheet->getStyle('D'.$numrow)->applyFromArray($style_row);
+          
+          $no++; // Tambah 1 setiap kali looping
+          $numrow++; // Tambah 1 setiap kali looping
         }
 
-        $csv = view('csv.kas_keluar', compact('kas_keluar'))->render();
-
-        // Set header untuk file CSV
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Laporan Kas Keluar.csv"',
-        ];
-
-        // Mengembalikan response CSV ke browser
-        return Response::stream(function() use ($csv) {
-            echo $csv;
-        }, 200, $headers);
+        $sheet->getColumnDimension('A')->setWidth(5); // Set width kolom A
+        $sheet->getColumnDimension('B')->setWidth(15); // Set width kolom B
+        $sheet->getColumnDimension('C')->setWidth(50); // Set width kolom C
+        $sheet->getColumnDimension('D')->setWidth(30); // Set width kolom D
+        
+        // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+        $sheet->getDefaultRowDimension()->setRowHeight(-1);
+        // Set orientasi kertas jadi LANDSCAPE
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        // Set judul file excel nya
+        $sheet->setTitle("Laporan Kas Keluar");
+        // Proses file excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Laporan Kas Keluar.xlsx"'); // Set nama file excel nya
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
     public function generatePDF(Request $request)
@@ -191,8 +313,10 @@ class LaporanController extends Controller
         $laporan_kas_keluar = BukubesarModel::where('tanggal', $tanggal)
         ->where('kategori', $kategori)
         ->get();
+
+        $tanggal = strftime("%d %B %Y", strtotime($tanggal));
         // Logika untuk mengambil data dan menampilkan laporan kas keluar
-        return view('laporan.kaskeluar', compact('laporan_kas_keluar', 'dataAkunBayar'));
+        return view('laporan.kaskeluar', compact('laporan_kas_keluar', 'dataAkunBayar', 'tanggal'));
     }
 
     public function simpanKas(Request $request)
