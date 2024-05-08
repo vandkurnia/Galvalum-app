@@ -7,6 +7,9 @@ use App\Models\NotaPembeli;
 use App\Models\pdf\SuratJalanModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Mpdf\Mpdf;
+use TCPDF;
 
 class ControllerInvoinceCetak extends Controller
 {
@@ -99,20 +102,65 @@ class ControllerInvoinceCetak extends Controller
         // ];
 
         $rincian = [
+
             'subtotalHarga' => $notaPembeliModel->sub_total,
             'diskon' => $notaPembeliModel->diskon,
             'ongkir' => $notaPembeliModel->ongkir,
             'total' => $notaPembeliModel->total,
             'list_barang' => $productsData
         ];
+        $type = 2;
 
-        return view('pdfprint.invoice-penjualan', [
-            'dataPembeli' => $dataPembeli,
-            'dataNota' => $dataNota,
-            'dataKasir' => $namaKasir,
-            'dataPembayaran' => $dataPembayaran,
-            'dataRincianBarang' => $rincian
-        ], $data);
+        switch ($type) {
+            case 1:
+                $data = [
+                    'title' => 'Print Invoice ' . $no_nota,
+                    'dataPembeli' => $dataPembeli,
+                    'dataNota' => $dataNota,
+                    'dataKasir' => $namaKasir,
+                    'dataPembayaran' => $dataPembayaran,
+                    'dataRincianBarang' => $rincian
+                ];
+
+                $pdf = Pdf::loadView('pdfprint.dompdf.invoice-penjualan', $data)->setOptions(['defaultFont' => 'sans-serif']);
+                return $pdf->download('invoice.pdf');
+                break;
+            case 2:
+
+                $data = [
+                    'title' => 'Print Invoice ' . $no_nota,
+                    'dataPembeli' => $dataPembeli,
+                    'dataNota' => $dataNota,
+                    'dataKasir' => $namaKasir,
+                    'dataPembayaran' => $dataPembayaran,
+                    'dataRincianBarang' => $rincian
+                ];
+                $pdf = Pdf::loadView('pdfprint.dompdf.invoice-penjualan', $data)->setOptions(
+                    [
+                        'defaultFont' => 'sans-serif',
+                        'isRemoteEnabled' => true,
+                        'isHtml5ParserEnabled' => true,
+                        'sizeA4' => true
+                    ]
+
+                );
+
+                return $pdf->stream();
+
+                // create new PDF document
+
+                break;
+
+            default:
+                return view('pdfprint.invoice-penjualan', [
+                    'dataPembeli' => $dataPembeli,
+                    'dataNota' => $dataNota,
+                    'dataKasir' => $namaKasir,
+                    'dataPembayaran' => $dataPembayaran,
+                    'dataRincianBarang' => $rincian
+                ], $data);
+                break;
+        }
     }
     public function print_suratJalan($no_nota)
     {
@@ -120,7 +168,7 @@ class ControllerInvoinceCetak extends Controller
         $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
         $suratJalanModel = SuratJalanModel::firstOrCreate(['id_nota' => $notaPembeliModel->id_nota], ['id_nota' => $notaPembeliModel->id_nota]);
 
-        $title = 'Print Surat Jalan' . $no_nota;
+        $title = 'Print Surat Jalan ' . $no_nota;
         $dataPembeli = [
             [
                 "nama" => $notaPembeliModel->Pembeli->nama_pembeli,
@@ -167,13 +215,44 @@ class ControllerInvoinceCetak extends Controller
         ];
 
 
+        $type = 2;
 
-        return view('pdfprint.surat-jalan', [
-            'dataPembeli' => $dataPembeli,
-            'dataSuratJalan' => $dataSuratJalan,
-            'dataRincianBarang' => $productsData,
-            'dataAdmin' => $dataAdmin
-        ], $data);
+        switch ($type) {
+            case 1:
+                
+                $pdf = Pdf::loadView('pdfprint.dompdf.surat-jalan', $data)->setOptions(['defaultFont' => 'sans-serif']);
+                return $pdf->download('invoice.pdf');
+                break;
+            case 2:
+
+              
+                $pdf = Pdf::loadView('pdfprint.dompdf.surat-jalan', $data)->setOptions(
+                    [
+                        'defaultFont' => 'sans-serif',
+                        'isRemoteEnabled' => true,
+                        'isHtml5ParserEnabled' => true,
+                        'sizeA4' => true
+                    ]
+
+                );
+
+                return $pdf->stream();
+
+                // create new PDF document
+
+                break;
+
+            default:
+                return view('pdfprint.surat-jalan', [
+                    'dataPembeli' => $dataPembeli,
+                    'dataSuratJalan' => $dataSuratJalan,
+                    'dataRincianBarang' => $productsData,
+                    'dataAdmin' => $dataAdmin
+                ], $data);
+                break;
+        }
+
+
         // $pdf = Pdf::loadView('pdfprint.surat-jalan', $data)->setOptions(['defaultFont' => 'sans-serif']);
         // return $pdf->download('invoice.pdf');
         // return $pdf->stream(); -->

@@ -1,0 +1,49 @@
+ // $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+
+
+
+ // // set document information
+ // $pdf->SetCreator(PDF_CREATOR);
+ // $pdf->SetAuthor(Auth::user()->nama_admin);
+ // $pdf->SetTitle($data['title']);
+ // // set default monospaced font
+ // $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+
+ // // Set header
+ // $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
+
+ // $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+ // $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+ // // set auto page breaks
+ // $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+ // // set image scale factor
+ // $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+ // // $html = view('pdfprint.dompdf.invoice-penjualan', $data)->render();
+
+ // // Set header
+
+
+
+ // $lebarMax = $pdf->getPageWidth();
+ // $heightMax = $pdf->getPageHeight();
+ // // Add a page
+ // $pdf->AddPage();
+
+ // // Calculate width and height for each border
+ // $borderWidth = $lebarMax / 3;
+ // $borderHeight = $heightMax * 0.2;
+ // // Set font
+ // $pdf->SetFont('helvetica', '', 10);
+
+ // // "lebarmax" => 210.00014444444
+ // // "heighmax" => 297.00008333333
+ // // Image example with resizing
+ // $pdf->Image(secure_asset('assets/logogalvalum.jpg'), 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+ // // Draw three bordered boxes
+ // $pdf->Rect(10, 10, $borderWidth, $borderHeight, 'D',);
+ // $pdf->Rect(10 + $borderWidth, 10, $borderWidth, $borderHeight, 'D');
+ // $pdf->Rect(10 + 2 * $borderWidth, 10, $borderWidth, $borderHeight, 'D');
+ // //Close and output PDF document
+ // $pdf->Output('example_006.pdf', 'I');

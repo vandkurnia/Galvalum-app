@@ -21,7 +21,7 @@
             min-height: 95vh;
             min-width: 80vw;
             box-sizing: border-box;
-            border: 1px dotted black;
+            /* border: 1px dotted black; */
             /* Set background color or image */
             background-color: #fff;
             /* Change with your desired background color */
@@ -148,7 +148,7 @@
         th,
         td {
             text-align: left;
-            padding: 8px;
+            padding: 2px;
             border: 1px solid #000;
         }
 
@@ -209,35 +209,36 @@
     </style>
 </head>
 
-<body onload="window.print()">
-    <header>
-        <div class="info-pembeli-dan-penjual">
-            <div class="informasi-nota">
-                <div class="logo-toko">
+<body onload="window.print()" style="position: relative">
+    <header style="position: relative; height: 280px;">
+        <div class="info-pembeli-dan-penjual" style="position:absolute; height:350px; ">
+            <div class="informasi-nota" style="width: 300px; position: relative;">
+                <div class="logo-toko" style="position: absolute; width: 120px;">
                     <img src="{{ secure_asset('assets/logogalvalum.jpg') }}" alt="Logo Galvalum">
                 </div>
 
-                <div class="informasi-toko">
-                    <h2 class="nama-toko">Tk. Bima Sakti Perkasa </h2>
+                {{-- <div class="informasi-toko" style="position:absolute;left: 125px;  width: 199px;"> --}}
+                <div class="informasi-toko" style="position:absolute;left: 125px;  width: 60%;">
+                    <h2 class="nama-toko" style="font-size: 14px;">TK. BIMA SAKTI PERKASA</h2>
                     <p class="alamat-toko"
                         style="
                         margin-bottom: 0px;
-                        padding-bottom: 2px;
-                    ">
+                        padding-bottom: 2px;">
                         Jl. Raya Barat
                         Jiwan, Utara Lampu Merah Madiun</p>
                     <p class="alamat-toko"
                         style="
                         margin-top: 0px;
                         padding-top: 0px;
-                        ">Wa
+                        ">
+                        Wa
                         / Telp : 085733823107
                     </p>
 
                     <p class="nomor-telepon-toko"></p>
                 </div>
             </div>
-            <table class="table">
+            <table class="table" style="position: absolute; left: 0; top: 125px;">
                 <thead>
                     <tr>
                         <th class="text-center">Kepada Yth.:</th>
@@ -245,11 +246,11 @@
                 </thead>
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
-                        <td class="nama-pembeli">
+                        <td class="nama-pembeli" style="font-size: 14px; height:20px;">
                             @foreach ($dataPembeli as $index => $data)
-                                <span>{{ $data['nama'] }}</span>
-                                <span>{{ $data['alamat'] }}</span>
-                                <span>{{ $data['telp'] }}</span>
+                                <span style="margin-bottom: 5px;">{{ $data['nama'] }}<br><br></span> 
+                                <span style="margin-bottom: 5px;">{{ $data['alamat'] }} <br><br></span>
+                                <span style="margin-bottom: 5px;">{{ $data['telp'] }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -267,100 +268,45 @@
         </div>
 
 
-        <div class="informasi-surat-lain">
-            <h1>
-                Nota Penjualan
-            </h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">Tanggal</th>
-                        <th class="text-center">Nomor Nota</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark" style="background-color: #e9ecef">
-                    <tr class="fw-light">
-                        @foreach ($dataNota as $data)
-                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                            <td class="text-center">{{ $data['no_nota'] }}</td>
-                        @endforeach
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="text-center">Admin/Kasir</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark" style="background-color: #e9ecef">
-                    <tr class="fw-light">
-                        <td class="text-center">{{ $dataKasir }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {{-- 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">Termin</th>
-                        <th class="text-center">Jatuh Tempo</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark" style="background-color: #e9ecef">
-                    <tr class="fw-light">
-                        @foreach ($dataPembayaran as $data)
-                            <td class="text-center">{{ $data['termin'] }}</td>
-                            <td class="text-center">{{ $data['jatuh_tempo'] }}</td>
-                        @endforeach
-                    </tr>
-                </tbody>
-            </table> --}}
-            <!--
-            <div class="detail-nota box-border" style="display: flex;">
-                <div class="tanggal-nota" style="flex-grow: 1;">
-                    <h2>Tanggal</h2>
-                    <div class="isi-tanggal box-border-top">
-                        <p> 14-Nov-15</p>
-                    </div>
-                </div>
-                <div class="nomor-nota" style="flex-grow: 1;border-left: 1px solid black;">
-                    <h2>No.Nota</h2>
-                    <div class="isi-nomor-nota" style="1pxsolid color: black;border-top: 1px solid black;">
-                        <p> JL00001001</p>
-                    </div>
-                </div>
-            </div> -->
+        <div class="informasi-surat-lain"
+            style="position: absolute; right:0; width:300px; height:320px; ">
+            <div style="position: relative; height:280px;">
+                <h1>
+                    Nota Penjualan
+                </h1>
+                <table class="table" style="margin-top: 28px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Tanggal</th>
+                            <th class="text-center">Nomor Nota</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-dark" style="background-color: #e9ecef">
+                        <tr class="fw-light" style="font-size: 14px;">
+                            @foreach ($dataNota as $data)
+                                <td class="text-center">{{ $data['tanggal'] }}</td>
+                                <td class="text-center" style="height: 48px;">{{ $data['no_nota'] }} </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table" style="margin-top: 28px; height: 100px;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Admin/Kasir</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-dark" style="background-color: #e9ecef">
+                        <tr class="fw-light">
+                            <td class="text-center" style="font-size: 14px; height: 48px;">{{ $dataKasir }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- <div class="admin-kasir box-border">
-                <h2>Admin / Kasir</h2>
-                <div class="box-border-top">
-                    <p>Sasa</p>
-                </div>
-            </div> -->
-            <!-- <div class="detail-nota" style="display: flex;">
-
-                <div class="termin-pembayaran box-border" style="
-    flex-grow: 1;
-">
-                    <h2>Termin</h2>
-                    <div class="isi-termin box-border-top">
-                        <p> 200000</p>
-                    </div>
-                </div>
-                <div class="jatuh-tempo box-border" style="
-    margin: 0;
-">
-                    <h2>Jatuh Tempo</h2>
-                    <div class="tanggal-jatuh-tempo box-border-top">
-                        <p> 14-Nov-15</p>
-                    </div>
-                </div>
-
-            </div> -->
         </div>
     </header>
-    <main style="width: 100%;">
+    <main style="position: relative;">
         <table>
             <thead>
                 <tr>
@@ -377,25 +323,23 @@
             <tbody>
                 @foreach ($dataRincianBarang['list_barang'] as $index => $data)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $data['item'] }}</td>
-                        <td>{{ $data['deskripsi'] }}</td>
-                        <td>{{ (int) $data['qty'] }}</td>
+                        <td style="width: 20px;">{{ $index + 1 }}</td>
+                        <td style="width: 50px;">{{ $data['item'] }}</td>
+                        <td style="height:10px;">{{ $data['deskripsi'] }}</td>
+                        <td style="width: 60px;">{{ (int) $data['qty'] }}</td>
                         <td>{{ $data['pesanan'] }}</td>
-                        <td>Rp. {{ number_format($data['harga'], 0, ',', '.') }}</td>
+                        <td style="width: 100px;">Rp. {{ number_format($data['harga'], 0, ',', '.') }}</td>
                         {{-- <td>{{ $data['disc'] }}</td> --}}
-                        <td>Rp. {{ number_format($data['subtotal'], 0, ',', '.') }}</td>
+                        <td style="width: 100px;">Rp. {{ number_format($data['subtotal'], 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
+
+            </tbody>
+
+            <tfoot>
                 <tr>
-                    <td rowspan="4" colspan="2" style="
-">
+                    <td rowspan="4" colspan="5">
                         <h2>Keterangan</h2>
-                        {{-- <ol>
-                            <li>Barang yang sudah dibeli tidak bisa ditukar</li>
-                            <li>Pembayaran dengan BG/CEK dianggap lunas bila sudah dicairkan</li>
-                            <li>Tanda ** menunjukan bonus</li>
-                        </ol> --}}
                         <ol>
                             <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
                             <li>BRI : 388401024665532 / An. Budiono</li>
@@ -403,30 +347,23 @@
 
 
                         </ol>
-
-
-
-
-
-
-
                     </td>
-                    <td colspan="4">Subtotal Harga</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
+                    <td colspan="1" style="height:10px;">Subtotal</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Diskon</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
+                    <td colspan="1">Diskon</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Ongkir</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
+                    <td colspan="1">Ongkir</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Total</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
+                    <td colspan="1">Total</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
         {{-- <div class="keterangan-tambahan" style="
     text-align: right;">
@@ -442,54 +379,3 @@
 </body>
 
 </html>
-<!--
-<tr>
-                    <td>1</td>
-                    <td>001222</td>
-                    <td>Dancow Cokelat 400gr</td>
-                    <td>4</td>
-                    <td>DUS</td>
-                    <td>27,000</td>
-                    <td>10%</td>
-                    <td>108,000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>001225</td>
-                    <td>Dancow Full Cream 400gr</td>
-                    <td>4</td>
-                    <td>DUS</td>
-                    <td>26,500</td>
-                    <td>10%</td>
-                    <td>106,000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>001230</td>
-                    <td>Dancow 5+ Coklat 800gr</td>
-                    <td>2</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>114,000</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>001231</td>
-                    <td>Dancow 5+ Vanila 800gr</td>
-                    <td>5</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>285,000</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>001232</td>
-                    <td>Dancow 5+ Madu 800gr</td>
-                    <td>8</td>
-                    <td>DUS</td>
-                    <td>57,000</td>
-                    <td>10%</td>
-                    <td>456,000</td>
-                </tr> -->

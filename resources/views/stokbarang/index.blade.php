@@ -3,11 +3,14 @@
 @section('title', 'Stok barang')
 @section('header-custom')
 
+    <link rel="stylesheet" href="{{ secure_asset('library/datatables.net-dt/css/dataTables.dataTables.css') }}" />
 
 
 @endsection
 
 @section('content')
+    <script src="{{ secure_asset('library/datatables.net-dt/js/dataTables.dataTables.js') }}"></script>
+
     <!-- Begin Page Content -->
     <div class="container-fluid">
         @if (session('success'))
@@ -49,7 +52,7 @@
                             class="fa fa-plus"></i> Tambah Barang</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="pemasok" width="100%" cellspacing="0">
+                    <table class="table" id="stokbarang" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -77,14 +80,15 @@
                         </tfoot> --}}
                         <tbody>
                             @php
-                          
+
                                 $no = 0;
                             @endphp
 
                             @foreach ($dataSemuaBarang as $databarang)
                                 <tr>
                                     <th>{{ ++$no }}</th>
-                                    <td>{{ isset($databarang->pemasok->nama_pemasok) ? $databarang->pemasok->nama_pemasok : '-' }}</td>
+                                    <td>{{ isset($databarang->pemasok->nama_pemasok) ? $databarang->pemasok->nama_pemasok : '-' }}
+                                    </td>
                                     <td>{{ $databarang->nama_barang }}</td>
                                     <td>{{ $databarang->tipeBarang->nama_tipe }}</td>
                                     <td>{{ $databarang->ukuran }}</td>
@@ -254,7 +258,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('stok.minusstok.new') }}" id="formKurangStokModal" method="POST">
-                 
+
                     @csrf
 
                     <input type="hidden" name="id_barang" id="id_barangKurangStok" value="null">
@@ -296,7 +300,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('stok.addstok.new') }}" id="formtambahStokModal" method="POST">
-               
+
                     @csrf
 
                     <input type="hidden" name="id_barang" id="id_barangTambahStok" value="null">
@@ -424,6 +428,7 @@
     </div>
 </div>
 @section('javascript-custom')
+    <script></script>
     <script>
         function funcTambahStokSubmit() {
             var form = document.querySelector('#formtambahStokModal');
@@ -439,10 +444,10 @@
 
         function funcKurangStokSubmit() {
             var form = document.querySelector('#formKurangStokModal');
-           
+
             if (form.length > 0) {
                 form.submit();
-       
+
 
             } else {
                 console.error('Form not found!');
@@ -498,6 +503,10 @@
         });
     </script>
     <script>
+        // let table = new DataTable('#stokbarang', {
+        //     responsive: true
+        // });
+
         function funcTambahStok(url) {
             $.ajax({
                 url: url,
