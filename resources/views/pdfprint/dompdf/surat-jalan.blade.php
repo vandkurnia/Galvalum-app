@@ -129,8 +129,15 @@
             </tbody>
         </table>
 
-        <div style=" display: flex;justify-content: space-around;height: 120px;margin-top:2rem">
-
+        <div style="position: relative;height: 120px;margin-top:2rem;">
+            <div class="tanda-terima" style="position: absolute; left: 0; padding-left: 40px;">
+                <h2>Tanda Terima</h2>
+                <p style="padding-top: 40px;">.....................................</p>
+            </div>
+            <div class="hormat-kami"  style="position: absolute; right: 0;padding-right: 40px;">
+                <h2>Hormat Kami</h2>
+                <p style="padding-top: 40px;">.....................................</p>
+            </div>
         </div>
     </section>
 
