@@ -122,20 +122,20 @@
             <tbody>
                 @foreach ($dataRincianBarang as $index => $data)
                     <tr>
-                        <td>{{ $data['qty'] }}</td>
+                        <td>{{ (int) $data['qty']}}</td>
                         <td>{{ $data['nama_barang'] }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <div style="position: relative;height: 120px;margin-top:2rem;">
+        <div style="position: relative;height: 120px;margin-top:2rem; text-align: center;">
             <div class="tanda-terima" style="position: absolute; left: 0; padding-left: 40px;">
-                <h2>Tanda Terima</h2>
+                <h2 style="font-size: 18px;">Tanda Terima</h2>
                 <p style="padding-top: 40px;">.....................................</p>
             </div>
             <div class="hormat-kami"  style="position: absolute; right: 0;padding-right: 40px;">
-                <h2>Hormat Kami</h2>
+                <h2  style="font-size: 18px;">Hormat Kami</h2>
                 <p style="padding-top: 40px;">.....................................</p>
             </div>
         </div>

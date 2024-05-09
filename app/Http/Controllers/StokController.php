@@ -123,10 +123,10 @@ class StokController extends Controller
         $request->validate([
             'nama_barang' => 'required',
             'harga_barang' => 'required',
-            'harga_barang_pemasok' => 'required',
-            'stok' => 'required',
+            // 'harga_barang_pemasok' => 'required',
+            // 'stok' => 'required',
             'ukuran' => 'required',
-            'id_pemasok' => 'required',
+            // 'id_pemasok' => 'required',
             'id_tipe_barang' => 'required',
         ]);
 
@@ -140,7 +140,7 @@ class StokController extends Controller
             'harga_barang' => $request->get('harga_barang'),
             // 'harga_barang_pemasok' => $request->get('harga_barang_pemasok'),
             'ukuran' =>  $request->get('ukuran'),
-            'id_pemasok' => $request->get('id_pemasok'),
+            // 'id_pemasok' => $request->get('id_pemasok'),
             'id_tipe_barang' => $request->get('id_tipe_barang')
 
         ]);

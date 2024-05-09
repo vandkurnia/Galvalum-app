@@ -263,11 +263,17 @@ class PembelianController extends Controller
     {
         // $user = User::findOrFail($id);
         // $user->delete();
-        $notaPembeli = notaPembeli::where('id_nota', $id)->first();
-        $bukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+        $notaPembeli = notaPembeli::with('bukuBesar')->where('id_nota', $id)->first();
+
+        // $bukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
 
         if ($notaPembeli) {
-            $bukubesar->delete();
+
+            
+            foreach ($notaPembeli->bukuBesar as $bukuBesar) {
+                $bukuBesar->delete();
+            }
+
             $notaPembeli->delete();
 
             return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');
