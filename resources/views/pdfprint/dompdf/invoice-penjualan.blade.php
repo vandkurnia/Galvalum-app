@@ -11,8 +11,8 @@
             font-family: Arial, sans-serif;
             font-size: 12px;
             /* margin: 0; */
-            padding: 5px 5px;
-            margin: 10px 10px 10px 10px;
+            /* padding: 5px 5px;
+            margin: 10px 10px 10px 10px; */
             /* Center the content horizontally and vertically */
             display: flex;
             flex-direction: column;
@@ -21,22 +21,7 @@
             min-height: 95vh;
             min-width: 80vw;
             box-sizing: border-box;
-            /* border: 1px dotted black; */
-            /* Set background color or image */
-            background-color: #fff;
-            /* Change with your desired background color */
-            /* Optionally, set a background image */
-            /* background-image: url("https://www.pexels.com/search/background/"); */
-            /* background-size: cover;  /* Adjust as needed */
-            /* background-position: center;  /* Adjust as needed */
-            /* display: grid;
-            grid-template-columns: 20% auto  20%;
-            grid-template-rows: 20% 20% 20% auto;
-            grid-template-areas:
-            "logotoko kosong invoicepenjualan"
-            "infopembeli kosong adminkasir"
-            "infopembeli kosong detailnota"
-            "pesanan pesanan pesanan"; */
+            
         }
 
         h1 {
@@ -62,42 +47,32 @@
 
         /* End format body */
         /* Header */
-        header {
-            display: flex;
-            /* border: 1px solid black; */
-            gap: 60px;
-            /* Jarak antara item-flex dalam container */
-            min-width: 130px;
-            width: 100%;
-            justify-content: space-between;
-        }
+        
 
 
 
         /* End of kosong */
-        /* End Header */
         /* Box Border */
         .box-border {
-            border: 1px solid black;
+           
             flex-grow: 1;
         }
 
         .box-border-top {
-            border-top: 1px solid black;
         }
 
 
 
         /* End Box Border */
         /* Info pembeli dan penjual */
-        .info-pembeli-dan-penjual {
+        /* .info-pembeli-dan-penjual {
             max-width: 400px;
             display: flex;
             flex-direction: column;
             gap: 16px;
             padding: 0px 5px 10px 5px;
 
-        }
+        } */
 
         .informasi-surat-lain {
             display: flex;
@@ -157,12 +132,12 @@
         }
 
         /* Gaya header */
-        .header {
+        /* .header {
             background-color: #333;
             color: white;
             padding: 10px 0;
             text-align: center;
-        }
+        } */
 
         /* Gaya footer */
         .footer {
@@ -213,12 +188,12 @@
     <header style="position: relative; height: 280px;">
         <div class="info-pembeli-dan-penjual" style="position:absolute; height:350px; ">
             <div class="informasi-nota" style="width: 300px; position: relative;">
-                <div class="logo-toko" style="position: absolute; width: 120px;">
+                <div class="logo-toko" style="position: absolute; width: 120px; top: 0;">
                     <img src="{{ secure_asset('assets/logogalvalum.jpg') }}" alt="Logo Galvalum">
                 </div>
 
                 {{-- <div class="informasi-toko" style="position:absolute;left: 125px;  width: 199px;"> --}}
-                <div class="informasi-toko" style="position:absolute;left: 125px;  width: 60%;">
+                <div class="informasi-toko" style="position:absolute;left: 125px;  width: 60%; top: 0;">
                     <h2 class="nama-toko" style="font-size: 14px;">TK. BIMA SAKTI PERKASA</h2>
                     <p class="alamat-toko"
                         style="
@@ -269,12 +244,12 @@
 
 
         <div class="informasi-surat-lain"
-            style="position: absolute; right:0; width:300px; height:320px; ">
+            style="position: absolute; right:0; width:300px; height:320px;">
             <div style="position: relative; height:280px;">
-                <h1>
+                <h1 style="margin-top: 0;">
                     Nota Penjualan
                 </h1>
-                <table class="table" style="margin-top: 28px;">
+                <table class="table" style="margin-top: 5px;">
                     <thead>
                         <tr>
                             <th style="width: 30%;">Tanggal</th>
@@ -285,7 +260,7 @@
                         <tr class="fw-light" style="font-size: 14px;">
                             @foreach ($dataNota as $data)
                                 <td class="text-center">{{ $data['tanggal'] }}</td>
-                                <td class="text-center" style="height: 48px;">{{ $data['no_nota'] }} </td>
+                                <td class="text-center" style="height: 59px;">{{ $data['no_nota'] }} </td>
                             @endforeach
                         </tr>
                     </tbody>
@@ -298,7 +273,7 @@
                     </thead>
                     <tbody class="text-dark" style="background-color: #e9ecef">
                         <tr class="fw-light">
-                            <td class="text-center" style="font-size: 14px; height: 48px;">{{ $dataKasir }}</td>
+                            <td class="text-center" style="font-size: 14px; height: 59px;">{{ $dataKasir }}</td>
                         </tr>
                     </tbody>
                 </table>

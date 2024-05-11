@@ -15,7 +15,8 @@
     <style>
         body {
             /* font-family: Calibri; */
-            padding: 10px 10px 10px 10px;
+            /* padding: 10px 10px 10px 10px; */ 
+            border: 1px solid blue;
         }
 
         h2 {
