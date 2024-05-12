@@ -12,13 +12,13 @@ class CicilanHutangController extends Controller
 {
     private function cekLunasAtauHutang($id_barang)
     {
-        $barang = Barang::with('bukuBesar')->where('id_barang',  $id_barang)->first();
-        if ($barang->total == $barang->nominal_terbayar) {
-            $barang->status_pembayaran = "lunas";
-        } else {
-            $barang->status_pembayaran = "hutang";
-        }
-        $barang->save();
+        // $barang = Barang::with('bukuBesar')->where('id_barang',  $id_barang)->first();
+        // if ($barang->total == $barang->nominal_terbayar) {
+        //     $barang->status_pembayaran = "lunas";
+        // } else {
+        //     $barang->status_pembayaran = "hutang";
+        // }
+        // $barang->save();
     }
     public function index($id_barang)
     {
@@ -73,6 +73,10 @@ class CicilanHutangController extends Controller
             'id_barang' => $id_barang,
             'id_bukubesar' => $updateBukuBesar->id_bukubesar
         ]);
+
+
+
+        // Membuat Angsuran
         $totalTerbayar = 0;
         $totalAngsuran = 0;
         $barangData2 = Barang::with('bukuBesar')->where('id_barang', $id_barang)->first();
@@ -129,8 +133,8 @@ class CicilanHutangController extends Controller
         DB::beginTransaction();
 
 
-        $bukuBesar = BukubesarModel::where('hash_id_bukubesar',$id_bukubesar)->first();
-     
+        $bukuBesar = BukubesarModel::where('hash_id_bukubesar', $id_bukubesar)->first();
+
         $bukuBesar->debit = $request->get('nominal');
         $bukuBesar->save();
 

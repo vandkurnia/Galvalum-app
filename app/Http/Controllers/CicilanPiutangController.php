@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\DB;
 class CicilanPiutangController extends Controller
 {
 
-    private function cekLunasAtauHutang($id_nota)
-    {
-        $notaPembelian2 = NotaPembeli::with('bukuBesar')->where('id_nota',  $id_nota)->first();
-        if ($notaPembelian2->total == $notaPembelian2->nominal_terbayar) {
-            $notaPembelian2->status_pembayaran = "lunas";
-        } else {
-            $notaPembelian2->status_pembayaran = "hutang";
-        }
-        $notaPembelian2->save();
-    }
+    // private function cekLunasAtauHutang($id_nota)
+    // {
+    //     $notaPembelian2 = NotaPembeli::with('bukuBesar')->where('id_nota',  $id_nota)->first();
+    //     if ($notaPembelian2->total == $notaPembelian2->nominal_terbayar) {
+    //         $notaPembelian2->status_pembayaran = "lunas";
+    //     } else {
+    //         $notaPembelian2->status_pembayaran = "hutang";
+    //     }
+    //     $notaPembelian2->save();
+    // }
     public function index($id_nota)
     {
         $notaPembelian = NotaPembeli::where('id_nota', $id_nota)->with('bukuBesar')->first();
@@ -98,7 +98,6 @@ class CicilanPiutangController extends Controller
         $updateNotaPembelian1->save();
 
 
-        $this->cekLunasAtauHutang($id_nota);
 
 
         DB::commit();

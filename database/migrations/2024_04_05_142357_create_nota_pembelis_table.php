@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pembeli');
             $table->unsignedBigInteger('id_admin');
             $table->string('metode_pembayaran'); // tambahan field metode_pembayaran
-            $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
+            // $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
             $table->string('sub_total', 45)->default(0);
             $table->decimal('nominal_terbayar', 10, 2)->default(0);
             $table->date('tenggat_bayar')->nullable();

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\Pembeli;
+use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -201,8 +202,7 @@ class MigrasiData extends Seeder
                 'kode_barang' => 'BRG' . date('Ymd') . $nextIdFormatted,
                 'nama_barang' => $dataStokBarang['Nama Barang'],
                 'harga_barang' => intval(str_replace(['Rp', '.'], '',  $dataStokBarang[' Harga '])),
-                'harga_barang_pemasok' => 0,
-                'stok' => 0,
+                'harga_barang_pemasok' => intval(str_replace(['Rp', '.'], '',  $dataStokBarang[' Harga '])) - 5000,
                 'ukuran' => 'XL',
                 'status_pembayaran' => 'hutang',
                 'total' => 0.00,
@@ -213,18 +213,31 @@ class MigrasiData extends Seeder
             ]);
 
 
+            // $barang->harga_barang_pemasok 
+            $barang->total = $barang->harga_barang_pemasok * 30;
+            $barang->nominal_terbayar = $barang->total;
+
+
+
+
+
             // Buat record baru untuk BukuBesar
             $bukuBesar = new BukubesarModel();
 
             $bukuBesar->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
             $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
             $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-            $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->id_barang . ' STOK- ' . $barang->stok; // Isi dengan keterangan yang sesuai
-            $bukuBesar->debit = 0; // Isi dengan nilai debit yang sesuai
-            $bukuBesar->kredit = $barang->stok * $barang->harga_pemasok; // Isi dengan nilai kredit yang sesuai
+            $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->id_barang . ' STOK- 30'; // Isi dengan keterangan yang sesuai
+            $bukuBesar->debit = $barang->stok * $barang->harga_pemasok; // Isi dengan nilai kredit yang sesuai
             $bukuBesar->sub_kategori = 'hutang'; // Isi dengan sub kategori yang sesuai
             $bukuBesar->save();
-            $barang->bukuBesar()->attach($bukuBesar->id_bukubesar);
+
+            
+            $stokBarang = StokBarangModel::create([
+                'id_barang' =>  $barang->id_barang,
+                'stok_masuk' => 30,
+                'id_bukubesar' => $bukuBesar->id_bukubesar
+            ]);
         }
     }
 }

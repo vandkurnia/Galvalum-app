@@ -206,7 +206,8 @@
                                 const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
+                                let cek_total_barang_kelebihan = parseInt(data_barang.stok) < jumlah_barang.value ? true : false;
+
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
@@ -563,12 +564,12 @@
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="0">
+                                value="0" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                                value="{{ date('Y-m-d') }}">
+                                value="{{ date('Y-m-d') }}" disabled>
                         </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
@@ -590,21 +591,24 @@
             var formCicilan = document.getElementById('formCicilan');
             if (this.value === 'hutang') {
                 formCicilan.style.display = 'block';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.removeAttribute('readonly'); 
+                nominalTerbayar.value = 0;
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.removeAttribute('disabled');
             } else {
                 formCicilan.style.display = 'none';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.readOnly = true;
+                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.disabled = true;
             }
         });
 
-        // function validatetotalOngkir() {
-        //     var totalOngkirInput = document.getElementById('totalOngkir');
-        //     var value = parseFloat(totalOngkirInput.value);
-
-        //     if (isNaN(value) || value < 0) {
-        //         totalOngkirInput.value = 0;
-        //     } else if (value > 100) {
-        //         totalOngkirInput.value = 100;
-        //     }
-        // }
 
         function totalPembayaran() {
             // validatetotalOngkir();
@@ -635,6 +639,10 @@
 
 
             total.value = nilaiTotal + nilaiOngkir;
+
+
+            // Pengisian Total pada Nominal Terbayar
+            document.querySelector('#nominalTerbayar').value = total.value;
 
 
             // Ubah ke format Rp dengan dipisah rupiah

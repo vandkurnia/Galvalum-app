@@ -9,6 +9,7 @@ use App\Models\Notabukubesar;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
 use App\Models\PesananPembeli;
+use App\Models\StokBarangModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,7 @@ class PembelianController extends Controller
             'pesanan' => 'required',
             'no_nota' => 'required',
             'nominal_terbayar' => 'required',
-            'tenggat_bayar' => 'required',
+            // 'tenggat_bayar' => 'required',
             'total_ongkir' => 'required',
             'diskon' => 'required'
 
@@ -58,7 +59,7 @@ class PembelianController extends Controller
         $notaPembeli = new NotaPembeli;
         $notaPembeli->no_nota = $request->get('no_nota');
         // $notaPembeli->jenis_pembelian = $request->get('jenis_pembelian'); // Contoh nilai untuk jenis_pembelian
-        $notaPembeli->status_pembayaran = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
+        // $notaPembeli->status_pembayaran = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
         $notaPembeli->metode_pembayaran = $request->get('metode_pembayaran');
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
@@ -79,7 +80,7 @@ class PembelianController extends Controller
         // Perulangan untuk pesanan
         foreach ($pesananData as $pesanan) {
             // Data barang 
-            $barangData = Barang::where('hash_id_barang', $pesanan['id_barang'])->lockForUpdate()->first();
+            $barangData = Barang::with('stokBarang')->where('hash_id_barang', $pesanan['id_barang'])->lockForUpdate()->first();
             if (empty($barangData)) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Gagal memasukkan barang, barang tidak ada');
@@ -124,12 +125,21 @@ class PembelianController extends Controller
 
 
             // Update data barang
-            if ($barangData->stok >=  $pesanan['jumlah_pesanan']) {
-                $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
-                $barangData->save();
+
+            $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
+            if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+
+
+
+                // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
+                // $barangData->save();
+                StokBarangModel::create([
+                    'stok_keluar' => $pesanan['jumlah_pesanan'],
+                    'id_barang' => $barangData->id_barang,
+                ]);
             } else {
                 DB::rollBack();
-                return redirect()->back()->with('error', 'Gagal memasukkan data');
+                return redirect()->back()->with('error', 'Terjadi Kesalahan');
             }
         }
 
@@ -137,7 +147,7 @@ class PembelianController extends Controller
 
 
 
-        $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
+        $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
 
         $updateNotaPembeli->sub_total = $subTotal;
         $updateNotaPembeli->diskon = $request->get('diskon');
@@ -145,73 +155,24 @@ class PembelianController extends Controller
 
         // Perhitungan Pajak
         $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
-        // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
-        // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
-        $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
-        $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
-
-        if ($updateNotaPembeli->status_pembayaran == 'lunas') {
-            $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
-            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        } else {
-            $updateNotaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
-            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        }
-        $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
+        $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+        $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
         $updateNotaPembeli->save();
 
-
-        // Mendapatkan tanggal hari ini
-        $tanggal = Carbon::now();
-        // Data yang akan diinput
-        if ($updateNotaPembeli->status_pembayaran == 'lunas') {
-
-            // Membuat satu data baru
-            $bukubesar = new BukubesarModel();
-            $bukubesar->hash_id_bukubesar = 'hash_id_bukubesar_1';
-            $bukubesar->id_akunbayar = 1;
-            $bukubesar->tanggal = date('Y-m-d'); // Tanggal saat ini
-            $bukubesar->kategori = 'transaksi';
-            $bukubesar->sub_kategori = "lunas";
-            $bukubesar->keterangan = 'NOTA ' . $updateNotaPembeli->no_nota . ' LUNAS'; // Ganti dengan keterangan yang sesuai
-            $bukubesar->debit = $updateNotaPembeli->total; // Misalnya debit sebesar 1000
-            $bukubesar->kredit = 0; // Kredit diisi 0 karena debit
-            $bukubesar->save();
-
-            $notaBukubesar = new Notabukubesar();
-            $notaBukubesar->id_nota = $updateNotaPembeli->id_nota;
-            $notaBukubesar->id_bukubesar = $bukubesar->id_bukubesar;
-            $notaBukubesar->save();
-        } else {
-
-            if ($updateNotaPembeli->nominal_terbayar >  $updateNotaPembeli->total) {
-                DB::rollBack();
-                return redirect()->back()->with('error', 'Nominal terbayar lebih besar dari total pembelian');
-            }
-            // Membuat satu data baru
-            $bukubesar = new BukubesarModel();
-            $bukubesar->id_akunbayar = 1;
-            $bukubesar->tanggal = date('Y-m-d'); // Tanggal saat ini
-            $bukubesar->kategori = 'transaksi';
-            $bukubesar->sub_kategori = "piutang";
-            $bukubesar->keterangan = 'NOTA ' . $updateNotaPembeli->no_nota . ' PIUTANG'; // Ganti dengan keterangan yang sesuai
-            $bukubesar->debit =   $notaPembeli->nominal_terbayar; // Misalnya debit sebesar 1000
-            $bukubesar->kredit = 0; // Kredit diisi 0 karena debit
-            $bukubesar->save();
-
-
-
-            $notaBukubesar = new Notabukubesar();
-            $notaBukubesar->id_nota = $updateNotaPembeli->id_nota;
-            $notaBukubesar->id_bukubesar = $bukubesar->id_bukubesar;
-            $notaBukubesar->save();
-        }
-
-
-
+        // Membuat satu data baru
+        $bukuBesarPembelian = new BukubesarModel();
+        $bukuBesarPembelian->id_akunbayar = 1;
+        $bukuBesarPembelian->tanggal = date('Y-m-d'); // Tanggal saat ini
+        $bukuBesarPembelian->kategori = 'transaksi';
+        $bukuBesarPembelian->sub_kategori = "lunas";
+        $bukuBesarPembelian->keterangan = 'NOTA ' . $notaPembeli->no_nota; // Ganti dengan keterangan yang sesuai
+        $bukuBesarPembelian->debit = $updateNotaPembeli->nominal_terbayar; // Misalnya debit sebesar 1000
+        $bukuBesarPembelian->save();
+        $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
 
         DB::commit();
+      
 
 
         return redirect()->route('pemesanan.index')->with('success', 'Pesanan herhasil ditambahkan');
@@ -269,7 +230,7 @@ class PembelianController extends Controller
 
         if ($notaPembeli) {
 
-            
+
             foreach ($notaPembeli->bukuBesar as $bukuBesar) {
                 $bukuBesar->delete();
             }

@@ -21,7 +21,7 @@ class Barang extends Model
         'harga_barang_pemasok',
         'stok',
         'ukuran',
-        'status_pembayaran',
+        // 'status_pembayaran',
         'total',
         'nominal_terbayar',
         'tenggat_bayar',
@@ -48,6 +48,12 @@ class Barang extends Model
     public function PesananPembeli()
     {
         return $this->hasMany(PesananPembeli::class, 'id_barang');
+    }
+
+
+    public function stokBarang()
+    {
+        return $this->hasMany(StokBarangModel::class, 'id_barang');
     }
     protected static function booted()
     {

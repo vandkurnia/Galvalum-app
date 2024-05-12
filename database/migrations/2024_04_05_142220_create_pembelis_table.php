@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nama_pembeli');
             $table->string('alamat_pembeli');
             $table->enum('jenis_pembeli', ['harga_normal', 'aplicator', 'potongan'])->default('harga_normal');
-            $table->string('no_hp_pembeli');
+            $table->string('no_hp_pembeli')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

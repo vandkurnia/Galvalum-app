@@ -148,6 +148,7 @@
                             <div class="form-group">
                                 <label for="pemasok">Pemasok:</label>
                                 <select class="form-control" id="pemasok" name="id_pemasok" required>
+                                    <option value="">Tanpa Pemasok</option>
                                     @foreach ($dataPemasok as $pemasok)
                                         <option value="{{ $pemasok['id_pemasok'] }}">
                                             {{ $pemasok['nama_pemasok'] }}</option>
@@ -158,7 +159,7 @@
                                 <label for="kode_barang">Kode Barang</label>
                                 <input id="kode_barang" type="text"
                                     class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang"
-                                    value="{{ old('kode_barang') }}" required>
+                                    value="{{ $kodeBarang }}" required>
                                 @error('kode_barang')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -188,15 +189,15 @@
                             <div class="form-group">
                                 <label for="harga_barang">Harga Jual:</label>
                                 <input type="number" class="form-control" name="harga_barang" id="harga_barang"
-                                    placeholder="Harga Barang" required>
+                                    placeholder="Harga Barang" value="0" min="0" required>
                             </div>
                             <div class="form-group">
                                 <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
-                                <input id="harga_barang_pemasok" type="text"
+                                <input id="harga_barang_pemasok" type="number"
                                     class="form-control @error('harga_barang_pemasok') is-invalid @enderror"
-                                    name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required>
+                                    name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required oninput="funcSingkronTotalBayar()">
                                 @error('harga_barang_pemasok')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback" value="0" min="0"  role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -206,7 +207,7 @@
                             <div class="form-group">
                                 <label for="stok">Jumlah Stok:</label>
                                 <input type="number" class="form-control" name="stok" id="stok"
-                                    placeholder="Jumlah Stok" required>
+                                    placeholder="Jumlah Stok" oninput="funcSingkronTotalBayar()" value="0" min="0" required>
                             </div>
                             <div class="form-group">
                                 <label for="statusPembayaran">Status Pembayaran:</label>
@@ -413,12 +414,12 @@
                     </div>
                     <div class="form-group">
                         <label for="harga_barang">Harga Barang:</label>
-                        <input type="text" class="form-control" name="harga_barang" id="harga_barang"
+                        <input type="number" class="form-control" name="harga_barang" id="harga_barang"
                             placeholder="Harga Barang" required>
                     </div>
                     <div class="form-group">
                         <label for="stok">Jumlah Stok:</label>
-                        <input type="text" class="form-control" name="stok" id="stok"
+                        <input type="number" class="form-control" name="stok" id="stok"
                             placeholder="Jumlah Stok" required>
                     </div>
                 </form>
@@ -430,6 +431,46 @@
 @section('javascript-custom')
     <script></script>
     <script>
+        function funcSingkronTotalBayar() {
+            // // Harga Barang Pemasok
+            // const hargaBarangPemasok = document.querySelector('#harga_barang_pemasok');
+            // const jumlahStok = document.querySelector('#stok');
+            // console.log(parseInt(hargaBarangPemasok.value), parseInt(jumlahStok.value))
+
+            // // Total Terbayar
+            // var formCicilan = document.getElementById('formCicilan');
+            // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+
+            // nominalTerbayar.value = parseInt(hargaBarangPemasok.value) * parseInt(jumlahStok.value);
+
+
+            // Element Select
+
+            const typePembelian = document.querySelector('#statusPembayaran');
+            var formCicilan = document.getElementById('formCicilan');
+            if (typePembelian.value === 'hutang') {
+                formCicilan.style.display = 'block';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.removeAttribute('readonly');
+                nominalTerbayar.value = 0;
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.removeAttribute('disabled');
+            } else {
+                formCicilan.style.display = 'none';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.readOnly = true;
+                const hargaBarangPemasok = document.querySelector('#harga_barang_pemasok');
+                const jumlahStok = document.querySelector('#stok');
+                console.log(parseInt(hargaBarangPemasok.value), parseInt(jumlahStok.value))
+                nominalTerbayar.value = parseInt(hargaBarangPemasok.value) * parseInt(jumlahStok.value);
+
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.disabled = true;
+            }
+        }
+
         function funcTambahStokSubmit() {
             var form = document.querySelector('#formtambahStokModal');
             console.log(form);
@@ -494,12 +535,7 @@
     </script>
     <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
-            var formCicilan = document.getElementById('formCicilan');
-            if (this.value === 'hutang') {
-                formCicilan.style.display = 'block';
-            } else {
-                formCicilan.style.display = 'none';
-            }
+            funcSingkronTotalBayar();
         });
     </script>
     <script>

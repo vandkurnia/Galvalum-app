@@ -4,6 +4,7 @@ namespace App\Http\Controllers\JsonType;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\StokBarangModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class BarangJsonController extends Controller
     {
 
         $keyword = $request->get('query');
-        $dataSemuaBarang =  Barang::where('nama_barang', 'like', '%' . $keyword . '%')->with('TipeBarang')->paginate(2)->toArray();
+        $dataSemuaBarang =  Barang::where('nama_barang', 'like', '%' . $keyword . '%')->with('TipeBarang', 'stokBarang')->paginate(2)->toArray();
 
         if (!empty($dataSemuaBarang)) {
 
@@ -22,6 +23,13 @@ class BarangJsonController extends Controller
             foreach ($dataSemuaBarang['data'] as $barang) {
                 $barang['id'] = $barang['hash_id_barang'];
                 $barang['text'] = $barang['nama_barang'];
+
+                $stokBarang = StokBarangModel::where('id_barang', $barang['id_barang'])
+                    ->selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')
+                    ->groupBy('id_barang')
+                    ->first();
+
+                $barang['stok'] = $stokBarang->stok;
                 $dataBarangTambahan[] = $barang;
             }
 

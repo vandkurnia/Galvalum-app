@@ -16,8 +16,8 @@ class AkunBayarSeeder extends Seeder
     public function run()
     {
         AkunBayarModel::create([
-            'no_akun' => 'REKENINGUTAMA',
-            'nama_akun' => 'Rekening Utama',
+            'no_akun' => '1000',
+            'nama_akun' => 'Transaksi',
             'tipe_akun' => 'Utama',
             'saldo' => 0,
             'saldo_akhir' => 0,

@@ -132,37 +132,40 @@ class LaporanController extends Controller
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
         $dataLaporanHutang = DB::select(
             '
-            SELECT
-                barangs.hash_id_barang as id_barang,
-                pemasok_barangs.nama_pemasok,
-                barangs.nama_barang,
-                barangs.stok as total_pesanan,
-                pemasok_barangs.created_at as tanggal_stok,
-                SUM(bukubesar.kredit) as harga_bayar,
-                SUM(bukubesar.debit) as jumlah_terbayar,
-                barangs.tenggat_bayar as jatuh_tempo,
-                barangs.status_pembayaran
-            FROM
-                `barangs`
-            JOIN
-                pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
-            JOIN
-                bukubesar_barang ON bukubesar_barang.id_barang = barangs.id_barang
-            JOIN
-                bukubesar ON bukubesar.id_bukubesar = bukubesar_barang.id_bukubesar
-            WHERE
-                bukubesar.tanggal = ?
-            GROUP BY
-                barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang,barangs.stok, pemasok_barangs.created_at, barangs.tenggat_bayar, barangs.status_pembayaran; -- Anda dapat mengganti kolom ini sesuai kebutuhan
-            ',
-            [$tanggalSaatIni]
+                SELECT
+                    barangs.hash_id_barang as id_barang,
+                    pemasok_barangs.nama_pemasok,
+                    barangs.nama_barang,
+                    SUM(stok_barang.stok_masuk - stok_barang.stok_keluar) as total_pesanan,
+                    pemasok_barangs.created_at as tanggal_stok,
+                    barangs.total as harga_bayar,
+                    barangs.nominal_terbayar as jumlah_terbayar,
+                    barangs.tenggat_bayar as jatuh_tempo,
+                    CASE
+                    WHEN barangs.total > barangs.nominal_terbayar THEN "Belum Lunas"
+                    WHEN barangs.total < barangs.nominal_terbayar THEN "Kelebihan"
+                    ELSE "Lunas"
+                    END AS status_pembayaran
+                FROM
+                    `barangs`
+                LEFT JOIN
+                    pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
+                JOIN
+                    stok_barang ON stok_barang.id_barang = barangs.id_barang
+                LEFT JOIN
+                    bukubesar ON bukubesar.id_bukubesar = stok_barang.id_bukubesar
+                WHERE barangs.nominal_terbayar < barangs.total
+                GROUP BY
+                    barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
+                ',
+            []
         );
-        
+
         // Mengubah hasil query menjadi array
         $dataLaporanHutangArray = collect($dataLaporanHutang)->map(function ($item) {
             return (array) $item;
         })->toArray();
-        
+
         return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray]);
     }
 
@@ -201,7 +204,7 @@ class LaporanController extends Controller
         JOIN
             bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
         WHERE 
-            bukubesar.kategori = "transaksi" AND bukubesar.sub_kategori = "PIUTANG" 
+            bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total 
         GROUP BY
             nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar
         

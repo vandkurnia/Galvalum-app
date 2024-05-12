@@ -17,7 +17,7 @@ class NotaPembeli extends Model
         'id_pembeli',
         'id_admin',
         'metode_pembayaran',
-        'status_pembayaran',
+        // 'status_pembayaran',
         'sub_total',
         'totalTerbayar',
         'tenggat_bayar',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\PemasokBarang;
+use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +14,25 @@ class StokController extends Controller
 {
     public function index()
     {
+        $dataSemuaBarang = Barang::with('pemasok', 'tipeBarang', 'stokBarang')->get();
+        $dataBaruSemuaBarang = [];
+        foreach ($dataSemuaBarang as $barang) {
+            $totalStok = $barang->stokBarang->sum('stok_masuk') - $barang->stokBarang->sum('stok_keluar');
+            $barang->stok = $totalStok;
+            $dataBaruSemuaBarang[] = $barang;
+        }
 
-        $dataSemuaBarang = Barang::with('pemasok', 'tipeBarang')->get();
+
         $dataTipeBarang = TipeBarang::all();
         $dataPemasok = PemasokBarang::all();
-        return view('stokbarang.index', ['dataSemuaBarang' => $dataSemuaBarang, 'dataPemasok' => $dataPemasok, 'dataTipeBarang' => $dataTipeBarang]);
+
+        $lastId = Barang::max('id_barang');
+        $lastId = $lastId ? $lastId : 0; // handle jika tabel kosong
+        $lastId++;
+
+
+        $kode_barang = 'BRG' . date('Y') . date('mdHis') . str_pad($lastId, 4, '0', STR_PAD_LEFT);
+        return view('stokbarang.index', ['dataSemuaBarang' => $dataBaruSemuaBarang, 'dataPemasok' => $dataPemasok, 'dataTipeBarang' => $dataTipeBarang, 'kodeBarang' => $kode_barang]);
 
         // return view('stokbarang.index');
     }
@@ -49,7 +64,7 @@ class StokController extends Controller
             'harga_barang_pemasok' => 'required',
             'stok' => 'required',
             'ukuran' => 'required',
-            'id_pemasok' => 'required',
+            // 'id_pemasok' => 'required',
             'id_tipe_barang' => 'required',
         ]);
 
@@ -69,50 +84,38 @@ class StokController extends Controller
         $barang->kode_barang = $request->kode_barang;
         $barang->nama_barang = $request->nama_barang;
         $barang->harga_barang =  $request->harga_barang;
-        $barang->harga_barang_pemasok =  $request->harga_barang_pemasok;
-        $barang->stok = $request->stok;
+        $barang->harga_barang_pemasok =  $request->get('harga_barang_pemasok');
+        // $barang->stok = $request->stok;
         $barang->ukuran = $request->ukuran;
         $barang->id_pemasok = $request->id_pemasok;
         $barang->id_tipe_barang = $request->id_tipe_barang;
-        $barang->total = $barang->harga_barang_pemasok * $barang->stok;
-
-        if ($barang->status_pembayaran == 'lunas') {
-            $barang->nominal_terbayar =  $barang->total;
-            $barang->tenggat_bayar = $request->get('tenggat_bayar');
-        } else {
-            $barang->nominal_terbayar =  $request->get('nominal_terbayar');
-            $barang->tenggat_bayar = $request->get('tenggat_bayar');
-        }
+        $barang->total = $barang->harga_barang_pemasok * $request->stok;
+        $barang->nominal_terbayar =  $request->get('nominal_terbayar');
+        $barang->tenggat_bayar = $request->get('tenggat_bayar');
         $barang->save();
 
+
+   
         // Buat record baru untuk BukuBesar
         $bukuBesar = new BukubesarModel();
 
         $bukuBesar->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
         $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
         $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-        $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-        $bukuBesar->debit = 0; // Isi dengan nilai debit yang sesuai
-        $bukuBesar->kredit = $request->stok * $request->harga_barang_pemasok; // Isi dengan nilai kredit yang sesuai
+        $bukuBesar->keterangan = 'STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+   
+        $bukuBesar->debit = $request->stok * $request->harga_barang_pemasok; // Isi dengan nilai kredit yang sesuai
         $bukuBesar->sub_kategori = 'hutang'; // Isi dengan sub kategori yang sesuai
         $bukuBesar->save();
-        $barang->bukuBesar()->attach($bukuBesar->id_bukubesar);
 
-        $bukuBesar2 = new BukubesarModel();
-        $bukuBesar2->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
-        $bukuBesar2->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
-        $bukuBesar2->kategori = "barang"; // Isi dengan kategori yang sesuai
-        $bukuBesar2->keterangan = 'PELUNASAN STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-        $bukuBesar2->debit = $barang->nominal_terbayar; // Isi dengan nilai debit yang sesuai
-        $bukuBesar2->kredit = 0; // Isi dengan nilai kredit yang sesuai
-        $bukuBesar2->sub_kategori = 'pelunasan'; // Isi dengan sub kategori yang sesuai
-        $bukuBesar2->save();
-        // Hubungkan Barang dengan BukuBesar
-
-        $barang->bukuBesar()->attach($bukuBesar2->id_bukubesar);
+        StokBarangModel::create([
+            'stok_masuk' => $request->stok,
+            'id_barang' => $barang->id_barang,
+            'id_bukubesar' => $bukuBesar->id_bukubesar
+        ]);
         DB::commit();
 
-
+        dd("successs");
 
         return redirect()->route('stok.index')->with('success', 'Data  Barang Berhasil disimpan');
     }
@@ -165,7 +168,8 @@ class StokController extends Controller
     public function showStokBarang($id)
     {
 
-        $dataBarang = Barang::where('hash_id_barang', $id)->first();
+        $dataBarang = Barang::with('stokBarang')->where('hash_id_barang', $id)->first();
+
         if (!$dataBarang) {
             return response()->json([
                 'code' => 404,
@@ -173,10 +177,16 @@ class StokController extends Controller
                 'data' => null
             ], 404);
         }
+
+        $dataBarangBaru = [];
+        $totalStok = $dataBarang->stokBarang->sum('stok_masuk') - $dataBarang->stokBarang->sum('stok_keluar');
+        $dataBarang->stok = $totalStok;
+        $dataBarangBaru = $dataBarang;
+        // print_r($dataBarang);
         return response()->json([
             'code' => 200,
             'message' => 'Success',
-            'data' => $dataBarang
+            'data' => $dataBarangBaru
         ], 200);
     }
 
@@ -206,17 +216,22 @@ class StokController extends Controller
         }
 
         DB::beginTransaction();
-        $barang->stok += $validatedData['stok_tambah'];
-        $barang->save();
+        // $barang->stok += $validatedData['stok_tambah'];
+
 
         $bukuBesar = new BukubesarModel();
         $bukuBesar->tanggal = date('Y-m-d');
         $bukuBesar->kategori =  "barang";
         $bukuBesar->sub_kategori = "hutang";
-        $bukuBesar->kredit = $validatedData['stok_tambah'];
+        $bukuBesar->kredit = $validatedData['stok_tambah'] * $barang->harga_barang_pemasok;
         $bukuBesar->keterangan = "penambahan stok " . $validatedData['stok_tambah'];
         $bukuBesar->save();
 
+        StokBarangModel::create([
+            'stok_masuk' => $validatedData['stok_tambah'],
+            'id_barang' => $barang->id_barang,
+            'id_bukubesar' => $bukuBesar->id_bukubesar
+        ]);
         DB::commit();
 
         return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
@@ -247,17 +262,21 @@ class StokController extends Controller
 
 
         DB::beginTransaction();
-        $barang->stok -= $validatedData['stok_kurang'];
-        $barang->save();
-
         $bukuBesar = new BukubesarModel();
         $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-        $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        $bukuBesar->keterangan = 'STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
         $bukuBesar->tanggal = date('Y-m-d');
         $bukuBesar->sub_kategori = "hutang";
         $bukuBesar->debit = $validatedData['stok_kurang'];
         $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
         $bukuBesar->save();
+
+
+        StokBarangModel::create([
+            'stok_keluar' => $validatedData['stok_kurang'],
+            'id_barang' => $barang->id_barang,
+            'id_bukubesar' => $bukuBesar->id_bukubesar
+        ]);
         DB::commit();
 
         return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');

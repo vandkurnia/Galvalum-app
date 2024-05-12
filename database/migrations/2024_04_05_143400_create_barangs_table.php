@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->decimal('harga_barang', 25, 2);
             $table->decimal('harga_barang_pemasok', 25, 2);
-            $table->integer('stok');
+            // $table->integer('stok');
             $table->string('ukuran');
-            $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
+            // $table->enum('status_pembayaran', ['lunas', 'hutang'])->default('hutang');
             $table->decimal('total', 25, 2)->default(0);
             $table->decimal('nominal_terbayar', 10, 2)->default(0);
             $table->date('tenggat_bayar')->nullable();

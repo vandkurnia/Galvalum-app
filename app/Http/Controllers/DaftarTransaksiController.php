@@ -23,6 +23,21 @@ class DaftarTransaksiController extends Controller
                 $totalPesanan += $pesananPembeli['jumlah_pembelian'];
 
             }
+
+            
+            if($nota['total'] == $nota['nominal_terbayar']){
+                $statusPembayaran = "Lunas";
+            } else if ($nota['total'] < $nota['nominal_terbayar'])
+            {
+                $statusPembayaran = "Kelebihan";
+            } else if ($nota['total'] > $nota['nominal_terbayar'])
+            {
+                $statusPembayaran = "Piutang";
+            } else {
+                $statusPembayaran = "Tidak Valid";
+
+            }
+            $dataNotaPembeli[$index]['status_pembayaran'] = $statusPembayaran;
             $dataNotaPembeli[$index]['total_pesanan'] = $totalPesanan; 
             // $nota->Pesanan->each(function ($pesanan) {
             //     $pesanan->count = $pesanan->jumlah_pembelian()->count();
