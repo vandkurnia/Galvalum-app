@@ -43,7 +43,7 @@
 
     <!-- Nav Item - Retur -->
     <li class="nav-item {{ request()->is('retur') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/retur') }}">
+        <a class="nav-link" href="{{ route('retur.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Retur</span></a>
     </li>

@@ -155,10 +155,14 @@ class PembelianController extends Controller
 
         // Perhitungan Pajak
         $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
-        $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
-        $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
+        // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+        $nilaiOngkir =  $updateNotaPembeli->ongkir;
+        $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
         $updateNotaPembeli->save();
 
+        // dump([
+        //     'total' => $updateNotaPembeli
+        // ]);
         // Membuat satu data baru
         $bukuBesarPembelian = new BukubesarModel();
         $bukuBesarPembelian->id_akunbayar = 1;
@@ -171,9 +175,11 @@ class PembelianController extends Controller
         $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
 
-        DB::commit();
-      
+        
 
+        DB::commit();
+        // dump($request->all());
+        // dd("berhasil");
 
         return redirect()->route('pemesanan.index')->with('success', 'Pesanan herhasil ditambahkan');
     }
