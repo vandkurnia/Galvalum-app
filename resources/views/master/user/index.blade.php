@@ -14,7 +14,7 @@
             display: none;
         }
     </style>
-    
+
 
 @endsection
 
@@ -51,6 +51,22 @@
                 </div>
             @endforeach
         @endif
+
+        {{-- Error flashdata --}}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <strong>Error!</strong> {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
 
@@ -83,6 +99,11 @@
                                     <td>{{ $user->email_admin }}</td>
                                     <td>
 
+
+                                        <button class="btn btn-primary btn-sm"
+                                            onclick="funcUpdatePassword('{{ $user->hash_id_admin }}')"><i
+                                                class="fas fa-key"></i>
+                                            Ubah Password</button>
                                         <button class="btn btn-primary btn-sm"
                                             onclick="funcEditUser('{{ $user->hash_id_admin }}')"><i class="fas fa-edit"></i>
                                             Edit</button>
@@ -140,6 +161,13 @@
                         <input type="email" class="form-control" id="email_admin_store" name="email_admin" required>
                     </div>
                     <div class="form-group">
+                        <label for="role" class="form-label">Role</label>
+                        <select name="role" id="role" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="karyawan">Karyawan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password_store" name="password" required>
                     </div>
@@ -176,6 +204,32 @@
     </div>
 </div>
 {{-- End of Modal Edit --}}
+{{-- Modal Update Password --}}
+<div class="modal fade" id="UpdatePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Password User</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="funcSubmitUpdatePasswordUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Update Password --}}
+
+
+
 
 {{-- Modal Delete --}}
 <div class="modal fade" id="HapusUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -210,7 +264,7 @@
 
 
 @section('javascript-custom')
-   
+
 
     <script>
         function funcTambahUser() {
@@ -249,6 +303,45 @@
                 alert('Terjadi kesalahan');
             });
 
+        }
+
+        function funcUpdatePassword(id_user) {
+            var url = 'user/change-password/' + id_user;
+
+            // Kirim request Ajax
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(function(response) {
+                // Handle response
+                console.log(response.code);
+
+                if (response.ok) {
+                    response.json().then(function(data) {
+                        $('#UpdatePassword .modal-body').html(data
+                            .data); // Menetapkan respons ke elemen HTML dengan ID UpdatePassword
+                        $('#UpdatePassword').modal('show');
+                    });
+                } else {
+                    alert('Response was not ok');
+                }
+                // Memuat modal EditUser dengan data pengguna
+                // $('#editUserModal').html(response);
+
+            }).catch(function(error) {
+                // Handle error
+                alert('Terjadi kesalahan');
+            });
+
+        }
+
+        function funcSubmitUpdatePasswordUser() {
+            let formedit = $('#UpdatePassword .modal-body #formUpdatePassword');
+            formedit.submit();
+            $('#UpdatePassword').modal('hide');
         }
 
         function funcUpdateUser() {

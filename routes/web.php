@@ -51,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [UserController::class, 'store'])->name('user.store'); // Menyimpan user baru
         Route::put('/{id}', [UserController::class, 'update'])->name('user.update'); // Mengupdate user berdasarkan ID
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy'); // Menghapus user berdasarkan ID
+        Route::get('/change-password/{id_admin}', [UserController::class, 'formpassword'])->name('user.formpassword');
+        Route::put('/change-password/{id_admin}', [UserController::class, 'changePassword'])->name('user.changepassword');
+
     });
     // Master Tipe Barang
     Route::middleware('role:admin')->prefix('tipe-barang')->group(function () {
@@ -118,7 +121,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/info/{id}', [DaftarTransaksiController::class, 'daftarBarangPesanan'])->name('pemesanan.infobarang');
     });
     Route::prefix('retur')->group(function () {
-        Route::get('/', [ReturController::class, 'index'])->name('retur.index');
+        Route::get('/list', [ReturController::class, 'index'])->name('retur.index');
         Route::prefix('pemasok')->group(function () {
             // Route::get('/', [ReturController::class, 'index'])->name('retur.pemasok.index');
             Route::get('/add/{id_pesanan}', [ReturPemasokController::class, 'add'])->name('retur.pemasok.add');
@@ -131,7 +134,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('pembeli')->group(function () {
 
             Route::get('/add/{id_nota}', [ReturPembeliController::class, 'add'])->name('retur.pembeli.add');
-            Route::post('/', [ReturPembeliController::class, 'store'])->name('retur.pembeli.store');
+            Route::post('/store', [ReturPembeliController::class, 'store'])->name('retur.pembeli.store');
             // Route::get('/', [ReturPembeliController::class, 'index']);
             Route::get('/edit/{id_retur}', [ReturPembeliController::class, 'edit'])->name('retur.pembeli.edit');
             Route::put('/{id_retur}', [ReturPembeliController::class, 'update'])->name('retur.pembeli.update'); // Mengupdate tipebarang berdasarkan ID

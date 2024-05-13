@@ -13,6 +13,14 @@
     </div>
 
     <div class="form-group">
+        <label for="role" class="form-label">Role</label>
+        <select name="role" id="role" class="form-control">
+            <option value="admin" {{ $datauser['role'] == "admin" ? 'selected' : '' }}>Admin</option>
+            <option value="karyawan" {{ $datauser['role'] == "karyawan" ? 'selected' : '' }}>Karyawan</option>
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="email_admin" class="form-label">Alamat Email Admin</label>
         <input type="email" class="form-control" id="email_admin_edit" name="email_admin"
             value="{{ $datauser['email_admin'] }}" required>

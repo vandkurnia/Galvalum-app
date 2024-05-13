@@ -52,6 +52,8 @@ class UserController extends Controller
             'nama_admin' => 'required',
             'no_telp_admin' => 'required',
             'email_admin' => 'required|email|unique:users,email_admin',
+            'role' => 'required',
+
             'password' => 'required',
         ]);
 
@@ -62,6 +64,7 @@ class UserController extends Controller
             'hash_id_admin' => $this->generateHashForUser(),
             'nama_admin' => $request->nama_admin,
             'no_telp_admin' => $request->no_telp_admin,
+            'role' => $request->role,
             'email_admin' => $request->email_admin,
             'password' => Hash::make($request->password),
         ];
@@ -74,6 +77,7 @@ class UserController extends Controller
     {
         $request->validate([
             'nama_admin' => 'required',
+            'role' => $request->role,
             'no_telp_admin' => 'required',
             // 'email_admin' => 'required|email|unique:users,email_admin',
         ]);
@@ -89,6 +93,49 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User berhasil diupdate');
     }
+
+
+    public function formpassword(Request $request, $id)
+    {
+        $datauser = User::where('hash_id_admin', $id)->first();
+        if (!$datauser) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Not found',
+                'data' => null
+            ], 404);
+        }
+
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Success',
+            'data' => view('master.user.updatepassword', compact('datauser'))->render()
+        ], 200);
+    }
+
+    public function changePassword(Request $request, $id_admin)
+    {
+        // Validasi input
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|different:password_lama',
+        ]);
+
+        $user = User::where('hash_id_admin', $id_admin)->first();
+
+        // Validasi password lama
+        if (!Hash::check($request->password_lama, $user->password)) {
+            return redirect()->back()->with('error', 'Password lama tidak sesuai.');
+        }
+
+        // Ubah password
+        $user->password = Hash::make($request->password_baru);
+        $user->save();
+
+        return redirect()->route('user.index')->with('success', 'Password berhasil diubah.');
+    }
+
 
     public function destroy($id)
     {
