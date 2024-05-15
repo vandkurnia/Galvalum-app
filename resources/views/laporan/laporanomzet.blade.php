@@ -68,27 +68,28 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Tanggal pembelian</th>
+                                <th>Barang</th>
                                 <th>Jumlah Pembelian</th>
-                                <th>Jenis Pelanggan</th>
+                                <th>Jenis Pembelian</th>
                                 <th>Omzet</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $total = 0;
+
+                                $typePembelian = [
+                                    'aplicator' => 'Aplicator',
+                                    'harga_normal' => 'Harga Normal',
+                                    'potongan' => 'Potongan',
+                                ];
                             @endphp
                             @foreach ($dataNotaPembelian as $notaPembelian)
                                 <tr>
-                                   
-                                    <td>{{ date('Y-m-d',strtotime($notaPembelian['created_at'])) }}</td>
-                                    <td>{{ $notaPembelian['total_pesanan'] }}</td>
-                                    <td>-</td>
-                                    <td data-total="{{ $notaPembelian['omzet'] }}">
-                                        {{ 'Rp ' . number_format($notaPembelian['omzet'], 0, ',', '.') }}
-
-                                    </td>
-
+                                    <td>{{ $notaPembelian['nama_barang'] }}</td>
+                                    <td>{{ $notaPembelian['jumlah_pembelian'] }}</td>
+                                    <td>{{ $typePembelian[$notaPembelian['jenis_pembelian']] }}</td>
+                                    <td>{{ 'Rp ' . number_format($notaPembelian['omzet'], 0, ',', '.') }} </td>
                                 </tr>
                                 @php
                                     $total += $notaPembelian['omzet'];
@@ -100,7 +101,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3">Total</td>
-                                <td>  {{ 'Rp ' . number_format($total, 0, ',', '.') }}</td>
+                                <td> {{ 'Rp ' . number_format($total, 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
                     </table>

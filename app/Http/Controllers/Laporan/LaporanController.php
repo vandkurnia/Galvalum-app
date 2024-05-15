@@ -99,21 +99,22 @@ class LaporanController extends Controller
         $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
 
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
+        // Query to get omzet grouped by item name
         $dataNotaPembelian = DB::select(
             '
-            SELECT 
-                DATE(nota_pembelis.created_at) AS created_at,
-                COUNT(pesanan_pembelis.id_pesanan) AS total_pesanan,
-                SUM(nota_pembelis.total) AS omzet
-            FROM 
-                nota_pembelis
-            JOIN 
-                pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
-            WHERE 
-                DATE(nota_pembelis.created_at) = ?
-            GROUP BY 
-                created_at
-            ',
+        SELECT 
+            barangs.nama_barang,
+            SUM(pesanan_pembelis.jumlah_pembelian) AS jumlah_pembelian,
+            pesanan_pembelis.jenis_pembelian,
+            SUM(pesanan_pembelis.jumlah_pembelian * pesanan_pembelis.harga) AS omzet
+        FROM barangs
+        JOIN 
+             pesanan_pembelis ON pesanan_pembelis.id_barang = barangs.id_barang
+        WHERE 
+            DATE(pesanan_pembelis.created_at) = ?
+        GROUP BY 
+            barangs.nama_barang, pesanan_pembelis.jenis_pembelian
+        ',
             [$tanggalSaatIni]
         );
 
