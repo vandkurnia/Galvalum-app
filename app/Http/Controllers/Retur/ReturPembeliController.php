@@ -12,6 +12,7 @@ use App\Models\Pembeli;
 use App\Models\PesananPembeli;
 use App\Models\Retur\ReturPembeliModel;
 use App\Models\Retur\ReturPesananPembeliModel;
+use App\Models\StokBarangModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,13 +48,12 @@ class ReturPembeliController extends Controller
     }
     public function store(Request $request)
     {
-
         $request->validate([
             'id_nota' => 'required|exists:nota_pembelis,id_nota',
             'tanggal_retur_pembeli' => 'required|date',
-            'bukti_retur_pembeli' => 'required|file',
+            'bukti_retur_pembeli' => 'required',
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
-            'status' => 'required|in:Belum Selesai,Selesai',
+            // 'status' => 'required|in:Belum Selesai,Selesai',
             'retur_murni' => 'required',
             'retur_tambahan' => 'required'
         ]);
@@ -76,19 +76,41 @@ class ReturPembeliController extends Controller
         $dataReturPembeli->tanggal_retur_pembeli = $request->tanggal_retur_pembeli;
         $dataReturPembeli->id_nota = $notaPembelian->id_nota;
         // Simpan file bukti_retur_pembeli
-        if ($request->hasFile('bukti_retur_pembeli')) {
-            $file = $request->file('bukti_retur_pembeli');
-            $fileName = $file->getClientOriginalName();
-            $file->storeAs('bukti_retur_pembeli', $fileName);
-            $validatedData['bukti_retur_pembeli'] = $fileName;
+        // Decode data JSON menjadi array asosiatif
+        $fileData = json_decode($request->bukti_retur_pembeli, true);
+
+        // Mendapatkan base64 data dari JSON
+        $base64Data = $fileData['data'];
+
+        // Decode base64 data ke file binary
+        $fileBinary = base64_decode($base64Data);
+
+        // Direktori tujuan penyimpanan file
+        $targetDirectory = public_path('retur/pembeli/');
+
+        if (!file_exists($targetDirectory)) {
+            mkdir($targetDirectory, 0777, true); // Buat direktori secara rekursif
         }
-        $dataReturPembeli->bukti_retur_pembeli = $validatedData['bukti_retur_pembeli'];
+
+        // Tambahkan .gitignore untuk menghindari terkirimnya gambar
+        $gitignoreFile = $targetDirectory . '.gitignore';
+        if (!file_exists($gitignoreFile)) {
+            file_put_contents($gitignoreFile, "*\n!.gitignore"); // Isi .gitignore dengan aturan umum
+        }
+
+        // Membuat nama file yang unik (misalnya, gabungan dari id dan nama file)
+        $fileName = $fileData['id'] . '_' . date('Ymdhis') . '_' . $fileData['name'];
+
+        // Menyimpan file ke direktori tujuan
+        file_put_contents($targetDirectory . $fileName, $fileBinary);
+        $dataReturPembeli->bukti_retur_pembeli = $fileName;
 
         $dataReturPembeli->jenis_retur = $request->jenis_retur;
         $dataReturPembeli->total_nilai_retur = $request->total_nilai_retur;
         $dataReturPembeli->pengembalian_data = $request->pengembalian_data;
         $dataReturPembeli->kekurangan = $request->kekurangan;
-        $dataReturPembeli->status = $request->status;
+        // $dataReturPembeli->status = $request->status;
+        $dataReturPembeli->status = 'selesai';
         $dataReturPembeli->id_pembeli = $notaPembelian->id_pembeli;
 
 
@@ -105,17 +127,67 @@ class ReturPembeliController extends Controller
         // Membuat Retur Menu
         $returMurni = json_decode($request->get("retur_murni"), true);
         // dd($returMurni)
-        foreach ($returMurni as $returMrni) {
-            // Pesanan 
-            $pesananData = PesananPembeli::where('id_pesanan', $returMrni['id_pesanan'])->first();
-            $returPesanan = new ReturPesananPembeliModel();
-            $returPesanan->id_retur_pembeli = $dataReturPembeli->id_retur_pembeli; // Contoh nilai id_retur_pembeli
-            $returPesanan->id_pesanan_pembeli = $pesananData->id_pesanan; // Contoh nilai id_pesanan_pembeli
-            $returPesanan->harga = $pesananData->harga; // Contoh nilai harga
 
-            $returPesanan->qty = $returMrni['qty_retur']; // Contoh nilai qty
-            $returPesanan->total =  ($pesananData->harga - $pesananData->diskon) *  $returPesanan->qty; // Contoh nilai total
+        $subTotalReturMurni = 0;
+
+        foreach ($returMurni as $returMrni) {
+            // Memasukkan ke ReturPesanan 
+            $pesananData = PesananPembeli::where('id_pesanan', $returMrni['id_pesanan'])->first();
+
+
+            $returPesanan = new ReturPesananPembeliModel();
+            $returPesanan->id_retur_pembeli = $dataReturPembeli->id_retur_pembeli;
+            $returPesanan->id_pesanan_pembeli = $pesananData->id_pesanan;
+            $returPesanan->harga = $pesananData->harga;
+            $returPesanan->qty_sebelum_perubahan =$pesananData->jumlah_pembelian;
+            $returPesanan->qty = $returMrni['qty_retur'];
+            $returPesanan->type_retur_pesanan = "retur_murni";
+            $returPesanan->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan->qty;
             $returPesanan->save();
+
+
+
+            // Mengupdate Jumlah Pembelian
+            $pesananData->jumlah_pembelian = $pesananData->jumlah_pembelian - $returPesanan->qty;
+            $pesananData->save();
+            // Check if the returned item is damaged or not
+            if ($dataReturPembeli->jenis_retur == 'Tidak Rusak') {
+                // Update the stock if the item is not damaged
+                $stokBarang = new StokBarangModel();
+                $stokBarang->stok_masuk += $returPesanan->qty;
+                $stokBarang->id_barang = $pesananData->id_barang;
+                $stokBarang->save();
+
+                // Associate the return order with the stock entry
+                $returPesanan->id_stok_barang = $stokBarang->id_stok_barang;
+                $returPesanan->save();
+            } else {
+                // Handle damaged item case if needed
+                // No need to update stock for damaged items
+            }
+
+
+
+
+
+
+
+            // Lalu cek apakah stok pesanan sama dengan 0, jika iya maka hapus saja tetapi jika nggak 0 maka tidak apa - apa
+            $pesananCekQtynya = PesananPembeli::where('id_pesanan', $returMrni['id_pesanan'])->first();
+            if ($pesananCekQtynya->jumlah_pembelian == 0) {
+                $pesananCekQtynya->delete();
+            }
+
+            // Menghitung subTotalReturMurni
+            $barangData = Barang::with('stokBarang')->where('id_barang', $pesananData->id_barang)->first();
+            $hargaSetelahDiskon = $barangData->harga_barang - $pesananData->diskon;
+            $hargaSetelahDiskon = $hargaSetelahDiskon - $pesananData->harga_potongan;
+            $subTotalReturMurni += $hargaSetelahDiskon *  $pesananData->jumlah_pembelian;
+
+
+
+            // Memasukkan ke stok barang berdasarkan rusak atau tidak
+
         }
 
 
@@ -125,11 +197,11 @@ class ReturPembeliController extends Controller
 
 
         // Sub Total seluruhnya 
-        $subTotal = 0;
+        $subTotalbaru = 0;
         $totalDiskon = 0;
         foreach ($returTambahan as $returTmbhn) {
             // Data barang 
-            $barangData = Barang::where('hash_id_barang', $returTmbhn['id_barang'])->lockForUpdate()->first();
+            $barangData = Barang::where('hash_id_barang', $returTmbhn['id_barang'])->first();
             if (empty($barangData)) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Gagal memasukkan barang, barang tidak ada');
@@ -138,9 +210,7 @@ class ReturPembeliController extends Controller
             $diskonId = $diskon ? $diskon->id_diskon : null;
             // Inisiasi diskon
             $amountDiskon = isset($diskon->amount) ? $diskon->amount : 0;
-
             $typeDiskon = $diskon->type ?? 'amount'; // Jika $diskon->type tidak ada, maka gunakan 'amount'
-
             $amountDiskon = $diskon->amount ?? 0; // Jika $diskon->amount tidak ada, maka gunakan 0
 
 
@@ -157,25 +227,76 @@ class ReturPembeliController extends Controller
 
 
             $hargaSetelahDiskon = $hargaSetelahDiskon - $returTmbhn['harga_potongan'];
-            $subTotal += $hargaSetelahDiskon *  $returTmbhn['jumlah_pesanan'];
+            $subTotalbaru += $hargaSetelahDiskon *  $returTmbhn['jumlah_pesanan'];
             $totalDiskon += $hargaDiskon;
+            $pesananData = PesananPembeli::where('id_nota', $notaPembelian->id_nota)
+                ->where('id_barang', $barangData->id_barang)
+                ->withTrashed()->first();
 
-            $pesananData = new PesananPembeli();
-            $pesananData->jumlah_pembelian = $returTmbhn['jumlah_pesanan']; // Contoh nilai jumlah_pembelian
-            $pesananData->harga =  $hargaSetelahDiskon; // Contoh nilai harga
-            $pesananData->diskon = $hargaDiskon; // Contoh nilai diskon
-            $pesananData->id_nota =  $notaPembelian->id_nota; // Contoh nilai id_nota
-            $pesananData->id_barang = 1; // Contoh nilai id_barang
-            $pesananData->jenis_pembelian = $returTmbhn['jenis_pelanggan']; // Contoh nilai jenis_pembelian
-            $pesananData->harga_potongan = $returTmbhn['harga_potongan']; // Contoh nilai harga_potongan
-            $pesananData->id_diskon =  $diskonId; // Contoh nilai id_diskon
-            $pesananData->save();
+            if ($pesananData) {
+
+
+                $pesananSebelumnya = $pesananData->jumlah_pembelian;
+                // Pesanan sudah ada, tambahkan jumlah pembelian
+                $pesananData->jumlah_pembelian += $returTmbhn['jumlah_pesanan'];
+                $pesananData->harga = $hargaSetelahDiskon; // Contoh nilai harga
+                $pesananData->diskon = $hargaDiskon; // Contoh nilai diskon
+                $pesananData->jenis_pembelian = $returTmbhn['jenis_pelanggan']; // Contoh nilai jenis_pembelian
+                $pesananData->harga_potongan = $returTmbhn['harga_potongan']; // Contoh nilai harga_potongan
+                $pesananData->id_diskon = $diskonId; // Contoh nilai id_diskon
+                $pesananData->save();
+
+                // Jika Deleted maka ubah ke null
+                // Belum
+
+
+                // Simpan Retur Tambah Stok
+                $returPesanan2 = new ReturPesananPembeliModel();
+                $returPesanan2->id_retur_pembeli = $dataReturPembeli->id_retur_pembeli;
+                $returPesanan2->id_pesanan_pembeli = $pesananData->id_pesanan;
+                $returPesanan2->harga = $pesananData->harga;
+                $returPesanan2->qty =  $pesananData->jumlah_pembelian;
+                $returPesanan2->type_retur_pesanan = 'retur_tambah_stok';
+                $returPesanan2->qty_sebelum_perubahan = $pesananSebelumnya;
+                $returPesanan2->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan2->qty;
+                $returPesanan2->save();
+            } else {
+                // Pesanan belum ada, buat pesanan baru
+                $pesananData = PesananPembeli::create([
+                    'jumlah_pembelian' => $returTmbhn['jumlah_pesanan'], // Contoh nilai jumlah_pembelian
+                    'harga' => $hargaSetelahDiskon, // Contoh nilai harga
+                    'diskon' => $hargaDiskon, // Contoh nilai diskon
+                    'id_nota' => $notaPembelian->id_nota, // Contoh nilai id_nota
+                    'id_barang' => $barangData->id_barang, // Contoh nilai id_barang
+                    'jenis_pembelian' => $returTmbhn['jenis_pelanggan'], // Contoh nilai jenis_pembelian
+                    'harga_potongan' => $returTmbhn['harga_potongan'], // Contoh nilai harga_potongan
+                    'id_diskon' => $diskonId, // Contoh nilai id_diskon
+                ]);
+
+
+
+                //   Simpan Retur
+                $returPesanan2 = new ReturPesananPembeliModel();
+                $returPesanan2->id_retur_pembeli = $dataReturPembeli->id_retur_pembeli;
+                $returPesanan2->id_pesanan_pembeli = $pesananData->id_pesanan;
+                $returPesanan2->harga = $pesananData->harga;
+                $returPesanan2->qty =  $pesananData->jumlah_pembelian;
+                $returPesanan2->qty_sebelum_perubahan = 0;
+                $returPesanan2->type_retur_pesanan = 'retur_tambah_barang';
+                $returPesanan2->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan2->qty;
+                $returPesanan2->save();
+            }
 
 
             // Update data barang
-            if ($barangData->stok >=  $returTmbhn['jumlah_pesanan']) {
-                $barangData->stok = $barangData->stok - $returTmbhn['jumlah_pesanan'];
-                $barangData->save();
+            $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
+            if ($stokTersedia->stok >=  $returTmbhn['jumlah_pesanan']) {
+                $stokBarang = StokBarangModel::create([
+                    'stok_keluar' => $returTmbhn['jumlah_pesanan'],
+                    'id_barang' => $barangData->id_barang,
+                ]);
+                $returPesanan2->id_stok_barang = $stokBarang->id_stok_barang;
+                $returPesanan2->save();
             } else {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Gagal memasukkan data');
@@ -188,9 +309,10 @@ class ReturPembeliController extends Controller
         // Perhitungan Nota Pembeli
         $updateNotaPembeli = NotaPembeli::find($notaPembelian->id_nota);
 
-        $updateNotaPembeli->sub_total = $subTotal;
-        $updateNotaPembeli->diskon = $request->get('diskon');
-        $updateNotaPembeli->ongkir = $request->get('total_ongkir');
+        $updateNotaPembeli->sub_total = $subTotalbaru + $subTotalReturMurni;
+
+        // $updateNotaPembeli->diskon = $request->get('diskon');
+        // $updateNotaPembeli->ongkir = $request->get('ongkir');
 
 
 
@@ -199,70 +321,8 @@ class ReturPembeliController extends Controller
         // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
         // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
         $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
-        $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
-
-        if ($updateNotaPembeli->status_pembayaran == 'lunas') {
-            $updateNotaPembeli->nominal_terbayar =  $updateNotaPembeli->total;
-            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        } else {
-            $updateNotaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
-            $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
-        }
-        $updateNotaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         $updateNotaPembeli->save();
-
-        // Mendapatkan tanggal hari ini
-        $tanggal = Carbon::now();
-        // Data yang akan diinput
-        if ($updateNotaPembeli->status_pembayaran == 'lunas') {
-
-            // Membuat satu data baru
-            $bukubesar = new BukubesarModel();
-            $bukubesar->hash_id_bukubesar = 'hash_id_bukubesar_1';
-            $bukubesar->id_akunbayar = 1;
-            $bukubesar->tanggal = date('Y-m-d'); // Tanggal saat ini
-            $bukubesar->kategori = 'transaksi';
-            $bukubesar->sub_kategori = "lunas";
-            $bukubesar->keterangan = 'NOTA ' . $updateNotaPembeli->no_nota . ' LUNAS'; // Ganti dengan keterangan yang sesuai
-            $bukubesar->debit = $updateNotaPembeli->total; // Misalnya debit sebesar 1000
-            $bukubesar->kredit = 0; // Kredit diisi 0 karena debit
-            $bukubesar->save();
-
-            $notaBukubesar = new Notabukubesar();
-            $notaBukubesar->id_nota = $updateNotaPembeli->id_nota;
-            $notaBukubesar->id_bukubesar = $bukubesar->id_bukubesar;
-            $notaBukubesar->save();
-        } else {
-
-            if ($updateNotaPembeli->nominal_terbayar >  $updateNotaPembeli->total) {
-                DB::rollBack();
-                return redirect()->back()->with('error', 'Nominal terbayar lebih besar dari total pembelian');
-            }
-            // Membuat satu data baru
-            $bukubesar = new BukubesarModel();
-            $bukubesar->id_akunbayar = 1;
-            $bukubesar->tanggal = date('Y-m-d'); // Tanggal saat ini
-            $bukubesar->kategori = 'transaksi';
-            $bukubesar->sub_kategori = "piutang";
-            $bukubesar->keterangan = 'NOTA ' . $updateNotaPembeli->no_nota . ' PIUTANG'; // Ganti dengan keterangan yang sesuai
-            $bukubesar->debit =   $notaPembelian->nominal_terbayar; // Misalnya debit sebesar 1000
-            $bukubesar->kredit = 0; // Kredit diisi 0 karena debit
-            $bukubesar->save();
-
-
-
-            $notaBukubesar = new Notabukubesar();
-            $notaBukubesar->id_nota = $updateNotaPembeli->id_nota;
-            $notaBukubesar->id_bukubesar = $bukubesar->id_bukubesar;
-            $notaBukubesar->save();
-        }
-
-
-
-
-
         DB::commit();
-        dd("berhasil");
 
         return redirect()->route('retur.index')->with('success', 'Retur berhasil ditambahkan');
     }

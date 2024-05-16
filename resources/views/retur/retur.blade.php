@@ -179,7 +179,7 @@
                                     <td>{{ $retur->no_retur_pembeli }}</td>
                                     <td>{{ $retur->faktur_retur_pembeli }}</td>
                                     <td>{{ $retur->tanggal_retur_pembeli }}</td>
-                                    <td>{{ $retur->bukti_retur_pembeli }}</td>
+                                    <td><img src="{{ secure_asset('retur/pembeli/' . $retur->bukti_retur_pembeli )  }}" alt="Bukti Retur" width="150px" height="150px"></td>
                                     <td>{{ $retur->jenis_retur }}</td>
                                     <td>{{ $retur->total_nilai_retur }}</td>
                                     <td>{{ $retur->pengembalian_data }}</td>

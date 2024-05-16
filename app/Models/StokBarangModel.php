@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Retur\ReturPesananPembeliModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,5 +18,10 @@ class StokBarangModel extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
+    }
+
+    public function returPesananPembelis()
+    {
+        return $this->hasMany(ReturPesananPembeliModel::class, 'id_stok_barang', 'id');
     }
 }

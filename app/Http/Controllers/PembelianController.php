@@ -80,7 +80,7 @@ class PembelianController extends Controller
         // Perulangan untuk pesanan
         foreach ($pesananData as $pesanan) {
             // Data barang 
-            $barangData = Barang::with('stokBarang')->where('hash_id_barang', $pesanan['id_barang'])->lockForUpdate()->first();
+            $barangData = Barang::with('stokBarang')->where('hash_id_barang', $pesanan['id_barang'])->first();
             if (empty($barangData)) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Gagal memasukkan barang, barang tidak ada');

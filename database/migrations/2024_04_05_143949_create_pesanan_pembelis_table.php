@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('pesanan_pembelis', function (Blueprint $table) {
             $table->id('id_pesanan');
             $table->decimal('jumlah_pembelian', 12); // 24 digit total, 2 digit di belakang koma
-            $table->decimal('harga', 24, 2); // 24 digit total, 2 digit di belakang koma
-            $table->decimal('diskon', 24, 2); // 24 digit total, 2 digit di belakang koma            
+            $table->decimal('harga', 24, 2)->default(0); // 24 digit total, 2 digit di belakang koma
+            $table->decimal('diskon', 24, 2)->default(0); // 24 digit total, 2 digit di belakang koma            
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
             $table->enum('jenis_pembelian', ['harga_normal', 'aplicator', 'potongan'])->nullable();

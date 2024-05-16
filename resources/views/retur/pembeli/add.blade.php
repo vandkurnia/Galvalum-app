@@ -43,6 +43,21 @@
                 </div>
             @endforeach
         @endif
+        {{-- Error flashdata --}}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <strong>Error!</strong> {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-4">
@@ -147,9 +162,9 @@
                                 <td colspan="2"><input type="number" class="form-control" name="total_ongkir"
                                         id="totalOngkir1" value="{{ $notaPembelian->ongkir }}" min="0" readonly>
                                 </td>
-                                <td colspan="2"><input oninput="totalPembayaran()" type="number" class="form-control"
-                                        name="total_ongkir" id="totalOngkirRetur" value="{{ $notaPembelian->ongkir }}"
-                                        min="0" readonly></td>
+                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
+                                        class="form-control" name="total_ongkir" id="totalOngkirRetur"
+                                        value="{{ $notaPembelian->ongkir }}" min="0" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="1"><strong>Total Rp</strong></td>
@@ -264,18 +279,20 @@
                         </tr>
                         <tr>
                             <td colspan="2">Diskon Rp</td>
-                            <td colspan="2"><input type="number" oninput="totalPembayaran()" class="form-control"
-                                    name="diskon_total" id="diskonTotal" value="0"></td>
+                            <td colspan="2"><input type="number"  class="form-control"
+                                    name="diskon_total" id="diskonTotal" value="{{ $notaPembelian->diskon }}" readonly></td>
+                            {{-- <td colspan="2"><input type="number" oninput="totalPembayaran()" class="form-control"
+                                    name="diskon_total" id="diskonTotal" value="0"></td> --}}
                         </tr>
                         <tr>
                             <td colspan="2">Ongkir</td>
                             <td colspan="2"><input oninput="totalPembayaran()" type="number" class="form-control"
-                                    name="total_ongkir" min="0" id="totalOngkir" value="0"></td>
+                                    name="total_ongkir" min="0" id="totalOngkir" value="{{ $notaPembelian->ongkir }}" readonly></td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>Total Rp</strong></td>
                             <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                        id="total" value="0" readonly></strong></td>
+                                        id="total" value="{{  -$notaPembelian->diskon + $notaPembelian->ongkir }}" readonly></strong></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -311,16 +328,15 @@
                     </div>
                     <div class="form-group">
                         <label for="bukti_retur_pembeli">Bukti Retur Pembeli</label>
-                        <input type="file" class="filepond" 
-                            data-max-file-size="10MB"  id="bukti_retur_pembeli"
-                            name="bukti_retur_pembeli" required>
+                        <input type="file" name="bukti_retur_pembeli" class="filepond" data-max-file-size="10MB" id="bukti_retur_pembeli"
+                            name="upload" required>
                         {{-- <input type="file" class="filepond" multiple data-allow-reorder="true"
                             data-max-file-size="10MB" data-max-files="3" id="bukti_retur_pembeli"
                             name="bukti_retur_pembeli" required> --}}
-                        <button type="button" onclick="cekUpload()">
+                        {{-- <button type="button" onclick="cekUpload()">
                             Coba cek
-                        </button>
-                        <input type="text" id="bukti_retur_pembeli">
+                        </button> --}}
+                        {{-- <input type="text" class="form-control" id="bukti_retur_pembeli123"> --}}
                     </div>
 
                     <div class="form-group">
@@ -331,13 +347,13 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="status">Status</label>
                         <select class="form-control" id="status" name="status" required>
                             <option value="Belum Selesai">Belum Selesai</option>
                             <option value="Selesai">Selesai</option>
                         </select>
-                    </div>
+                    </div> --}}
                     {{-- <div class="form-group">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div> --}}
@@ -374,6 +390,7 @@
     <script
         src="{{ secure_asset('library/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js') }}">
     </script>
+    <script src="{{ secure_asset('library/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js') }}"></script>
     <!-- Load FilePond library -->
     <script src="{{ secure_asset('library/filepond/dist/filepond.js') }}"></script>
 
@@ -387,7 +404,8 @@
             FilePondPluginImagePreview,
             FilePondPluginImageExifOrientation,
             FilePondPluginFileValidateSize,
-            FilePondPluginImageEdit
+            FilePondPluginImageEdit,
+            FilePondPluginFileEncode
         );
 
         // FilePond.setOptions({
@@ -395,9 +413,11 @@
         // });
         // Select the file input and use 
         // create a FilePond instance at the fieldset element location
+      
         const pond = FilePond.create(
             document.querySelector('#bukti_retur_pembeli'), {
                 imagePreviewMinHeight: 80
+               
             }
         );
 
@@ -410,8 +430,8 @@
                 const reader = new FileReader();
                 reader.onloadend = function() {
                     const base64data = reader.result; // Data file dalam format base64
-                    document.querySelector('#bukti_retur_pembeli').value =
-                    base64data; // Set nilai input hidden dengan data base64
+                    document.querySelector('#bukti_retur_pembeli123').value =
+                        base64data; // Set nilai input hidden dengan data base64
                 };
                 reader.readAsDataURL(file.file); // Baca file sebagai data URL
             }
@@ -433,7 +453,7 @@
             const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
             // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-            let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
+            let cek_total_barang_kelebihan = parseInt(data_barang.stok) < parseInt(jumlah_barang.value) ? true : false;
             if (cek_total_barang_kelebihan) {
                 let total_available_stok = data_barang.stok;
                 alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
@@ -532,6 +552,13 @@
                 let td_harga_barang = document.createElement('td');
                 td_harga_barang.classList.add('harga_barang_pesanan');
                 td_harga_barang.innerText = harga_barang;
+
+                const jenis_pelanggan = document.querySelector('#jenis_pembelian');
+                td_harga_barang.setAttribute('data-jenis-pelanggan', jenis_pelanggan.value);
+                const hargaPotonganKhusus = document.querySelector('#harga_khusus');
+                td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaPotonganKhusus.value);
+
+
                 let td_diskon = document.createElement('td');
                 td_diskon.classList.add('diskon_pesanan');
                 td_diskon.innerText = harga_diskon;
@@ -620,6 +647,13 @@
                 diskon.innerText = harga_diskon;
                 let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                 td_jumlah.innerText = jumlah_barang.value;
+
+                let td_harga_barang = tr_pesanan.querySelector('.harga_barang_pesanan');
+                const jenis_pelanggan = document.querySelector('#jenis_pembelian');
+                td_harga_barang.setAttribute('data-jenis-pelanggan', jenis_pelanggan.value);
+                const hargaPotonganKhusus = document.querySelector('#harga_khusus');
+                td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaPotonganKhusus.value);
+
 
                 let td_total = tr_pesanan.querySelector('.total');
                 td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
@@ -863,6 +897,7 @@
 
         function kirimPesanan() {
             const formRetur = document.querySelector('#formRetur');
+            // cekUpload();
 
             // Ambil data Nota lalu simpan ke data Pembeli
             // document.querySelector('#dataNota').querySelectorAll('input, select').forEach(function(element) {
@@ -911,7 +946,7 @@
                     jenis_pelanggan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
                         'data-jenis-pelanggan'),
                     harga_potongan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
-                        'data-harga-potongan-khusus'),
+                        'data-harga-potongan-khusus', ),
 
                 }
                 dataReturGantidanTambah.push(itemPesanan);
@@ -923,9 +958,36 @@
             inputReturGantidanTambah.name = 'retur_tambahan'; // Nama input
             inputReturGantidanTambah.value = JSON.stringify(
                 dataReturGantidanTambah); // Nilai input (data pesanan sebagai JSON)
-
             // Tambahkan input ke formulir
             formRetur.appendChild(inputReturGantidanTambah);
+
+            // Ambil nilai dari input diskon_total dan total_ongkir
+            var diskonTotalValue = document.getElementById('diskonTotal').value;
+            var totalOngkirValue = document.getElementById('totalOngkir').value;
+
+
+            const inputDiskon = document.createElement('input');
+            inputDiskon.type = 'hidden';
+            inputDiskon.name = 'diskon';
+            inputDiskon.value = diskonTotalValue;
+            const inputOngkir = document.createElement('input');
+            inputOngkir.type = 'hidden';
+            inputOngkir.name = 'ongkir';
+            inputOngkir.value = totalOngkirValue;
+
+
+            // const valueReturPembeliFile = document.querySelector('#bukti_retur_pembeli123');
+            // const buktiReturPembeli = document.createElement('input');
+            // buktiReturPembeli.type = 'hidden';
+            // buktiReturPembeli.name = 'bukti_retur_pembeli';
+            // buktiReturPembeli.value = valueReturPembeliFile.value;
+
+
+            // Tambahkan input ke formulir
+            // formRetur.appendChild(buktiReturPembeli);
+            formRetur.appendChild(inputDiskon);
+            formRetur.appendChild(inputOngkir);
+
 
 
             formRetur.submit();

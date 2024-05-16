@@ -56,10 +56,12 @@
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Omzet</h6>
                 <!-- Filter Tanggal -->
-                <div class="form-group">
-                    <label for="tanggal">Filter Tanggal:</label>
-                    <input type="date" id="tanggal" name="tanggal" class="form-control">
-                </div>
+                <form id="filter-form" action="{{ route('laporan.omzet') }}" method="GET">
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ date('Y-m-d', strtotime($tanggalSaatIni)) }}">
+                    </div>
+                </form>
 
             </div>
             <div class="card-body">
@@ -124,4 +126,9 @@
 
 @section('javascript-custom')
 
+    <script>
+        document.getElementById('tanggal').addEventListener('change', function() {
+            document.getElementById('filter-form').submit();
+        });
+    </script>
 @endsection

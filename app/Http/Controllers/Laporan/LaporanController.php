@@ -92,10 +92,8 @@ class LaporanController extends Controller
         return $pdf->download('Laporan Kas Keluar.pdf');
     }
 
-    public function laporanOmzet()
+    public function laporanOmzet(Request $request)
     {
-
-        $request = new Request;
         $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
 
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
@@ -121,7 +119,7 @@ class LaporanController extends Controller
         $dataNotaPembelian = json_decode(json_encode($dataNotaPembelian), true);
 
         // Logika untuk mengambil data dan menampilkan laporan omzet
-        return view('laporan.laporanomzet', compact('dataNotaPembelian'));
+        return view('laporan.laporanomzet', compact('dataNotaPembelian', 'tanggalSaatIni'));
     }
 
     public function laporanHutang(Request $request)

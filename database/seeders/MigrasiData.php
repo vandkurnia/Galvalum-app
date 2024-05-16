@@ -204,7 +204,7 @@ class MigrasiData extends Seeder
                 'harga_barang' => intval(str_replace(['Rp', '.'], '',  $dataStokBarang[' Harga '])),
                 'harga_barang_pemasok' => intval(str_replace(['Rp', '.'], '',  $dataStokBarang[' Harga '])) - 5000,
                 'ukuran' => 'XL',
-                'status_pembayaran' => 'hutang',
+                // 'status_pembayaran' => 'hutang',
                 'total' => 0.00,
                 'nominal_terbayar' => 0.00,
                 'tenggat_bayar' => null,
