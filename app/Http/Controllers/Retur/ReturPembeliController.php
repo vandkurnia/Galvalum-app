@@ -28,6 +28,9 @@ class ReturPembeliController extends Controller
     public function edit($id_retur)
     {
 
+        // Kalau jadi maka return
+        abort(404, 'Tampilan Halaman tidak berizin :)');
+
         $dataReturPembeli = ReturPembeliModel::find($this->hashToId($id_retur)->id_retur_pembeli);
         $dataPembeli = Pembeli::all();
         return view('retur.pembeli.edit', compact('dataReturPembeli', 'dataPembeli'));
@@ -134,14 +137,19 @@ class ReturPembeliController extends Controller
             // Memasukkan ke ReturPesanan 
             $pesananData = PesananPembeli::where('id_pesanan', $returMrni['id_pesanan'])->first();
 
+            if (!$pesananData) {
+                // Pesanan tidak ditemukan atau tidak valid
+                return redirect()->back()->with(['error' => 'Pesanan tidak valid']);
+            }
+
 
             $returPesanan = new ReturPesananPembeliModel();
             $returPesanan->id_retur_pembeli = $dataReturPembeli->id_retur_pembeli;
             $returPesanan->id_pesanan_pembeli = $pesananData->id_pesanan;
             $returPesanan->harga = $pesananData->harga;
-            $returPesanan->qty_sebelum_perubahan =$pesananData->jumlah_pembelian;
+            $returPesanan->qty_sebelum_perubahan = $pesananData->jumlah_pembelian;
             $returPesanan->qty = $returMrni['qty_retur'];
-            $returPesanan->type_retur_pesanan = "retur_murni";
+            $returPesanan->type_retur_pesanan = "retur_murni_rusak";
             $returPesanan->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan->qty;
             $returPesanan->save();
 
@@ -159,11 +167,10 @@ class ReturPembeliController extends Controller
                 $stokBarang->save();
 
                 // Associate the return order with the stock entry
-                $returPesanan->id_stok_barang = $stokBarang->id_stok_barang;
+                $returPesanan = ReturPesananPembeliModel::find($returPesanan->id_retur_pesanan);
+                $returPesanan->id_stok_barang = $stokBarang->id;
+                $returPesanan->type_retur_pesanan = "retur_murni_tidak_rusak";
                 $returPesanan->save();
-            } else {
-                // Handle damaged item case if needed
-                // No need to update stock for damaged items
             }
 
 
@@ -295,7 +302,8 @@ class ReturPembeliController extends Controller
                     'stok_keluar' => $returTmbhn['jumlah_pesanan'],
                     'id_barang' => $barangData->id_barang,
                 ]);
-                $returPesanan2->id_stok_barang = $stokBarang->id_stok_barang;
+                $returPesanan2 = ReturPesananPembeliModel::find($returPesanan2->id_retur_pesanan);
+                $returPesanan2->id_stok_barang = $stokBarang->id;
                 $returPesanan2->save();
             } else {
                 DB::rollBack();
@@ -372,9 +380,99 @@ class ReturPembeliController extends Controller
 
     public function destroy($id_retur)
     {
-        $dataReturPembeli = ReturPembeliModel::find($this->hashToId($id_retur)->id_retur_pembeli);
-        $dataReturPembeli->delete();
+        DB::beginTransaction();
 
-        return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
+        try {
+            $dataReturPembeli = ReturPembeliModel::find($this->hashToId($id_retur)->id_retur_pembeli);
+
+            // Ambil semua pesanan pembeli yang terkait dengan retur ini
+            $returPesananPembeli = ReturPesananPembeliModel::where('id_retur_pembeli', $dataReturPembeli->id_retur_pembeli)
+                ->latest('id_retur_pesanan')
+                ->get();
+
+
+
+            foreach ($returPesananPembeli as $returPesanan) {
+                $pesananPembeli = PesananPembeli::withTrashed()->find($returPesanan->id_pesanan_pembeli);
+
+                if ($returPesanan->type_retur_pesanan === 'retur_murni_tidak_rusak') {
+                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                    $pesananPembeli->harga = $returPesanan->harga;
+                    $pesananPembeli->save();
+
+                    // Hapus stok barang
+                    $stokBarang = StokBarangModel::find($returPesanan->id_stok_barang);
+                    $stokBarang->delete();
+                } elseif ($returPesanan->type_retur_pesanan === 'retur_murni_rusak') {
+
+                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                    $pesananPembeli->harga = $returPesanan->harga;
+                    $pesananPembeli->save();
+                } elseif ($returPesanan->type_retur_pesanan === 'retur_tambah_stok') {
+                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                    $pesananPembeli->harga = $returPesanan->harga;
+                    $pesananPembeli->save();
+
+                    // Hapus stok barang
+                    $stokBarang = StokBarangModel::find($returPesanan->id_stok_barang);
+                    $stokBarang->delete();
+
+
+                    // Jika jumlah_pembelian menjadi 0, hapus pesanan
+                    if ($pesananPembeli->jumlah_pembelian == 0) {
+                        $pesananPembeli->delete();
+                    }
+                } elseif ($returPesanan->type_retur_pesanan === 'retur_tambah_barang') {
+                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                    $pesananPembeli->harga = $returPesanan->harga;
+                    $pesananPembeli->save();
+
+                    // Hapus stok barang
+                    $stokBarang = StokBarangModel::find($returPesanan->id_stok_barang);
+                    $stokBarang->delete();
+
+
+                    // Jika jumlah_pembelian menjadi 0, hapus pesanan
+                    if ($pesananPembeli->jumlah_pembelian == 0) {
+                        $pesananPembeli->delete();
+                    }
+                }
+
+                // Hapus retur pesanan pembeli setelah memprosesnya
+                $returPesanan->delete();
+
+                // Jika pesanan pembeli dihapus dan jumlah pembelian lebih dari 0, lakukan restore
+                if ($pesananPembeli->trashed() && $pesananPembeli->jumlah_pembelian > 0) {
+                    $pesananPembeli->restore();
+                }
+            }
+
+
+
+            // Hapus data retur pembeli
+            $dataReturPembeli->delete();
+
+
+            // Hitung lagi Nota Pembeli
+            $notaPembeli = NotaPembeli::with('PesananPembeli')->find($dataReturPembeli->id_nota);
+            $subTotal = 0;
+
+            foreach ($notaPembeli->PesananPembeli as $pesananPembeli) {
+                $subTotal  += $pesananPembeli->harga *  $pesananPembeli->jumlah_pembelian;
+            }
+
+
+            // Perhitungan Pajak (Masih belum bisa)
+            $nilaiTotal = $subTotal - $notaPembeli->diskon;
+            // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+            // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
+            $notaPembeli->total = $nilaiTotal + $notaPembeli->ongkir;
+            $notaPembeli->save();
+            DB::commit();
+            return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

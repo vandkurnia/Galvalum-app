@@ -229,7 +229,6 @@ class MigrasiData extends Seeder
             $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
             $bukuBesar->keterangan = 'HUTANG STOK BARANG ' . $barang->id_barang . ' STOK- 30'; // Isi dengan keterangan yang sesuai
             $bukuBesar->debit = $barang->stok * $barang->harga_pemasok; // Isi dengan nilai kredit yang sesuai
-            $bukuBesar->sub_kategori = 'hutang'; // Isi dengan sub kategori yang sesuai
             $bukuBesar->save();
 
             

@@ -188,8 +188,8 @@
                                     <td>{{ $retur->pembeli->nama_pembeli }}</td>
                                     <td>
 
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('retur.pembeli.edit', ['id_retur' => $retur->hash_id_retur_pembeli]) }}"><i class="fas fa-edit"></i>Edit</a>
+                                        {{-- <a class="btn btn-primary btn-sm"
+                                            href="{{ route('retur.pembeli.edit', ['id_retur' => $retur->hash_id_retur_pembeli]) }}"><i class="fas fa-edit"></i>Edit</a> --}}
 
                              
                                         <button class="btn btn-danger btn-sm"

@@ -168,7 +168,6 @@ class PembelianController extends Controller
         $bukuBesarPembelian->id_akunbayar = 1;
         $bukuBesarPembelian->tanggal = date('Y-m-d'); // Tanggal saat ini
         $bukuBesarPembelian->kategori = 'transaksi';
-        $bukuBesarPembelian->sub_kategori = "lunas";
         $bukuBesarPembelian->keterangan = 'NOTA ' . $notaPembeli->no_nota; // Ganti dengan keterangan yang sesuai
         $bukuBesarPembelian->debit = $updateNotaPembeli->nominal_terbayar; // Misalnya debit sebesar 1000
         $bukuBesarPembelian->save();

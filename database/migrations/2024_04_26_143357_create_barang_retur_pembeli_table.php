@@ -21,10 +21,11 @@ return new class extends Migration
             $table->decimal('total', 20, 2);
             $table->decimal('qty', 20, 2);
             $table->decimal('qty_sebelum_perubahan', 20, 2)->nullable();
-            $table->enum('type_retur_pesanan', ['retur_tambah_barang', 'retur_tambah_stok', 'retur_murni']);
-            $table->unsignedBigInteger('id_stok_barang');
-            $table->foreign('id_stok_barang')->references('stok_barang')->on('id')->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('type_retur_pesanan', ['retur_tambah_barang', 'retur_tambah_stok', 'retur_murni_rusak', 'retur_murni_tidak_rusak']);
+            $table->unsignedBigInteger('id_stok_barang')->nullable();
+            $table->foreign('id_stok_barang')->references('id')->on('stok_barang')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('id_retur_pembeli')->references('id_retur_pembeli')->on('retur_pembeli')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_pesanan_pembeli')->references('id_pesanan')->on('pesanan_pembelis')->onUpdate('cascade')->onDelete('cascade');
         });

@@ -182,7 +182,7 @@ class LaporanController extends Controller
             nota_pembelis.id_nota,
             pembelis.nama_pembeli,
             pembelis.no_hp_pembeli,
-            COUNT(pesanan_pembelis.id_pesanan) AS total_pembelian,
+            SUM(pesanan_pembelis.jumlah_pembelian) AS total_pembelian,
             DATE(nota_pembelis.created_at) AS tanggal_pembelian,
             nota_pembelis.total,
             nota_pembelis.nominal_terbayar as terbayar,

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('keterangan', 255);
             $table->double('debit', 14, 0)->default(0);
             $table->double('kredit', 14, 0)->default(0);
-            $table->string('sub_kategori')->default('-');
+            // $table->string('sub_kategori')->default('-');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_akunbayar')->references('id_akunbayar')->on('akun_bayar')->onDelete('CASCADE');

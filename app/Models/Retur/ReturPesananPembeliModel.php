@@ -11,7 +11,7 @@ class ReturPesananPembeliModel extends Model
 {
     use HasFactory;
     protected $table = 'retur_pesanan_pembeli';
-    protected $primaryKey = 'id_pesanan_retur';
+    protected $primaryKey = 'id_retur_pesanan';
     public $timestamps = true;
 
     protected $fillable = [

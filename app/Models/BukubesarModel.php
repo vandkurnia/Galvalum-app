@@ -13,16 +13,15 @@ class BukubesarModel extends Model
     protected $table = 'bukubesar';
     protected $primaryKey = 'id_bukubesar';
 
+    // Kolom yang dapat diisi secara massal
     protected $fillable = [
         'hash_id_bukubesar',
         'id_akunbayar',
         'tanggal',
         'kategori',
-        'sub_kategori',
         'keterangan',
         'debit',
         'kredit',
-
     ];
 
     protected static function booted()
@@ -31,9 +30,10 @@ class BukubesarModel extends Model
             $bukubesar->hash_id_bukubesar = Uuid::uuid4()->toString();
         });
     }
-    public function akunbayar()
+    // Relasi ke tabel akun_bayar
+    public function akunBayar()
     {
-        return $this->belongsTo(AkunBayarModel::class, 'id_akunbayar');
+        return $this->belongsTo(AkunBayarModel::class, 'id_akunbayar', 'id_akunbayar');
     }
     public function notaPembeli()
     {
