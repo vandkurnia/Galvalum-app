@@ -33,12 +33,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('kategori', function (Blueprint $table) {
-            $table->bigIncrements('id_kategori');
-            $table->string('nama_kategori');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+      
 
 
 
@@ -51,8 +46,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategori');
-
+    
         Schema::dropIfExists('kas_keluar');
         Schema::dropIfExists('modal_tambahan');
     }

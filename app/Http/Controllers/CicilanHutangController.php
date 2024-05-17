@@ -49,148 +49,180 @@ class CicilanHutangController extends Controller
     }
     public function store(Request $request)
     {
-
         $request->validate([
             'id_barang' => 'required|string|max:10',
             'nominal' => 'required|string|max:255',
         ]);
+
         $id_barang = $request->get('id_barang');
-        $barangData = Barang::where('id_barang', $id_barang)->with('bukuBesar')->first();
-
-        DB::beginTransaction();
         $nominal = $request->get('nominal');
-        $updateBukuBesar = new BukubesarModel();
-        $updateBukuBesar->id_akunbayar = 1;
-        $updateBukuBesar->tanggal = date('Y-m-d');
-        $updateBukuBesar->kategori = 'barang';
-        $updateBukuBesar->keterangan = '';
 
-        $updateBukuBesar->sub_kategori = 'pelunasan';
-        $updateBukuBesar->debit = $nominal; // Masukkan nilai debit yang sesuai
-        $updateBukuBesar->kredit = 0; // Jika debit maka kredit harus 0
-        $updateBukuBesar->save();
-        $bukubesarBarang = BukubesarBarangModel::create([
-            'id_barang' => $id_barang,
-            'id_bukubesar' => $updateBukuBesar->id_bukubesar
-        ]);
+        // Mulai transaksi database
+        DB::beginTransaction();
 
+        try {
+            // Cek apakah barang ada
+            $barangData = Barang::where('id_barang', $id_barang)->with('bukubesar')->first();
+            if (!$barangData) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Barang tidak ada');
+            }
 
+            // Buat entri baru di buku besar
+            $updateBukuBesar = new BukubesarModel();
+            $updateBukuBesar->id_akunbayar = 1;
+            $updateBukuBesar->tanggal = date('Y-m-d');
+            $updateBukuBesar->kategori = 'barang';
+            $updateBukuBesar->keterangan = 'Pelunasan Hutang';
+            $updateBukuBesar->debit = $nominal;
+            $updateBukuBesar->kredit = 0;
+            $updateBukuBesar->save();
 
-        // Membuat Angsuran
-        $totalTerbayar = 0;
-        $totalAngsuran = 0;
-        $barangData2 = Barang::with('bukuBesar')->where('id_barang', $id_barang)->first();
-        foreach ($barangData2->bukuBesar as  $barang) {
+            // Buat entri di tabel pivot barang_bukubesar
+            $barangData->bukubesar()->attach($updateBukuBesar->id_bukubesar);
 
-            $totalTerbayar += $barang->debit;
-            $totalAngsuran++;
-        }
+            // Menghitung total terbayar dan total angsuran
+            $totalTerbayar = 0;
+            $totalAngsuran = 0;
 
-        $updateBukuBesar2 = BukubesarModel::where('id_bukubesar', $updateBukuBesar->id_bukubesar)->first();
-        $updateBukuBesar2->keterangan = 'PELUNASAN HUTANG  BARANG  Ke  ' . $totalAngsuran;
-        $updateBukuBesar2->save();
+            $barangData2 = Barang::with('bukubesar')->where('id_barang', $id_barang)->first();
+            foreach ($barangData2->bukubesar as $barang) {
+                $totalTerbayar += $barang->debit - $barang->kredit;
+                $totalAngsuran++;
+            }
 
+            // Update keterangan buku besar dengan nomor angsuran
+            $updateBukuBesar2 = BukubesarModel::where('id_bukubesar', $updateBukuBesar->id_bukubesar)->first();
+            $updateBukuBesar2->keterangan = 'PELUNASAN HUTANG BARANG Ke ' . $totalAngsuran;
+            $updateBukuBesar2->save();
 
+            // Update nominal_terbayar pada barang
+            $barangdata3 = Barang::where('id_barang', $id_barang)->first();
+            $barangdata3->nominal_terbayar = $totalTerbayar;
+       
 
-        $barangdata3 = Barang::where('id_barang', $id_barang)->first();
-        $barangdata3->nominal_terbayar = $totalTerbayar;
-        if ($totalTerbayar > $barangdata3->total) {
+            // Cek apakah total terbayar lebih dari total harga barang
+            if ($totalTerbayar > $barangdata3->total) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Barang gagal karena nominal bayar lebih besar dari total pesanan');
+            }
+            $barangdata3->save();
+
+       
+            // Commit transaksi
+            DB::commit();
+
+            return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangdata3->hash_id_barang])->with('success', 'Cicilan piutang berhasil ditambahkan');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Barang gagal  karena nominal bayar lebih besar dari total pesanan');
+
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Kesalahan: ' . $e->getMessage());
         }
-        $barangdata3->save();
-
-
-        $this->cekLunasAtauHutang($id_barang);
-
-
-        DB::commit();
-        // dump($updateBukuBesar);
-
-
-        // dd($notaBukubesar);
-
-        return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangdata3->hash_id_barang])->with('success', 'Cicilan piutang berhasil ditambahkan');
     }
+
 
     public function update(Request $request, $id_barang, $id_bukubesar)
     {
         $request->validate([
-            'nominal' => 'required|string|max:255',
+            'nominal' => 'required|numeric|max:9999999999.99', // Validasi nominal sebagai angka
         ]);
 
-
-
-        // dd("heheha");
-
-
-
-        $barangData = Barang::with('bukuBesar')->where('hash_id_barang', $id_barang)->first();
-
-
-
-
+        // Mulai transaksi database
         DB::beginTransaction();
 
+        try {
+            // Cek apakah barang ada
+            $barangData = Barang::with('bukubesar')->where('hash_id_barang', $id_barang)->first();
+            if (!$barangData) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Barang tidak ada');
+            }
 
-        $bukuBesar = BukubesarModel::where('hash_id_bukubesar', $id_bukubesar)->first();
+            // Cek apakah entri buku besar ada
+            $bukuBesar = BukubesarModel::where('hash_id_bukubesar', $id_bukubesar)->first();
+            if (!$bukuBesar) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Entri buku besar tidak ada');
+            }
 
-        $bukuBesar->debit = $request->get('nominal');
-        $bukuBesar->save();
+            // Update nilai debit dan kredit
+            $bukuBesar->debit = $request->get('nominal');
+            $bukuBesar->kredit = 0; // Asumsi jika debit maka kredit di-set ke 0
+            $bukuBesar->save();
 
-        // Cek total bayar
-        $totalTerbayar = 0;
-        $barangDataUpdate = Barang::with('bukuBesar')->where('hash_id_barang', $id_barang)->first();
-        foreach ($barangDataUpdate->bukuBesar as $dtbarangData) {
+            // Hitung ulang total terbayar
+            $totalTerbayar = 0;
+            $barangDataUpdate = Barang::with('bukubesar')->where('hash_id_barang', $id_barang)->first();
+            foreach ($barangDataUpdate->bukubesar as $dtbarangData) {
+                $totalTerbayar += $dtbarangData->debit - $dtbarangData->kredit;
+            }
 
-            $totalTerbayar += $dtbarangData->debit;
-        }
+            // Cek apakah total terbayar lebih dari total harga barang
+            if ($totalTerbayar > $barangData->total) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Hutang barang gagal diupdate karena nominal bayar lebih besar dari total pesanan');
+            }
 
+            // Update nominal_terbayar pada barang
+            $updateBarangPembeli2 = Barang::where('hash_id_barang', $id_barang)->first();
+            $updateBarangPembeli2->nominal_terbayar = $totalTerbayar;
+            $updateBarangPembeli2->save();
 
+            // Commit transaksi
+            DB::commit();
 
-        if ($totalTerbayar > $barangData->total) {
+            // Cek status lunas atau hutang
+            $this->cekLunasAtauHutang($updateBarangPembeli2->id_barang);
+
+            return redirect()->route('cicilan.hutang.index', ['id_barang' => $updateBarangPembeli2->hash_id_barang])->with('success', 'Cicilan hutang berhasil diupdate');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Hutang barang gagal diupdate karena nominal bayar lebih besar dari total pesanan');
+            return redirect()->back()->with('error', 'Kesalahan: ' . $e->getMessage());
         }
-        $updateBarangPembeli2 = Barang::where('hash_id_barang', $id_barang)->first();
-        $updateBarangPembeli2->nominal_terbayar = $totalTerbayar;
-
-        $updateBarangPembeli2->save();
-
-
-        DB::commit();
-
-        $this->cekLunasAtauHutang($updateBarangPembeli2->id_barang);
-        return redirect()->route('cicilan.hutang.index', ['id_barang' => $updateBarangPembeli2->hash_id_barang])->with('success', 'Cicilan hutang berhasil diupdate');
     }
+
 
     public function destroy($id_bukubesar, $id_barang)
     {
-        // $user = User::findOrFail($id);
-        // $user->delete();
-        $dataBukuBesar = BukubesarModel::where('hash_id_bukubesar', $id_bukubesar)->first();
-        if ($dataBukuBesar) {
-            $dataBukuBesar->delete();
-
-
-            $barangData = Barang::where('hash_id_barang', $id_barang)->with('bukuBesar')->first();
-            $total = 0;
-            foreach ($barangData->bukuBesar as $bukuBesar) {
-                $total += $bukuBesar->debit;
+        DB::beginTransaction();
+        try {
+            // Cek apakah entri buku besar ada
+            $dataBukuBesar = BukubesarModel::where('hash_id_bukubesar', $id_bukubesar)->first();
+            if (!$dataBukuBesar) {
+                DB::rollBack();
+                return redirect()->route('cicilan.hutang.index', ['id_barang' => $id_barang])->with('error', 'Entri buku besar tidak ditemukan');
             }
 
-            DB::beginTransaction();
-            $barangData2 = Barang::where('hash_id_barang', $id_barang)->first();
-            $barangData2->nominal_terbayar = $total;
-            $barangData2->save();
+            // Ambil data barang beserta relasi buku besarnya
+            $barangData = Barang::where('hash_id_barang', $id_barang)->with('bukubesar')->first();
+            if (!$barangData) {
+                DB::rollBack();
+                return redirect()->route('cicilan.hutang.index', ['id_barang' => $id_barang])->with('error', 'Barang tidak ditemukan');
+            }
 
-            $this->cekLunasAtauHutang($barangData2->id_barang);
+            // Hitung ulang nominal_terbayar sebelum penghapusan
+            $totalTerbayar = $barangData->bukubesar->sum('debit') - $barangData->bukubesar->sum('kredit');
+
+            // Hapus entri dari tabel pivot
+            BukubesarBarangModel::where('id_bukubesar', $dataBukuBesar->id_bukubesar)->delete();
+
+            // Hapus entri buku besar
+            $dataBukuBesar->delete();
+
+            // Hitung ulang nominal_terbayar setelah penghapusan
+            $totalTerbayar -= $dataBukuBesar->debit;
+
+            // Update nominal_terbayar pada barang
+            $barangData->nominal_terbayar = $totalTerbayar;
+            $barangData->save();
+
+
             DB::commit();
-            return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangData2->hash_id_barang])->with('success', 'Cicilan piutang dihapus');
-        } else {
-            $barangData2 = Barang::where('hash_id_barang', $id_barang)->first();
-            $this->cekLunasAtauHutang($barangData2->id_barang);
-            return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangData2->hash_id_barang])->with('error', 'Cicilan piutang gagal dihapus');
+            return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangData->hash_id_barang])->with('success', 'Cicilan hutang berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('cicilan.hutang.index', ['id_barang' => $id_barang])->with('error', 'Kesalahan: ' . $e->getMessage());
         }
     }
 }

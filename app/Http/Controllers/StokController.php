@@ -9,6 +9,7 @@ use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class StokController extends Controller
 {
@@ -95,7 +96,7 @@ class StokController extends Controller
         $barang->save();
 
 
-   
+
         // Buat record baru untuk BukuBesar
         $bukuBesar = new BukubesarModel();
 
@@ -103,9 +104,7 @@ class StokController extends Controller
         $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
         $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
         $bukuBesar->keterangan = 'STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-   
         $bukuBesar->debit = $request->stok * $request->harga_barang_pemasok; // Isi dengan nilai kredit yang sesuai
-        $bukuBesar->sub_kategori = 'hutang'; // Isi dengan sub kategori yang sesuai
         $bukuBesar->save();
 
         StokBarangModel::create([
@@ -115,40 +114,53 @@ class StokController extends Controller
         ]);
         DB::commit();
 
-        dd("successs");
 
         return redirect()->route('stok.index')->with('success', 'Data  Barang Berhasil disimpan');
     }
 
     public function update(Request $request, $id)
     {
-
-        $request->validate([
-            'nama_barang' => 'required',
-            'harga_barang' => 'required',
-            // 'harga_barang_pemasok' => 'required',
-            // 'stok' => 'required',
-            'ukuran' => 'required',
-            // 'id_pemasok' => 'required',
-            'id_tipe_barang' => 'required',
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'id_pemasok' => 'nullable|exists:pemasok_barangs,id_pemasok',
+            'kode_barang' => 'required',
+            'nama_barang' => 'required|string|max:255',
+            'ukuran' => 'required|string|max:255',
+            'id_tipe_barang' => 'required|exists:tipe_barangs,id_tipe_barang',
+            'harga_barang' => 'required|numeric|min:0',
+            'harga_barang_pemasok' => 'required|numeric|min:0',
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        // dd("heheha");
+        // Mencari barang berdasarkan hash_id_barang
+        $barang = Barang::where('hash_id_barang', $id)->first();
 
-        $dataBarang = Barang::where('hash_id_barang', $id)->first();
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ada');
+        }
 
-        $dataBarang->update([
-            'kode_barang' => $request->get('kode_barang'),
-            'nama_barang' => $request->get('nama_barang'),
-            'harga_barang' => $request->get('harga_barang'),
-            // 'harga_barang_pemasok' => $request->get('harga_barang_pemasok'),
-            'ukuran' =>  $request->get('ukuran'),
-            // 'id_pemasok' => $request->get('id_pemasok'),
-            'id_tipe_barang' => $request->get('id_tipe_barang')
+        // Update data barang
+        $barang->id_pemasok = $request->id_pemasok;
+        $barang->kode_barang = $request->kode_barang;
+        $barang->nama_barang = $request->nama_barang;
+        $barang->ukuran = $request->ukuran;
+        $barang->id_tipe_barang = $request->id_tipe_barang;
+        $barang->harga_barang = $request->harga_barang;
+        $barang->harga_barang_pemasok = $request->harga_barang_pemasok;
 
-        ]);
+        // Menghitung total stok
+        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
+            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+            ->first();
 
-        return redirect()->route('stok.index')->with('success', 'Data Barang berhasil diupdate');
+        // Update total
+        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
+
+        $barang->save();
+
+        return redirect()->route('stok.index')->with('success', 'Data barang berhasil diperbarui');
     }
 
 
@@ -219,19 +231,38 @@ class StokController extends Controller
         // $barang->stok += $validatedData['stok_tambah'];
 
 
-        $bukuBesar = new BukubesarModel();
-        $bukuBesar->tanggal = date('Y-m-d');
-        $bukuBesar->kategori =  "barang";
-        $bukuBesar->sub_kategori = "hutang";
-        $bukuBesar->kredit = $validatedData['stok_tambah'] * $barang->harga_barang_pemasok;
-        $bukuBesar->keterangan = "penambahan stok " . $validatedData['stok_tambah'];
-        $bukuBesar->save();
+        // $bukuBesar = new BukubesarModel();
+        // $bukuBesar->tanggal = date('Y-m-d');
+        // $bukuBesar->kategori =  "barang";
+        // $bukuBesar->sub_kategori = "hutang";
+        // $bukuBesar->kredit = $validatedData['stok_tambah'] * $barang->harga_barang_pemasok;
+        // $bukuBesar->keterangan = "penambahan stok " . $validatedData['stok_tambah'];
+        // $bukuBesar->save();
 
         StokBarangModel::create([
             'stok_masuk' => $validatedData['stok_tambah'],
-            'id_barang' => $barang->id_barang,
-            'id_bukubesar' => $bukuBesar->id_bukubesar
+            'id_barang' => $barang->id_barang
         ]);
+
+
+        // Mencari barang berdasarkan hash_id_barang
+        $barang = Barang::find($barang->id_barang);
+
+        // Kembalikan jika barang tidak ada
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ada');
+        }
+        // Menghitung total stok
+        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
+            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+            ->first();
+
+        // Update total
+        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
+
+   
+        $barang->save();
+
         DB::commit();
 
         return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
@@ -262,21 +293,40 @@ class StokController extends Controller
 
 
         DB::beginTransaction();
-        $bukuBesar = new BukubesarModel();
-        $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-        $bukuBesar->keterangan = 'STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-        $bukuBesar->tanggal = date('Y-m-d');
-        $bukuBesar->sub_kategori = "hutang";
-        $bukuBesar->debit = $validatedData['stok_kurang'];
-        $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
-        $bukuBesar->save();
+        // $bukuBesar = new BukubesarModel();
+        // $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
+        // $bukuBesar->keterangan = 'STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        // $bukuBesar->tanggal = date('Y-m-d');
+        // $bukuBesar->sub_kategori = "hutang";
+        // $bukuBesar->debit = $validatedData['stok_kurang'];
+        // $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
+        // $bukuBesar->save();
 
 
         StokBarangModel::create([
             'stok_keluar' => $validatedData['stok_kurang'],
-            'id_barang' => $barang->id_barang,
-            'id_bukubesar' => $bukuBesar->id_bukubesar
+            'id_barang' => $barang->id_barang
+            // 'id_bukubesar' => $bukuBesar->id_bukubesar
         ]);
+
+
+
+        // Mencari barang berdasarkan hash_id_barang
+        $barang = Barang::find($barang->id_barang);
+
+        // Kembalikan jika barang tidak ada
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ada');
+        }
+        // Menghitung total stok
+        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
+            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+            ->first();
+
+        // Update total
+        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
+
+        $barang->save();
         DB::commit();
 
         return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Barang;
 use App\Models\BukubesarModel;
+use App\Models\KategoriModel;
 use App\Models\Pembeli;
 use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
@@ -223,6 +224,7 @@ class MigrasiData extends Seeder
 
             // Buat record baru untuk BukuBesar
             $bukuBesar = new BukubesarModel();
+            // $bukuBesar->id_kategori = KategoriModel::where('nama_kategori', 'barang')->first()->id_kategori;
 
             $bukuBesar->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
             $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai

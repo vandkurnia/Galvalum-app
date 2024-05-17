@@ -4,6 +4,7 @@
     <div class="form-group">
         <label for="pemasok">Pemasok:</label>
         <select class="form-control" id="pemasok" name="id_pemasok" required>
+            <option value="">Tanpa Pemasok</option>
             @foreach ($dataPemasok as $pemasok)
                 <option value="{{ $pemasok['id_pemasok'] }}"
                     {{ $dataBarang['id_pemasok'] == $pemasok['id_pemasok'] ? 'selected' : '' }}>
@@ -45,17 +46,21 @@
     <div class="form-group">
         <label for="harga_barang">Harga Jual:</label>
         <input type="number" class="form-control" name="harga_barang" id="harga_barang" placeholder="Harga Barang"
-            value="{{(int) $dataBarang['harga_barang'] }}" required>
+            value="{{ (int) $dataBarang['harga_barang'] }}" required>
     </div>
-    {{-- <div class="form-group">
+
+    <div class="form-group">
+        @dump($dataBarang->harga_barang_pemasok)
         <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
-        <input id="harga_barang_pemasok" type="text" class="form-control @error('harga_barang_pemasok') is-invalid @enderror" name="harga_barang_pemasok" value="{{ (int) $dataBarang['harga_barang_pemasok'] }}" required>
+        <input id="harga_barang_pemasok" type="text"
+            class="form-control @error('harga_barang_pemasok') is-invalid @enderror" min="0"  name="harga_barang_pemasok"
+            value="{{ (int) $dataBarang->harga_barang_pemasok }}" required  >
         @error('harga_barang_pemasok')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
         @enderror
-    </div> --}}
+    </div>
     {{-- <div class="form-group">
         <label for="stok">Jumlah Stok:</label>
         <input type="number" class="form-control" name="stok" id="stok" placeholder="Jumlah Stok"

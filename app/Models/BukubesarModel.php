@@ -43,4 +43,8 @@ class BukubesarModel extends Model
     {
         return $this->belongsToMany(Barang::class, 'bukubesar_barang', 'id_bukubesar', 'id_barang');
     }
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriModel::class, 'id_kategori', 'id_kategori');
+    }
 }
