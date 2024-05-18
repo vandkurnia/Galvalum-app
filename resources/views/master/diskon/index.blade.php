@@ -2,19 +2,9 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-    
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
+
 
 @endsection
 
@@ -247,7 +237,7 @@
             return true;
         }
     </script>
-   
+
 
     <script>
         function funcTambahUser() {
@@ -326,5 +316,14 @@
 
 
         }
+    </script>
+
+
+
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#bukuBesar').DataTable();
+        });
     </script>
 @endsection

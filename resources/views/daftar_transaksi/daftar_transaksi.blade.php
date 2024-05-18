@@ -3,18 +3,8 @@
 @section('title', 'Daftar Transaksi')
 
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
+<link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
 
 
 @endsection
@@ -170,7 +160,12 @@
 
 
 @section('javascript-custom')
-
+<script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#dataTransaksi').DataTable();
+    });
+</script>
     <script>
         function print(urlinvoice, urlsuratjalan) {
             var w = 805;

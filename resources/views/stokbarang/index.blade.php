@@ -3,14 +3,11 @@
 @section('title', 'Stok barang')
 @section('header-custom')
 
-    <link rel="stylesheet" href="{{ secure_asset('library/datatables.net-dt/css/dataTables.dataTables.css') }}" />
 
-
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-    <script src="{{ secure_asset('library/datatables.net-dt/js/dataTables.dataTables.js') }}"></script>
-
     <!-- Begin Page Content -->
     <div class="container-fluid">
         @if (session('success'))
@@ -97,7 +94,7 @@
                                     <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
                                     <td>{{ $databarang->stok }}</td>
                                     <td> <button class="btn btn-primary btn-sm"
-                                            onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' =>  $databarang->hash_id_barang]) }}'">
+                                            onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
                                             Retur
                                         </button></td>
                                     <td>
@@ -656,4 +653,14 @@
 
         }
     </script>
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+
+<script>
+    
+
+
+    $(document).ready(function() {
+        $('#stokbarang').DataTable();
+    });
+</script>
 @endsection

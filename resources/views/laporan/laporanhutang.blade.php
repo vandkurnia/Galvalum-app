@@ -1,20 +1,8 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Hutang')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
-
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -64,7 +52,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="laporanHutang" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -134,5 +122,10 @@
 
 
 @section('javascript-custom')
-
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#laporanHutang').DataTable();
+        });
+    </script>
 @endsection

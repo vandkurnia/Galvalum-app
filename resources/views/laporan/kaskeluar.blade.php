@@ -2,19 +2,9 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-    
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
+
 
 @endsection
 
@@ -62,7 +52,8 @@
                     </div>
                     <div class="form-group">
                         <button onclick="updateTanggal()" class="btn btn-success">Filter</button>
-                        <a class="btn btn-info" onclick="refreshHariIni()" href="{{ url('laporan/kas-keluar') }}">Refresh</a>
+                        <a class="btn btn-info" onclick="refreshHariIni()"
+                            href="{{ url('laporan/kas-keluar') }}">Refresh</a>
                     </div>
                 </form>
             </div>
@@ -71,12 +62,14 @@
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahKasKeluar"><i
                             class="fa fa-plus"></i> Tambah Kas Keluar</button>
                     <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                        <a class="btn btn-danger float-right" onclick="cetakPDF()"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
-                        <a class="btn btn-success float-right" onclick="cetakCSV()"><i class="fas fa-file-csv" aria-hidden="true"></i> CSV</a>
+                        <a class="btn btn-danger float-right" onclick="cetakPDF()"><i class="fas fa-file-pdf"
+                                aria-hidden="true"></i> PDF</a>
+                        <a class="btn btn-success float-right" onclick="cetakCSV()"><i class="fas fa-file-csv"
+                                aria-hidden="true"></i> CSV</a>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="kaskeluar" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -87,24 +80,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($laporan_kas_keluar as $lprks)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $lprks->tanggal }}</td>
-                                <td>{{ $lprks->keterangan }}</td>
-                                <td>{{ $lprks->kredit }}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm"
+                            @foreach ($laporan_kas_keluar as $lprks)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $lprks->tanggal }}</td>
+                                    <td>{{ $lprks->keterangan }}</td>
+                                    <td>{{ $lprks->kredit }}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"
                                             onclick="funcEditUser('{{ route('laporan.editKas', ['id' => $lprks->id_bukubesar]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
-                                    <button class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('laporan.destroy', ['id' => $lprks->id_bukubesar]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -141,8 +134,9 @@
                     <div class="form-group">
                         <label for="id_akunbayar">Akun Bayar</label>
                         <select class="form-control" id="id_akunbayar" name="id_akunbayar">
-                            @foreach($dataAkunBayar as $akunBayar)
-                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}</option>
+                            @foreach ($dataAkunBayar as $akunBayar)
+                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -224,77 +218,84 @@
 {{-- End of Modal Delete --}}
 
 @section('javascript-custom')
-
-<script>
-    // Fungsi untuk mengambil tanggal dari input dan membuat URL untuk mencetak PDF dengan tanggal filter
-    function cetakPDF() {
-        var tanggal = document.getElementById('tanggal').value;
-        var url = "{{ url('laporan/kas-pdf') }}?tanggal=" + tanggal;
-        window.location.href = url;
-    }
-
-    function cetakCSV() {
-        var tanggal = document.getElementById('tanggal').value;
-        var url = "{{ url('laporan/kas-csv') }}?tanggal=" + tanggal;
-        window.location.href = url;
-    }
-</script>
-<script>
-    // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
-    function getHariIndonesia(day) {
-        const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
-        return hari[day];
-    }
-
-    // Fungsi untuk mendapatkan nama bulan dalam bahasa Indonesia
-    function getBulanIndonesia(month) {
-        const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
-        return bulan[month];
-    }
-
-    // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
-    function getTanggal(tanggal) {
-        const bulan = getBulanIndonesia(tanggal.getMonth());
-        const tahun = tanggal.getFullYear();
-        return `${tanggal.getDate()} ${bulan} ${tahun}`;
-    }
-
-    // Fungsi untuk menampilkan hari dan tanggal di dalam elemen dengan id="tanggal-hari"
-    function tampilkanHariTanggal(tanggal) {
-        const hari = getHariIndonesia(tanggal.getDay());
-        const tanggalFormatted = getTanggal(tanggal);
-        const element = document.getElementById("tanggal-hari");
-        element.innerHTML = `${hari}, ${tanggalFormatted}`;
-    }
-
-    // Fungsi untuk memperbarui tanggal yang ingin ditampilkan berdasarkan nilai input
-    function updateTanggal() {
-        const tanggalInput = new Date(document.getElementById('tanggal').value);
-        sessionStorage.setItem('tanggalPilihan', tanggalInput); // Simpan tanggal yang dipilih di sessionStorage
-        tampilkanHariTanggal(tanggalInput);
-    }
-
-    // Fungsi untuk me-refresh halaman ke tanggal hari ini
-    function refreshHariIni() {
-        sessionStorage.removeItem('tanggalPilihan'); // Hapus data dari sessionStorage
-        location.reload(); // Me-refresh halaman
-    }
-
-    // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
-    window.onload = function() {
-        const tanggalHariIni = new Date();
-        const tanggalDariSessionStorage = sessionStorage.getItem('tanggalPilihan');
-
-        if (tanggalDariSessionStorage) {
-            const tanggalPilihan = new Date(tanggalDariSessionStorage);
-            document.getElementById('tanggal').valueAsDate = tanggalPilihan;
-            tampilkanHariTanggal(tanggalPilihan);
-        } else {
-            document.getElementById('tanggal').valueAsDate = tanggalHariIni;
-            tampilkanHariTanggal(tanggalHariIni);
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#kaskeluar').DataTable();
+        });
+    </script>
+    <script>
+        // Fungsi untuk mengambil tanggal dari input dan membuat URL untuk mencetak PDF dengan tanggal filter
+        function cetakPDF() {
+            var tanggal = document.getElementById('tanggal').value;
+            var url = "{{ url('laporan/kas-pdf') }}?tanggal=" + tanggal;
+            window.location.href = url;
         }
-    };
-</script>
+
+        function cetakCSV() {
+            var tanggal = document.getElementById('tanggal').value;
+            var url = "{{ url('laporan/kas-csv') }}?tanggal=" + tanggal;
+            window.location.href = url;
+        }
+    </script>
+    <script>
+        // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
+        function getHariIndonesia(day) {
+            const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+            return hari[day];
+        }
+
+        // Fungsi untuk mendapatkan nama bulan dalam bahasa Indonesia
+        function getBulanIndonesia(month) {
+            const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER",
+                "OKTOBER", "NOVEMBER", "DESEMBER"
+            ];
+            return bulan[month];
+        }
+
+        // Fungsi untuk mendapatkan tanggal dalam format DD MMMM YYYY
+        function getTanggal(tanggal) {
+            const bulan = getBulanIndonesia(tanggal.getMonth());
+            const tahun = tanggal.getFullYear();
+            return `${tanggal.getDate()} ${bulan} ${tahun}`;
+        }
+
+        // Fungsi untuk menampilkan hari dan tanggal di dalam elemen dengan id="tanggal-hari"
+        function tampilkanHariTanggal(tanggal) {
+            const hari = getHariIndonesia(tanggal.getDay());
+            const tanggalFormatted = getTanggal(tanggal);
+            const element = document.getElementById("tanggal-hari");
+            element.innerHTML = `${hari}, ${tanggalFormatted}`;
+        }
+
+        // Fungsi untuk memperbarui tanggal yang ingin ditampilkan berdasarkan nilai input
+        function updateTanggal() {
+            const tanggalInput = new Date(document.getElementById('tanggal').value);
+            sessionStorage.setItem('tanggalPilihan', tanggalInput); // Simpan tanggal yang dipilih di sessionStorage
+            tampilkanHariTanggal(tanggalInput);
+        }
+
+        // Fungsi untuk me-refresh halaman ke tanggal hari ini
+        function refreshHariIni() {
+            sessionStorage.removeItem('tanggalPilihan'); // Hapus data dari sessionStorage
+            location.reload(); // Me-refresh halaman
+        }
+
+        // Memanggil fungsi tampilkanHariTanggal saat halaman dimuat
+        window.onload = function() {
+            const tanggalHariIni = new Date();
+            const tanggalDariSessionStorage = sessionStorage.getItem('tanggalPilihan');
+
+            if (tanggalDariSessionStorage) {
+                const tanggalPilihan = new Date(tanggalDariSessionStorage);
+                document.getElementById('tanggal').valueAsDate = tanggalPilihan;
+                tampilkanHariTanggal(tanggalPilihan);
+            } else {
+                document.getElementById('tanggal').valueAsDate = tanggalHariIni;
+                tampilkanHariTanggal(tanggalHariIni);
+            }
+        };
+    </script>
 
     <script>
         function funcTambahUser() {

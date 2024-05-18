@@ -2,18 +2,8 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
+<link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
 
 
 @endsection
@@ -59,7 +49,8 @@
                 <form id="filter-form" action="{{ route('laporan.omzet') }}" method="GET">
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ date('Y-m-d', strtotime($tanggalSaatIni)) }}">
+                        <input type="date" id="tanggal" name="tanggal" class="form-control"
+                            value="{{ date('Y-m-d', strtotime($tanggalSaatIni)) }}">
                     </div>
                 </form>
 
@@ -67,7 +58,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="laporanOmzet" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Barang</th>
@@ -125,7 +116,12 @@
 
 
 @section('javascript-custom')
-
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#laporanOmzet').DataTable();
+        });
+    </script>
     <script>
         document.getElementById('tanggal').addEventListener('change', function() {
             document.getElementById('filter-form').submit();

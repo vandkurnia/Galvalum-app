@@ -2,19 +2,9 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-    
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
+
 
 @endsection
 
@@ -61,8 +51,8 @@
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
                             class="fa fa-plus"></i> Tambah Pemasok</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="table-responsive pt-4">
+                    <table class="table table-bordered" id="pemasokbarang" width="100%" cellspacing="0">
                         <thead>
 
 
@@ -84,7 +74,8 @@
                                     <td>
 
                                         <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('pemasokbarang.edit', ['id' => $dataPemasok->hash_id_pemasok]) }}')"><i class="fas fa-edit"></i>
+                                            onclick="funcEditUser('{{ route('pemasokbarang.edit', ['id' => $dataPemasok->hash_id_pemasok]) }}')"><i
+                                                class="fas fa-edit"></i>
                                             Edit</button>
                                         <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('pemasokbarang.destroy', ['id' => $dataPemasok->hash_id_pemasok]) }}', 0)"><i
@@ -137,9 +128,10 @@
 
                     <div class="form-group">
                         <label for="alamat_pemasok" class="form-label">Alamat Email Admin</label>
-                        <input type="email" class="form-control" id="alamat_pemasok_store" name="alamat_pemasok" required>
+                        <input type="email" class="form-control" id="alamat_pemasok_store" name="alamat_pemasok"
+                            required>
                     </div>
-                  
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -207,8 +199,13 @@
 
 
 @section('javascript-custom')
-   
 
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#pemasokbarang').DataTable();
+        });
+    </script>
     <script>
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');

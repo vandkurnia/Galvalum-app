@@ -13,12 +13,15 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^41.3.1",
+        "datatables.net-bs4": "^2.0.7",
         "datatables.net-dt": "^2.0.6",
         "filepond": "^4.31.1",
         "filepond-plugin-file-encode": "^2.1.14",
         "filepond-plugin-file-validate-size": "^2.2.8",
         "filepond-plugin-image-edit": "^1.6.3",
         "filepond-plugin-image-exif-orientation": "^1.0.11",
-        "filepond-plugin-image-preview": "^4.6.12"
+        "filepond-plugin-image-preview": "^4.6.12",
+        "jszip": "^3.10.1",
+        "pdfmake": "^0.2.10"
     }
 }

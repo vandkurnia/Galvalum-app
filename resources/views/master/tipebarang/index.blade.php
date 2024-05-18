@@ -2,20 +2,9 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-    
 
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 
@@ -62,7 +51,7 @@
                             class="fa fa-plus"></i> Tambah user</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="tipeBarang" width="100%" cellspacing="0">
                         <thead>
 
 
@@ -195,8 +184,13 @@
 
 
 @section('javascript-custom')
-   
 
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tipeBarang').DataTable();
+        });
+    </script>
     <script>
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');

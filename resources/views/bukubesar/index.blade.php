@@ -2,19 +2,8 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
-
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-
+    
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -71,8 +60,8 @@
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
                             class="fa fa-plus"></i> Tambah Bukubesar</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="table-responsive pt-4">
+                    <table class="table table-bordered" id="bukuBesar" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -144,22 +133,25 @@
                     <div class="form-group">
                         <label for="id_akunbayar">Akun Bayar</label>
                         <select class="form-control" id="id_akunbayar" name="id_akunbayar">
-                            @foreach($dataAkunBayar as $akunBayar)
-                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}</option>
+                            @foreach ($dataAkunBayar as $akunBayar)
+                                <option value="{{ $akunBayar->hash_id_akunbayar }}">{{ $akunBayar->nama_akun }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{date('Y-m-d')}}">
+                        <input type="date" class="form-control" id="tanggal" name="tanggal"
+                            value="{{ date('Y-m-d') }}">
                     </div>
 
                     <div class="form-group">
                         <label for="kategori">Kategori</label>
                         <select class="form-control" id="kategori" name="kategori">
-                            @foreach($dataKategori as $kategori)
-                                <option value="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}</option>
+                            @foreach ($dataKategori as $kategori)
+                                <option value="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -247,8 +239,13 @@
 {{-- End of Modal Delete --}}
 
 @section('javascript-custom')
+
+
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
     <script>
-      
+        $(document).ready(function() {
+            $('#bukuBesar').DataTable();
+        });
     </script>
 
 
@@ -256,7 +253,7 @@
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');
             formtambah.submit();
-         
+
         }
 
         function funcEditUser(url) {
@@ -323,4 +320,14 @@
 
         }
     </script>
+    {{-- <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Bootstrap 5 JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
+
+   
 @endsection

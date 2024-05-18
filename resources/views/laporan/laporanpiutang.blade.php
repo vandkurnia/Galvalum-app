@@ -2,18 +2,7 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
-
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 
 @endsection
@@ -59,7 +48,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="laporanPiutang" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -88,9 +77,10 @@
                                     <td>{{ (int) $notaPembelian['total_pembelian'] }}</td>
                                     {{-- <td>{{ $notaPembelian['jenis_pelanggan'] }}</td> --}}
                                     <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
-                                    <td>{{ number_format($notaPembelian['total'], 0,',', '.')}}</td>
-                                    <td>{{ number_format($notaPembelian['terbayar'], 0,',', '.') }}</td>
-                                    <td>{{number_format(($notaPembelian['total'] - $notaPembelian['terbayar'] ), 0,',', '.') }}</td>
+                                    <td>{{ number_format($notaPembelian['total'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format($notaPembelian['terbayar'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format($notaPembelian['total'] - $notaPembelian['terbayar'], 0, ',', '.') }}
+                                    </td>
                                     <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'])) }}</td>
                                     <td>
                                         @if ($notaPembelian['status_bayar'] == 'Lunas')
@@ -104,7 +94,8 @@
                                         @endif
                                     </td>
                                     <td>Hutang</td>
-                                    <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}" class="btn btn-primary">Update cicilan</a></td>
+                                    <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}"
+                                            class="btn btn-primary">Update cicilan</a></td>
                                 </tr>
                             @endforeach
 
@@ -144,5 +135,10 @@
 
 
 @section('javascript-custom')
-
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#laporanPiutang').DataTable();
+        });
+    </script>
 @endsection

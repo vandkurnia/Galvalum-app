@@ -2,18 +2,8 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
+<link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
 
 
 @endsection
@@ -78,7 +68,7 @@
                             class="fa fa-plus"></i> Tambah user</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="user" width="100%" cellspacing="0">
                         <thead>
 
 
@@ -264,7 +254,12 @@
 
 
 @section('javascript-custom')
-
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#user').DataTable();
+        });
+    </script>
 
     <script>
         function funcTambahUser() {

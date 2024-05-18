@@ -2,19 +2,7 @@
 
 @section('title', 'User')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
-
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
-    
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -61,8 +49,8 @@
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
                             class="fa fa-plus"></i> Tambah pembeli</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="table-responsive pt-4">
+                    <table class="table table-bordered" id="pembeli" width="100%" cellspacing="0">
                         <thead>
 
 
@@ -132,11 +120,13 @@
                     </div>
                     <div class="form-group">
                         <label for="alamat_pembeli" class="form-label">Alamat Pembeli</label>
-                        <input type="text" class="form-control" id="alamat_pembeli_store" name="alamat_pembeli" required>
+                        <input type="text" class="form-control" id="alamat_pembeli_store" name="alamat_pembeli"
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="no_hp_pembeli" class="form-label">No HP Pembeli</label>
-                        <input type="text" class="form-control" id="no_hp_pembeli_store" name="no_hp_pembeli" required>
+                        <input type="text" class="form-control" id="no_hp_pembeli_store" name="no_hp_pembeli"
+                            required>
                     </div>
 
                 </form>
@@ -206,7 +196,12 @@
 
 
 @section('javascript-custom')
-   
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#pembeli').DataTable();
+        });
+    </script>
 
     <script>
         function funcTambahUser() {
