@@ -108,7 +108,7 @@
                         <thead>
                             <tr>
                                 <th>No. Retur</th>
-                                <th>Faktur Retur</th>
+                                {{-- <th>Faktur Retur</th> --}}
                                 <th>Tanggal Retur</th>
                                 <th>Bukti Retur</th>
                                 <th>Jenis Retur</th>
@@ -124,7 +124,7 @@
                             @foreach ($dataReturPemasok as $retur)
                                 <tr>
                                     <td>{{ $retur->no_retur_pemasok }}</td>
-                                    <td>{{ $retur->faktur_retur_pemasok }}</td>
+                                    {{-- <td>{{ $retur->faktur_retur_pemasok }}</td> --}}
                                     <td>{{ $retur->tanggal_retur }}</td>
                                     <td>{{ $retur->bukti_retur_pemasok }}</td>
                                     <td>{{ $retur->jenis_retur }}</td>
@@ -132,12 +132,12 @@
                                     <td>{{ $retur->pengembalian_data }}</td>
                                     <td>{{ $retur->kekurangan }}</td>
                                     <td>{{ $retur->status }}</td>
-                                    <td>{{ $retur->pemasok->nama_pemasok }}</td>
+                                    <td>{{ $retur->pemasok->nama_pemasok ?? '-' }}</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm"
+                                        {{-- <button class="btn btn-primary btn-sm"
                                             onclick="funcEditUser('{{ route('retur.pemasok.edit', ['id_retur' => $retur->hash_id_retur_pemasok]) }}')"><i
                                                 class="fas fa-edit"></i>
-                                            Edit</button>
+                                            Edit</button> --}}
                                         <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('retur.pemasok.destroy', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)"><i
                                                 class="fas fa-trash"></i>

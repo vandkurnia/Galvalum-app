@@ -17,18 +17,22 @@ return new class extends Migration
             $table->id('id_retur_pemasok');
             $table->uuid('hash_id_retur_pemasok')->unique();
             $table->string('no_retur_pemasok');
-            $table->string('faktur_retur_pemasok');
             $table->string('tanggal_retur');
             $table->binary('bukti_retur_pemasok');
             $table->enum('jenis_retur', ['Rusak', 'Tidak Rusak']);
-            $table->decimal('total_nilai_retur', 10, 2);
-            $table->string('pengembalian_data');
-            $table->string('kekurangan');
-            $table->enum('status', ['Belum Selesai', 'Selesai']);
-            $table->unsignedBigInteger('id_pemasok');
+            // $table->string('faktur_retur_pemasok');
+            $table->decimal('total_nilai_retur', 10, 2)->default(0);
+            $table->string('pengembalian_data')->default('0');
+            $table->string('kekurangan')->default('0');
+            $table->enum('status', ['Belum Selesai', 'Selesai'])->default('Belum Selesai');
+            $table->unsignedBigInteger('id_pemasok')->nullable();
             $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs')->onUpdate('CASCADE')->onDelete('cascade');
+            $table->unsignedBigInteger('id_barang');
+            $table->foreign('id_barang')->references('id_barang')->on('barangs')->onUpdate('CASCADE')->onDelete('cascade');
+            $table->unsignedBigInteger('id_stok_barang');
+            $table->foreign('id_stok_barang')->references('id')->on('stok_barang')->onUpdate('CASCADE')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes(); // Menambahkan soft delete
+            $table->softDeletes();
         });
     }
 

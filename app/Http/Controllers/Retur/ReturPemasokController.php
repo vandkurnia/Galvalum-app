@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Retur;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\PemasokBarang;
 use App\Models\PesananPembeli;
 use App\Models\Retur\ReturPemasokModel;
+use App\Models\StokBarangModel;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Uuid;
 
 class ReturPemasokController extends Controller
 {
@@ -22,60 +28,139 @@ class ReturPemasokController extends Controller
         $dataPemasok = PemasokBarang::all();
         return view('retur.pemasok.edit', compact('dataReturPemasok', 'dataPemasok'));
     }
-    public function add($id_pesanan)
+    public function add($id_barang)
     {
+        $dataBarang = Barang::with('stokBarang')->where('hash_id_barang', $id_barang)->first();
 
-        $dataPemasok = PemasokBarang::all();
-        return view('retur.pemasok.add', compact('id_pesanan', 'dataPemasok'));
+        if (!$dataBarang) {
+            return redirect()->route('retur.index')->with('error', 'Barang tidak ditemukan');
+        }
+
+        // Calculate the stock
+        $totalStok = $dataBarang->stokBarang->sum(function ($stok) {
+            return $stok->stok_masuk - $stok->stok_keluar;
+        });
+        return view('retur.pemasok.add', compact('id_barang', 'dataBarang', 'totalStok'));
     }
     public function store(Request $request)
     {
-
-        $request->validate([
-            'no_retur_pemasok' => 'required',
-            'faktur_retur_pemasok' => 'required',
-            'tanggal_retur' => 'required',
-            'bukti_retur_pemasok' => 'required',
+        $validatedData = $request->validate([
+            'tanggal_retur_pemasok' => 'required|date',
+            'bukti_retur_pemasok' => 'required', // 10MB max
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
-            'total_nilai_retur' => 'required|numeric',
-            'pengembalian_data' => 'nullable|string',
-            'kekurangan' => 'nullable|string',
-            'status' => 'required|in:Belum Selesai,Selesai',
-            'id_pemasok' => 'required|exists:pemasok_barangs,id_pemasok',
+            'retur_data' => 'required'
         ]);
 
-        $dataRetur = new ReturPemasokModel();
-        $dataRetur->no_retur_pemasok = $request->no_retur_pemasok;
-        $dataRetur->faktur_retur_pemasok = $request->faktur_retur_pemasok;
-        $dataRetur->tanggal_retur = $request->tanggal_retur;
-        $file = $request->file('bukti_retur_pemasok');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/retur/', $fileName);
+        $returData = json_decode($validatedData['retur_data'], true);
 
-        $dataRetur->bukti_retur_pemasok = $fileName;
+        DB::beginTransaction();
+        try {
+            foreach ($returData as $item) {
+                // Validate each item
+                $barang = Barang::with('Pemasok')->find($item['id_barang']);
+                if (!$barang) {
+                    throw new Exception('Barang Tidak ada');
+                }
 
-        $dataRetur->jenis_retur = $request->jenis_retur;
-        $dataRetur->total_nilai_retur = $request->total_nilai_retur;
-        $dataRetur->pengembalian_data = $request->pengembalian_data;
-        $dataRetur->kekurangan = $request->kekurangan;
-        $dataRetur->status = $request->status;
-        $dataRetur->id_pemasok = $request->id_pemasok;
+                // Calculate stock
+                $stok = StokBarangModel::where('id_barang', $item['id_barang'])
+                    ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+                    ->value('stok');
 
-        $dataRetur->save();
+                if ($stok < $item['qty']) {
+                    throw new Exception('Stok tidak cukup untuk retur');
+                }
+
+
+                // Generate No Retur
+                $totalIdReturPembeli = ReturPemasokModel::count();
+                if ($totalIdReturPembeli === 0) {
+                    $totalIdReturPembeli = 1;
+                } else {
+                    $totalIdReturPembeli = $totalIdReturPembeli + 1;
+                }
+
+                $NoreturPembeli = "RETUR" . date('YmdHis') . $totalIdReturPembeli;
 
 
 
-        // Tanya penjelasan perihal ini
-        // if( $dataRetur->jenis_retur == "Rusak")
-        // {
-        //     $dataBarang = Barang::find($dataPesanan->id_barang);
-        //     $dataBarang->stok = $dataBarang->stok 
 
-        //     $dataPesanan->jumlah_pembelian
-        // }
+                // Olah File Uploadan Bukti
 
-        return redirect()->route('retur.index')->with('success', 'Retur berhasil ditambahkan');
+                $fileData = json_decode($request->bukti_retur_pemasok, true);
+
+
+                // Mendapatkan base64 data dari JSON
+                $base64Data = $fileData['data'];
+                // Decode base64 data ke file binary
+                $fileBinary = base64_decode($base64Data);
+                // Direktori tujuan penyimpanan file
+                $targetDirectory = public_path('retur/pembeli/');
+                if (!file_exists($targetDirectory)) {
+                    mkdir($targetDirectory, 0777, true); // Buat direktori secara rekursif
+                }
+                // Tambahkan .gitignore untuk menghindari terkirimnya gambar
+                $gitignoreFile = $targetDirectory . '.gitignore';
+                if (!file_exists($gitignoreFile)) {
+                    file_put_contents($gitignoreFile, "*\n!.gitignore"); // Isi .gitignore dengan aturan umum
+                }
+                // Membuat nama file yang unik (misalnya, gabungan dari id dan nama file)
+                $fileName = $fileData['id'] . '_' . date('Ymdhis') . '_' . $fileData['name'];
+                // Menyimpan file ke direktori tujuan
+                file_put_contents($targetDirectory . $fileName, $fileBinary);
+                $buktiReturPemasok = $fileName;
+
+                // Create StokBarang record
+                $stokBarang = StokBarangModel::create([
+                    'id_barang' => $barang->id_barang,
+                    'stok_keluar' => $item['qty'],
+                ]);
+
+                // Create ReturPemasok record
+                ReturPemasokModel::create([
+                    'no_retur_pemasok' => $NoreturPembeli,
+                    'tanggal_retur' => $validatedData['tanggal_retur_pemasok'],
+                    'bukti_retur_pemasok' => $buktiReturPemasok,
+                    'jenis_retur' => $validatedData['jenis_retur'],
+                    'total_nilai_retur' => $item['total'],
+                    'pengembalian_data' => '0',
+                    'kekurangan' => '0',
+                    'status' => 'Selesai',
+                    'id_pemasok' => $barang->Pemasok->id_pemasok ?? null,
+                    'id_barang' =>$barang->id_barang,
+                    'id_stok_barang' => $stokBarang->id,
+                ]);
+            }
+
+            DB::commit();
+
+            if ($validatedData['jenis_retur'] === 'Rusak') {
+                echo "Ini Rusak";
+            } else {
+                echo "Ini Tidak Rusak";
+            }
+
+            return redirect()->route('retur.index')->with('success', 'Berhasil melakukan retur Pemasok');
+        } catch (Exception $e) {
+            DB::rollBack();
+            $errorMessage = 'Error processing return: ' . $e->getMessage();
+            $errorLine = 'Line: ' . $e->getLine();
+            $errorFile = 'File: ' . $e->getFile();
+            $errorFunction = 'Function: ' . __FUNCTION__;
+
+            // Log the error details
+            Log::error($errorMessage . ' | ' . $errorFile . ' | ' . $errorLine . ' | ' . $errorFunction);
+
+            return redirect()->back()->withErrors([
+                'message' => $errorMessage,
+                'line' => $errorLine,
+                'file' => $errorFile,
+                'function' => $errorFunction
+            ]);
+        }
     }
+
+
 
     public function update(Request $request, $id_retur)
     {
@@ -94,23 +179,40 @@ class ReturPemasokController extends Controller
             'id_pemasok' => 'required|exists:pemasok_barangs,id_pemasok',
         ]);
 
+
         $dataRetur = ReturPemasokModel::find($id_retur);
 
         if ($dataRetur) {
             $dataRetur->no_retur_pemasok = $request->no_retur_pemasok;
             $dataRetur->faktur_retur_pemasok = $request->faktur_retur_pemasok;
             $dataRetur->tanggal_retur = $request->tanggal_retur;
-            if ($request->hasFile('bukti_retur_pemasok')) {
-                $file = $request->file('bukti_retur_pemasok');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/retur/', $fileName);
-                $dataRetur->bukti_retur_pemasok = $fileName;
+            $fileData = json_decode($request->bukti_retur_pemasok, true);
+
+
+            // Mendapatkan base64 data dari JSON
+            $base64Data = $fileData['data'];
+            // Decode base64 data ke file binary
+            $fileBinary = base64_decode($base64Data);
+            // Direktori tujuan penyimpanan file
+            $targetDirectory = public_path('retur/pembeli/');
+            if (!file_exists($targetDirectory)) {
+                mkdir($targetDirectory, 0777, true); // Buat direktori secara rekursif
             }
+            // Tambahkan .gitignore untuk menghindari terkirimnya gambar
+            $gitignoreFile = $targetDirectory . '.gitignore';
+            if (!file_exists($gitignoreFile)) {
+                file_put_contents($gitignoreFile, "*\n!.gitignore"); // Isi .gitignore dengan aturan umum
+            }
+            // Membuat nama file yang unik (misalnya, gabungan dari id dan nama file)
+            $fileName = $fileData['id'] . '_' . date('Ymdhis') . '_' . $fileData['name'];
+            // Menyimpan file ke direktori tujuan
+            file_put_contents($targetDirectory . $fileName, $fileBinary);
+            $dataRetur->bukti_retur_pemasok = $fileName;
             $dataRetur->jenis_retur = $request->jenis_retur;
-            $dataRetur->total_nilai_retur = $request->total_nilai_retur;
-            $dataRetur->pengembalian_data = $request->pengembalian_data;
-            $dataRetur->kekurangan = $request->kekurangan;
-            $dataRetur->status = $request->status;
+            $dataRetur->total_nilai_retur = 0;
+            $dataRetur->pengembalian_data = 0;
+            $dataRetur->kekurangan = 0;
+            $dataRetur->status = "Selesai";
             $dataRetur->id_pemasok = $request->id_pemasok;
 
             $dataRetur->save();

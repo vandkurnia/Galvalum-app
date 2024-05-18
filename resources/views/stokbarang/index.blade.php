@@ -63,6 +63,7 @@
                                 <th>Harga Barang</th>
                                 <th>Harga Supplier</th>
                                 <th>Jumlah Stok</th>
+                                <th>Retur</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -95,6 +96,10 @@
                                     <td>{{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
                                     <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
                                     <td>{{ $databarang->stok }}</td>
+                                    <td> <button class="btn btn-primary btn-sm"
+                                            onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' =>  $databarang->hash_id_barang]) }}'">
+                                            Retur
+                                        </button></td>
                                     <td>
                                         <button class="btn btn-primary"
                                             onclick="funcTambahStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
@@ -106,14 +111,12 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
 
-                                        <button class="btn btn-primary btn-sm"
+                                        <button class="btn btn-primary"
                                             onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
-                                                class="fas fa-edit"></i>
-                                            Edit</button>
-                                        <button class="btn btn-danger btn-sm"
+                                                class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger"
                                             onclick="funcHapusUser('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
+                                                class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -195,9 +198,10 @@
                                 <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
                                 <input id="harga_barang_pemasok" type="number"
                                     class="form-control @error('harga_barang_pemasok') is-invalid @enderror"
-                                    name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required oninput="funcSingkronTotalBayar()">
+                                    name="harga_barang_pemasok" value="{{ old('harga_barang_pemasok') }}" required
+                                    oninput="funcSingkronTotalBayar()">
                                 @error('harga_barang_pemasok')
-                                    <span class="invalid-feedback" value="0" min="0"  role="alert">
+                                    <span class="invalid-feedback" value="0" min="0" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -207,7 +211,8 @@
                             <div class="form-group">
                                 <label for="stok">Jumlah Stok:</label>
                                 <input type="number" class="form-control" name="stok" id="stok"
-                                    placeholder="Jumlah Stok" oninput="funcSingkronTotalBayar()" value="0" min="0" required>
+                                    placeholder="Jumlah Stok" oninput="funcSingkronTotalBayar()" value="0"
+                                    min="0" required>
                             </div>
                             <div class="form-group">
                                 <label for="statusPembayaran">Status Pembayaran:</label>
