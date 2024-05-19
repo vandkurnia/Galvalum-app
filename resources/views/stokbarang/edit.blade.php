@@ -50,7 +50,6 @@
     </div>
 
     <div class="form-group">
-        @dump($dataBarang->harga_barang_pemasok)
         <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
         <input id="harga_barang_pemasok" type="text"
             class="form-control @error('harga_barang_pemasok') is-invalid @enderror" min="0"  name="harga_barang_pemasok"

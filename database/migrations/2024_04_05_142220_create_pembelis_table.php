@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('id_pembeli');
             $table->uuid('hash_id_pembeli')->unique();
             $table->string('nama_pembeli');
-            $table->string('alamat_pembeli');
+            $table->string('alamat_pembeli')->nullable();
             $table->enum('jenis_pembeli', ['harga_normal', 'aplicator', 'potongan'])->default('harga_normal');
             $table->string('no_hp_pembeli')->nullable();
             $table->timestamps();

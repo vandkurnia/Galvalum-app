@@ -168,55 +168,107 @@ class LaporanController extends Controller
         return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray]);
     }
 
-    public function laporanPiutang()
+    public function laporanPiutang(Request $request)
     {
 
+        if ($request->has('api')) {
+            return response()->json([
+                'code' => 200,
+                'message' => 'OK'
+            ]);
+        }
+        $tanggal = $request->get('tanggal');
 
-        $request = new Request;
-        $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
+        // Dumping the GET request parameters (For debugging purposes)
 
-        $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
-        $dataNotaPembelian = DB::select(
-            '
+        // Default to today's date if no date is provided
+        $tanggalDariInput = $tanggal ?? null;
+
+        $query = '
             SELECT 
-            nota_pembelis.id_nota,
-            pembelis.nama_pembeli,
-            pembelis.no_hp_pembeli,
-            SUM(pesanan_pembelis.jumlah_pembelian) AS total_pembelian,
-            DATE(nota_pembelis.created_at) AS tanggal_pembelian,
-            nota_pembelis.total,
-            nota_pembelis.nominal_terbayar as terbayar,
-            nota_pembelis.tenggat_bayar as jatuh_tempo,
-            CASE
-                WHEN nota_pembelis.total > nota_pembelis.nominal_terbayar THEN "Belum Lunas"
-                WHEN nota_pembelis.total < nota_pembelis.nominal_terbayar THEN "Kelebihan"
-                ELSE "Lunas"
-            END AS status_bayar
-        FROM 
-            nota_pembelis
-        JOIN 
-            pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
-        JOIN 
-            pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
-        JOIN
-            nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
-        JOIN
-            bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
-        WHERE 
-            bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total 
-        GROUP BY
-            nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar
-        
-  
-            ',
-            []
-        );
+                nota_pembelis.id_nota,
+                pembelis.nama_pembeli,
+                pembelis.no_hp_pembeli,
+                SUM(pesanan_pembelis.jumlah_pembelian) AS total_pembelian,
+                DATE(nota_pembelis.created_at) AS tanggal_pembelian,
+                nota_pembelis.total,
+                nota_pembelis.nominal_terbayar as terbayar,
+                nota_pembelis.tenggat_bayar as jatuh_tempo,
+                CASE
+                    WHEN nota_pembelis.total > nota_pembelis.nominal_terbayar THEN "Belum Lunas"
+                    WHEN nota_pembelis.total < nota_pembelis.nominal_terbayar THEN "Kelebihan"
+                    ELSE "Lunas"
+                END AS status_bayar
+            FROM 
+                nota_pembelis
+            JOIN 
+                pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
+            JOIN 
+                pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
+            JOIN
+                nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
+            JOIN
+                bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
+            WHERE 
+                bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total
+        ';
+
+        if ($tanggal) {
+            $query .= ' AND DATE(nota_pembelis.created_at) = ? ';
+            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $dataNotaPembelian = DB::select($query, [$tanggal]);
+        } else {
+            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $dataNotaPembelian = DB::select($query, []);
+        }
 
 
+
+
+
+        // Lunas
+        // Query for Lunas
+        $queryLunasdanKelebihan = '
+          SELECT 
+              nota_pembelis.id_nota,
+              pembelis.nama_pembeli,
+              pembelis.no_hp_pembeli,
+              SUM(pesanan_pembelis.jumlah_pembelian) AS total_pembelian,
+              DATE(nota_pembelis.created_at) AS tanggal_pembelian,
+              nota_pembelis.total,
+              nota_pembelis.nominal_terbayar as terbayar,
+              nota_pembelis.tenggat_bayar as jatuh_tempo,
+              "Lunas" AS status_bayar
+          FROM 
+              nota_pembelis
+          JOIN 
+              pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
+          JOIN 
+              pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
+          JOIN
+              nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
+          JOIN
+              bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
+          WHERE 
+              bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar = nota_pembelis.total OR nota_pembelis.nominal_terbayar > nota_pembelis.total
+      ';
+
+        if ($tanggal) {
+            $queryLunasdanKelebihan .= ' AND DATE(nota_pembelis.created_at) = ? ';
+            $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, [$tanggal]);
+        } else {
+            $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, []);
+        }
+
+        // Piutang
         $dataNotaPembelian = json_decode(json_encode($dataNotaPembelian), true);
 
+        // Lunas dan Kelebihan
+        $NotaPembelianLunasdanKelebihan =  json_decode(json_encode($dataNotaPembelianLunasdanKelebihan), true);
         // Logika untuk mengambil data dan menampilkan laporan piutang
-        return view('laporan.laporanpiutang', compact('dataNotaPembelian'));
+        return view('laporan.laporanpiutang', compact('dataNotaPembelian', 'NotaPembelianLunasdanKelebihan'));
     }
 
     public function kasKeluar(Request $request)
