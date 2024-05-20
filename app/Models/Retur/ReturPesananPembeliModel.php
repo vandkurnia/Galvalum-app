@@ -21,8 +21,8 @@ class ReturPesananPembeliModel extends Model
         'total',
         'qty',
         'qty_sebelum_perubahan',
-        'type_retur_pesanan',
-        'id_stok_barang',
+        'type_retur_pesanan'
+        // 'id_stok_barang',
     ];
 
     public function returPembeli()
@@ -35,8 +35,8 @@ class ReturPesananPembeliModel extends Model
         return $this->belongsTo(PesananPembeli::class, 'id_pesanan_pembeli');
     }
 
-    public function stokBarang()
-    {
-        return $this->belongsTo(StokBarangModel::class, 'id_stok_barang', 'id');
-    }
+    // public function stokBarang()
+    // {
+    //     return $this->belongsTo(StokBarangModel::class, 'id_stok_barang', 'id');
+    // }
 }

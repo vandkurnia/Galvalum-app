@@ -110,7 +110,10 @@ class PembelianController extends Controller
             $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
             $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
             $totalDiskon += $hargaDiskon;
-            // Buat data baru untuk PesananPembeli yang terhubung dengan NotaPembeli dan Barang
+
+
+
+            // Membuat Pesanan Pembeli
             $pesananPembeli = new PesananPembeli;
             $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
             $pesananPembeli->id_diskon = $diskonId;
@@ -120,7 +123,7 @@ class PembelianController extends Controller
             $pesananPembeli->jenis_pembelian = $pesanan['jenis_pelanggan'];
             $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
             $pesananPembeli->diskon = $hargaDiskon;
-            $pesananPembeli->save();
+
             // Array data user dari request
 
 
@@ -133,14 +136,17 @@ class PembelianController extends Controller
 
                 // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
                 // $barangData->save();
-                StokBarangModel::create([
+                $stokBarang = StokBarangModel::create([
                     'stok_keluar' => $pesanan['jumlah_pesanan'],
                     'id_barang' => $barangData->id_barang,
                 ]);
+                // Pindah ke PesananPembeli
+                $pesananPembeli->id_stokbarang = $stokBarang->id;
             } else {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Terjadi Kesalahan');
             }
+            $pesananPembeli->save();
         }
 
 
@@ -174,7 +180,7 @@ class PembelianController extends Controller
         $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
 
-        
+
 
         DB::commit();
         // dump($request->all());
@@ -227,23 +233,48 @@ class PembelianController extends Controller
 
     public function destroy($id)
     {
-        // $user = User::findOrFail($id);
-        // $user->delete();
-        $notaPembeli = notaPembeli::with('bukuBesar')->where('id_nota', $id)->first();
 
-        // $bukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
-
+        // Temukan NotaPembeli dengan relasi yang terkait
+        $notaPembeli = NotaPembeli::with([
+            'bukuBesar',
+            // 'PesananPembeli',
+            'PesananPembeli.stokBarang',
+            'returPembelis',
+            'returPembelis.returPesananPembelis'
+        ])->where('id_nota', $id)->first();
+        DB::beginTransaction();
         if ($notaPembeli) {
-
-
+            // Hapus semua BukuBesar terkait
             foreach ($notaPembeli->bukuBesar as $bukuBesar) {
                 $bukuBesar->delete();
             }
 
+            // Hapus semua PesananPembeli dan StokBarang terkait
+            foreach ($notaPembeli->PesananPembeli as $pesananPembeli2) {
+                // Hapus StokBarang terkait dengan PesananPembeli2
+                $pesananPembeli2->stokBarang->delete();
+                // Hapus PesananPembeli2 itu sendiri
+                $pesananPembeli2->delete();
+            }
+
+
+            // Hapus semua ReturPembeli dan ReturPesananPembeli terkait
+            foreach ($notaPembeli->returPembelis as $returPembeli) {
+                foreach ($returPembeli->returPesananPembelis as $returPesananPembeli) {
+
+                    $returPesananPembeli->delete();
+                }
+                $returPembeli->delete();
+            }
+
+            // Hapus NotaPembeli itu sendiri
             $notaPembeli->delete();
+
+            DB::commit();
 
             return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');
         } else {
+            DB::rollBack();
             return redirect()->route('pemesanan.index')->with('error', 'Nota Pembelian gagal dihapus');
         }
     }

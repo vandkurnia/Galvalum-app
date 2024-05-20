@@ -13,15 +13,23 @@ class StokBarangModel extends Model
     use SoftDeletes;
 
     protected $table = 'stok_barang';
-    protected $fillable = ['id_barang', 'id_bukubesar', 'stok_masuk', 'stok_keluar'];
+    protected $fillable = ['id_barang',
+    //  'id_bukubesar',
+      'stok_masuk', 'stok_keluar'];
 
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
     }
 
-    public function returPesananPembelis()
+    // public function returPesananPembelis()
+    // {
+    //     return $this->hasMany(ReturPesananPembeliModel::class, 'id_stok_barang', 'id');
+    // }
+
+    // Relasi dengan model PesananPembeli (One-to-One)
+    public function pesananPembeli()
     {
-        return $this->hasMany(ReturPesananPembeliModel::class, 'id_stok_barang', 'id');
+        return $this->belongsTo(PesananPembeli::class, 'id', 'id_stokbarang');
     }
 }

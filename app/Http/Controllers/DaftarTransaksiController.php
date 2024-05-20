@@ -11,44 +11,56 @@ use PDF;
 
 class DaftarTransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
-        $dataNotaPembeli = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->get()->toArray();
- 
+        // Ambil tanggal dari query string
+        $tanggal = $request->get('tanggal');
+
+        // Buat query builder untuk model NotaPembeli
+        $query = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang');
+
+        // Jika tanggal tersedia dalam query string, tambahkan kondisi WHERE
+        if ($tanggal) {
+            $query->whereDate('created_at', $tanggal);
+        }
+        // Urutkan hasil berdasarkan kolom created_at dari yang terbaru ke yang terlama
+        $query->orderBy('created_at', 'DESC');
+
+        // Ambil data sesuai dengan kondisi yang telah diterapkan
+        $dataNotaPembeli = $query->get()->toArray();
         foreach ($dataNotaPembeli as $index => $nota) {
             $totalPesanan = 0;
-            foreach ($nota['pesanan_pembeli'] as $pesananPembeli)
-            {
+            foreach ($nota['pesanan_pembeli'] as $pesananPembeli) {
                 $totalPesanan += $pesananPembeli['jumlah_pembelian'];
-
             }
 
-            
-            if($nota['total'] == $nota['nominal_terbayar']){
+
+            if ($nota['total'] == $nota['nominal_terbayar']) {
                 $statusPembayaran = "Lunas";
-            } else if ($nota['total'] < $nota['nominal_terbayar'])
-            {
+            } else if ($nota['total'] < $nota['nominal_terbayar']) {
                 $statusPembayaran = "Kelebihan";
-            } else if ($nota['total'] > $nota['nominal_terbayar'])
-            {
+            } else if ($nota['total'] > $nota['nominal_terbayar']) {
                 $statusPembayaran = "Piutang";
             } else {
                 $statusPembayaran = "Tidak Valid";
-
             }
             $dataNotaPembeli[$index]['status_pembayaran'] = $statusPembayaran;
-            $dataNotaPembeli[$index]['total_pesanan'] = $totalPesanan; 
+            $dataNotaPembeli[$index]['total_pesanan'] = $totalPesanan;
             // $nota->Pesanan->each(function ($pesanan) {
             //     $pesanan->count = $pesanan->jumlah_pembelian()->count();
             // });
-        }   
+        }
         // dd($dataNotaPembeli);
         return view('daftar_transaksi.daftar_transaksi', ['dataNotaPembeli' => $dataNotaPembeli]);
     }
     public function daftarBarangPesanan($id_nota)
     {
 
+        return response()->json([
+            'code' => 500,
+            'message' => 'This page is under construction'
+        ]);
         $dataBarangNotaPembeli = PesananPembeli::with('Barang')->where('id_nota', $id_nota)->get();
         if ($dataBarangNotaPembeli->isEmpty()) {
             return response()->json([

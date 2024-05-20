@@ -18,11 +18,11 @@ class PesananPembeli extends Model
         'diskon',
         'id_nota',
         'id_barang',
+        'id_stokbarang',
         'jenis_pembelian',
         'harga_potongan',
-        'id_diskon',
+        'id_diskon'
     ];
-    
 
 
     public function NotaPembeli()
@@ -43,5 +43,12 @@ class PesananPembeli extends Model
     public function diskon()
     {
         return $this->belongsTo(DiskonModel::class, 'id_diskon');
+    }
+
+
+    // Relasi dengan model StokBarang (One-to-One)
+    public function stokBarang()
+    {
+        return $this->hasOne(StokBarangModel::class, 'id', 'id_stokbarang');
     }
 }

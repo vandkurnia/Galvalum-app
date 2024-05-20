@@ -3,7 +3,7 @@
 @section('title', 'Daftar Transaksi')
 
 @section('header-custom')
-<link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 
 
@@ -15,6 +15,13 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Transaksi</h6>
+                <form>
+                    <div class="form-group">
+                        <label for="tanggal">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control"
+                            onchange="this.form.submit()">
+                    </div>
+                </form>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -34,8 +41,8 @@
                                 <th>Lunas</th>
                                 <th>Waktu Payment</th>
                                 <th>Payment Methode</th>
-                                <th>Cetak</th>
-                                <th>Aksi</th>
+                                <th data-orderable="false">Cetak</th>
+                                <th data-orderable="false">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +74,9 @@
                                             Surat Jalan</a>
                                     </td> --}}
                                     <td>
-                                        <button class="btn btn-warning" onclick="print('{{ route('cetak.invoice', ['no_nota' => $notaPembeli['no_nota']]) }}', '{{ route('cetak.surat-jalan',  ['no_nota' => $notaPembeli['no_nota']]) }}')"> <i class="fas fa-print"></i></button>
+                                        <button class="btn btn-warning"
+                                            onclick="print('{{ route('cetak.invoice', ['no_nota' => $notaPembeli['no_nota']]) }}', '{{ route('cetak.surat-jalan', ['no_nota' => $notaPembeli['no_nota']]) }}')">
+                                            <i class="fas fa-print"></i></button>
                                     </td>
                                     <td>
                                         <a href="{{ route('retur.pembeli.add', ['id_nota' => $notaPembeli['id_nota']]) }}"
@@ -160,12 +169,12 @@
 
 
 @section('javascript-custom')
-<script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        $('#dataTransaksi').DataTable();
-    });
-</script>
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTransaksi').DataTable();
+        });
+    </script>
     <script>
         function print(urlinvoice, urlsuratjalan) {
             var w = 805;

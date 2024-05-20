@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Retur\ReturPembeliModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,6 +49,12 @@ class NotaPembeli extends Model
     public function bukuBesar()
     {
         return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
+    }
+
+    // Relasi dengan ReturPembeli berdasarkan id_nota
+    public function returPembelis()
+    {
+        return $this->hasMany(ReturPembeliModel::class, 'id_nota', 'id_nota');
     }
     // protected static function booted()
     // {

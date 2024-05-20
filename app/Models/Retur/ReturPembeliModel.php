@@ -2,6 +2,7 @@
 
 namespace App\Models\Retur;
 
+use App\Models\NotaPembeli;
 use App\Models\Pembeli;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,17 @@ class ReturPembeliModel extends Model
         static::creating(function ($returPembeli) {
             $returPembeli->hash_id_retur_pembeli = Uuid::uuid4()->toString();
         });
+    }
+
+    // Relasi dengan NotaPembeli berdasarkan id_nota
+    public function notaPembeli()
+    {
+        return $this->belongsTo(NotaPembeli::class, 'id_nota', 'id_nota');
+    }
+
+    // Relasi dengan ReturPesananPembeli
+    public function returPesananPembelis()
+    {
+        return $this->hasMany(ReturPesananPembeliModel::class, 'id_retur_pembeli', 'id_retur_pembeli');
     }
 }

@@ -236,8 +236,7 @@ class MigrasiData extends Seeder
             
             $stokBarang = StokBarangModel::create([
                 'id_barang' =>  $barang->id_barang,
-                'stok_masuk' => 30,
-                'id_bukubesar' => $bukuBesar->id_bukubesar
+                'stok_masuk' => 30
             ]);
         }
     }
