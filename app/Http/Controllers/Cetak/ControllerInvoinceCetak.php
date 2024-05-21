@@ -16,8 +16,8 @@ class ControllerInvoinceCetak extends Controller
     public function print_invoice($no_nota)
     {
         $data['title'] = 'Print Invoice ' . $no_nota;
-        $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
-
+        $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang', 'bukuBesar')->where('no_nota', $no_nota)->first();
+     
 
         $dataPembeli = [
             [
@@ -107,6 +107,8 @@ class ControllerInvoinceCetak extends Controller
             'diskon' => $notaPembeliModel->diskon,
             'ongkir' => $notaPembeliModel->ongkir,
             'total' => $notaPembeliModel->total,
+            'dp' => ($notaPembeliModel['bukuBesar'][0]['debit'] - $notaPembeliModel['bukuBesar'][0]['kredit']),
+            'status' => $notaPembeliModel['total'] == $notaPembeliModel['nominal_terbayar'] ? 'lunas' : 'hutang',
             'list_barang' => $productsData
         ];
         $type = 2;

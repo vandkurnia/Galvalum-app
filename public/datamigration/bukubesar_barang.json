@@ -1,0 +1,3553 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+    {
+        "type": "table",
+        "name": "bukubesar_barang",
+        "database": "sql_galvalumdist",
+        "data": [
+            {
+                "id": "1",
+                "id_bukubesar": "1",
+                "id_barang": "1",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "2",
+                "id_bukubesar": "2",
+                "id_barang": "2",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "3",
+                "id_bukubesar": "3",
+                "id_barang": "3",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "4",
+                "id_bukubesar": "4",
+                "id_barang": "4",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "5",
+                "id_bukubesar": "5",
+                "id_barang": "5",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "6",
+                "id_bukubesar": "6",
+                "id_barang": "6",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "7",
+                "id_bukubesar": "7",
+                "id_barang": "7",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "8",
+                "id_bukubesar": "8",
+                "id_barang": "8",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "9",
+                "id_bukubesar": "9",
+                "id_barang": "9",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "10",
+                "id_bukubesar": "10",
+                "id_barang": "10",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "11",
+                "id_bukubesar": "11",
+                "id_barang": "11",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "12",
+                "id_bukubesar": "12",
+                "id_barang": "12",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "13",
+                "id_bukubesar": "13",
+                "id_barang": "13",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "14",
+                "id_bukubesar": "14",
+                "id_barang": "14",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "15",
+                "id_bukubesar": "15",
+                "id_barang": "15",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "16",
+                "id_bukubesar": "16",
+                "id_barang": "16",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "17",
+                "id_bukubesar": "17",
+                "id_barang": "17",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "18",
+                "id_bukubesar": "18",
+                "id_barang": "18",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "19",
+                "id_bukubesar": "19",
+                "id_barang": "19",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "20",
+                "id_bukubesar": "20",
+                "id_barang": "20",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "21",
+                "id_bukubesar": "21",
+                "id_barang": "21",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "22",
+                "id_bukubesar": "22",
+                "id_barang": "22",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "23",
+                "id_bukubesar": "23",
+                "id_barang": "23",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "24",
+                "id_bukubesar": "24",
+                "id_barang": "24",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "25",
+                "id_bukubesar": "25",
+                "id_barang": "25",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "26",
+                "id_bukubesar": "26",
+                "id_barang": "26",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "27",
+                "id_bukubesar": "27",
+                "id_barang": "27",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "28",
+                "id_bukubesar": "28",
+                "id_barang": "28",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "29",
+                "id_bukubesar": "29",
+                "id_barang": "29",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "30",
+                "id_bukubesar": "30",
+                "id_barang": "30",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "31",
+                "id_bukubesar": "31",
+                "id_barang": "31",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "32",
+                "id_bukubesar": "32",
+                "id_barang": "32",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "33",
+                "id_bukubesar": "33",
+                "id_barang": "33",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "34",
+                "id_bukubesar": "34",
+                "id_barang": "34",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "35",
+                "id_bukubesar": "35",
+                "id_barang": "35",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "36",
+                "id_bukubesar": "36",
+                "id_barang": "36",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "37",
+                "id_bukubesar": "37",
+                "id_barang": "37",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "38",
+                "id_bukubesar": "38",
+                "id_barang": "38",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "39",
+                "id_bukubesar": "39",
+                "id_barang": "39",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "40",
+                "id_bukubesar": "40",
+                "id_barang": "40",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "41",
+                "id_bukubesar": "41",
+                "id_barang": "41",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "42",
+                "id_bukubesar": "42",
+                "id_barang": "42",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "43",
+                "id_bukubesar": "43",
+                "id_barang": "43",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "44",
+                "id_bukubesar": "44",
+                "id_barang": "44",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "45",
+                "id_bukubesar": "45",
+                "id_barang": "45",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "46",
+                "id_bukubesar": "46",
+                "id_barang": "46",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "47",
+                "id_bukubesar": "47",
+                "id_barang": "47",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "48",
+                "id_bukubesar": "48",
+                "id_barang": "48",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "49",
+                "id_bukubesar": "49",
+                "id_barang": "49",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "50",
+                "id_bukubesar": "50",
+                "id_barang": "50",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "51",
+                "id_bukubesar": "51",
+                "id_barang": "51",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "52",
+                "id_bukubesar": "52",
+                "id_barang": "52",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "53",
+                "id_bukubesar": "53",
+                "id_barang": "53",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "54",
+                "id_bukubesar": "54",
+                "id_barang": "54",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "55",
+                "id_bukubesar": "55",
+                "id_barang": "55",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "56",
+                "id_bukubesar": "56",
+                "id_barang": "56",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "57",
+                "id_bukubesar": "57",
+                "id_barang": "57",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "58",
+                "id_bukubesar": "58",
+                "id_barang": "58",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "59",
+                "id_bukubesar": "59",
+                "id_barang": "59",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "60",
+                "id_bukubesar": "60",
+                "id_barang": "60",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "61",
+                "id_bukubesar": "61",
+                "id_barang": "61",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "62",
+                "id_bukubesar": "62",
+                "id_barang": "62",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "63",
+                "id_bukubesar": "63",
+                "id_barang": "63",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "64",
+                "id_bukubesar": "64",
+                "id_barang": "64",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "65",
+                "id_bukubesar": "65",
+                "id_barang": "65",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "66",
+                "id_bukubesar": "66",
+                "id_barang": "66",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "67",
+                "id_bukubesar": "67",
+                "id_barang": "67",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "68",
+                "id_bukubesar": "68",
+                "id_barang": "68",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "69",
+                "id_bukubesar": "69",
+                "id_barang": "69",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "70",
+                "id_bukubesar": "70",
+                "id_barang": "70",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "71",
+                "id_bukubesar": "71",
+                "id_barang": "71",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "72",
+                "id_bukubesar": "72",
+                "id_barang": "72",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "73",
+                "id_bukubesar": "73",
+                "id_barang": "73",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "74",
+                "id_bukubesar": "74",
+                "id_barang": "74",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "75",
+                "id_bukubesar": "75",
+                "id_barang": "75",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "76",
+                "id_bukubesar": "76",
+                "id_barang": "76",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "77",
+                "id_bukubesar": "77",
+                "id_barang": "77",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "78",
+                "id_bukubesar": "78",
+                "id_barang": "78",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "79",
+                "id_bukubesar": "79",
+                "id_barang": "79",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "80",
+                "id_bukubesar": "80",
+                "id_barang": "80",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "81",
+                "id_bukubesar": "81",
+                "id_barang": "81",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "82",
+                "id_bukubesar": "82",
+                "id_barang": "82",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "83",
+                "id_bukubesar": "83",
+                "id_barang": "83",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "84",
+                "id_bukubesar": "84",
+                "id_barang": "84",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "85",
+                "id_bukubesar": "85",
+                "id_barang": "85",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "86",
+                "id_bukubesar": "86",
+                "id_barang": "86",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "87",
+                "id_bukubesar": "87",
+                "id_barang": "87",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "88",
+                "id_bukubesar": "88",
+                "id_barang": "88",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "89",
+                "id_bukubesar": "89",
+                "id_barang": "89",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "90",
+                "id_bukubesar": "90",
+                "id_barang": "90",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "91",
+                "id_bukubesar": "91",
+                "id_barang": "91",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "92",
+                "id_bukubesar": "92",
+                "id_barang": "92",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "93",
+                "id_bukubesar": "93",
+                "id_barang": "93",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "94",
+                "id_bukubesar": "94",
+                "id_barang": "94",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "95",
+                "id_bukubesar": "95",
+                "id_barang": "95",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "96",
+                "id_bukubesar": "96",
+                "id_barang": "96",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "97",
+                "id_bukubesar": "97",
+                "id_barang": "97",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "98",
+                "id_bukubesar": "98",
+                "id_barang": "98",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "99",
+                "id_bukubesar": "99",
+                "id_barang": "99",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "100",
+                "id_bukubesar": "100",
+                "id_barang": "100",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "101",
+                "id_bukubesar": "101",
+                "id_barang": "101",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "102",
+                "id_bukubesar": "102",
+                "id_barang": "102",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "103",
+                "id_bukubesar": "103",
+                "id_barang": "103",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "104",
+                "id_bukubesar": "104",
+                "id_barang": "104",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "105",
+                "id_bukubesar": "105",
+                "id_barang": "105",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "106",
+                "id_bukubesar": "106",
+                "id_barang": "106",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "107",
+                "id_bukubesar": "107",
+                "id_barang": "107",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "108",
+                "id_bukubesar": "108",
+                "id_barang": "108",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "109",
+                "id_bukubesar": "109",
+                "id_barang": "109",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "110",
+                "id_bukubesar": "110",
+                "id_barang": "110",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "111",
+                "id_bukubesar": "111",
+                "id_barang": "111",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "112",
+                "id_bukubesar": "112",
+                "id_barang": "112",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "113",
+                "id_bukubesar": "113",
+                "id_barang": "113",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "114",
+                "id_bukubesar": "114",
+                "id_barang": "114",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "115",
+                "id_bukubesar": "115",
+                "id_barang": "115",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "116",
+                "id_bukubesar": "116",
+                "id_barang": "116",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "117",
+                "id_bukubesar": "117",
+                "id_barang": "117",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "118",
+                "id_bukubesar": "118",
+                "id_barang": "118",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "119",
+                "id_bukubesar": "119",
+                "id_barang": "119",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "120",
+                "id_bukubesar": "120",
+                "id_barang": "120",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "121",
+                "id_bukubesar": "121",
+                "id_barang": "121",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "122",
+                "id_bukubesar": "122",
+                "id_barang": "122",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "123",
+                "id_bukubesar": "123",
+                "id_barang": "123",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "124",
+                "id_bukubesar": "124",
+                "id_barang": "124",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "125",
+                "id_bukubesar": "125",
+                "id_barang": "125",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "126",
+                "id_bukubesar": "126",
+                "id_barang": "126",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "127",
+                "id_bukubesar": "127",
+                "id_barang": "127",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "128",
+                "id_bukubesar": "128",
+                "id_barang": "128",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "129",
+                "id_bukubesar": "129",
+                "id_barang": "129",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "130",
+                "id_bukubesar": "130",
+                "id_barang": "130",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "131",
+                "id_bukubesar": "131",
+                "id_barang": "131",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "132",
+                "id_bukubesar": "132",
+                "id_barang": "132",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "133",
+                "id_bukubesar": "133",
+                "id_barang": "133",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "134",
+                "id_bukubesar": "134",
+                "id_barang": "134",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "135",
+                "id_bukubesar": "135",
+                "id_barang": "135",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "136",
+                "id_bukubesar": "136",
+                "id_barang": "136",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "137",
+                "id_bukubesar": "137",
+                "id_barang": "137",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "138",
+                "id_bukubesar": "138",
+                "id_barang": "138",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "139",
+                "id_bukubesar": "139",
+                "id_barang": "139",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "140",
+                "id_bukubesar": "140",
+                "id_barang": "140",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "141",
+                "id_bukubesar": "141",
+                "id_barang": "141",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "142",
+                "id_bukubesar": "142",
+                "id_barang": "142",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "143",
+                "id_bukubesar": "143",
+                "id_barang": "143",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "144",
+                "id_bukubesar": "144",
+                "id_barang": "144",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "145",
+                "id_bukubesar": "145",
+                "id_barang": "145",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "146",
+                "id_bukubesar": "146",
+                "id_barang": "146",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "147",
+                "id_bukubesar": "147",
+                "id_barang": "147",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "148",
+                "id_bukubesar": "148",
+                "id_barang": "148",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "149",
+                "id_bukubesar": "149",
+                "id_barang": "149",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "150",
+                "id_bukubesar": "150",
+                "id_barang": "150",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "151",
+                "id_bukubesar": "151",
+                "id_barang": "151",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "152",
+                "id_bukubesar": "152",
+                "id_barang": "152",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "153",
+                "id_bukubesar": "153",
+                "id_barang": "153",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "154",
+                "id_bukubesar": "154",
+                "id_barang": "154",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "155",
+                "id_bukubesar": "155",
+                "id_barang": "155",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "156",
+                "id_bukubesar": "156",
+                "id_barang": "156",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "157",
+                "id_bukubesar": "157",
+                "id_barang": "157",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "158",
+                "id_bukubesar": "158",
+                "id_barang": "158",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "159",
+                "id_bukubesar": "159",
+                "id_barang": "159",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "160",
+                "id_bukubesar": "160",
+                "id_barang": "160",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "161",
+                "id_bukubesar": "161",
+                "id_barang": "161",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "162",
+                "id_bukubesar": "162",
+                "id_barang": "162",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "163",
+                "id_bukubesar": "163",
+                "id_barang": "163",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "164",
+                "id_bukubesar": "164",
+                "id_barang": "164",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "165",
+                "id_bukubesar": "165",
+                "id_barang": "165",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "166",
+                "id_bukubesar": "166",
+                "id_barang": "166",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "167",
+                "id_bukubesar": "167",
+                "id_barang": "167",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "168",
+                "id_bukubesar": "168",
+                "id_barang": "168",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "169",
+                "id_bukubesar": "169",
+                "id_barang": "169",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "170",
+                "id_bukubesar": "170",
+                "id_barang": "170",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "171",
+                "id_bukubesar": "171",
+                "id_barang": "171",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "172",
+                "id_bukubesar": "172",
+                "id_barang": "172",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "173",
+                "id_bukubesar": "173",
+                "id_barang": "173",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "174",
+                "id_bukubesar": "174",
+                "id_barang": "174",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "175",
+                "id_bukubesar": "175",
+                "id_barang": "175",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "176",
+                "id_bukubesar": "176",
+                "id_barang": "176",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "177",
+                "id_bukubesar": "177",
+                "id_barang": "177",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "178",
+                "id_bukubesar": "178",
+                "id_barang": "178",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "179",
+                "id_bukubesar": "179",
+                "id_barang": "179",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "180",
+                "id_bukubesar": "180",
+                "id_barang": "180",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "181",
+                "id_bukubesar": "181",
+                "id_barang": "181",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "182",
+                "id_bukubesar": "182",
+                "id_barang": "182",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "183",
+                "id_bukubesar": "183",
+                "id_barang": "183",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "184",
+                "id_bukubesar": "184",
+                "id_barang": "184",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "185",
+                "id_bukubesar": "185",
+                "id_barang": "185",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "186",
+                "id_bukubesar": "186",
+                "id_barang": "186",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "187",
+                "id_bukubesar": "187",
+                "id_barang": "187",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "188",
+                "id_bukubesar": "188",
+                "id_barang": "188",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "189",
+                "id_bukubesar": "189",
+                "id_barang": "189",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "190",
+                "id_bukubesar": "190",
+                "id_barang": "190",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "191",
+                "id_bukubesar": "191",
+                "id_barang": "191",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "192",
+                "id_bukubesar": "192",
+                "id_barang": "192",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "193",
+                "id_bukubesar": "193",
+                "id_barang": "193",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "194",
+                "id_bukubesar": "194",
+                "id_barang": "194",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "195",
+                "id_bukubesar": "195",
+                "id_barang": "195",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "196",
+                "id_bukubesar": "196",
+                "id_barang": "196",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "197",
+                "id_bukubesar": "197",
+                "id_barang": "197",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "198",
+                "id_bukubesar": "198",
+                "id_barang": "198",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "199",
+                "id_bukubesar": "199",
+                "id_barang": "199",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "200",
+                "id_bukubesar": "200",
+                "id_barang": "200",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "201",
+                "id_bukubesar": "201",
+                "id_barang": "201",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "202",
+                "id_bukubesar": "202",
+                "id_barang": "202",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "203",
+                "id_bukubesar": "203",
+                "id_barang": "203",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "204",
+                "id_bukubesar": "204",
+                "id_barang": "204",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "205",
+                "id_bukubesar": "205",
+                "id_barang": "205",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "206",
+                "id_bukubesar": "206",
+                "id_barang": "206",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "207",
+                "id_bukubesar": "207",
+                "id_barang": "207",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "208",
+                "id_bukubesar": "208",
+                "id_barang": "208",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "209",
+                "id_bukubesar": "209",
+                "id_barang": "209",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "210",
+                "id_bukubesar": "210",
+                "id_barang": "210",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "211",
+                "id_bukubesar": "211",
+                "id_barang": "211",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "212",
+                "id_bukubesar": "212",
+                "id_barang": "212",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "213",
+                "id_bukubesar": "213",
+                "id_barang": "213",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "214",
+                "id_bukubesar": "214",
+                "id_barang": "214",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "215",
+                "id_bukubesar": "215",
+                "id_barang": "215",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "216",
+                "id_bukubesar": "216",
+                "id_barang": "216",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "217",
+                "id_bukubesar": "217",
+                "id_barang": "217",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "218",
+                "id_bukubesar": "218",
+                "id_barang": "218",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "219",
+                "id_bukubesar": "219",
+                "id_barang": "219",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "220",
+                "id_bukubesar": "220",
+                "id_barang": "220",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "221",
+                "id_bukubesar": "221",
+                "id_barang": "221",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "222",
+                "id_bukubesar": "222",
+                "id_barang": "222",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "223",
+                "id_bukubesar": "223",
+                "id_barang": "223",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "224",
+                "id_bukubesar": "224",
+                "id_barang": "224",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "225",
+                "id_bukubesar": "225",
+                "id_barang": "225",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "226",
+                "id_bukubesar": "226",
+                "id_barang": "226",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "227",
+                "id_bukubesar": "227",
+                "id_barang": "227",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "228",
+                "id_bukubesar": "228",
+                "id_barang": "228",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "229",
+                "id_bukubesar": "229",
+                "id_barang": "229",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "230",
+                "id_bukubesar": "230",
+                "id_barang": "230",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "231",
+                "id_bukubesar": "231",
+                "id_barang": "231",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "232",
+                "id_bukubesar": "232",
+                "id_barang": "232",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "233",
+                "id_bukubesar": "233",
+                "id_barang": "233",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "234",
+                "id_bukubesar": "234",
+                "id_barang": "234",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "235",
+                "id_bukubesar": "235",
+                "id_barang": "235",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "236",
+                "id_bukubesar": "236",
+                "id_barang": "236",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "237",
+                "id_bukubesar": "237",
+                "id_barang": "237",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "238",
+                "id_bukubesar": "238",
+                "id_barang": "238",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "239",
+                "id_bukubesar": "239",
+                "id_barang": "239",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "240",
+                "id_bukubesar": "240",
+                "id_barang": "240",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "241",
+                "id_bukubesar": "241",
+                "id_barang": "241",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "242",
+                "id_bukubesar": "242",
+                "id_barang": "242",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "243",
+                "id_bukubesar": "243",
+                "id_barang": "243",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "244",
+                "id_bukubesar": "244",
+                "id_barang": "244",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "245",
+                "id_bukubesar": "245",
+                "id_barang": "245",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "246",
+                "id_bukubesar": "246",
+                "id_barang": "246",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "247",
+                "id_bukubesar": "247",
+                "id_barang": "247",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "248",
+                "id_bukubesar": "248",
+                "id_barang": "248",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "249",
+                "id_bukubesar": "249",
+                "id_barang": "249",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "250",
+                "id_bukubesar": "250",
+                "id_barang": "250",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "251",
+                "id_bukubesar": "251",
+                "id_barang": "251",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "252",
+                "id_bukubesar": "252",
+                "id_barang": "252",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "253",
+                "id_bukubesar": "253",
+                "id_barang": "253",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "254",
+                "id_bukubesar": "254",
+                "id_barang": "254",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "255",
+                "id_bukubesar": "255",
+                "id_barang": "255",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "256",
+                "id_bukubesar": "256",
+                "id_barang": "256",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "257",
+                "id_bukubesar": "257",
+                "id_barang": "257",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "258",
+                "id_bukubesar": "258",
+                "id_barang": "258",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "259",
+                "id_bukubesar": "259",
+                "id_barang": "259",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "260",
+                "id_bukubesar": "260",
+                "id_barang": "260",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "261",
+                "id_bukubesar": "261",
+                "id_barang": "261",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "262",
+                "id_bukubesar": "262",
+                "id_barang": "262",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "263",
+                "id_bukubesar": "263",
+                "id_barang": "263",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "264",
+                "id_bukubesar": "264",
+                "id_barang": "264",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "265",
+                "id_bukubesar": "265",
+                "id_barang": "265",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "266",
+                "id_bukubesar": "266",
+                "id_barang": "266",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "267",
+                "id_bukubesar": "267",
+                "id_barang": "267",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "268",
+                "id_bukubesar": "268",
+                "id_barang": "268",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "269",
+                "id_bukubesar": "269",
+                "id_barang": "269",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "270",
+                "id_bukubesar": "270",
+                "id_barang": "270",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "271",
+                "id_bukubesar": "271",
+                "id_barang": "271",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "272",
+                "id_bukubesar": "272",
+                "id_barang": "272",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "273",
+                "id_bukubesar": "273",
+                "id_barang": "273",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "274",
+                "id_bukubesar": "274",
+                "id_barang": "274",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "275",
+                "id_bukubesar": "275",
+                "id_barang": "275",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "276",
+                "id_bukubesar": "276",
+                "id_barang": "276",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "277",
+                "id_bukubesar": "277",
+                "id_barang": "277",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "278",
+                "id_bukubesar": "278",
+                "id_barang": "278",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "279",
+                "id_bukubesar": "279",
+                "id_barang": "279",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "280",
+                "id_bukubesar": "280",
+                "id_barang": "280",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "281",
+                "id_bukubesar": "281",
+                "id_barang": "281",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "282",
+                "id_bukubesar": "282",
+                "id_barang": "282",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "283",
+                "id_bukubesar": "283",
+                "id_barang": "283",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "284",
+                "id_bukubesar": "284",
+                "id_barang": "284",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "285",
+                "id_bukubesar": "285",
+                "id_barang": "285",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "286",
+                "id_bukubesar": "286",
+                "id_barang": "286",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "287",
+                "id_bukubesar": "287",
+                "id_barang": "287",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "288",
+                "id_bukubesar": "288",
+                "id_barang": "288",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "289",
+                "id_bukubesar": "289",
+                "id_barang": "289",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "290",
+                "id_bukubesar": "290",
+                "id_barang": "290",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "291",
+                "id_bukubesar": "291",
+                "id_barang": "291",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "292",
+                "id_bukubesar": "292",
+                "id_barang": "292",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "293",
+                "id_bukubesar": "293",
+                "id_barang": "293",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "294",
+                "id_bukubesar": "294",
+                "id_barang": "294",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "295",
+                "id_bukubesar": "295",
+                "id_barang": "295",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "296",
+                "id_bukubesar": "296",
+                "id_barang": "296",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "297",
+                "id_bukubesar": "297",
+                "id_barang": "297",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "298",
+                "id_bukubesar": "298",
+                "id_barang": "298",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "299",
+                "id_bukubesar": "299",
+                "id_barang": "299",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "300",
+                "id_bukubesar": "300",
+                "id_barang": "300",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "301",
+                "id_bukubesar": "301",
+                "id_barang": "301",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "302",
+                "id_bukubesar": "302",
+                "id_barang": "302",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "303",
+                "id_bukubesar": "303",
+                "id_barang": "303",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "304",
+                "id_bukubesar": "304",
+                "id_barang": "304",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "305",
+                "id_bukubesar": "305",
+                "id_barang": "305",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "306",
+                "id_bukubesar": "306",
+                "id_barang": "306",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "307",
+                "id_bukubesar": "307",
+                "id_barang": "307",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "308",
+                "id_bukubesar": "308",
+                "id_barang": "308",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "309",
+                "id_bukubesar": "309",
+                "id_barang": "309",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "310",
+                "id_bukubesar": "310",
+                "id_barang": "310",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "311",
+                "id_bukubesar": "311",
+                "id_barang": "311",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "312",
+                "id_bukubesar": "312",
+                "id_barang": "312",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "313",
+                "id_bukubesar": "313",
+                "id_barang": "313",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "314",
+                "id_bukubesar": "314",
+                "id_barang": "314",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "315",
+                "id_bukubesar": "315",
+                "id_barang": "315",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "316",
+                "id_bukubesar": "316",
+                "id_barang": "316",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "317",
+                "id_bukubesar": "317",
+                "id_barang": "317",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "318",
+                "id_bukubesar": "318",
+                "id_barang": "318",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "319",
+                "id_bukubesar": "319",
+                "id_barang": "319",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "320",
+                "id_bukubesar": "320",
+                "id_barang": "320",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "321",
+                "id_bukubesar": "321",
+                "id_barang": "321",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "322",
+                "id_bukubesar": "322",
+                "id_barang": "322",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "323",
+                "id_bukubesar": "323",
+                "id_barang": "323",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "324",
+                "id_bukubesar": "324",
+                "id_barang": "324",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "325",
+                "id_bukubesar": "325",
+                "id_barang": "325",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "326",
+                "id_bukubesar": "326",
+                "id_barang": "326",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "327",
+                "id_bukubesar": "327",
+                "id_barang": "327",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "328",
+                "id_bukubesar": "328",
+                "id_barang": "328",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "329",
+                "id_bukubesar": "329",
+                "id_barang": "329",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "330",
+                "id_bukubesar": "330",
+                "id_barang": "330",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "331",
+                "id_bukubesar": "331",
+                "id_barang": "331",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "332",
+                "id_bukubesar": "332",
+                "id_barang": "332",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "333",
+                "id_bukubesar": "333",
+                "id_barang": "333",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "334",
+                "id_bukubesar": "334",
+                "id_barang": "334",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "335",
+                "id_bukubesar": "335",
+                "id_barang": "335",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "336",
+                "id_bukubesar": "336",
+                "id_barang": "336",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "337",
+                "id_bukubesar": "337",
+                "id_barang": "337",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "338",
+                "id_bukubesar": "338",
+                "id_barang": "338",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "339",
+                "id_bukubesar": "339",
+                "id_barang": "339",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "340",
+                "id_bukubesar": "340",
+                "id_barang": "340",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "341",
+                "id_bukubesar": "341",
+                "id_barang": "341",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "342",
+                "id_bukubesar": "342",
+                "id_barang": "342",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "343",
+                "id_bukubesar": "343",
+                "id_barang": "343",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "344",
+                "id_bukubesar": "344",
+                "id_barang": "344",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "345",
+                "id_bukubesar": "345",
+                "id_barang": "345",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "346",
+                "id_bukubesar": "346",
+                "id_barang": "346",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "347",
+                "id_bukubesar": "347",
+                "id_barang": "347",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "348",
+                "id_bukubesar": "348",
+                "id_barang": "348",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "349",
+                "id_bukubesar": "349",
+                "id_barang": "349",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "350",
+                "id_bukubesar": "350",
+                "id_barang": "350",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "351",
+                "id_bukubesar": "351",
+                "id_barang": "351",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "352",
+                "id_bukubesar": "352",
+                "id_barang": "352",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "353",
+                "id_bukubesar": "353",
+                "id_barang": "353",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "354",
+                "id_bukubesar": "354",
+                "id_barang": "354",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "355",
+                "id_bukubesar": "355",
+                "id_barang": "355",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "356",
+                "id_bukubesar": "356",
+                "id_barang": "356",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "357",
+                "id_bukubesar": "357",
+                "id_barang": "357",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "358",
+                "id_bukubesar": "358",
+                "id_barang": "358",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "359",
+                "id_bukubesar": "359",
+                "id_barang": "359",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "360",
+                "id_bukubesar": "360",
+                "id_barang": "360",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "361",
+                "id_bukubesar": "361",
+                "id_barang": "361",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "362",
+                "id_bukubesar": "769",
+                "id_barang": "362",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "363",
+                "id_bukubesar": "770",
+                "id_barang": "362",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "364",
+                "id_bukubesar": "771",
+                "id_barang": "363",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "365",
+                "id_bukubesar": "772",
+                "id_barang": "363",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "366",
+                "id_bukubesar": "773",
+                "id_barang": "364",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "367",
+                "id_bukubesar": "774",
+                "id_barang": "364",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "368",
+                "id_bukubesar": "775",
+                "id_barang": "365",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "369",
+                "id_bukubesar": "776",
+                "id_barang": "365",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "370",
+                "id_bukubesar": "777",
+                "id_barang": "366",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "371",
+                "id_bukubesar": "778",
+                "id_barang": "366",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "372",
+                "id_bukubesar": "779",
+                "id_barang": "367",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "373",
+                "id_bukubesar": "780",
+                "id_barang": "367",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "374",
+                "id_bukubesar": "781",
+                "id_barang": "368",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "375",
+                "id_bukubesar": "782",
+                "id_barang": "368",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "376",
+                "id_bukubesar": "795",
+                "id_barang": "369",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "377",
+                "id_bukubesar": "796",
+                "id_barang": "369",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "378",
+                "id_bukubesar": "804",
+                "id_barang": "370",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "379",
+                "id_bukubesar": "805",
+                "id_barang": "370",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "380",
+                "id_bukubesar": "855",
+                "id_barang": "371",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "381",
+                "id_bukubesar": "856",
+                "id_barang": "371",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "382",
+                "id_bukubesar": "862",
+                "id_barang": "372",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "383",
+                "id_bukubesar": "863",
+                "id_barang": "372",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "384",
+                "id_bukubesar": "864",
+                "id_barang": "373",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "385",
+                "id_bukubesar": "865",
+                "id_barang": "373",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "386",
+                "id_bukubesar": "936",
+                "id_barang": "374",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "387",
+                "id_bukubesar": "937",
+                "id_barang": "374",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "388",
+                "id_bukubesar": "954",
+                "id_barang": "375",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "389",
+                "id_bukubesar": "955",
+                "id_barang": "375",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "390",
+                "id_bukubesar": "1010",
+                "id_barang": "376",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "391",
+                "id_bukubesar": "1011",
+                "id_barang": "376",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "392",
+                "id_bukubesar": "1012",
+                "id_barang": "377",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "393",
+                "id_bukubesar": "1013",
+                "id_barang": "377",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "394",
+                "id_bukubesar": "1014",
+                "id_barang": "378",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "395",
+                "id_bukubesar": "1015",
+                "id_barang": "378",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "396",
+                "id_bukubesar": "1016",
+                "id_barang": "379",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "397",
+                "id_bukubesar": "1017",
+                "id_barang": "379",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "398",
+                "id_bukubesar": "1018",
+                "id_barang": "380",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "399",
+                "id_bukubesar": "1019",
+                "id_barang": "380",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "400",
+                "id_bukubesar": "1020",
+                "id_barang": "381",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "401",
+                "id_bukubesar": "1021",
+                "id_barang": "381",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "402",
+                "id_bukubesar": "1022",
+                "id_barang": "382",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "403",
+                "id_bukubesar": "1023",
+                "id_barang": "382",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "404",
+                "id_bukubesar": "1025",
+                "id_barang": "383",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "405",
+                "id_bukubesar": "1026",
+                "id_barang": "383",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "406",
+                "id_bukubesar": "1027",
+                "id_barang": "384",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "407",
+                "id_bukubesar": "1028",
+                "id_barang": "384",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "408",
+                "id_bukubesar": "1029",
+                "id_barang": "385",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "409",
+                "id_bukubesar": "1030",
+                "id_barang": "385",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "410",
+                "id_bukubesar": "1031",
+                "id_barang": "386",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "411",
+                "id_bukubesar": "1032",
+                "id_barang": "386",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "412",
+                "id_bukubesar": "1054",
+                "id_barang": "387",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "413",
+                "id_bukubesar": "1055",
+                "id_barang": "387",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "414",
+                "id_bukubesar": "1056",
+                "id_barang": "388",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "415",
+                "id_bukubesar": "1057",
+                "id_barang": "388",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "416",
+                "id_bukubesar": "1065",
+                "id_barang": "389",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "417",
+                "id_bukubesar": "1066",
+                "id_barang": "389",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "418",
+                "id_bukubesar": "1071",
+                "id_barang": "390",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "419",
+                "id_bukubesar": "1072",
+                "id_barang": "390",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "420",
+                "id_bukubesar": "1073",
+                "id_barang": "391",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "421",
+                "id_bukubesar": "1074",
+                "id_barang": "391",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "422",
+                "id_bukubesar": "1076",
+                "id_barang": "392",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "423",
+                "id_bukubesar": "1077",
+                "id_barang": "392",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "424",
+                "id_bukubesar": "1159",
+                "id_barang": "393",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "425",
+                "id_bukubesar": "1160",
+                "id_barang": "393",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "426",
+                "id_bukubesar": "1161",
+                "id_barang": "394",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "427",
+                "id_bukubesar": "1162",
+                "id_barang": "394",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "428",
+                "id_bukubesar": "1163",
+                "id_barang": "395",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "429",
+                "id_bukubesar": "1164",
+                "id_barang": "395",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "430",
+                "id_bukubesar": "1186",
+                "id_barang": "396",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "431",
+                "id_bukubesar": "1187",
+                "id_barang": "396",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "432",
+                "id_bukubesar": "1188",
+                "id_barang": "397",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "433",
+                "id_bukubesar": "1189",
+                "id_barang": "397",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "434",
+                "id_bukubesar": "1190",
+                "id_barang": "398",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "435",
+                "id_bukubesar": "1191",
+                "id_barang": "398",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "436",
+                "id_bukubesar": "1198",
+                "id_barang": "399",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "437",
+                "id_bukubesar": "1199",
+                "id_barang": "399",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "438",
+                "id_bukubesar": "1233",
+                "id_barang": "400",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "439",
+                "id_bukubesar": "1234",
+                "id_barang": "400",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "440",
+                "id_bukubesar": "1246",
+                "id_barang": "401",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "441",
+                "id_bukubesar": "1247",
+                "id_barang": "401",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "442",
+                "id_bukubesar": "1310",
+                "id_barang": "402",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "443",
+                "id_bukubesar": "1311",
+                "id_barang": "402",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "444",
+                "id_bukubesar": "1312",
+                "id_barang": "403",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "445",
+                "id_bukubesar": "1313",
+                "id_barang": "403",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "446",
+                "id_bukubesar": "1314",
+                "id_barang": "404",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "447",
+                "id_bukubesar": "1315",
+                "id_barang": "404",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "448",
+                "id_bukubesar": "1382",
+                "id_barang": "405",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "449",
+                "id_bukubesar": "1383",
+                "id_barang": "405",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "450",
+                "id_bukubesar": "1419",
+                "id_barang": "406",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "451",
+                "id_bukubesar": "1420",
+                "id_barang": "406",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "452",
+                "id_bukubesar": "1450",
+                "id_barang": "407",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "453",
+                "id_bukubesar": "1451",
+                "id_barang": "407",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "454",
+                "id_bukubesar": "1452",
+                "id_barang": "408",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "455",
+                "id_bukubesar": "1453",
+                "id_barang": "408",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "456",
+                "id_bukubesar": "1454",
+                "id_barang": "409",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "457",
+                "id_bukubesar": "1455",
+                "id_barang": "409",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "458",
+                "id_bukubesar": "1456",
+                "id_barang": "410",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "459",
+                "id_bukubesar": "1457",
+                "id_barang": "410",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "460",
+                "id_bukubesar": "1461",
+                "id_barang": "411",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "461",
+                "id_bukubesar": "1462",
+                "id_barang": "411",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "462",
+                "id_bukubesar": "1463",
+                "id_barang": "412",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "463",
+                "id_bukubesar": "1464",
+                "id_barang": "412",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "464",
+                "id_bukubesar": "1465",
+                "id_barang": "413",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "465",
+                "id_bukubesar": "1466",
+                "id_barang": "413",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "466",
+                "id_bukubesar": "1467",
+                "id_barang": "414",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "467",
+                "id_bukubesar": "1468",
+                "id_barang": "414",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "468",
+                "id_bukubesar": "1469",
+                "id_barang": "415",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "469",
+                "id_bukubesar": "1470",
+                "id_barang": "415",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "470",
+                "id_bukubesar": "1501",
+                "id_barang": "416",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "471",
+                "id_bukubesar": "1502",
+                "id_barang": "416",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "472",
+                "id_bukubesar": "1516",
+                "id_barang": "417",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "473",
+                "id_bukubesar": "1517",
+                "id_barang": "417",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "474",
+                "id_bukubesar": "1518",
+                "id_barang": "418",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "475",
+                "id_bukubesar": "1519",
+                "id_barang": "418",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "476",
+                "id_bukubesar": "1520",
+                "id_barang": "419",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "477",
+                "id_bukubesar": "1521",
+                "id_barang": "419",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "478",
+                "id_bukubesar": "1524",
+                "id_barang": "420",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "479",
+                "id_bukubesar": "1525",
+                "id_barang": "420",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "480",
+                "id_bukubesar": "1526",
+                "id_barang": "421",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "481",
+                "id_bukubesar": "1527",
+                "id_barang": "421",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "482",
+                "id_bukubesar": "1528",
+                "id_barang": "422",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "483",
+                "id_bukubesar": "1529",
+                "id_barang": "422",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "484",
+                "id_bukubesar": "1530",
+                "id_barang": "423",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "485",
+                "id_bukubesar": "1531",
+                "id_barang": "423",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "486",
+                "id_bukubesar": "1533",
+                "id_barang": "424",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "487",
+                "id_bukubesar": "1534",
+                "id_barang": "424",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "488",
+                "id_bukubesar": "1535",
+                "id_barang": "425",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "489",
+                "id_bukubesar": "1536",
+                "id_barang": "425",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "490",
+                "id_bukubesar": "1537",
+                "id_barang": "426",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "491",
+                "id_bukubesar": "1538",
+                "id_barang": "426",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "492",
+                "id_bukubesar": "1539",
+                "id_barang": "427",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "493",
+                "id_bukubesar": "1540",
+                "id_barang": "427",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "494",
+                "id_bukubesar": "1551",
+                "id_barang": "428",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "495",
+                "id_bukubesar": "1552",
+                "id_barang": "428",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "496",
+                "id_bukubesar": "1553",
+                "id_barang": "429",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "497",
+                "id_bukubesar": "1554",
+                "id_barang": "429",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "498",
+                "id_bukubesar": "1555",
+                "id_barang": "430",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "499",
+                "id_bukubesar": "1556",
+                "id_barang": "430",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "500",
+                "id_bukubesar": "1557",
+                "id_barang": "431",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "501",
+                "id_bukubesar": "1558",
+                "id_barang": "431",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "502",
+                "id_bukubesar": "1559",
+                "id_barang": "432",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "503",
+                "id_bukubesar": "1560",
+                "id_barang": "432",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "504",
+                "id_bukubesar": "1561",
+                "id_barang": "433",
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": "505",
+                "id_bukubesar": "1562",
+                "id_barang": "433",
+                "created_at": null,
+                "updated_at": null
+            }
+        ]
+    }
+]

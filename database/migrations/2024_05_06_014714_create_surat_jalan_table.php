@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('surat_jalan', function (Blueprint $table) {
             $table->id('id_surat_jalan');
-            $table->string('no_surat_jalan')->unique();
+            // $table->string('no_surat_jalan')->unique();
+            $table->string('no_surat_jalan');
+            // Nanti Perbiaki
             $table->unsignedBigInteger('id_nota');
             $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();

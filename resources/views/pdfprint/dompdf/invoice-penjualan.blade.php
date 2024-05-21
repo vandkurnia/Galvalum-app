@@ -21,7 +21,7 @@
             min-height: 95vh;
             min-width: 80vw;
             box-sizing: border-box;
-            
+
         }
 
         h1 {
@@ -47,19 +47,18 @@
 
         /* End format body */
         /* Header */
-        
+
 
 
 
         /* End of kosong */
         /* Box Border */
         .box-border {
-           
+
             flex-grow: 1;
         }
 
-        .box-border-top {
-        }
+        .box-border-top {}
 
 
 
@@ -223,7 +222,7 @@
                     <tr class="fw-light">
                         <td class="nama-pembeli" style="font-size: 14px; height:20px;">
                             @foreach ($dataPembeli as $index => $data)
-                                <span style="margin-bottom: 5px;">{{ $data['nama'] }}<br><br></span> 
+                                <span style="margin-bottom: 5px;">{{ $data['nama'] }}<br><br></span>
                                 <span style="margin-bottom: 5px;">{{ $data['alamat'] }} <br><br></span>
                                 <span style="margin-bottom: 5px;">{{ $data['telp'] }}</span>
                             @endforeach
@@ -243,8 +242,7 @@
         </div>
 
 
-        <div class="informasi-surat-lain"
-            style="position: absolute; right:0; width:300px; height:320px;">
+        <div class="informasi-surat-lain" style="position: absolute; right:0; width:300px; height:320px;">
             <div style="position: relative; height:280px;">
                 <h1 style="margin-top: 0;">
                     Nota Penjualan
@@ -310,7 +308,38 @@
                 @endforeach
 
             </tbody>
-
+            @if ($dataRincianBarang['status'] == 'hutang')
+            <tfoot>
+                <tr>
+                    <td rowspan="5" colspan="5">
+                        <h2>Keterangan</h2>
+                        <ol>
+                            <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
+                            <li>BRI : 388401024665532 / An. Budiono</li>
+                            <li>BCA : 1771837226 / An. Budiono</li>
+                        </ol>
+                    </td>
+                    <td colspan="1" style="height:10px;">Subtotal</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">Diskon</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">Ongkir</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">Total</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">Dp</td>
+                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['dp'], 0, ',', '.') }}</td>
+                </tr>
+            </tfoot>
+        @else
             <tfoot>
                 <tr>
                     <td rowspan="4" colspan="5">
@@ -319,8 +348,6 @@
                             <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
                             <li>BRI : 388401024665532 / An. Budiono</li>
                             <li>BCA : 1771837226 / An. Budiono</li>
-
-
                         </ol>
                     </td>
                     <td colspan="1" style="height:10px;">Subtotal</td>
@@ -339,6 +366,12 @@
                     <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
                 </tr>
             </tfoot>
+        @endif
+        
+
+
+
+
         </table>
         {{-- <div class="keterangan-tambahan" style="
     text-align: right;">

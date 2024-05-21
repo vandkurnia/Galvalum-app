@@ -1,0 +1,610 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+    {
+        "type": "table",
+        "name": "surat_jalan",
+        "database": "sql_galvalumdist",
+        "data": [
+            {
+                "id_surat_jalan": "1",
+                "no_surat_jalan": "SRTJLN202405070001",
+                "id_nota": "1",
+                "deleted_at": null,
+                "created_at": "2024-05-07 23:32:14",
+                "updated_at": "2024-05-07 23:32:14"
+            },
+            {
+                "id_surat_jalan": "2",
+                "no_surat_jalan": "SRTJLN202405090001",
+                "id_nota": "11",
+                "deleted_at": null,
+                "created_at": "2024-05-09 08:19:34",
+                "updated_at": "2024-05-09 08:19:34"
+            },
+            {
+                "id_surat_jalan": "3",
+                "no_surat_jalan": "SRTJLN202405100001",
+                "id_nota": "33",
+                "deleted_at": null,
+                "created_at": "2024-05-10 01:46:00",
+                "updated_at": "2024-05-10 01:46:00"
+            },
+            {
+                "id_surat_jalan": "4",
+                "no_surat_jalan": "SRTJLN202405110001",
+                "id_nota": "57",
+                "deleted_at": null,
+                "created_at": "2024-05-11 02:52:43",
+                "updated_at": "2024-05-11 02:52:43"
+            },
+            {
+                "id_surat_jalan": "5",
+                "no_surat_jalan": "SRTJLN202405130001",
+                "id_nota": "84",
+                "deleted_at": null,
+                "created_at": "2024-05-13 00:44:27",
+                "updated_at": "2024-05-13 00:44:27"
+            },
+            {
+                "id_surat_jalan": "6",
+                "no_surat_jalan": "SRTJLN202405130006",
+                "id_nota": "85",
+                "deleted_at": null,
+                "created_at": "2024-05-13 01:46:01",
+                "updated_at": "2024-05-13 01:46:01"
+            },
+            {
+                "id_surat_jalan": "7",
+                "no_surat_jalan": "SRTJLN202405130007",
+                "id_nota": "86",
+                "deleted_at": null,
+                "created_at": "2024-05-13 02:18:17",
+                "updated_at": "2024-05-13 02:18:17"
+            },
+            {
+                "id_surat_jalan": "8",
+                "no_surat_jalan": "SRTJLN202405130008",
+                "id_nota": "87",
+                "deleted_at": null,
+                "created_at": "2024-05-13 02:23:55",
+                "updated_at": "2024-05-13 02:23:55"
+            },
+            {
+                "id_surat_jalan": "9",
+                "no_surat_jalan": "SRTJLN202405130009",
+                "id_nota": "88",
+                "deleted_at": null,
+                "created_at": "2024-05-13 02:28:12",
+                "updated_at": "2024-05-13 02:28:12"
+            },
+            {
+                "id_surat_jalan": "10",
+                "no_surat_jalan": "SRTJLN202405140001",
+                "id_nota": "117",
+                "deleted_at": null,
+                "created_at": "2024-05-14 02:09:48",
+                "updated_at": "2024-05-14 02:09:48"
+            },
+            {
+                "id_surat_jalan": "11",
+                "no_surat_jalan": "SRTJLN202405150001",
+                "id_nota": "139",
+                "deleted_at": null,
+                "created_at": "2024-05-15 01:29:57",
+                "updated_at": "2024-05-15 01:29:57"
+            },
+            {
+                "id_surat_jalan": "12",
+                "no_surat_jalan": "SRTJLN202405150012",
+                "id_nota": "140",
+                "deleted_at": null,
+                "created_at": "2024-05-15 01:47:20",
+                "updated_at": "2024-05-15 01:47:20"
+            },
+            {
+                "id_surat_jalan": "13",
+                "no_surat_jalan": "SRTJLN202405150013",
+                "id_nota": "144",
+                "deleted_at": null,
+                "created_at": "2024-05-15 02:55:34",
+                "updated_at": "2024-05-15 02:55:34"
+            },
+            {
+                "id_surat_jalan": "14",
+                "no_surat_jalan": "SRTJLN202405150014",
+                "id_nota": "153",
+                "deleted_at": null,
+                "created_at": "2024-05-15 06:05:51",
+                "updated_at": "2024-05-15 06:05:51"
+            },
+            {
+                "id_surat_jalan": "15",
+                "no_surat_jalan": "SRTJLN202405150015",
+                "id_nota": "155",
+                "deleted_at": null,
+                "created_at": "2024-05-15 07:16:26",
+                "updated_at": "2024-05-15 07:16:26"
+            },
+            {
+                "id_surat_jalan": "16",
+                "no_surat_jalan": "SRTJLN202405160001",
+                "id_nota": "157",
+                "deleted_at": null,
+                "created_at": "2024-05-16 00:54:33",
+                "updated_at": "2024-05-16 00:54:33"
+            },
+            {
+                "id_surat_jalan": "17",
+                "no_surat_jalan": "SRTJLN202405160017",
+                "id_nota": "158",
+                "deleted_at": null,
+                "created_at": "2024-05-16 01:30:26",
+                "updated_at": "2024-05-16 01:30:26"
+            },
+            {
+                "id_surat_jalan": "18",
+                "no_surat_jalan": "SRTJLN202405160018",
+                "id_nota": "162",
+                "deleted_at": null,
+                "created_at": "2024-05-16 01:50:34",
+                "updated_at": "2024-05-16 01:50:34"
+            },
+            {
+                "id_surat_jalan": "19",
+                "no_surat_jalan": "SRTJLN202405160019",
+                "id_nota": "164",
+                "deleted_at": null,
+                "created_at": "2024-05-16 02:21:59",
+                "updated_at": "2024-05-16 02:21:59"
+            },
+            {
+                "id_surat_jalan": "20",
+                "no_surat_jalan": "SRTJLN202405160020",
+                "id_nota": "165",
+                "deleted_at": null,
+                "created_at": "2024-05-16 02:30:31",
+                "updated_at": "2024-05-16 02:30:31"
+            },
+            {
+                "id_surat_jalan": "21",
+                "no_surat_jalan": "SRTJLN202405160021",
+                "id_nota": "166",
+                "deleted_at": null,
+                "created_at": "2024-05-16 02:30:49",
+                "updated_at": "2024-05-16 02:30:49"
+            },
+            {
+                "id_surat_jalan": "22",
+                "no_surat_jalan": "SRTJLN202405160022",
+                "id_nota": "170",
+                "deleted_at": null,
+                "created_at": "2024-05-16 03:39:22",
+                "updated_at": "2024-05-16 03:39:22"
+            },
+            {
+                "id_surat_jalan": "23",
+                "no_surat_jalan": "SRTJLN202405160023",
+                "id_nota": "175",
+                "deleted_at": null,
+                "created_at": "2024-05-16 07:37:57",
+                "updated_at": "2024-05-16 07:37:57"
+            },
+            {
+                "id_surat_jalan": "24",
+                "no_surat_jalan": "SRTJLN202405170001",
+                "id_nota": "186",
+                "deleted_at": null,
+                "created_at": "2024-05-17 01:00:40",
+                "updated_at": "2024-05-17 01:00:40"
+            },
+            {
+                "id_surat_jalan": "25",
+                "no_surat_jalan": "SRTJLN202405170025",
+                "id_nota": "187",
+                "deleted_at": null,
+                "created_at": "2024-05-17 01:34:46",
+                "updated_at": "2024-05-17 01:34:46"
+            },
+            {
+                "id_surat_jalan": "26",
+                "no_surat_jalan": "SRTJLN202405170026",
+                "id_nota": "188",
+                "deleted_at": null,
+                "created_at": "2024-05-17 01:38:35",
+                "updated_at": "2024-05-17 01:38:35"
+            },
+            {
+                "id_surat_jalan": "27",
+                "no_surat_jalan": "SRTJLN202405170027",
+                "id_nota": "189",
+                "deleted_at": null,
+                "created_at": "2024-05-17 02:10:58",
+                "updated_at": "2024-05-17 02:10:58"
+            },
+            {
+                "id_surat_jalan": "28",
+                "no_surat_jalan": "SRTJLN202405170028",
+                "id_nota": "190",
+                "deleted_at": null,
+                "created_at": "2024-05-17 02:39:33",
+                "updated_at": "2024-05-17 02:39:33"
+            },
+            {
+                "id_surat_jalan": "29",
+                "no_surat_jalan": "SRTJLN202405170029",
+                "id_nota": "194",
+                "deleted_at": null,
+                "created_at": "2024-05-17 03:28:20",
+                "updated_at": "2024-05-17 03:28:20"
+            },
+            {
+                "id_surat_jalan": "30",
+                "no_surat_jalan": "SRTJLN202405170030",
+                "id_nota": "195",
+                "deleted_at": null,
+                "created_at": "2024-05-17 03:36:08",
+                "updated_at": "2024-05-17 03:36:08"
+            },
+            {
+                "id_surat_jalan": "31",
+                "no_surat_jalan": "SRTJLN202405170031",
+                "id_nota": "201",
+                "deleted_at": null,
+                "created_at": "2024-05-17 04:04:31",
+                "updated_at": "2024-05-17 04:04:31"
+            },
+            {
+                "id_surat_jalan": "32",
+                "no_surat_jalan": "SRTJLN202405170032",
+                "id_nota": "207",
+                "deleted_at": null,
+                "created_at": "2024-05-17 06:38:52",
+                "updated_at": "2024-05-17 06:38:52"
+            },
+            {
+                "id_surat_jalan": "33",
+                "no_surat_jalan": "SRTJLN202405180001",
+                "id_nota": "215",
+                "deleted_at": null,
+                "created_at": "2024-05-18 01:29:14",
+                "updated_at": "2024-05-18 01:29:14"
+            },
+            {
+                "id_surat_jalan": "34",
+                "no_surat_jalan": "SRTJLN202405180034",
+                "id_nota": "216",
+                "deleted_at": null,
+                "created_at": "2024-05-18 01:43:55",
+                "updated_at": "2024-05-18 01:43:55"
+            },
+            {
+                "id_surat_jalan": "35",
+                "no_surat_jalan": "SRTJLN202405180035",
+                "id_nota": "217",
+                "deleted_at": null,
+                "created_at": "2024-05-18 01:47:01",
+                "updated_at": "2024-05-18 01:47:01"
+            },
+            {
+                "id_surat_jalan": "36",
+                "no_surat_jalan": "SRTJLN202405180036",
+                "id_nota": "222",
+                "deleted_at": null,
+                "created_at": "2024-05-18 02:24:31",
+                "updated_at": "2024-05-18 02:24:31"
+            },
+            {
+                "id_surat_jalan": "37",
+                "no_surat_jalan": "SRTJLN202405180037",
+                "id_nota": "223",
+                "deleted_at": null,
+                "created_at": "2024-05-18 03:55:12",
+                "updated_at": "2024-05-18 03:55:12"
+            },
+            {
+                "id_surat_jalan": "38",
+                "no_surat_jalan": "SRTJLN202405180038",
+                "id_nota": "224",
+                "deleted_at": null,
+                "created_at": "2024-05-18 04:06:32",
+                "updated_at": "2024-05-18 04:06:32"
+            },
+            {
+                "id_surat_jalan": "39",
+                "no_surat_jalan": "SRTJLN202405180039",
+                "id_nota": "227",
+                "deleted_at": null,
+                "created_at": "2024-05-18 06:19:18",
+                "updated_at": "2024-05-18 06:19:18"
+            },
+            {
+                "id_surat_jalan": "40",
+                "no_surat_jalan": "SRTJLN202405180040",
+                "id_nota": "228",
+                "deleted_at": null,
+                "created_at": "2024-05-18 07:34:43",
+                "updated_at": "2024-05-18 07:34:43"
+            },
+            {
+                "id_surat_jalan": "41",
+                "no_surat_jalan": "SRTJLN202405200001",
+                "id_nota": "232",
+                "deleted_at": null,
+                "created_at": "2024-05-20 00:30:24",
+                "updated_at": "2024-05-20 00:30:24"
+            },
+            {
+                "id_surat_jalan": "42",
+                "no_surat_jalan": "SRTJLN202405200042",
+                "id_nota": "233",
+                "deleted_at": null,
+                "created_at": "2024-05-20 00:35:17",
+                "updated_at": "2024-05-20 00:35:17"
+            },
+            {
+                "id_surat_jalan": "43",
+                "no_surat_jalan": "SRTJLN202405200043",
+                "id_nota": "234",
+                "deleted_at": null,
+                "created_at": "2024-05-20 00:50:11",
+                "updated_at": "2024-05-20 00:50:11"
+            },
+            {
+                "id_surat_jalan": "44",
+                "no_surat_jalan": "SRTJLN202405200044",
+                "id_nota": "235",
+                "deleted_at": null,
+                "created_at": "2024-05-20 01:03:05",
+                "updated_at": "2024-05-20 01:03:05"
+            },
+            {
+                "id_surat_jalan": "45",
+                "no_surat_jalan": "SRTJLN202405200045",
+                "id_nota": "236",
+                "deleted_at": null,
+                "created_at": "2024-05-20 01:10:45",
+                "updated_at": "2024-05-20 01:10:45"
+            },
+            {
+                "id_surat_jalan": "46",
+                "no_surat_jalan": "SRTJLN202405200046",
+                "id_nota": "237",
+                "deleted_at": null,
+                "created_at": "2024-05-20 01:32:33",
+                "updated_at": "2024-05-20 01:32:33"
+            },
+            {
+                "id_surat_jalan": "47",
+                "no_surat_jalan": "SRTJLN202405200047",
+                "id_nota": "239",
+                "deleted_at": null,
+                "created_at": "2024-05-20 01:54:45",
+                "updated_at": "2024-05-20 01:54:45"
+            },
+            {
+                "id_surat_jalan": "48",
+                "no_surat_jalan": "SRTJLN202405200048",
+                "id_nota": "241",
+                "deleted_at": null,
+                "created_at": "2024-05-20 02:25:28",
+                "updated_at": "2024-05-20 02:25:28"
+            },
+            {
+                "id_surat_jalan": "49",
+                "no_surat_jalan": "SRTJLN202405200049",
+                "id_nota": "242",
+                "deleted_at": null,
+                "created_at": "2024-05-20 02:37:08",
+                "updated_at": "2024-05-20 02:37:08"
+            },
+            {
+                "id_surat_jalan": "50",
+                "no_surat_jalan": "SRTJLN202405200050",
+                "id_nota": "245",
+                "deleted_at": null,
+                "created_at": "2024-05-20 02:50:42",
+                "updated_at": "2024-05-20 02:50:42"
+            },
+            {
+                "id_surat_jalan": "51",
+                "no_surat_jalan": "SRTJLN202405200051",
+                "id_nota": "246",
+                "deleted_at": null,
+                "created_at": "2024-05-20 02:57:03",
+                "updated_at": "2024-05-20 02:57:03"
+            },
+            {
+                "id_surat_jalan": "52",
+                "no_surat_jalan": "SRTJLN202405200052",
+                "id_nota": "250",
+                "deleted_at": null,
+                "created_at": "2024-05-20 03:27:44",
+                "updated_at": "2024-05-20 03:27:44"
+            },
+            {
+                "id_surat_jalan": "53",
+                "no_surat_jalan": "SRTJLN202405200053",
+                "id_nota": "249",
+                "deleted_at": null,
+                "created_at": "2024-05-20 03:27:51",
+                "updated_at": "2024-05-20 03:27:51"
+            },
+            {
+                "id_surat_jalan": "54",
+                "no_surat_jalan": "SRTJLN202405200054",
+                "id_nota": "251",
+                "deleted_at": null,
+                "created_at": "2024-05-20 03:38:14",
+                "updated_at": "2024-05-20 03:38:14"
+            },
+            {
+                "id_surat_jalan": "55",
+                "no_surat_jalan": "SRTJLN202405200055",
+                "id_nota": "253",
+                "deleted_at": null,
+                "created_at": "2024-05-20 03:51:50",
+                "updated_at": "2024-05-20 03:51:50"
+            },
+            {
+                "id_surat_jalan": "56",
+                "no_surat_jalan": "SRTJLN202405200056",
+                "id_nota": "254",
+                "deleted_at": null,
+                "created_at": "2024-05-20 04:03:28",
+                "updated_at": "2024-05-20 04:03:28"
+            },
+            {
+                "id_surat_jalan": "57",
+                "no_surat_jalan": "SRTJLN202405200057",
+                "id_nota": "263",
+                "deleted_at": null,
+                "created_at": "2024-05-20 06:34:39",
+                "updated_at": "2024-05-20 06:34:39"
+            },
+            {
+                "id_surat_jalan": "58",
+                "no_surat_jalan": "SRTJLN202405200058",
+                "id_nota": "264",
+                "deleted_at": null,
+                "created_at": "2024-05-20 06:46:10",
+                "updated_at": "2024-05-20 06:46:10"
+            },
+            {
+                "id_surat_jalan": "59",
+                "no_surat_jalan": "SRTJLN202405200059",
+                "id_nota": "266",
+                "deleted_at": null,
+                "created_at": "2024-05-20 07:22:53",
+                "updated_at": "2024-05-20 07:22:53"
+            },
+            {
+                "id_surat_jalan": "60",
+                "no_surat_jalan": "SRTJLN202405200060",
+                "id_nota": "268",
+                "deleted_at": null,
+                "created_at": "2024-05-20 07:41:47",
+                "updated_at": "2024-05-20 07:41:47"
+            },
+            {
+                "id_surat_jalan": "61",
+                "no_surat_jalan": "SRTJLN202405200061",
+                "id_nota": "267",
+                "deleted_at": null,
+                "created_at": "2024-05-20 07:47:06",
+                "updated_at": "2024-05-20 07:47:06"
+            },
+            {
+                "id_surat_jalan": "62",
+                "no_surat_jalan": "SRTJLN202405200062",
+                "id_nota": "262",
+                "deleted_at": null,
+                "created_at": "2024-05-20 07:52:10",
+                "updated_at": "2024-05-20 07:52:10"
+            },
+            {
+                "id_surat_jalan": "63",
+                "no_surat_jalan": "SRTJLN202405210001",
+                "id_nota": "271",
+                "deleted_at": null,
+                "created_at": "2024-05-21 00:34:47",
+                "updated_at": "2024-05-21 00:34:47"
+            },
+            {
+                "id_surat_jalan": "64",
+                "no_surat_jalan": "SRTJLN202405210064",
+                "id_nota": "270",
+                "deleted_at": null,
+                "created_at": "2024-05-21 00:35:05",
+                "updated_at": "2024-05-21 00:35:05"
+            },
+            {
+                "id_surat_jalan": "65",
+                "no_surat_jalan": "SRTJLN202405210065",
+                "id_nota": "279",
+                "deleted_at": null,
+                "created_at": "2024-05-21 01:25:37",
+                "updated_at": "2024-05-21 01:25:37"
+            },
+            {
+                "id_surat_jalan": "66",
+                "no_surat_jalan": "SRTJLN202405210066",
+                "id_nota": "281",
+                "deleted_at": null,
+                "created_at": "2024-05-21 01:38:57",
+                "updated_at": "2024-05-21 01:38:57"
+            },
+            {
+                "id_surat_jalan": "67",
+                "no_surat_jalan": "SRTJLN202405210067",
+                "id_nota": "283",
+                "deleted_at": null,
+                "created_at": "2024-05-21 02:28:50",
+                "updated_at": "2024-05-21 02:28:50"
+            },
+            {
+                "id_surat_jalan": "68",
+                "no_surat_jalan": "SRTJLN202405210068",
+                "id_nota": "286",
+                "deleted_at": null,
+                "created_at": "2024-05-21 04:52:09",
+                "updated_at": "2024-05-21 04:52:09"
+            },
+            {
+                "id_surat_jalan": "69",
+                "no_surat_jalan": "SRTJLN202405210069",
+                "id_nota": "287",
+                "deleted_at": null,
+                "created_at": "2024-05-21 05:09:01",
+                "updated_at": "2024-05-21 05:09:01"
+            },
+            {
+                "id_surat_jalan": "70",
+                "no_surat_jalan": "SRTJLN202405210070",
+                "id_nota": "240",
+                "deleted_at": null,
+                "created_at": "2024-05-21 06:42:36",
+                "updated_at": "2024-05-21 06:42:36"
+            },
+            {
+                "id_surat_jalan": "71",
+                "no_surat_jalan": "SRTJLN202405210071",
+                "id_nota": "289",
+                "deleted_at": null,
+                "created_at": "2024-05-21 06:43:22",
+                "updated_at": "2024-05-21 06:43:22"
+            },
+            {
+                "id_surat_jalan": "72",
+                "no_surat_jalan": "SRTJLN202405210072",
+                "id_nota": "288",
+                "deleted_at": null,
+                "created_at": "2024-05-21 06:43:32",
+                "updated_at": "2024-05-21 06:43:32"
+            },
+            {
+                "id_surat_jalan": "73",
+                "no_surat_jalan": "SRTJLN202405210073",
+                "id_nota": "290",
+                "deleted_at": null,
+                "created_at": "2024-05-21 06:46:57",
+                "updated_at": "2024-05-21 06:46:57"
+            },
+            {
+                "id_surat_jalan": "74",
+                "no_surat_jalan": "SRTJLN202405210074",
+                "id_nota": "294",
+                "deleted_at": null,
+                "created_at": "2024-05-21 08:23:06",
+                "updated_at": "2024-05-21 08:23:06"
+            }
+        ]
+    }
+]

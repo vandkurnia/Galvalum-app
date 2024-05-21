@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class SuratJalanModel extends Model
 {
@@ -36,6 +37,16 @@ class SuratJalanModel extends Model
 
             // Set no_surat_jalan dengan format 'SRTJLN' + tanggal hari ini + id
             $suratjalan->no_surat_jalan = 'SRTJLN' . date('Ymd') . $nextIdFormatted;
+
+
+            // Validate uniqueness of no_surat_jalan
+            $existingSuratJalan = DB::table('surat_jalan')
+                ->where('no_surat_jalan', $suratjalan->no_surat_jalan)
+                ->exists();
+
+            if ($existingSuratJalan) {
+                throw ValidationException::withMessages(['no_surat_jalan' => 'The generated no_surat_jalan must be unique.']);
+            }
         });
     }
 }

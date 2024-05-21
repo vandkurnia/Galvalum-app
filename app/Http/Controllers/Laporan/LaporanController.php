@@ -107,9 +107,10 @@ class LaporanController extends Controller
             SUM(pesanan_pembelis.jumlah_pembelian * pesanan_pembelis.harga) AS omzet
         FROM barangs
         JOIN 
-             pesanan_pembelis ON pesanan_pembelis.id_barang = barangs.id_barang
+             pesanan_pembelis ON pesanan_pembelis.id_barang = barangs.id_barang AND pesanan_pembelis.deleted_at IS NULL
+        JOIN nota_pembelis ON nota_pembelis.id_nota = pesanan_pembelis.id_nota AND nota_pembelis.deleted_at IS NULL
         WHERE 
-            DATE(pesanan_pembelis.created_at) = ?
+            DATE(pesanan_pembelis.created_at) = ? AND nota_pembelis.total = nota_pembelis.nominal_terbayar
         GROUP BY 
             barangs.nama_barang, pesanan_pembelis.jenis_pembelian
         ',
@@ -483,8 +484,20 @@ class LaporanController extends Controller
         $kategori_pengeluaran = $request->input('kategori', 'pengeluaran'); // Kategori default adalah 'transaksi'
         $kategori_modal = $request->input('kategori', 'modal awal'); // Kategori default adalah 'transaksi'
 
-        $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
-            ->where('kategori', $kategori)
+        // $penjualan_kotor = BukubesarModel::where('tanggal', $tanggal)
+        //     ->where('kategori', $kategori)
+        //     ->get();
+
+        $penjualan_kotor = BukubesarModel::join('nota_bukubesar', 'bukubesar.id_bukubesar', '=', 'nota_bukubesar.id_bukubesar')
+            ->join('nota_pembelis', function ($join) {
+                $join->on('nota_bukubesar.id_nota', '=', 'nota_pembelis.id_nota')
+                    ->where('nota_pembelis.total', '=', DB::raw('nota_pembelis.nominal_terbayar'))
+                    ->whereNull('nota_pembelis.deleted_at');
+            })
+            ->where('bukubesar.tanggal', $tanggal)
+            ->where('bukubesar.kategori', $kategori)
+            ->whereNull('bukubesar.deleted_at')
+            ->select('bukubesar.*')
             ->get();
 
         $modal_tambahan = BukubesarModel::where('tanggal', $tanggal)

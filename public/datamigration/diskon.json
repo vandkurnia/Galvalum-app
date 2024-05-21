@@ -1,0 +1,42 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+    {
+        "type": "table",
+        "name": "diskon",
+        "database": "sql_galvalumdist",
+        "data": [
+            {
+                "id_diskon": "1",
+                "hash_id_diskon": "b2321501-77a9-46f7-bbb2-d74189a1fb5e",
+                "kode_diskon": "DISC10",
+                "nama_diskon": "Diskon 10%",
+                "type": "percentage",
+                "besaran": "10",
+                "status": "AKTIF",
+                "created_at": "2024-05-07 00:15:57",
+                "updated_at": "2024-05-07 00:15:57",
+                "deleted_at": null
+            },
+            {
+                "id_diskon": "2",
+                "hash_id_diskon": "ee9206f1-946e-4925-a22e-5b4b688d9d66",
+                "kode_diskon": "DISC50K",
+                "nama_diskon": "Diskon Rp 50.000",
+                "type": "amount",
+                "besaran": "50000",
+                "status": "AKTIF",
+                "created_at": "2024-05-07 00:15:57",
+                "updated_at": "2024-05-07 00:15:57",
+                "deleted_at": null
+            }
+        ]
+    }
+]

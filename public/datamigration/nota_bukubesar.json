@@ -1,0 +1,2482 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+    {
+        "type": "table",
+        "name": "nota_bukubesar",
+        "database": "sql_galvalumdist",
+        "data": [
+            {
+                "id_notabukubesar": "1",
+                "id_nota": "1",
+                "id_bukubesar": "375",
+                "created_at": "2024-05-07 01:30:42",
+                "updated_at": "2024-05-07 01:30:42"
+            },
+            {
+                "id_notabukubesar": "2",
+                "id_nota": "2",
+                "id_bukubesar": "378",
+                "created_at": "2024-05-07 07:43:37",
+                "updated_at": "2024-05-07 07:43:37"
+            },
+            {
+                "id_notabukubesar": "3",
+                "id_nota": "3",
+                "id_bukubesar": "558",
+                "created_at": "2024-05-09 02:47:44",
+                "updated_at": "2024-05-09 02:47:44"
+            },
+            {
+                "id_notabukubesar": "4",
+                "id_nota": "4",
+                "id_bukubesar": "559",
+                "created_at": "2024-05-09 03:27:07",
+                "updated_at": "2024-05-09 03:27:07"
+            },
+            {
+                "id_notabukubesar": "5",
+                "id_nota": "5",
+                "id_bukubesar": "560",
+                "created_at": "2024-05-09 03:39:42",
+                "updated_at": "2024-05-09 03:39:42"
+            },
+            {
+                "id_notabukubesar": "6",
+                "id_nota": "6",
+                "id_bukubesar": "562",
+                "created_at": "2024-05-09 03:48:12",
+                "updated_at": "2024-05-09 03:48:12"
+            },
+            {
+                "id_notabukubesar": "7",
+                "id_nota": "7",
+                "id_bukubesar": "563",
+                "created_at": "2024-05-09 04:02:34",
+                "updated_at": "2024-05-09 04:02:34"
+            },
+            {
+                "id_notabukubesar": "8",
+                "id_nota": "8",
+                "id_bukubesar": "565",
+                "created_at": "2024-05-09 04:21:52",
+                "updated_at": "2024-05-09 04:21:52"
+            },
+            {
+                "id_notabukubesar": "9",
+                "id_nota": "9",
+                "id_bukubesar": "609",
+                "created_at": "2024-05-09 06:49:43",
+                "updated_at": "2024-05-09 06:49:43"
+            },
+            {
+                "id_notabukubesar": "10",
+                "id_nota": "10",
+                "id_bukubesar": "654",
+                "created_at": "2024-05-09 08:02:02",
+                "updated_at": "2024-05-09 08:02:02"
+            },
+            {
+                "id_notabukubesar": "11",
+                "id_nota": "11",
+                "id_bukubesar": "663",
+                "created_at": "2024-05-09 08:13:47",
+                "updated_at": "2024-05-09 08:13:47"
+            },
+            {
+                "id_notabukubesar": "12",
+                "id_nota": "12",
+                "id_bukubesar": "664",
+                "created_at": "2024-05-09 08:23:27",
+                "updated_at": "2024-05-09 08:23:27"
+            },
+            {
+                "id_notabukubesar": "13",
+                "id_nota": "13",
+                "id_bukubesar": "668",
+                "created_at": "2024-05-09 14:45:34",
+                "updated_at": "2024-05-09 14:45:34"
+            },
+            {
+                "id_notabukubesar": "14",
+                "id_nota": "14",
+                "id_bukubesar": "669",
+                "created_at": "2024-05-09 14:46:51",
+                "updated_at": "2024-05-09 14:46:51"
+            },
+            {
+                "id_notabukubesar": "15",
+                "id_nota": "15",
+                "id_bukubesar": "670",
+                "created_at": "2024-05-09 14:47:31",
+                "updated_at": "2024-05-09 14:47:31"
+            },
+            {
+                "id_notabukubesar": "16",
+                "id_nota": "16",
+                "id_bukubesar": "671",
+                "created_at": "2024-05-09 14:48:09",
+                "updated_at": "2024-05-09 14:48:09"
+            },
+            {
+                "id_notabukubesar": "17",
+                "id_nota": "17",
+                "id_bukubesar": "672",
+                "created_at": "2024-05-09 14:49:13",
+                "updated_at": "2024-05-09 14:49:13"
+            },
+            {
+                "id_notabukubesar": "18",
+                "id_nota": "18",
+                "id_bukubesar": "673",
+                "created_at": "2024-05-09 14:50:06",
+                "updated_at": "2024-05-09 14:50:06"
+            },
+            {
+                "id_notabukubesar": "19",
+                "id_nota": "19",
+                "id_bukubesar": "674",
+                "created_at": "2024-05-09 14:54:40",
+                "updated_at": "2024-05-09 14:54:40"
+            },
+            {
+                "id_notabukubesar": "20",
+                "id_nota": "20",
+                "id_bukubesar": "675",
+                "created_at": "2024-05-09 14:57:04",
+                "updated_at": "2024-05-09 14:57:04"
+            },
+            {
+                "id_notabukubesar": "21",
+                "id_nota": "21",
+                "id_bukubesar": "676",
+                "created_at": "2024-05-09 14:57:32",
+                "updated_at": "2024-05-09 14:57:32"
+            },
+            {
+                "id_notabukubesar": "22",
+                "id_nota": "22",
+                "id_bukubesar": "677",
+                "created_at": "2024-05-09 14:58:54",
+                "updated_at": "2024-05-09 14:58:54"
+            },
+            {
+                "id_notabukubesar": "23",
+                "id_nota": "23",
+                "id_bukubesar": "678",
+                "created_at": "2024-05-09 15:01:05",
+                "updated_at": "2024-05-09 15:01:05"
+            },
+            {
+                "id_notabukubesar": "24",
+                "id_nota": "24",
+                "id_bukubesar": "679",
+                "created_at": "2024-05-09 15:01:57",
+                "updated_at": "2024-05-09 15:01:57"
+            },
+            {
+                "id_notabukubesar": "25",
+                "id_nota": "25",
+                "id_bukubesar": "680",
+                "created_at": "2024-05-09 15:02:35",
+                "updated_at": "2024-05-09 15:02:35"
+            },
+            {
+                "id_notabukubesar": "26",
+                "id_nota": "26",
+                "id_bukubesar": "681",
+                "created_at": "2024-05-09 15:07:45",
+                "updated_at": "2024-05-09 15:07:45"
+            },
+            {
+                "id_notabukubesar": "27",
+                "id_nota": "27",
+                "id_bukubesar": "682",
+                "created_at": "2024-05-09 15:09:45",
+                "updated_at": "2024-05-09 15:09:45"
+            },
+            {
+                "id_notabukubesar": "28",
+                "id_nota": "28",
+                "id_bukubesar": "683",
+                "created_at": "2024-05-09 15:13:26",
+                "updated_at": "2024-05-09 15:13:26"
+            },
+            {
+                "id_notabukubesar": "29",
+                "id_nota": "29",
+                "id_bukubesar": "687",
+                "created_at": "2024-05-09 15:18:05",
+                "updated_at": "2024-05-09 15:18:05"
+            },
+            {
+                "id_notabukubesar": "30",
+                "id_nota": "30",
+                "id_bukubesar": "688",
+                "created_at": "2024-05-09 15:19:16",
+                "updated_at": "2024-05-09 15:19:16"
+            },
+            {
+                "id_notabukubesar": "31",
+                "id_nota": "31",
+                "id_bukubesar": "693",
+                "created_at": "2024-05-09 15:22:48",
+                "updated_at": "2024-05-09 15:22:48"
+            },
+            {
+                "id_notabukubesar": "32",
+                "id_nota": "32",
+                "id_bukubesar": "767",
+                "created_at": "2024-05-10 01:33:10",
+                "updated_at": "2024-05-10 01:33:10"
+            },
+            {
+                "id_notabukubesar": "33",
+                "id_nota": "33",
+                "id_bukubesar": "768",
+                "created_at": "2024-05-10 01:45:48",
+                "updated_at": "2024-05-10 01:45:48"
+            },
+            {
+                "id_notabukubesar": "34",
+                "id_nota": "34",
+                "id_bukubesar": "798",
+                "created_at": "2024-05-10 03:06:32",
+                "updated_at": "2024-05-10 03:06:32"
+            },
+            {
+                "id_notabukubesar": "35",
+                "id_nota": "35",
+                "id_bukubesar": "799",
+                "created_at": "2024-05-10 03:09:32",
+                "updated_at": "2024-05-10 03:09:32"
+            },
+            {
+                "id_notabukubesar": "36",
+                "id_nota": "36",
+                "id_bukubesar": "802",
+                "created_at": "2024-05-10 04:09:23",
+                "updated_at": "2024-05-10 04:09:23"
+            },
+            {
+                "id_notabukubesar": "37",
+                "id_nota": "37",
+                "id_bukubesar": "803",
+                "created_at": "2024-05-10 04:10:05",
+                "updated_at": "2024-05-10 04:10:05"
+            },
+            {
+                "id_notabukubesar": "38",
+                "id_nota": "38",
+                "id_bukubesar": "806",
+                "created_at": "2024-05-10 04:15:38",
+                "updated_at": "2024-05-10 04:15:38"
+            },
+            {
+                "id_notabukubesar": "39",
+                "id_nota": "39",
+                "id_bukubesar": "809",
+                "created_at": "2024-05-10 04:27:05",
+                "updated_at": "2024-05-10 04:27:05"
+            },
+            {
+                "id_notabukubesar": "40",
+                "id_nota": "40",
+                "id_bukubesar": "810",
+                "created_at": "2024-05-10 04:30:33",
+                "updated_at": "2024-05-10 04:30:33"
+            },
+            {
+                "id_notabukubesar": "41",
+                "id_nota": "41",
+                "id_bukubesar": "811",
+                "created_at": "2024-05-10 04:50:43",
+                "updated_at": "2024-05-10 04:50:43"
+            },
+            {
+                "id_notabukubesar": "42",
+                "id_nota": "40",
+                "id_bukubesar": "812",
+                "created_at": "2024-05-10 04:54:43",
+                "updated_at": "2024-05-10 04:54:43"
+            },
+            {
+                "id_notabukubesar": "43",
+                "id_nota": "42",
+                "id_bukubesar": "813",
+                "created_at": "2024-05-10 05:10:19",
+                "updated_at": "2024-05-10 05:10:19"
+            },
+            {
+                "id_notabukubesar": "44",
+                "id_nota": "43",
+                "id_bukubesar": "814",
+                "created_at": "2024-05-10 05:13:49",
+                "updated_at": "2024-05-10 05:13:49"
+            },
+            {
+                "id_notabukubesar": "45",
+                "id_nota": "44",
+                "id_bukubesar": "822",
+                "created_at": "2024-05-10 05:29:50",
+                "updated_at": "2024-05-10 05:29:50"
+            },
+            {
+                "id_notabukubesar": "46",
+                "id_nota": "45",
+                "id_bukubesar": "825",
+                "created_at": "2024-05-10 05:41:59",
+                "updated_at": "2024-05-10 05:41:59"
+            },
+            {
+                "id_notabukubesar": "47",
+                "id_nota": "46",
+                "id_bukubesar": "826",
+                "created_at": "2024-05-10 07:13:44",
+                "updated_at": "2024-05-10 07:13:44"
+            },
+            {
+                "id_notabukubesar": "48",
+                "id_nota": "47",
+                "id_bukubesar": "827",
+                "created_at": "2024-05-10 07:21:00",
+                "updated_at": "2024-05-10 07:21:00"
+            },
+            {
+                "id_notabukubesar": "49",
+                "id_nota": "48",
+                "id_bukubesar": "828",
+                "created_at": "2024-05-10 07:37:12",
+                "updated_at": "2024-05-10 07:37:12"
+            },
+            {
+                "id_notabukubesar": "50",
+                "id_nota": "46",
+                "id_bukubesar": "829",
+                "created_at": "2024-05-10 08:16:30",
+                "updated_at": "2024-05-10 08:16:30"
+            },
+            {
+                "id_notabukubesar": "51",
+                "id_nota": "49",
+                "id_bukubesar": "830",
+                "created_at": "2024-05-10 08:21:05",
+                "updated_at": "2024-05-10 08:21:05"
+            },
+            {
+                "id_notabukubesar": "52",
+                "id_nota": "50",
+                "id_bukubesar": "831",
+                "created_at": "2024-05-10 08:25:48",
+                "updated_at": "2024-05-10 08:25:48"
+            },
+            {
+                "id_notabukubesar": "53",
+                "id_nota": "51",
+                "id_bukubesar": "833",
+                "created_at": "2024-05-11 00:42:40",
+                "updated_at": "2024-05-11 00:42:40"
+            },
+            {
+                "id_notabukubesar": "54",
+                "id_nota": "52",
+                "id_bukubesar": "837",
+                "created_at": "2024-05-11 01:09:41",
+                "updated_at": "2024-05-11 01:09:41"
+            },
+            {
+                "id_notabukubesar": "55",
+                "id_nota": "53",
+                "id_bukubesar": "839",
+                "created_at": "2024-05-11 01:12:02",
+                "updated_at": "2024-05-11 01:12:02"
+            },
+            {
+                "id_notabukubesar": "56",
+                "id_nota": "54",
+                "id_bukubesar": "841",
+                "created_at": "2024-05-11 02:03:59",
+                "updated_at": "2024-05-11 02:03:59"
+            },
+            {
+                "id_notabukubesar": "57",
+                "id_nota": "55",
+                "id_bukubesar": "842",
+                "created_at": "2024-05-11 02:05:33",
+                "updated_at": "2024-05-11 02:05:33"
+            },
+            {
+                "id_notabukubesar": "58",
+                "id_nota": "56",
+                "id_bukubesar": "843",
+                "created_at": "2024-05-11 02:23:45",
+                "updated_at": "2024-05-11 02:23:45"
+            },
+            {
+                "id_notabukubesar": "59",
+                "id_nota": "57",
+                "id_bukubesar": "845",
+                "created_at": "2024-05-11 02:47:49",
+                "updated_at": "2024-05-11 02:47:49"
+            },
+            {
+                "id_notabukubesar": "60",
+                "id_nota": "58",
+                "id_bukubesar": "846",
+                "created_at": "2024-05-11 03:00:50",
+                "updated_at": "2024-05-11 03:00:50"
+            },
+            {
+                "id_notabukubesar": "61",
+                "id_nota": "43",
+                "id_bukubesar": "847",
+                "created_at": "2024-05-11 03:01:34",
+                "updated_at": "2024-05-11 03:01:34"
+            },
+            {
+                "id_notabukubesar": "62",
+                "id_nota": "59",
+                "id_bukubesar": "848",
+                "created_at": "2024-05-11 03:17:26",
+                "updated_at": "2024-05-11 03:17:26"
+            },
+            {
+                "id_notabukubesar": "63",
+                "id_nota": "60",
+                "id_bukubesar": "849",
+                "created_at": "2024-05-11 03:27:41",
+                "updated_at": "2024-05-11 03:27:41"
+            },
+            {
+                "id_notabukubesar": "64",
+                "id_nota": "61",
+                "id_bukubesar": "852",
+                "created_at": "2024-05-11 03:33:44",
+                "updated_at": "2024-05-11 03:33:44"
+            },
+            {
+                "id_notabukubesar": "65",
+                "id_nota": "62",
+                "id_bukubesar": "853",
+                "created_at": "2024-05-11 03:40:51",
+                "updated_at": "2024-05-11 03:40:51"
+            },
+            {
+                "id_notabukubesar": "66",
+                "id_nota": "63",
+                "id_bukubesar": "854",
+                "created_at": "2024-05-11 03:43:35",
+                "updated_at": "2024-05-11 03:43:35"
+            },
+            {
+                "id_notabukubesar": "67",
+                "id_nota": "64",
+                "id_bukubesar": "857",
+                "created_at": "2024-05-11 03:48:43",
+                "updated_at": "2024-05-11 03:48:43"
+            },
+            {
+                "id_notabukubesar": "68",
+                "id_nota": "65",
+                "id_bukubesar": "858",
+                "created_at": "2024-05-11 04:02:42",
+                "updated_at": "2024-05-11 04:02:42"
+            },
+            {
+                "id_notabukubesar": "69",
+                "id_nota": "66",
+                "id_bukubesar": "859",
+                "created_at": "2024-05-11 04:03:38",
+                "updated_at": "2024-05-11 04:03:38"
+            },
+            {
+                "id_notabukubesar": "70",
+                "id_nota": "57",
+                "id_bukubesar": "860",
+                "created_at": "2024-05-11 04:31:24",
+                "updated_at": "2024-05-11 04:31:24"
+            },
+            {
+                "id_notabukubesar": "71",
+                "id_nota": "67",
+                "id_bukubesar": "861",
+                "created_at": "2024-05-11 04:33:35",
+                "updated_at": "2024-05-11 04:33:35"
+            },
+            {
+                "id_notabukubesar": "72",
+                "id_nota": "68",
+                "id_bukubesar": "866",
+                "created_at": "2024-05-11 04:53:50",
+                "updated_at": "2024-05-11 04:53:50"
+            },
+            {
+                "id_notabukubesar": "73",
+                "id_nota": "69",
+                "id_bukubesar": "867",
+                "created_at": "2024-05-11 04:55:56",
+                "updated_at": "2024-05-11 04:55:56"
+            },
+            {
+                "id_notabukubesar": "74",
+                "id_nota": "70",
+                "id_bukubesar": "868",
+                "created_at": "2024-05-11 04:56:37",
+                "updated_at": "2024-05-11 04:56:37"
+            },
+            {
+                "id_notabukubesar": "75",
+                "id_nota": "71",
+                "id_bukubesar": "869",
+                "created_at": "2024-05-11 04:57:39",
+                "updated_at": "2024-05-11 04:57:39"
+            },
+            {
+                "id_notabukubesar": "76",
+                "id_nota": "72",
+                "id_bukubesar": "870",
+                "created_at": "2024-05-11 05:01:14",
+                "updated_at": "2024-05-11 05:01:14"
+            },
+            {
+                "id_notabukubesar": "77",
+                "id_nota": "73",
+                "id_bukubesar": "876",
+                "created_at": "2024-05-11 05:48:51",
+                "updated_at": "2024-05-11 05:48:51"
+            },
+            {
+                "id_notabukubesar": "78",
+                "id_nota": "74",
+                "id_bukubesar": "879",
+                "created_at": "2024-05-11 06:43:46",
+                "updated_at": "2024-05-11 06:43:46"
+            },
+            {
+                "id_notabukubesar": "79",
+                "id_nota": "75",
+                "id_bukubesar": "880",
+                "created_at": "2024-05-11 06:44:55",
+                "updated_at": "2024-05-11 06:44:55"
+            },
+            {
+                "id_notabukubesar": "80",
+                "id_nota": "76",
+                "id_bukubesar": "881",
+                "created_at": "2024-05-11 06:48:21",
+                "updated_at": "2024-05-11 06:48:21"
+            },
+            {
+                "id_notabukubesar": "81",
+                "id_nota": "77",
+                "id_bukubesar": "882",
+                "created_at": "2024-05-11 06:49:23",
+                "updated_at": "2024-05-11 06:49:23"
+            },
+            {
+                "id_notabukubesar": "82",
+                "id_nota": "78",
+                "id_bukubesar": "883",
+                "created_at": "2024-05-11 06:51:34",
+                "updated_at": "2024-05-11 06:51:34"
+            },
+            {
+                "id_notabukubesar": "83",
+                "id_nota": "79",
+                "id_bukubesar": "884",
+                "created_at": "2024-05-11 07:02:54",
+                "updated_at": "2024-05-11 07:02:54"
+            },
+            {
+                "id_notabukubesar": "84",
+                "id_nota": "80",
+                "id_bukubesar": "885",
+                "created_at": "2024-05-11 07:28:41",
+                "updated_at": "2024-05-11 07:28:41"
+            },
+            {
+                "id_notabukubesar": "85",
+                "id_nota": "81",
+                "id_bukubesar": "886",
+                "created_at": "2024-05-11 07:34:16",
+                "updated_at": "2024-05-11 07:34:16"
+            },
+            {
+                "id_notabukubesar": "86",
+                "id_nota": "82",
+                "id_bukubesar": "889",
+                "created_at": "2024-05-11 07:44:35",
+                "updated_at": "2024-05-11 07:44:35"
+            },
+            {
+                "id_notabukubesar": "87",
+                "id_nota": "83",
+                "id_bukubesar": "893",
+                "created_at": "2024-05-11 08:09:18",
+                "updated_at": "2024-05-11 08:09:18"
+            },
+            {
+                "id_notabukubesar": "88",
+                "id_nota": "84",
+                "id_bukubesar": "894",
+                "created_at": "2024-05-12 13:14:55",
+                "updated_at": "2024-05-12 13:14:55"
+            },
+            {
+                "id_notabukubesar": "89",
+                "id_nota": "84",
+                "id_bukubesar": "895",
+                "created_at": "2024-05-12 13:22:10",
+                "updated_at": "2024-05-12 13:22:10"
+            },
+            {
+                "id_notabukubesar": "90",
+                "id_nota": "85",
+                "id_bukubesar": "900",
+                "created_at": "2024-05-13 01:41:10",
+                "updated_at": "2024-05-13 01:41:10"
+            },
+            {
+                "id_notabukubesar": "91",
+                "id_nota": "86",
+                "id_bukubesar": "901",
+                "created_at": "2024-05-13 02:15:32",
+                "updated_at": "2024-05-13 02:15:32"
+            },
+            {
+                "id_notabukubesar": "92",
+                "id_nota": "87",
+                "id_bukubesar": "902",
+                "created_at": "2024-05-13 02:23:25",
+                "updated_at": "2024-05-13 02:23:25"
+            },
+            {
+                "id_notabukubesar": "93",
+                "id_nota": "88",
+                "id_bukubesar": "903",
+                "created_at": "2024-05-13 02:28:06",
+                "updated_at": "2024-05-13 02:28:06"
+            },
+            {
+                "id_notabukubesar": "94",
+                "id_nota": "89",
+                "id_bukubesar": "907",
+                "created_at": "2024-05-13 02:48:04",
+                "updated_at": "2024-05-13 02:48:04"
+            },
+            {
+                "id_notabukubesar": "95",
+                "id_nota": "72",
+                "id_bukubesar": "918",
+                "created_at": "2024-05-13 04:09:50",
+                "updated_at": "2024-05-13 04:09:50"
+            },
+            {
+                "id_notabukubesar": "96",
+                "id_nota": "90",
+                "id_bukubesar": "922",
+                "created_at": "2024-05-13 05:19:00",
+                "updated_at": "2024-05-13 05:19:00"
+            },
+            {
+                "id_notabukubesar": "97",
+                "id_nota": "91",
+                "id_bukubesar": "923",
+                "created_at": "2024-05-13 05:23:35",
+                "updated_at": "2024-05-13 05:23:35"
+            },
+            {
+                "id_notabukubesar": "98",
+                "id_nota": "92",
+                "id_bukubesar": "924",
+                "created_at": "2024-05-13 05:25:23",
+                "updated_at": "2024-05-13 05:25:23"
+            },
+            {
+                "id_notabukubesar": "99",
+                "id_nota": "93",
+                "id_bukubesar": "925",
+                "created_at": "2024-05-13 05:36:04",
+                "updated_at": "2024-05-13 05:36:04"
+            },
+            {
+                "id_notabukubesar": "100",
+                "id_nota": "94",
+                "id_bukubesar": "928",
+                "created_at": "2024-05-13 05:42:13",
+                "updated_at": "2024-05-13 05:42:13"
+            },
+            {
+                "id_notabukubesar": "101",
+                "id_nota": "95",
+                "id_bukubesar": "929",
+                "created_at": "2024-05-13 05:56:17",
+                "updated_at": "2024-05-13 05:56:17"
+            },
+            {
+                "id_notabukubesar": "102",
+                "id_nota": "96",
+                "id_bukubesar": "930",
+                "created_at": "2024-05-13 06:01:31",
+                "updated_at": "2024-05-13 06:01:31"
+            },
+            {
+                "id_notabukubesar": "103",
+                "id_nota": "97",
+                "id_bukubesar": "931",
+                "created_at": "2024-05-13 06:02:16",
+                "updated_at": "2024-05-13 06:02:16"
+            },
+            {
+                "id_notabukubesar": "104",
+                "id_nota": "98",
+                "id_bukubesar": "932",
+                "created_at": "2024-05-13 06:02:57",
+                "updated_at": "2024-05-13 06:02:57"
+            },
+            {
+                "id_notabukubesar": "105",
+                "id_nota": "99",
+                "id_bukubesar": "933",
+                "created_at": "2024-05-13 06:03:49",
+                "updated_at": "2024-05-13 06:03:49"
+            },
+            {
+                "id_notabukubesar": "106",
+                "id_nota": "100",
+                "id_bukubesar": "940",
+                "created_at": "2024-05-13 06:13:27",
+                "updated_at": "2024-05-13 06:13:27"
+            },
+            {
+                "id_notabukubesar": "107",
+                "id_nota": "101",
+                "id_bukubesar": "941",
+                "created_at": "2024-05-13 06:14:03",
+                "updated_at": "2024-05-13 06:14:03"
+            },
+            {
+                "id_notabukubesar": "108",
+                "id_nota": "102",
+                "id_bukubesar": "942",
+                "created_at": "2024-05-13 06:14:55",
+                "updated_at": "2024-05-13 06:14:55"
+            },
+            {
+                "id_notabukubesar": "109",
+                "id_nota": "103",
+                "id_bukubesar": "943",
+                "created_at": "2024-05-13 06:17:34",
+                "updated_at": "2024-05-13 06:17:34"
+            },
+            {
+                "id_notabukubesar": "110",
+                "id_nota": "104",
+                "id_bukubesar": "944",
+                "created_at": "2024-05-13 06:20:13",
+                "updated_at": "2024-05-13 06:20:13"
+            },
+            {
+                "id_notabukubesar": "111",
+                "id_nota": "105",
+                "id_bukubesar": "948",
+                "created_at": "2024-05-13 06:31:04",
+                "updated_at": "2024-05-13 06:31:04"
+            },
+            {
+                "id_notabukubesar": "112",
+                "id_nota": "64",
+                "id_bukubesar": "949",
+                "created_at": "2024-05-13 06:32:12",
+                "updated_at": "2024-05-13 06:32:12"
+            },
+            {
+                "id_notabukubesar": "113",
+                "id_nota": "64",
+                "id_bukubesar": "950",
+                "created_at": "2024-05-13 06:32:21",
+                "updated_at": "2024-05-13 06:32:21"
+            },
+            {
+                "id_notabukubesar": "114",
+                "id_nota": "65",
+                "id_bukubesar": "951",
+                "created_at": "2024-05-13 06:32:43",
+                "updated_at": "2024-05-13 06:32:43"
+            },
+            {
+                "id_notabukubesar": "115",
+                "id_nota": "106",
+                "id_bukubesar": "956",
+                "created_at": "2024-05-13 06:50:21",
+                "updated_at": "2024-05-13 06:50:21"
+            },
+            {
+                "id_notabukubesar": "116",
+                "id_nota": "107",
+                "id_bukubesar": "957",
+                "created_at": "2024-05-13 06:51:19",
+                "updated_at": "2024-05-13 06:51:19"
+            },
+            {
+                "id_notabukubesar": "117",
+                "id_nota": "108",
+                "id_bukubesar": "958",
+                "created_at": "2024-05-13 06:52:03",
+                "updated_at": "2024-05-13 06:52:03"
+            },
+            {
+                "id_notabukubesar": "118",
+                "id_nota": "109",
+                "id_bukubesar": "964",
+                "created_at": "2024-05-13 07:05:17",
+                "updated_at": "2024-05-13 07:05:17"
+            },
+            {
+                "id_notabukubesar": "119",
+                "id_nota": "110",
+                "id_bukubesar": "967",
+                "created_at": "2024-05-13 07:12:41",
+                "updated_at": "2024-05-13 07:12:41"
+            },
+            {
+                "id_notabukubesar": "120",
+                "id_nota": "111",
+                "id_bukubesar": "991",
+                "created_at": "2024-05-13 12:05:46",
+                "updated_at": "2024-05-13 12:05:46"
+            },
+            {
+                "id_notabukubesar": "121",
+                "id_nota": "112",
+                "id_bukubesar": "992",
+                "created_at": "2024-05-14 01:27:59",
+                "updated_at": "2024-05-14 01:27:59"
+            },
+            {
+                "id_notabukubesar": "122",
+                "id_nota": "111",
+                "id_bukubesar": "993",
+                "created_at": "2024-05-14 01:52:59",
+                "updated_at": "2024-05-14 01:52:59"
+            },
+            {
+                "id_notabukubesar": "123",
+                "id_nota": "87",
+                "id_bukubesar": "994",
+                "created_at": "2024-05-14 01:55:19",
+                "updated_at": "2024-05-14 01:55:19"
+            },
+            {
+                "id_notabukubesar": "124",
+                "id_nota": "113",
+                "id_bukubesar": "997",
+                "created_at": "2024-05-14 01:59:11",
+                "updated_at": "2024-05-14 01:59:11"
+            },
+            {
+                "id_notabukubesar": "125",
+                "id_nota": "114",
+                "id_bukubesar": "998",
+                "created_at": "2024-05-14 02:01:28",
+                "updated_at": "2024-05-14 02:01:28"
+            },
+            {
+                "id_notabukubesar": "126",
+                "id_nota": "115",
+                "id_bukubesar": "999",
+                "created_at": "2024-05-14 02:04:23",
+                "updated_at": "2024-05-14 02:04:23"
+            },
+            {
+                "id_notabukubesar": "127",
+                "id_nota": "116",
+                "id_bukubesar": "1000",
+                "created_at": "2024-05-14 02:06:30",
+                "updated_at": "2024-05-14 02:06:30"
+            },
+            {
+                "id_notabukubesar": "128",
+                "id_nota": "117",
+                "id_bukubesar": "1001",
+                "created_at": "2024-05-14 02:09:03",
+                "updated_at": "2024-05-14 02:09:03"
+            },
+            {
+                "id_notabukubesar": "129",
+                "id_nota": "118",
+                "id_bukubesar": "1002",
+                "created_at": "2024-05-14 02:23:24",
+                "updated_at": "2024-05-14 02:23:24"
+            },
+            {
+                "id_notabukubesar": "130",
+                "id_nota": "119",
+                "id_bukubesar": "1003",
+                "created_at": "2024-05-14 02:24:33",
+                "updated_at": "2024-05-14 02:24:33"
+            },
+            {
+                "id_notabukubesar": "131",
+                "id_nota": "120",
+                "id_bukubesar": "1004",
+                "created_at": "2024-05-14 02:41:59",
+                "updated_at": "2024-05-14 02:41:59"
+            },
+            {
+                "id_notabukubesar": "132",
+                "id_nota": "121",
+                "id_bukubesar": "1005",
+                "created_at": "2024-05-14 02:44:03",
+                "updated_at": "2024-05-14 02:44:03"
+            },
+            {
+                "id_notabukubesar": "133",
+                "id_nota": "122",
+                "id_bukubesar": "1006",
+                "created_at": "2024-05-14 02:52:27",
+                "updated_at": "2024-05-14 02:52:27"
+            },
+            {
+                "id_notabukubesar": "134",
+                "id_nota": "123",
+                "id_bukubesar": "1007",
+                "created_at": "2024-05-14 02:55:13",
+                "updated_at": "2024-05-14 02:55:13"
+            },
+            {
+                "id_notabukubesar": "135",
+                "id_nota": "124",
+                "id_bukubesar": "1008",
+                "created_at": "2024-05-14 02:57:18",
+                "updated_at": "2024-05-14 02:57:18"
+            },
+            {
+                "id_notabukubesar": "136",
+                "id_nota": "125",
+                "id_bukubesar": "1036",
+                "created_at": "2024-05-14 03:43:24",
+                "updated_at": "2024-05-14 03:43:24"
+            },
+            {
+                "id_notabukubesar": "137",
+                "id_nota": "126",
+                "id_bukubesar": "1037",
+                "created_at": "2024-05-14 03:55:03",
+                "updated_at": "2024-05-14 03:55:03"
+            },
+            {
+                "id_notabukubesar": "138",
+                "id_nota": "127",
+                "id_bukubesar": "1038",
+                "created_at": "2024-05-14 04:12:09",
+                "updated_at": "2024-05-14 04:12:09"
+            },
+            {
+                "id_notabukubesar": "139",
+                "id_nota": "117",
+                "id_bukubesar": "1041",
+                "created_at": "2024-05-14 04:29:25",
+                "updated_at": "2024-05-14 04:29:25"
+            },
+            {
+                "id_notabukubesar": "140",
+                "id_nota": "128",
+                "id_bukubesar": "1044",
+                "created_at": "2024-05-14 04:48:25",
+                "updated_at": "2024-05-14 04:48:25"
+            },
+            {
+                "id_notabukubesar": "141",
+                "id_nota": "129",
+                "id_bukubesar": "1045",
+                "created_at": "2024-05-14 04:52:19",
+                "updated_at": "2024-05-14 04:52:19"
+            },
+            {
+                "id_notabukubesar": "142",
+                "id_nota": "130",
+                "id_bukubesar": "1046",
+                "created_at": "2024-05-14 05:05:56",
+                "updated_at": "2024-05-14 05:05:56"
+            },
+            {
+                "id_notabukubesar": "143",
+                "id_nota": "131",
+                "id_bukubesar": "1047",
+                "created_at": "2024-05-14 05:31:50",
+                "updated_at": "2024-05-14 05:31:50"
+            },
+            {
+                "id_notabukubesar": "144",
+                "id_nota": "132",
+                "id_bukubesar": "1049",
+                "created_at": "2024-05-14 07:41:26",
+                "updated_at": "2024-05-14 07:41:26"
+            },
+            {
+                "id_notabukubesar": "145",
+                "id_nota": "133",
+                "id_bukubesar": "1051",
+                "created_at": "2024-05-14 07:43:47",
+                "updated_at": "2024-05-14 07:43:47"
+            },
+            {
+                "id_notabukubesar": "146",
+                "id_nota": "134",
+                "id_bukubesar": "1058",
+                "created_at": "2024-05-14 08:20:09",
+                "updated_at": "2024-05-14 08:20:09"
+            },
+            {
+                "id_notabukubesar": "147",
+                "id_nota": "113",
+                "id_bukubesar": "1059",
+                "created_at": "2024-05-15 00:49:21",
+                "updated_at": "2024-05-15 00:49:21"
+            },
+            {
+                "id_notabukubesar": "148",
+                "id_nota": "135",
+                "id_bukubesar": "1061",
+                "created_at": "2024-05-15 00:52:05",
+                "updated_at": "2024-05-15 00:52:05"
+            },
+            {
+                "id_notabukubesar": "149",
+                "id_nota": "136",
+                "id_bukubesar": "1062",
+                "created_at": "2024-05-15 00:56:12",
+                "updated_at": "2024-05-15 00:56:12"
+            },
+            {
+                "id_notabukubesar": "150",
+                "id_nota": "137",
+                "id_bukubesar": "1063",
+                "created_at": "2024-05-15 00:57:15",
+                "updated_at": "2024-05-15 00:57:15"
+            },
+            {
+                "id_notabukubesar": "151",
+                "id_nota": "138",
+                "id_bukubesar": "1064",
+                "created_at": "2024-05-15 00:59:39",
+                "updated_at": "2024-05-15 00:59:39"
+            },
+            {
+                "id_notabukubesar": "152",
+                "id_nota": "139",
+                "id_bukubesar": "1067",
+                "created_at": "2024-05-15 01:23:39",
+                "updated_at": "2024-05-15 01:23:39"
+            },
+            {
+                "id_notabukubesar": "153",
+                "id_nota": "140",
+                "id_bukubesar": "1068",
+                "created_at": "2024-05-15 01:47:03",
+                "updated_at": "2024-05-15 01:47:03"
+            },
+            {
+                "id_notabukubesar": "154",
+                "id_nota": "114",
+                "id_bukubesar": "1069",
+                "created_at": "2024-05-15 01:49:50",
+                "updated_at": "2024-05-15 01:49:50"
+            },
+            {
+                "id_notabukubesar": "155",
+                "id_nota": "141",
+                "id_bukubesar": "1070",
+                "created_at": "2024-05-15 02:11:25",
+                "updated_at": "2024-05-15 02:11:25"
+            },
+            {
+                "id_notabukubesar": "156",
+                "id_nota": "142",
+                "id_bukubesar": "1078",
+                "created_at": "2024-05-15 02:38:30",
+                "updated_at": "2024-05-15 02:38:30"
+            },
+            {
+                "id_notabukubesar": "157",
+                "id_nota": "143",
+                "id_bukubesar": "1079",
+                "created_at": "2024-05-15 02:46:11",
+                "updated_at": "2024-05-15 02:46:11"
+            },
+            {
+                "id_notabukubesar": "158",
+                "id_nota": "144",
+                "id_bukubesar": "1085",
+                "created_at": "2024-05-15 02:53:48",
+                "updated_at": "2024-05-15 02:53:48"
+            },
+            {
+                "id_notabukubesar": "159",
+                "id_nota": "144",
+                "id_bukubesar": "1086",
+                "created_at": "2024-05-15 03:11:00",
+                "updated_at": "2024-05-15 03:11:00"
+            },
+            {
+                "id_notabukubesar": "160",
+                "id_nota": "145",
+                "id_bukubesar": "1092",
+                "created_at": "2024-05-15 03:30:54",
+                "updated_at": "2024-05-15 03:30:54"
+            },
+            {
+                "id_notabukubesar": "161",
+                "id_nota": "146",
+                "id_bukubesar": "1093",
+                "created_at": "2024-05-15 03:32:43",
+                "updated_at": "2024-05-15 03:32:43"
+            },
+            {
+                "id_notabukubesar": "162",
+                "id_nota": "147",
+                "id_bukubesar": "1094",
+                "created_at": "2024-05-15 03:35:35",
+                "updated_at": "2024-05-15 03:35:35"
+            },
+            {
+                "id_notabukubesar": "163",
+                "id_nota": "148",
+                "id_bukubesar": "1097",
+                "created_at": "2024-05-15 03:41:00",
+                "updated_at": "2024-05-15 03:41:00"
+            },
+            {
+                "id_notabukubesar": "164",
+                "id_nota": "149",
+                "id_bukubesar": "1098",
+                "created_at": "2024-05-15 03:53:17",
+                "updated_at": "2024-05-15 03:53:17"
+            },
+            {
+                "id_notabukubesar": "165",
+                "id_nota": "150",
+                "id_bukubesar": "1103",
+                "created_at": "2024-05-15 03:57:44",
+                "updated_at": "2024-05-15 03:57:44"
+            },
+            {
+                "id_notabukubesar": "166",
+                "id_nota": "151",
+                "id_bukubesar": "1111",
+                "created_at": "2024-05-15 04:27:05",
+                "updated_at": "2024-05-15 04:27:05"
+            },
+            {
+                "id_notabukubesar": "167",
+                "id_nota": "152",
+                "id_bukubesar": "1113",
+                "created_at": "2024-05-15 05:48:23",
+                "updated_at": "2024-05-15 05:48:23"
+            },
+            {
+                "id_notabukubesar": "168",
+                "id_nota": "153",
+                "id_bukubesar": "1116",
+                "created_at": "2024-05-15 06:05:19",
+                "updated_at": "2024-05-15 06:05:19"
+            },
+            {
+                "id_notabukubesar": "169",
+                "id_nota": "154",
+                "id_bukubesar": "1119",
+                "created_at": "2024-05-15 06:58:52",
+                "updated_at": "2024-05-15 06:58:52"
+            },
+            {
+                "id_notabukubesar": "170",
+                "id_nota": "155",
+                "id_bukubesar": "1122",
+                "created_at": "2024-05-15 07:12:24",
+                "updated_at": "2024-05-15 07:12:24"
+            },
+            {
+                "id_notabukubesar": "171",
+                "id_nota": "156",
+                "id_bukubesar": "1126",
+                "created_at": "2024-05-15 07:41:50",
+                "updated_at": "2024-05-15 07:41:50"
+            },
+            {
+                "id_notabukubesar": "172",
+                "id_nota": "157",
+                "id_bukubesar": "1127",
+                "created_at": "2024-05-16 00:52:00",
+                "updated_at": "2024-05-16 00:52:00"
+            },
+            {
+                "id_notabukubesar": "173",
+                "id_nota": "135",
+                "id_bukubesar": "1129",
+                "created_at": "2024-05-16 01:05:02",
+                "updated_at": "2024-05-16 01:05:02"
+            },
+            {
+                "id_notabukubesar": "174",
+                "id_nota": "140",
+                "id_bukubesar": "1130",
+                "created_at": "2024-05-16 01:27:11",
+                "updated_at": "2024-05-16 01:27:11"
+            },
+            {
+                "id_notabukubesar": "175",
+                "id_nota": "158",
+                "id_bukubesar": "1131",
+                "created_at": "2024-05-16 01:29:49",
+                "updated_at": "2024-05-16 01:29:49"
+            },
+            {
+                "id_notabukubesar": "176",
+                "id_nota": "155",
+                "id_bukubesar": "1132",
+                "created_at": "2024-05-16 01:35:22",
+                "updated_at": "2024-05-16 01:35:22"
+            },
+            {
+                "id_notabukubesar": "177",
+                "id_nota": "159",
+                "id_bukubesar": "1135",
+                "created_at": "2024-05-16 01:37:41",
+                "updated_at": "2024-05-16 01:37:41"
+            },
+            {
+                "id_notabukubesar": "178",
+                "id_nota": "160",
+                "id_bukubesar": "1136",
+                "created_at": "2024-05-16 01:39:02",
+                "updated_at": "2024-05-16 01:39:02"
+            },
+            {
+                "id_notabukubesar": "179",
+                "id_nota": "161",
+                "id_bukubesar": "1137",
+                "created_at": "2024-05-16 01:43:40",
+                "updated_at": "2024-05-16 01:43:40"
+            },
+            {
+                "id_notabukubesar": "180",
+                "id_nota": "162",
+                "id_bukubesar": "1138",
+                "created_at": "2024-05-16 01:50:26",
+                "updated_at": "2024-05-16 01:50:26"
+            },
+            {
+                "id_notabukubesar": "181",
+                "id_nota": "158",
+                "id_bukubesar": "1139",
+                "created_at": "2024-05-16 01:57:09",
+                "updated_at": "2024-05-16 01:57:09"
+            },
+            {
+                "id_notabukubesar": "182",
+                "id_nota": "163",
+                "id_bukubesar": "1140",
+                "created_at": "2024-05-16 01:58:19",
+                "updated_at": "2024-05-16 01:58:19"
+            },
+            {
+                "id_notabukubesar": "183",
+                "id_nota": "164",
+                "id_bukubesar": "1141",
+                "created_at": "2024-05-16 02:21:32",
+                "updated_at": "2024-05-16 02:21:32"
+            },
+            {
+                "id_notabukubesar": "184",
+                "id_nota": "165",
+                "id_bukubesar": "1142",
+                "created_at": "2024-05-16 02:28:26",
+                "updated_at": "2024-05-16 02:28:26"
+            },
+            {
+                "id_notabukubesar": "185",
+                "id_nota": "166",
+                "id_bukubesar": "1143",
+                "created_at": "2024-05-16 02:29:54",
+                "updated_at": "2024-05-16 02:29:54"
+            },
+            {
+                "id_notabukubesar": "186",
+                "id_nota": "167",
+                "id_bukubesar": "1144",
+                "created_at": "2024-05-16 02:46:08",
+                "updated_at": "2024-05-16 02:46:08"
+            },
+            {
+                "id_notabukubesar": "187",
+                "id_nota": "168",
+                "id_bukubesar": "1151",
+                "created_at": "2024-05-16 03:30:54",
+                "updated_at": "2024-05-16 03:30:54"
+            },
+            {
+                "id_notabukubesar": "188",
+                "id_nota": "169",
+                "id_bukubesar": "1152",
+                "created_at": "2024-05-16 03:35:48",
+                "updated_at": "2024-05-16 03:35:48"
+            },
+            {
+                "id_notabukubesar": "189",
+                "id_nota": "170",
+                "id_bukubesar": "1153",
+                "created_at": "2024-05-16 03:38:58",
+                "updated_at": "2024-05-16 03:38:58"
+            },
+            {
+                "id_notabukubesar": "190",
+                "id_nota": "164",
+                "id_bukubesar": "1154",
+                "created_at": "2024-05-16 05:11:44",
+                "updated_at": "2024-05-16 05:11:44"
+            },
+            {
+                "id_notabukubesar": "191",
+                "id_nota": "171",
+                "id_bukubesar": "1157",
+                "created_at": "2024-05-16 05:16:45",
+                "updated_at": "2024-05-16 05:16:45"
+            },
+            {
+                "id_notabukubesar": "192",
+                "id_nota": "172",
+                "id_bukubesar": "1158",
+                "created_at": "2024-05-16 06:07:44",
+                "updated_at": "2024-05-16 06:07:44"
+            },
+            {
+                "id_notabukubesar": "193",
+                "id_nota": "173",
+                "id_bukubesar": "1165",
+                "created_at": "2024-05-16 06:13:27",
+                "updated_at": "2024-05-16 06:13:27"
+            },
+            {
+                "id_notabukubesar": "194",
+                "id_nota": "174",
+                "id_bukubesar": "1166",
+                "created_at": "2024-05-16 06:15:32",
+                "updated_at": "2024-05-16 06:15:32"
+            },
+            {
+                "id_notabukubesar": "195",
+                "id_nota": "175",
+                "id_bukubesar": "1169",
+                "created_at": "2024-05-16 07:35:51",
+                "updated_at": "2024-05-16 07:35:51"
+            },
+            {
+                "id_notabukubesar": "196",
+                "id_nota": "176",
+                "id_bukubesar": "1170",
+                "created_at": "2024-05-16 07:44:34",
+                "updated_at": "2024-05-16 07:44:34"
+            },
+            {
+                "id_notabukubesar": "197",
+                "id_nota": "177",
+                "id_bukubesar": "1176",
+                "created_at": "2024-05-16 07:52:55",
+                "updated_at": "2024-05-16 07:52:55"
+            },
+            {
+                "id_notabukubesar": "198",
+                "id_nota": "178",
+                "id_bukubesar": "1177",
+                "created_at": "2024-05-16 07:54:02",
+                "updated_at": "2024-05-16 07:54:02"
+            },
+            {
+                "id_notabukubesar": "199",
+                "id_nota": "179",
+                "id_bukubesar": "1178",
+                "created_at": "2024-05-16 07:55:43",
+                "updated_at": "2024-05-16 07:55:43"
+            },
+            {
+                "id_notabukubesar": "200",
+                "id_nota": "180",
+                "id_bukubesar": "1179",
+                "created_at": "2024-05-16 07:56:51",
+                "updated_at": "2024-05-16 07:56:51"
+            },
+            {
+                "id_notabukubesar": "201",
+                "id_nota": "177",
+                "id_bukubesar": "1181",
+                "created_at": "2024-05-16 08:10:53",
+                "updated_at": "2024-05-16 08:10:53"
+            },
+            {
+                "id_notabukubesar": "202",
+                "id_nota": "181",
+                "id_bukubesar": "1184",
+                "created_at": "2024-05-16 08:33:24",
+                "updated_at": "2024-05-16 08:33:24"
+            },
+            {
+                "id_notabukubesar": "203",
+                "id_nota": "182",
+                "id_bukubesar": "1192",
+                "created_at": "2024-05-17 00:41:15",
+                "updated_at": "2024-05-17 00:41:15"
+            },
+            {
+                "id_notabukubesar": "204",
+                "id_nota": "183",
+                "id_bukubesar": "1194",
+                "created_at": "2024-05-17 00:43:47",
+                "updated_at": "2024-05-17 00:43:47"
+            },
+            {
+                "id_notabukubesar": "205",
+                "id_nota": "184",
+                "id_bukubesar": "1195",
+                "created_at": "2024-05-17 00:44:34",
+                "updated_at": "2024-05-17 00:44:34"
+            },
+            {
+                "id_notabukubesar": "206",
+                "id_nota": "185",
+                "id_bukubesar": "1196",
+                "created_at": "2024-05-17 00:47:14",
+                "updated_at": "2024-05-17 00:47:14"
+            },
+            {
+                "id_notabukubesar": "207",
+                "id_nota": "186",
+                "id_bukubesar": "1200",
+                "created_at": "2024-05-17 00:56:33",
+                "updated_at": "2024-05-17 00:56:33"
+            },
+            {
+                "id_notabukubesar": "208",
+                "id_nota": "153",
+                "id_bukubesar": "1203",
+                "created_at": "2024-05-17 01:06:37",
+                "updated_at": "2024-05-17 01:06:37"
+            },
+            {
+                "id_notabukubesar": "209",
+                "id_nota": "187",
+                "id_bukubesar": "1204",
+                "created_at": "2024-05-17 01:33:42",
+                "updated_at": "2024-05-17 01:33:42"
+            },
+            {
+                "id_notabukubesar": "210",
+                "id_nota": "188",
+                "id_bukubesar": "1205",
+                "created_at": "2024-05-17 01:38:01",
+                "updated_at": "2024-05-17 01:38:01"
+            },
+            {
+                "id_notabukubesar": "211",
+                "id_nota": "189",
+                "id_bukubesar": "1206",
+                "created_at": "2024-05-17 02:06:12",
+                "updated_at": "2024-05-17 02:06:12"
+            },
+            {
+                "id_notabukubesar": "212",
+                "id_nota": "190",
+                "id_bukubesar": "1207",
+                "created_at": "2024-05-17 02:39:16",
+                "updated_at": "2024-05-17 02:39:16"
+            },
+            {
+                "id_notabukubesar": "213",
+                "id_nota": "191",
+                "id_bukubesar": "1208",
+                "created_at": "2024-05-17 02:46:23",
+                "updated_at": "2024-05-17 02:46:23"
+            },
+            {
+                "id_notabukubesar": "214",
+                "id_nota": "192",
+                "id_bukubesar": "1212",
+                "created_at": "2024-05-17 03:18:15",
+                "updated_at": "2024-05-17 03:18:15"
+            },
+            {
+                "id_notabukubesar": "215",
+                "id_nota": "187",
+                "id_bukubesar": "1213",
+                "created_at": "2024-05-17 03:20:07",
+                "updated_at": "2024-05-17 03:20:07"
+            },
+            {
+                "id_notabukubesar": "216",
+                "id_nota": "193",
+                "id_bukubesar": "1214",
+                "created_at": "2024-05-17 03:21:38",
+                "updated_at": "2024-05-17 03:21:38"
+            },
+            {
+                "id_notabukubesar": "217",
+                "id_nota": "194",
+                "id_bukubesar": "1215",
+                "created_at": "2024-05-17 03:26:04",
+                "updated_at": "2024-05-17 03:26:04"
+            },
+            {
+                "id_notabukubesar": "218",
+                "id_nota": "195",
+                "id_bukubesar": "1218",
+                "created_at": "2024-05-17 03:35:14",
+                "updated_at": "2024-05-17 03:35:14"
+            },
+            {
+                "id_notabukubesar": "219",
+                "id_nota": "196",
+                "id_bukubesar": "1219",
+                "created_at": "2024-05-17 03:39:16",
+                "updated_at": "2024-05-17 03:39:16"
+            },
+            {
+                "id_notabukubesar": "220",
+                "id_nota": "197",
+                "id_bukubesar": "1220",
+                "created_at": "2024-05-17 03:39:51",
+                "updated_at": "2024-05-17 03:39:51"
+            },
+            {
+                "id_notabukubesar": "221",
+                "id_nota": "188",
+                "id_bukubesar": "1221",
+                "created_at": "2024-05-17 03:40:30",
+                "updated_at": "2024-05-17 03:40:30"
+            },
+            {
+                "id_notabukubesar": "222",
+                "id_nota": "198",
+                "id_bukubesar": "1222",
+                "created_at": "2024-05-17 03:42:17",
+                "updated_at": "2024-05-17 03:42:17"
+            },
+            {
+                "id_notabukubesar": "223",
+                "id_nota": "199",
+                "id_bukubesar": "1223",
+                "created_at": "2024-05-17 03:43:35",
+                "updated_at": "2024-05-17 03:43:35"
+            },
+            {
+                "id_notabukubesar": "224",
+                "id_nota": "200",
+                "id_bukubesar": "1224",
+                "created_at": "2024-05-17 03:47:29",
+                "updated_at": "2024-05-17 03:47:29"
+            },
+            {
+                "id_notabukubesar": "225",
+                "id_nota": "201",
+                "id_bukubesar": "1226",
+                "created_at": "2024-05-17 04:03:06",
+                "updated_at": "2024-05-17 04:03:06"
+            },
+            {
+                "id_notabukubesar": "226",
+                "id_nota": "202",
+                "id_bukubesar": "1230",
+                "created_at": "2024-05-17 04:07:38",
+                "updated_at": "2024-05-17 04:07:38"
+            },
+            {
+                "id_notabukubesar": "227",
+                "id_nota": "203",
+                "id_bukubesar": "1231",
+                "created_at": "2024-05-17 04:09:41",
+                "updated_at": "2024-05-17 04:09:41"
+            },
+            {
+                "id_notabukubesar": "228",
+                "id_nota": "204",
+                "id_bukubesar": "1238",
+                "created_at": "2024-05-17 04:59:07",
+                "updated_at": "2024-05-17 04:59:07"
+            },
+            {
+                "id_notabukubesar": "229",
+                "id_nota": "205",
+                "id_bukubesar": "1239",
+                "created_at": "2024-05-17 04:59:38",
+                "updated_at": "2024-05-17 04:59:38"
+            },
+            {
+                "id_notabukubesar": "230",
+                "id_nota": "206",
+                "id_bukubesar": "1248",
+                "created_at": "2024-05-17 06:05:18",
+                "updated_at": "2024-05-17 06:05:18"
+            },
+            {
+                "id_notabukubesar": "231",
+                "id_nota": "161",
+                "id_bukubesar": "1249",
+                "created_at": "2024-05-17 06:17:48",
+                "updated_at": "2024-05-17 06:17:48"
+            },
+            {
+                "id_notabukubesar": "232",
+                "id_nota": "207",
+                "id_bukubesar": "1251",
+                "created_at": "2024-05-17 06:36:56",
+                "updated_at": "2024-05-17 06:36:56"
+            },
+            {
+                "id_notabukubesar": "233",
+                "id_nota": "208",
+                "id_bukubesar": "1253",
+                "created_at": "2024-05-17 07:12:26",
+                "updated_at": "2024-05-17 07:12:26"
+            },
+            {
+                "id_notabukubesar": "234",
+                "id_nota": "195",
+                "id_bukubesar": "1254",
+                "created_at": "2024-05-17 07:13:53",
+                "updated_at": "2024-05-17 07:13:53"
+            },
+            {
+                "id_notabukubesar": "235",
+                "id_nota": "209",
+                "id_bukubesar": "1259",
+                "created_at": "2024-05-17 07:18:36",
+                "updated_at": "2024-05-17 07:18:36"
+            },
+            {
+                "id_notabukubesar": "236",
+                "id_nota": "210",
+                "id_bukubesar": "1261",
+                "created_at": "2024-05-17 07:22:35",
+                "updated_at": "2024-05-17 07:22:35"
+            },
+            {
+                "id_notabukubesar": "237",
+                "id_nota": "211",
+                "id_bukubesar": "1263",
+                "created_at": "2024-05-17 07:26:46",
+                "updated_at": "2024-05-17 07:26:46"
+            },
+            {
+                "id_notabukubesar": "238",
+                "id_nota": "212",
+                "id_bukubesar": "1264",
+                "created_at": "2024-05-17 07:28:12",
+                "updated_at": "2024-05-17 07:28:12"
+            },
+            {
+                "id_notabukubesar": "239",
+                "id_nota": "213",
+                "id_bukubesar": "1268",
+                "created_at": "2024-05-17 07:35:20",
+                "updated_at": "2024-05-17 07:35:20"
+            },
+            {
+                "id_notabukubesar": "240",
+                "id_nota": "214",
+                "id_bukubesar": "1269",
+                "created_at": "2024-05-17 07:44:45",
+                "updated_at": "2024-05-17 07:44:45"
+            },
+            {
+                "id_notabukubesar": "241",
+                "id_nota": "85",
+                "id_bukubesar": "1272",
+                "created_at": "2024-05-18 00:44:42",
+                "updated_at": "2024-05-18 00:44:42"
+            },
+            {
+                "id_notabukubesar": "242",
+                "id_nota": "215",
+                "id_bukubesar": "1276",
+                "created_at": "2024-05-18 01:27:53",
+                "updated_at": "2024-05-18 01:27:53"
+            },
+            {
+                "id_notabukubesar": "243",
+                "id_nota": "216",
+                "id_bukubesar": "1278",
+                "created_at": "2024-05-18 01:41:32",
+                "updated_at": "2024-05-18 01:41:32"
+            },
+            {
+                "id_notabukubesar": "244",
+                "id_nota": "217",
+                "id_bukubesar": "1279",
+                "created_at": "2024-05-18 01:46:54",
+                "updated_at": "2024-05-18 01:46:54"
+            },
+            {
+                "id_notabukubesar": "245",
+                "id_nota": "218",
+                "id_bukubesar": "1280",
+                "created_at": "2024-05-18 01:52:51",
+                "updated_at": "2024-05-18 01:52:51"
+            },
+            {
+                "id_notabukubesar": "246",
+                "id_nota": "219",
+                "id_bukubesar": "1284",
+                "created_at": "2024-05-18 02:00:12",
+                "updated_at": "2024-05-18 02:00:12"
+            },
+            {
+                "id_notabukubesar": "247",
+                "id_nota": "220",
+                "id_bukubesar": "1285",
+                "created_at": "2024-05-18 02:01:09",
+                "updated_at": "2024-05-18 02:01:09"
+            },
+            {
+                "id_notabukubesar": "248",
+                "id_nota": "221",
+                "id_bukubesar": "1286",
+                "created_at": "2024-05-18 02:01:56",
+                "updated_at": "2024-05-18 02:01:56"
+            },
+            {
+                "id_notabukubesar": "249",
+                "id_nota": "217",
+                "id_bukubesar": "1287",
+                "created_at": "2024-05-18 02:10:14",
+                "updated_at": "2024-05-18 02:10:14"
+            },
+            {
+                "id_notabukubesar": "250",
+                "id_nota": "215",
+                "id_bukubesar": "1288",
+                "created_at": "2024-05-18 02:12:46",
+                "updated_at": "2024-05-18 02:12:46"
+            },
+            {
+                "id_notabukubesar": "251",
+                "id_nota": "222",
+                "id_bukubesar": "1289",
+                "created_at": "2024-05-18 02:23:42",
+                "updated_at": "2024-05-18 02:23:42"
+            },
+            {
+                "id_notabukubesar": "252",
+                "id_nota": "216",
+                "id_bukubesar": "1290",
+                "created_at": "2024-05-18 02:37:47",
+                "updated_at": "2024-05-18 02:37:47"
+            },
+            {
+                "id_notabukubesar": "253",
+                "id_nota": "223",
+                "id_bukubesar": "1291",
+                "created_at": "2024-05-18 03:54:24",
+                "updated_at": "2024-05-18 03:54:24"
+            },
+            {
+                "id_notabukubesar": "254",
+                "id_nota": "224",
+                "id_bukubesar": "1292",
+                "created_at": "2024-05-18 03:59:12",
+                "updated_at": "2024-05-18 03:59:12"
+            },
+            {
+                "id_notabukubesar": "255",
+                "id_nota": "225",
+                "id_bukubesar": "1296",
+                "created_at": "2024-05-18 04:24:32",
+                "updated_at": "2024-05-18 04:24:32"
+            },
+            {
+                "id_notabukubesar": "256",
+                "id_nota": "226",
+                "id_bukubesar": "1297",
+                "created_at": "2024-05-18 04:26:23",
+                "updated_at": "2024-05-18 04:26:23"
+            },
+            {
+                "id_notabukubesar": "257",
+                "id_nota": "222",
+                "id_bukubesar": "1298",
+                "created_at": "2024-05-18 04:26:52",
+                "updated_at": "2024-05-18 04:26:52"
+            },
+            {
+                "id_notabukubesar": "258",
+                "id_nota": "224",
+                "id_bukubesar": "1299",
+                "created_at": "2024-05-18 04:33:06",
+                "updated_at": "2024-05-18 04:33:06"
+            },
+            {
+                "id_notabukubesar": "259",
+                "id_nota": "227",
+                "id_bukubesar": "1305",
+                "created_at": "2024-05-18 06:13:31",
+                "updated_at": "2024-05-18 06:13:31"
+            },
+            {
+                "id_notabukubesar": "260",
+                "id_nota": "228",
+                "id_bukubesar": "1308",
+                "created_at": "2024-05-18 07:31:11",
+                "updated_at": "2024-05-18 07:31:11"
+            },
+            {
+                "id_notabukubesar": "261",
+                "id_nota": "227",
+                "id_bukubesar": "1320",
+                "created_at": "2024-05-18 08:11:08",
+                "updated_at": "2024-05-18 08:11:08"
+            },
+            {
+                "id_notabukubesar": "262",
+                "id_nota": "229",
+                "id_bukubesar": "1322",
+                "created_at": "2024-05-18 08:13:27",
+                "updated_at": "2024-05-18 08:13:27"
+            },
+            {
+                "id_notabukubesar": "263",
+                "id_nota": "230",
+                "id_bukubesar": "1325",
+                "created_at": "2024-05-18 08:21:27",
+                "updated_at": "2024-05-18 08:21:27"
+            },
+            {
+                "id_notabukubesar": "264",
+                "id_nota": "228",
+                "id_bukubesar": "1326",
+                "created_at": "2024-05-18 08:25:54",
+                "updated_at": "2024-05-18 08:25:54"
+            },
+            {
+                "id_notabukubesar": "265",
+                "id_nota": "134",
+                "id_bukubesar": "1327",
+                "created_at": "2024-05-18 08:28:18",
+                "updated_at": "2024-05-18 08:28:18"
+            },
+            {
+                "id_notabukubesar": "266",
+                "id_nota": "231",
+                "id_bukubesar": "1329",
+                "created_at": "2024-05-18 08:33:47",
+                "updated_at": "2024-05-18 08:33:47"
+            },
+            {
+                "id_notabukubesar": "267",
+                "id_nota": "232",
+                "id_bukubesar": "1330",
+                "created_at": "2024-05-19 23:17:15",
+                "updated_at": "2024-05-19 23:17:15"
+            },
+            {
+                "id_notabukubesar": "268",
+                "id_nota": "233",
+                "id_bukubesar": "1331",
+                "created_at": "2024-05-19 23:19:51",
+                "updated_at": "2024-05-19 23:19:51"
+            },
+            {
+                "id_notabukubesar": "269",
+                "id_nota": "234",
+                "id_bukubesar": "1332",
+                "created_at": "2024-05-20 00:49:18",
+                "updated_at": "2024-05-20 00:49:18"
+            },
+            {
+                "id_notabukubesar": "270",
+                "id_nota": "235",
+                "id_bukubesar": "1333",
+                "created_at": "2024-05-20 00:58:33",
+                "updated_at": "2024-05-20 00:58:33"
+            },
+            {
+                "id_notabukubesar": "271",
+                "id_nota": "206",
+                "id_bukubesar": "1334",
+                "created_at": "2024-05-20 01:05:27",
+                "updated_at": "2024-05-20 01:05:27"
+            },
+            {
+                "id_notabukubesar": "272",
+                "id_nota": "172",
+                "id_bukubesar": "1335",
+                "created_at": "2024-05-20 01:06:23",
+                "updated_at": "2024-05-20 01:06:23"
+            },
+            {
+                "id_notabukubesar": "273",
+                "id_nota": "236",
+                "id_bukubesar": "1336",
+                "created_at": "2024-05-20 01:10:39",
+                "updated_at": "2024-05-20 01:10:39"
+            },
+            {
+                "id_notabukubesar": "274",
+                "id_nota": "237",
+                "id_bukubesar": "1343",
+                "created_at": "2024-05-20 01:32:25",
+                "updated_at": "2024-05-20 01:32:25"
+            },
+            {
+                "id_notabukubesar": "275",
+                "id_nota": "238",
+                "id_bukubesar": "1344",
+                "created_at": "2024-05-20 01:41:25",
+                "updated_at": "2024-05-20 01:41:25"
+            },
+            {
+                "id_notabukubesar": "276",
+                "id_nota": "239",
+                "id_bukubesar": "1348",
+                "created_at": "2024-05-20 01:52:56",
+                "updated_at": "2024-05-20 01:52:56"
+            },
+            {
+                "id_notabukubesar": "277",
+                "id_nota": "240",
+                "id_bukubesar": "1351",
+                "created_at": "2024-05-20 02:03:36",
+                "updated_at": "2024-05-20 02:03:36"
+            },
+            {
+                "id_notabukubesar": "278",
+                "id_nota": "241",
+                "id_bukubesar": "1352",
+                "created_at": "2024-05-20 02:24:50",
+                "updated_at": "2024-05-20 02:24:50"
+            },
+            {
+                "id_notabukubesar": "279",
+                "id_nota": "234",
+                "id_bukubesar": "1354",
+                "created_at": "2024-05-20 02:32:29",
+                "updated_at": "2024-05-20 02:32:29"
+            },
+            {
+                "id_notabukubesar": "280",
+                "id_nota": "232",
+                "id_bukubesar": "1355",
+                "created_at": "2024-05-20 02:32:55",
+                "updated_at": "2024-05-20 02:32:55"
+            },
+            {
+                "id_notabukubesar": "281",
+                "id_nota": "242",
+                "id_bukubesar": "1356",
+                "created_at": "2024-05-20 02:36:19",
+                "updated_at": "2024-05-20 02:36:19"
+            },
+            {
+                "id_notabukubesar": "282",
+                "id_nota": "243",
+                "id_bukubesar": "1357",
+                "created_at": "2024-05-20 02:40:54",
+                "updated_at": "2024-05-20 02:40:54"
+            },
+            {
+                "id_notabukubesar": "283",
+                "id_nota": "244",
+                "id_bukubesar": "1358",
+                "created_at": "2024-05-20 02:46:08",
+                "updated_at": "2024-05-20 02:46:08"
+            },
+            {
+                "id_notabukubesar": "284",
+                "id_nota": "245",
+                "id_bukubesar": "1359",
+                "created_at": "2024-05-20 02:50:33",
+                "updated_at": "2024-05-20 02:50:33"
+            },
+            {
+                "id_notabukubesar": "285",
+                "id_nota": "246",
+                "id_bukubesar": "1360",
+                "created_at": "2024-05-20 02:56:35",
+                "updated_at": "2024-05-20 02:56:35"
+            },
+            {
+                "id_notabukubesar": "286",
+                "id_nota": "247",
+                "id_bukubesar": "1363",
+                "created_at": "2024-05-20 03:06:19",
+                "updated_at": "2024-05-20 03:06:19"
+            },
+            {
+                "id_notabukubesar": "287",
+                "id_nota": "248",
+                "id_bukubesar": "1364",
+                "created_at": "2024-05-20 03:12:13",
+                "updated_at": "2024-05-20 03:12:13"
+            },
+            {
+                "id_notabukubesar": "288",
+                "id_nota": "249",
+                "id_bukubesar": "1365",
+                "created_at": "2024-05-20 03:13:54",
+                "updated_at": "2024-05-20 03:13:54"
+            },
+            {
+                "id_notabukubesar": "289",
+                "id_nota": "250",
+                "id_bukubesar": "1366",
+                "created_at": "2024-05-20 03:14:43",
+                "updated_at": "2024-05-20 03:14:43"
+            },
+            {
+                "id_notabukubesar": "290",
+                "id_nota": "237",
+                "id_bukubesar": "1367",
+                "created_at": "2024-05-20 03:35:07",
+                "updated_at": "2024-05-20 03:35:07"
+            },
+            {
+                "id_notabukubesar": "291",
+                "id_nota": "233",
+                "id_bukubesar": "1369",
+                "created_at": "2024-05-20 03:36:16",
+                "updated_at": "2024-05-20 03:36:16"
+            },
+            {
+                "id_notabukubesar": "292",
+                "id_nota": "251",
+                "id_bukubesar": "1370",
+                "created_at": "2024-05-20 03:37:03",
+                "updated_at": "2024-05-20 03:37:03"
+            },
+            {
+                "id_notabukubesar": "293",
+                "id_nota": "252",
+                "id_bukubesar": "1371",
+                "created_at": "2024-05-20 03:47:42",
+                "updated_at": "2024-05-20 03:47:42"
+            },
+            {
+                "id_notabukubesar": "294",
+                "id_nota": "253",
+                "id_bukubesar": "1375",
+                "created_at": "2024-05-20 03:51:02",
+                "updated_at": "2024-05-20 03:51:02"
+            },
+            {
+                "id_notabukubesar": "295",
+                "id_nota": "254",
+                "id_bukubesar": "1376",
+                "created_at": "2024-05-20 04:01:17",
+                "updated_at": "2024-05-20 04:01:17"
+            },
+            {
+                "id_notabukubesar": "296",
+                "id_nota": "255",
+                "id_bukubesar": "1377",
+                "created_at": "2024-05-20 04:10:16",
+                "updated_at": "2024-05-20 04:10:16"
+            },
+            {
+                "id_notabukubesar": "297",
+                "id_nota": "256",
+                "id_bukubesar": "1378",
+                "created_at": "2024-05-20 04:14:08",
+                "updated_at": "2024-05-20 04:14:08"
+            },
+            {
+                "id_notabukubesar": "298",
+                "id_nota": "257",
+                "id_bukubesar": "1379",
+                "created_at": "2024-05-20 04:15:38",
+                "updated_at": "2024-05-20 04:15:38"
+            },
+            {
+                "id_notabukubesar": "299",
+                "id_nota": "258",
+                "id_bukubesar": "1380",
+                "created_at": "2024-05-20 04:17:59",
+                "updated_at": "2024-05-20 04:17:59"
+            },
+            {
+                "id_notabukubesar": "300",
+                "id_nota": "259",
+                "id_bukubesar": "1381",
+                "created_at": "2024-05-20 04:22:30",
+                "updated_at": "2024-05-20 04:22:30"
+            },
+            {
+                "id_notabukubesar": "301",
+                "id_nota": "260",
+                "id_bukubesar": "1384",
+                "created_at": "2024-05-20 04:27:32",
+                "updated_at": "2024-05-20 04:27:32"
+            },
+            {
+                "id_notabukubesar": "302",
+                "id_nota": "223",
+                "id_bukubesar": "1385",
+                "created_at": "2024-05-20 04:27:50",
+                "updated_at": "2024-05-20 04:27:50"
+            },
+            {
+                "id_notabukubesar": "303",
+                "id_nota": "246",
+                "id_bukubesar": "1387",
+                "created_at": "2024-05-20 04:30:25",
+                "updated_at": "2024-05-20 04:30:25"
+            },
+            {
+                "id_notabukubesar": "304",
+                "id_nota": "242",
+                "id_bukubesar": "1388",
+                "created_at": "2024-05-20 04:31:00",
+                "updated_at": "2024-05-20 04:31:00"
+            },
+            {
+                "id_notabukubesar": "305",
+                "id_nota": "261",
+                "id_bukubesar": "1397",
+                "created_at": "2024-05-20 04:37:40",
+                "updated_at": "2024-05-20 04:37:40"
+            },
+            {
+                "id_notabukubesar": "306",
+                "id_nota": "262",
+                "id_bukubesar": "1409",
+                "created_at": "2024-05-20 06:17:54",
+                "updated_at": "2024-05-20 06:17:54"
+            },
+            {
+                "id_notabukubesar": "307",
+                "id_nota": "263",
+                "id_bukubesar": "1423",
+                "created_at": "2024-05-20 06:31:56",
+                "updated_at": "2024-05-20 06:31:56"
+            },
+            {
+                "id_notabukubesar": "308",
+                "id_nota": "264",
+                "id_bukubesar": "1425",
+                "created_at": "2024-05-20 06:45:54",
+                "updated_at": "2024-05-20 06:45:54"
+            },
+            {
+                "id_notabukubesar": "309",
+                "id_nota": "218",
+                "id_bukubesar": "1426",
+                "created_at": "2024-05-20 06:58:05",
+                "updated_at": "2024-05-20 06:58:05"
+            },
+            {
+                "id_notabukubesar": "310",
+                "id_nota": "235",
+                "id_bukubesar": "1427",
+                "created_at": "2024-05-20 06:59:36",
+                "updated_at": "2024-05-20 06:59:36"
+            },
+            {
+                "id_notabukubesar": "311",
+                "id_nota": "253",
+                "id_bukubesar": "1428",
+                "created_at": "2024-05-20 07:04:35",
+                "updated_at": "2024-05-20 07:04:35"
+            },
+            {
+                "id_notabukubesar": "312",
+                "id_nota": "265",
+                "id_bukubesar": "1432",
+                "created_at": "2024-05-20 07:08:40",
+                "updated_at": "2024-05-20 07:08:40"
+            },
+            {
+                "id_notabukubesar": "313",
+                "id_nota": "266",
+                "id_bukubesar": "1435",
+                "created_at": "2024-05-20 07:22:22",
+                "updated_at": "2024-05-20 07:22:22"
+            },
+            {
+                "id_notabukubesar": "314",
+                "id_nota": "267",
+                "id_bukubesar": "1436",
+                "created_at": "2024-05-20 07:26:52",
+                "updated_at": "2024-05-20 07:26:52"
+            },
+            {
+                "id_notabukubesar": "315",
+                "id_nota": "268",
+                "id_bukubesar": "1437",
+                "created_at": "2024-05-20 07:34:18",
+                "updated_at": "2024-05-20 07:34:18"
+            },
+            {
+                "id_notabukubesar": "316",
+                "id_nota": "269",
+                "id_bukubesar": "1438",
+                "created_at": "2024-05-20 07:37:02",
+                "updated_at": "2024-05-20 07:37:02"
+            },
+            {
+                "id_notabukubesar": "317",
+                "id_nota": "255",
+                "id_bukubesar": "1439",
+                "created_at": "2024-05-20 07:48:27",
+                "updated_at": "2024-05-20 07:48:27"
+            },
+            {
+                "id_notabukubesar": "318",
+                "id_nota": "262",
+                "id_bukubesar": "1440",
+                "created_at": "2024-05-20 07:55:35",
+                "updated_at": "2024-05-20 07:55:35"
+            },
+            {
+                "id_notabukubesar": "319",
+                "id_nota": "264",
+                "id_bukubesar": "1441",
+                "created_at": "2024-05-20 07:56:17",
+                "updated_at": "2024-05-20 07:56:17"
+            },
+            {
+                "id_notabukubesar": "320",
+                "id_nota": "270",
+                "id_bukubesar": "1445",
+                "created_at": "2024-05-20 14:53:02",
+                "updated_at": "2024-05-20 14:53:02"
+            },
+            {
+                "id_notabukubesar": "321",
+                "id_nota": "271",
+                "id_bukubesar": "1446",
+                "created_at": "2024-05-20 15:05:19",
+                "updated_at": "2024-05-20 15:05:19"
+            },
+            {
+                "id_notabukubesar": "322",
+                "id_nota": "272",
+                "id_bukubesar": "1449",
+                "created_at": "2024-05-20 21:19:33",
+                "updated_at": "2024-05-20 21:19:33"
+            },
+            {
+                "id_notabukubesar": "323",
+                "id_nota": "273",
+                "id_bukubesar": "1458",
+                "created_at": "2024-05-20 21:29:11",
+                "updated_at": "2024-05-20 21:29:11"
+            },
+            {
+                "id_notabukubesar": "324",
+                "id_nota": "274",
+                "id_bukubesar": "1460",
+                "created_at": "2024-05-20 21:34:24",
+                "updated_at": "2024-05-20 21:34:24"
+            },
+            {
+                "id_notabukubesar": "325",
+                "id_nota": "275",
+                "id_bukubesar": "1471",
+                "created_at": "2024-05-20 21:44:10",
+                "updated_at": "2024-05-20 21:44:10"
+            },
+            {
+                "id_notabukubesar": "326",
+                "id_nota": "276",
+                "id_bukubesar": "1472",
+                "created_at": "2024-05-20 21:49:52",
+                "updated_at": "2024-05-20 21:49:52"
+            },
+            {
+                "id_notabukubesar": "327",
+                "id_nota": "277",
+                "id_bukubesar": "1473",
+                "created_at": "2024-05-21 00:40:59",
+                "updated_at": "2024-05-21 00:40:59"
+            },
+            {
+                "id_notabukubesar": "328",
+                "id_nota": "263",
+                "id_bukubesar": "1474",
+                "created_at": "2024-05-21 00:43:22",
+                "updated_at": "2024-05-21 00:43:22"
+            },
+            {
+                "id_notabukubesar": "329",
+                "id_nota": "266",
+                "id_bukubesar": "1475",
+                "created_at": "2024-05-21 00:44:59",
+                "updated_at": "2024-05-21 00:44:59"
+            },
+            {
+                "id_notabukubesar": "330",
+                "id_nota": "278",
+                "id_bukubesar": "1478",
+                "created_at": "2024-05-21 01:20:18",
+                "updated_at": "2024-05-21 01:20:18"
+            },
+            {
+                "id_notabukubesar": "331",
+                "id_nota": "279",
+                "id_bukubesar": "1479",
+                "created_at": "2024-05-21 01:24:17",
+                "updated_at": "2024-05-21 01:24:17"
+            },
+            {
+                "id_notabukubesar": "332",
+                "id_nota": "280",
+                "id_bukubesar": "1481",
+                "created_at": "2024-05-21 01:36:54",
+                "updated_at": "2024-05-21 01:36:54"
+            },
+            {
+                "id_notabukubesar": "333",
+                "id_nota": "281",
+                "id_bukubesar": "1482",
+                "created_at": "2024-05-21 01:37:39",
+                "updated_at": "2024-05-21 01:37:39"
+            },
+            {
+                "id_notabukubesar": "334",
+                "id_nota": "282",
+                "id_bukubesar": "1489",
+                "created_at": "2024-05-21 01:50:32",
+                "updated_at": "2024-05-21 01:50:32"
+            },
+            {
+                "id_notabukubesar": "335",
+                "id_nota": "270",
+                "id_bukubesar": "1490",
+                "created_at": "2024-05-21 02:12:34",
+                "updated_at": "2024-05-21 02:12:34"
+            },
+            {
+                "id_notabukubesar": "336",
+                "id_nota": "283",
+                "id_bukubesar": "1491",
+                "created_at": "2024-05-21 02:28:35",
+                "updated_at": "2024-05-21 02:28:35"
+            },
+            {
+                "id_notabukubesar": "337",
+                "id_nota": "271",
+                "id_bukubesar": "1492",
+                "created_at": "2024-05-21 02:33:12",
+                "updated_at": "2024-05-21 02:33:12"
+            },
+            {
+                "id_notabukubesar": "338",
+                "id_nota": "284",
+                "id_bukubesar": "1493",
+                "created_at": "2024-05-21 02:36:03",
+                "updated_at": "2024-05-21 02:36:03"
+            },
+            {
+                "id_notabukubesar": "339",
+                "id_nota": "285",
+                "id_bukubesar": "1494",
+                "created_at": "2024-05-21 03:49:28",
+                "updated_at": "2024-05-21 03:49:28"
+            },
+            {
+                "id_notabukubesar": "340",
+                "id_nota": "281",
+                "id_bukubesar": "1495",
+                "created_at": "2024-05-21 04:13:22",
+                "updated_at": "2024-05-21 04:13:22"
+            },
+            {
+                "id_notabukubesar": "341",
+                "id_nota": "286",
+                "id_bukubesar": "1499",
+                "created_at": "2024-05-21 04:51:13",
+                "updated_at": "2024-05-21 04:51:13"
+            },
+            {
+                "id_notabukubesar": "342",
+                "id_nota": "286",
+                "id_bukubesar": "1503",
+                "created_at": "2024-05-21 05:05:40",
+                "updated_at": "2024-05-21 05:05:40"
+            },
+            {
+                "id_notabukubesar": "343",
+                "id_nota": "287",
+                "id_bukubesar": "1504",
+                "created_at": "2024-05-21 05:08:48",
+                "updated_at": "2024-05-21 05:08:48"
+            },
+            {
+                "id_notabukubesar": "344",
+                "id_nota": "13",
+                "id_bukubesar": "1505",
+                "created_at": "2024-05-21 05:51:15",
+                "updated_at": "2024-05-21 05:51:15"
+            },
+            {
+                "id_notabukubesar": "345",
+                "id_nota": "288",
+                "id_bukubesar": "1511",
+                "created_at": "2024-05-21 05:57:58",
+                "updated_at": "2024-05-21 05:57:58"
+            },
+            {
+                "id_notabukubesar": "346",
+                "id_nota": "289",
+                "id_bukubesar": "1512",
+                "created_at": "2024-05-21 06:29:01",
+                "updated_at": "2024-05-21 06:29:01"
+            },
+            {
+                "id_notabukubesar": "347",
+                "id_nota": "290",
+                "id_bukubesar": "1513",
+                "created_at": "2024-05-21 06:46:45",
+                "updated_at": "2024-05-21 06:46:45"
+            },
+            {
+                "id_notabukubesar": "348",
+                "id_nota": "286",
+                "id_bukubesar": "1514",
+                "created_at": "2024-05-21 06:52:05",
+                "updated_at": "2024-05-21 06:52:05"
+            },
+            {
+                "id_notabukubesar": "349",
+                "id_nota": "291",
+                "id_bukubesar": "1515",
+                "created_at": "2024-05-21 07:05:21",
+                "updated_at": "2024-05-21 07:05:21"
+            },
+            {
+                "id_notabukubesar": "350",
+                "id_nota": "292",
+                "id_bukubesar": "1522",
+                "created_at": "2024-05-21 07:35:22",
+                "updated_at": "2024-05-21 07:35:22"
+            },
+            {
+                "id_notabukubesar": "351",
+                "id_nota": "293",
+                "id_bukubesar": "1541",
+                "created_at": "2024-05-21 08:15:02",
+                "updated_at": "2024-05-21 08:15:02"
+            },
+            {
+                "id_notabukubesar": "352",
+                "id_nota": "294",
+                "id_bukubesar": "1542",
+                "created_at": "2024-05-21 08:21:11",
+                "updated_at": "2024-05-21 08:21:11"
+            }
+        ]
+    }
+]

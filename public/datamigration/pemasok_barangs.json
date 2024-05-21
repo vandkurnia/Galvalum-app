@@ -1,0 +1,268 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+    {
+        "type": "table",
+        "name": "pemasok_barangs",
+        "database": "sql_galvalumdist",
+        "data": [
+            {
+                "id_pemasok": "1",
+                "hash_id_pemasok": "991626ec-fe4e-4afc-b797-ac5c46ffd64f",
+                "nama_pemasok": "Pak Rembo",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "rembo@email.com",
+                "created_at": "2024-05-10 01:01:37",
+                "updated_at": "2024-05-10 01:01:37",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "2",
+                "hash_id_pemasok": "18ca5464-17ca-4b60-82c7-4a7ff037fbd6",
+                "nama_pemasok": "PT. GIAS (Global Indonesia Asia Sejahtera)",
+                "no_telp_pemasok": "03513822743",
+                "alamat_pemasok": "gias@email.com",
+                "created_at": "2024-05-10 01:03:48",
+                "updated_at": "2024-05-10 01:03:48",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "3",
+                "hash_id_pemasok": "0dfe79a5-32aa-4203-b5a9-de70139bc2f6",
+                "nama_pemasok": "PT. APW (Abadi Putra Wirajaya)",
+                "no_telp_pemasok": "0351 488300",
+                "alamat_pemasok": "apw@email.com",
+                "created_at": "2024-05-10 01:05:08",
+                "updated_at": "2024-05-10 01:05:08",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "4",
+                "hash_id_pemasok": "72472468-2533-4730-b83a-33635e45dae4",
+                "nama_pemasok": "Sumber Mas Gypsum",
+                "no_telp_pemasok": "081327219111",
+                "alamat_pemasok": "sumbermasgypsum@gmail.com",
+                "created_at": "2024-05-10 01:09:41",
+                "updated_at": "2024-05-10 01:09:41",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "5",
+                "hash_id_pemasok": "79fef943-fdfe-4a32-8091-ea9072da8ad3",
+                "nama_pemasok": "Pak Danang Ngawi",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "ngawi@email.com",
+                "created_at": "2024-05-10 01:10:27",
+                "updated_at": "2024-05-10 01:10:27",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "6",
+                "hash_id_pemasok": "171159ac-c78b-4e92-a36e-8d54cb2dda1f",
+                "nama_pemasok": "Dino Truss Semarang",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "semarang@email.com",
+                "created_at": "2024-05-10 01:34:58",
+                "updated_at": "2024-05-10 01:34:58",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "7",
+                "hash_id_pemasok": "e963e258-385f-45cf-adea-441e211a7ea6",
+                "nama_pemasok": "Sulung Makmur",
+                "no_telp_pemasok": "081234403852",
+                "alamat_pemasok": "sulung@email.com",
+                "created_at": "2024-05-10 02:01:59",
+                "updated_at": "2024-05-10 02:01:59",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "8",
+                "hash_id_pemasok": "2317058f-5958-43cf-8a34-67d469d41a92",
+                "nama_pemasok": "Wilson Ponorogo",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "wilson@email.com",
+                "created_at": "2024-05-10 02:02:43",
+                "updated_at": "2024-05-10 02:02:43",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "9",
+                "hash_id_pemasok": "57b44b3f-f89d-4b40-b4f2-cc2f02a77983",
+                "nama_pemasok": "Danu Listrik",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "danu@email.com",
+                "created_at": "2024-05-10 02:03:32",
+                "updated_at": "2024-05-10 02:03:32",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "10",
+                "hash_id_pemasok": "7aa13e97-d10e-4fe0-8576-a90fa544410a",
+                "nama_pemasok": "PT. Kebrak Kramat Elang Perkasa",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "kebakkramat@email.com",
+                "created_at": "2024-05-10 02:06:33",
+                "updated_at": "2024-05-10 02:06:33",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "11",
+                "hash_id_pemasok": "b21a1b52-e524-4e8e-9d3d-72e3a1e2cc1a",
+                "nama_pemasok": "Langgeng Ponorogo",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "abdul@email.com",
+                "created_at": "2024-05-10 02:07:22",
+                "updated_at": "2024-05-10 02:07:22",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "12",
+                "hash_id_pemasok": "7df3175f-912c-49a5-8ac2-c5fc99055a87",
+                "nama_pemasok": "PT. Putra Menara Perkasa",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "menara@email.com",
+                "created_at": "2024-05-10 02:09:21",
+                "updated_at": "2024-05-10 02:09:21",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "13",
+                "hash_id_pemasok": "8bf12534-ecea-45fa-870f-235f9ce3d9b5",
+                "nama_pemasok": "Blora",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "spblora@email.com",
+                "created_at": "2024-05-10 02:11:10",
+                "updated_at": "2024-05-10 02:11:10",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "14",
+                "hash_id_pemasok": "49969415-9d64-46aa-a1ae-901e7821f771",
+                "nama_pemasok": "CSA (PT. CATUR SENTOSA ADIPRANA)",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "csa@email.com",
+                "created_at": "2024-05-10 02:12:22",
+                "updated_at": "2024-05-10 02:12:22",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "15",
+                "hash_id_pemasok": "5adbfc35-d69b-46b2-a137-ea4d7ffe2e83",
+                "nama_pemasok": "Graha Jaya Abadi",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "grahajaya@email.com",
+                "created_at": "2024-05-10 02:14:02",
+                "updated_at": "2024-05-10 02:14:02",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "16",
+                "hash_id_pemasok": "95247133-011e-4eb3-bb57-152394b4dcd8",
+                "nama_pemasok": "Baja Mulya Truss",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "bmt@email.com",
+                "created_at": "2024-05-10 02:14:45",
+                "updated_at": "2024-05-10 02:14:45",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "17",
+                "hash_id_pemasok": "948b6087-cea0-4cb0-a788-4b82d54aaa1b",
+                "nama_pemasok": "Cilux",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "cilux@email.com",
+                "created_at": "2024-05-10 02:15:21",
+                "updated_at": "2024-05-10 02:15:21",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "18",
+                "hash_id_pemasok": "ef09b8fb-ecf6-441a-b78e-e5d7cf0ae952",
+                "nama_pemasok": "STAR",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "star@email.com",
+                "created_at": "2024-05-10 02:16:18",
+                "updated_at": "2024-05-10 02:16:18",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "19",
+                "hash_id_pemasok": "6fbcbed4-5e7f-42d4-80d6-c529077e2738",
+                "nama_pemasok": "MJLUM",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "mj@email.com",
+                "created_at": "2024-05-10 02:18:18",
+                "updated_at": "2024-05-10 02:18:18",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "20",
+                "hash_id_pemasok": "6102b87b-91f6-411e-b752-56ebf8236f68",
+                "nama_pemasok": "PARAGON",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "paragonringroad@email.com",
+                "created_at": "2024-05-10 02:19:14",
+                "updated_at": "2024-05-10 02:19:14",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "21",
+                "hash_id_pemasok": "382fddf6-d8c6-4716-bb9d-36143409f948",
+                "nama_pemasok": "GEMILANG",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "gemilang@email.com",
+                "created_at": "2024-05-10 02:19:47",
+                "updated_at": "2024-05-10 02:19:47",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "22",
+                "hash_id_pemasok": "52547da6-c6e8-4806-9859-bc0fe2ef8256",
+                "nama_pemasok": "KENCANA KEPUH",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "kencana@email.com",
+                "created_at": "2024-05-10 02:24:53",
+                "updated_at": "2024-05-10 02:24:53",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "23",
+                "hash_id_pemasok": "2ddff0e3-5fbf-4736-bfc6-248271593452",
+                "nama_pemasok": "Wahono",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "wahono@email.com",
+                "created_at": "2024-05-10 02:25:49",
+                "updated_at": "2024-05-10 02:25:49",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "24",
+                "hash_id_pemasok": "527215c3-3f15-49a6-87c6-6b942f6e0ba8",
+                "nama_pemasok": "ERIK PVC",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "erik@email.com",
+                "created_at": "2024-05-10 02:27:19",
+                "updated_at": "2024-05-10 02:27:19",
+                "deleted_at": null
+            },
+            {
+                "id_pemasok": "25",
+                "hash_id_pemasok": "123974ae-a586-4803-9537-000a9208507c",
+                "nama_pemasok": "METALINDO",
+                "no_telp_pemasok": "08xx",
+                "alamat_pemasok": "metalindo@email.com",
+                "created_at": "2024-05-10 03:02:56",
+                "updated_at": "2024-05-10 03:02:56",
+                "deleted_at": null
+            }
+        ]
+    }
+]
