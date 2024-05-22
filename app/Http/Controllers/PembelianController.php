@@ -22,6 +22,7 @@ class PembelianController extends Controller
         $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli', 'PesananPembeli')->first();
         $dataPesanan = PesananPembeli::where('id_nota', $notaPembelian->id_nota)->with('Barang', 'Barang.TipeBarang')->get();
         $dataDiskon = DiskonModel::all();
+
         return view('daftar_transaksi.edit', compact('notaPembelian', 'dataPesanan', 'dataDiskon'));
     }
     public function store(Request $request)
@@ -192,11 +193,15 @@ class PembelianController extends Controller
     public function update(Request $request, $id)
     {
 
-        $request->validate([
-            'jenis_pembelian' => 'required|string',
-            'status_pembelian' => 'required|string',
-            'id_pembeli' => 'required|string'
 
+
+        $request->validate([
+            'metode_pembayaran' => 'required|string',
+            'id_pembeli' => 'required',
+            // 'jenis_pembelian' => 'required|string|in:harga_normal,aplicator,potongan', // Assuming these are the possible values
+            'pesanan' => 'required|json',
+            'total_ongkir' => 'required|integer',
+            'diskon' => 'required|integer',
         ]);
 
         DB::beginTransaction();
@@ -211,18 +216,229 @@ class PembelianController extends Controller
         );
 
         $notaPembeli = NotaPembeli::where('id_nota', $id)->first();
+
+        if (!$notaPembeli) {
+            return redirect()->back()->with(['error' => 'Tidak ada nota pembeli']);
+        }
         // $notaPembeli->jenis_pembelian = $request->get('jenis_pembelian'); // Contoh nilai untuk jenis_pembelian
-        $notaPembeli->status_pembayaran = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
+        $notaPembeli->no_nota = $request->get('no_nota');
+        // $notaPembeli->jenis_pembelian = $request->get('jenis_pembelian'); // Contoh nilai untuk jenis_pembelian
+        // $notaPembeli->status_pembayaran = $request->get('status_pembelian'); // Contoh nilai untuk status_pembelian
+        $notaPembeli->metode_pembayaran = $request->get('metode_pembayaran');
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
+        // Nominal Terbayar
 
+
+        // Nominal Terbayar
         $notaPembeli->save();
 
-        // Penghapusan pesanan yang hilang
-        $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
-        $updateNotaPembeli->pajak = $request->get('pajak');
-        $updateNotaPembeli->total = ($updateNotaPembeli->sub_total  - $updateNotaPembeli->diskon) - $updateNotaPembeli->pajak;
+
+        // Sub Total seluruhnya 
+        $subTotal = 0;
+        $totalDiskon = 0;
+        $pesananData = json_decode($request->pesanan, true);
+        // Perulangan untuk pesanan
+        foreach ($pesananData as $pesanan) {
+            // Data barang 
+            $barangData = Barang::with('stokBarang')->where('hash_id_barang', $pesanan['id_barang'])->first();
+            if (empty($barangData)) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Gagal memasukkan barang, barang tidak ada');
+            }
+            $diskon = DiskonModel::where('hash_id_diskon', $pesanan['id_diskon'])->first();
+            $diskonId = $diskon ? $diskon->id_diskon : null;
+            // Inisiasi diskon
+            $amountDiskon = isset($diskon->amount) ? $diskon->amount : 0;
+
+            $typeDiskon = $diskon->type ?? 'amount'; // Jika $diskon->type tidak ada, maka gunakan 'amount'
+
+            $amountDiskon = $diskon->amount ?? 0; // Jika $diskon->amount tidak ada, maka gunakan 0
+
+
+
+            $hargaSetelahDiskon = 0;
+            if ($typeDiskon == "percentage") {
+                $jumlahDiskon = ($barangData->harga_barang * $amountDiskon) / 100;
+                $hargaDiskon = $jumlahDiskon;
+                $hargaSetelahDiskon = $barangData->harga_barang - $hargaDiskon;
+            } else {
+                $hargaDiskon = $amountDiskon;
+                $hargaSetelahDiskon = $barangData->harga_barang - $hargaDiskon;
+            }
+
+
+            $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
+            $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
+            $totalDiskon += $hargaDiskon;
+
+
+
+
+
+
+            // Data ada tetapi ada perubahan
+            if ($pesanan['type_pesanan'] == 'exist') {
+                // Pesanan Pembeli
+                $pesananPembeli = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->where('id_barang', $barangData->id_barang)->first();
+                $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
+                $pesananPembeli->id_diskon = $diskonId;
+                $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
+                $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
+                $pesananPembeli->harga = $hargaSetelahDiskon;
+                $pesananPembeli->jenis_pembelian = $pesanan['jenis_pelanggan'];
+                $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
+                $pesananPembeli->diskon = $hargaDiskon;
+
+
+                $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
+                if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+
+
+
+                    // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
+                    // $barangData->save();
+                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+
+                    if ($stokBarang) {
+                        $stokBarang->stok_keluar = $pesanan['jumlah_pesanan'];
+                        $stokBarang->id_barang = $barangData->id_barang;
+                        $stokBarang->save();
+                    } else {
+                        // Handle the case where the stock entry does not exist
+                        // You might want to create a new entry or return an error
+                        return redirect()->back()->with('error', 'Stock entry not found for this order.');
+                    }
+                } else {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Terjadi Kesalahan');
+                }
+                $pesananPembeli->save();
+
+
+                // Cek Jika pesanan yang sudah ada mau dihapus
+                if ($pesanan['terhapus'] == 'yes') {
+                    // Hapus Pesanan dan Stok
+                    $pesananPembelidelete = PesananPembeli::find($pesananPembeli->id_pesanan);
+                    $pesananPembelidelete->delete();
+                    $stokBarangdelete = StokBarangModel::find($pesananPembelidelete->id_stokbarang);
+                    $stokBarangdelete->delete();
+                }
+            } elseif ($pesanan['type_pesanan'] == 'modified') {
+                // Pesanan Pembeli
+                $pesananPembeli = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->where('id_barang', $barangData->id_barang)->first();
+                $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
+                $pesananPembeli->id_diskon = $diskonId;
+                $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
+                $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
+                $pesananPembeli->harga = $hargaSetelahDiskon;
+                $pesananPembeli->jenis_pembelian = $pesanan['jenis_pelanggan'];
+                $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
+                $pesananPembeli->diskon = $hargaDiskon;
+                $pesananPembeli->save();
+
+                $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
+                if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+
+
+
+                    // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
+                    // $barangData->save();
+                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+
+                    if ($stokBarang) {
+                        $stokBarang->stok_keluar = $pesanan['jumlah_pesanan'];
+                        $stokBarang->id_barang = $barangData->id_barang;
+                        $stokBarang->save();
+                    } else {
+                        // Handle the case where the stock entry does not exist
+                        // You might want to create a new entry or return an error
+                        return redirect()->back()->with('error', 'Stock entry not found for this order.');
+                    }
+                } else {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Terjadi Kesalahan');
+                }
+
+
+
+                // Cek Jika pesanan yang sudah ada mau dihapus
+                if ($pesanan['terhapus'] == 'yes') {
+                    // Hapus Pesanan dan Stok
+                    $pesananPembelidelete = PesananPembeli::find($pesananPembeli->id_pesanan);
+                    $pesananPembelidelete->delete();
+                    $stokBarangdelete = StokBarangModel::find($pesananPembelidelete->id_stokbarang);
+                    $stokBarangdelete->delete();
+                }
+            } elseif ($pesanan['type_pesanan'] == 'new') {
+                // Membuat Pesanan Pembeli
+                $pesananPembeli = new PesananPembeli;
+                $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
+                $pesananPembeli->id_diskon = $diskonId;
+                $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
+                $pesananPembeli->id_barang = $barangData->id_barang; // Gunakan ID Barang yang baru saja dibuat
+                $pesananPembeli->harga = $hargaSetelahDiskon;
+                $pesananPembeli->jenis_pembelian = $pesanan['jenis_pelanggan'];
+                $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
+                $pesananPembeli->diskon = $hargaDiskon;
+
+
+                $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
+                if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+
+
+
+                    // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
+                    // $barangData->save();
+                    $stokBarang = StokBarangModel::create([
+                        'stok_keluar' => $pesanan['jumlah_pesanan'],
+                        'id_barang' => $barangData->id_barang,
+                    ]);
+                    // Pindah ke PesananPembeli
+                    $pesananPembeli->id_stokbarang = $stokBarang->id;
+                } else {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Terjadi Kesalahan');
+                }
+                $pesananPembeli->save();
+            } else {
+                return redirect()->back()->with('error', 'Unknown type_pesanan');
+            }
+
+
+            // Array data user dari request
+
+
+            // Update data barang
+
+
+        }
+
+        // Menghitung lagi pesanan
+        // Sub Total seluruhnya 
+        $subTotal = 0;
+        $totalDiskon = 0;
+        $notaPembeliPesanan = NotaPembeli::with('PesananPembeli')->find($notaPembeli->id_nota);
+        foreach ($notaPembeliPesanan->PesananPembeli as $pesananPembeli3) {
+
+            $subTotal += $pesananPembeli3->harga *  $pesananPembeli->jumlah_pembelian;
+            $totalDiskon += $pesananPembeli->diskon;
+        }
+        // Menghitung kembali total dari pesanan
+        $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
+
+        $updateNotaPembeli->sub_total = $subTotal;
+        $updateNotaPembeli->diskon = $request->get('diskon');
+        $updateNotaPembeli->ongkir = $request->get('total_ongkir');
+
+        // Perhitungan Pajak
+        $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
+        // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
+        $nilaiOngkir =  $updateNotaPembeli->ongkir;
+        $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
         $updateNotaPembeli->save();
+
+
 
 
         DB::commit();

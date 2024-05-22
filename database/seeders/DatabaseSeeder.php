@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AkunBayarSeeder::class,
             // BukubesarSeeder::class,
-            // UserSeeder::class,
+            UserSeeder::class,
             KategoriSeeder::class,
             // TipeBarangSeeder::class,
             // PemasokSeeder::class,
@@ -35,8 +35,8 @@ class DatabaseSeeder extends Seeder
             // DiskonSeeder::class,
             // PesananSeeder::class,
             // ZulfikarData::class,
-            // MigrasiData::class
-            MigrasiData2::class
+            MigrasiData::class
+            // MigrasiData2::class
         ]);
     }
 }

@@ -2,7 +2,7 @@
 
 @section('title', 'Beranda')
 @section('header-custom')
-    <style>
+    {{-- <style>
         /* Sembunyikan Showing entries */
         #dataTable_length,
         #dataTable_info {
@@ -13,7 +13,7 @@
         #dataTable_paginate {
             display: none;
         }
-    </style>
+    </style> --}}
     <script src="{{ secure_asset('library/ckeditor/ckeditor.js') }}"></script>
 
 @endsection
@@ -110,15 +110,15 @@
                     </div>
 
 
+                 
+
                     <div class="form-group">
-                        <label for="jenisPembelian">Jenis Pembelian:</label>
-                        <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
-                            <option {{ $notaPembelian->jenis_pembelian == 'harga_normal' ? 'selected' : '' }}
-                                value="harga_normal">Harga Normal</option>
-                            <option {{ $notaPembelian->jenis_pembelian == 'reseller' ? 'selected' : '' }} value="reseller">
-                                Reseller</option>
-                            <option {{ $notaPembelian->jenis_pembelian == 'potongan' ? 'selected' : '' }} value="potongan">
-                                Potongan</option>
+                        <label for="jenisPelanggan">Jenis Pelanggan:</label>
+                        <select class="form-control" name="jenis_pelanggan" id="jenisPelanggan" required>
+
+                            <option {{ $notaPembelian->jenis_pembelian == 'harga_normal' ? 'selected' : '' }} value="harga_normal">Harga Normal</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'aplicator' ? 'selected' : '' }} value="aplicator">Aplicator</option>
+                            <option  {{ $notaPembelian->jenis_pembelian == 'potongan' ? 'selected' : '' }} value="potongan">Potongan</option>
                         </select>
                     </div>
 
@@ -138,7 +138,6 @@
                 <div class="row">
 
                     <div class="col-md-5 mr-5">
-                        <h2>Barang Pembelian</h2>
                         <form id="pesanan" method="POST">
                             @csrf
 
@@ -157,13 +156,41 @@
                             <div class="form-group">
                                 <label for="diskon">Diskon:</label>
                                 <select class="form-control" id="diskon" name="diskon">
-                                    <option value="0" data-amount="0" data-type="amount">Normal</option>
+                                    <option value="" data-amount="0" data-type="amount">Normal</option>
                                     @foreach ($dataDiskon as $diskon)
                                         <option value="{{ $diskon->id_diskon }}" data-amount="{{ $diskon->besaran }}"
                                             data-type="{{ $diskon->type }}">{{ $diskon->nama_diskon }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="jenisPembelian">Jenis Pembelian:</label>
+                                <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
+
+                                    <option value="harga_normal">Harga Normal</option>
+                                    <option value="aplicator">Aplicator</option>
+                                    <option value="potongan">Potongan</option>
+                                </select>
+                            </div>
+                            <div id="harga_khusus_input" class="form-group" style="display: none;">
+                                <label for="harga_khusus">Harga Potongan Khusus:</label>
+                                <input type="number" min="0" class="form-control" name="harga_khusus"
+                                    id="harga_khusus" value="0">
+                            </div>
+                            <script>
+                                document.getElementById('jenis_pembelian').addEventListener('change', function() {
+                                    var hargaKhususInput = document.getElementById('harga_khusus_input');
+                                    if (this.value === 'aplicator' || this.value === 'potongan') {
+                                        hargaKhususInput.style.display = 'block';
+                                        document.getElementById('harga_khusus').setAttribute('required', 'required');
+
+                                    } else {
+                                        hargaKhususInput.style.display = 'none';
+                                        document.getElementById('harga_khusus').removeAttribute('required');
+                                        document.getElementById('harga_khusus').value = 0;
+                                    }
+                                });
+                            </script>
                             <button type="button" onclick="pemesananBarang()" class="btn btn-primary">Tambah
                                 Pesanan</button>
                         </form>
@@ -182,10 +209,12 @@
                                 const data_barang = JSON.parse(sessionStorage.getItem('data_barang'))[0];
 
                                 // Check apakah data input dari jumlah barang melebihi kapasitas total barang
-                                let cek_total_barang_kelebihan = data_barang.stok < jumlah_barang.value ? true : false;;
+                                let cek_total_barang_kelebihan = parseInt(data_barang.stok) < jumlah_barang.value ? true : false;
+
                                 if (cek_total_barang_kelebihan) {
                                     let total_available_stok = data_barang.stok;
                                     alert(`Total barang cannot exceed available stock, total available : ${total_available_stok}`);
+
                                     // Ubah input ke available stok 
                                     jumlah_barang.value = total_available_stok;
                                     return false;
@@ -227,7 +256,6 @@
                                 $('#nama_barang').val(null).trigger('change');
                                 // nama_barang_input.value = ''; // Mengatur select kembali ke nilai awalnya
                                 jumlah_barang_input.value = ''; // Mengatur input number kembali ke nilai awalnya
-
                                 totalPembayaran();
 
                             }
@@ -235,6 +263,13 @@
 
 
                             function buatBarisPesananBarang(data_barang, total_tr, tbody_table) {
+                                const tbody_deleted_table = document.querySelector('#deletedPesananExist tbody');
+                                const check_tr_deleted = tbody_deleted_table.querySelector(
+                                    `tr[data-id-barang="${data_barang.hash_id_barang}"]`);
+
+                                if (check_tr_deleted) {
+                                    tbody_table.appendChild(check_tr_deleted);
+                                }
 
 
                                 var tr_pesanan = tbody_table.querySelector(`tr[data-id-barang="${data_barang.hash_id_barang}"]`);
@@ -242,12 +277,8 @@
                                     false;
 
                                 if (!check_id_tr_sudah_ada) {
-
-
-
                                     var diskon_select_element = document.getElementById('diskon');
                                     var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
-
                                     var amount = 0;
                                     var type = "amount";
                                     var harga_barang = Math.floor(data_barang.harga_barang);
@@ -264,11 +295,15 @@
                                         harga_setelah_diskon = harga_barang - amount;
                                     }
 
+                                    // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                                    const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                                    const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                                    const hargaKhususInput = document.getElementById('harga_khusus');
 
 
                                     var tr_pesanan = document.createElement('tr');
                                     tr_pesanan.setAttribute('data-id-barang', data_barang.hash_id_barang);
-                                    tr_pesanan.setAttribute('data-id-diskon', diskon_select_element.value);
+                                    tr_pesanan.setAttribute('data-pesanan-type', 'new')
                                     // Pembuatan TD
                                     let th_no = document.createElement('th');
                                     th_no.innerText = total_tr;
@@ -280,9 +315,11 @@
                                     td_ukuran_barang.innerText = data_barang.ukuran;
                                     let td_harga_barang = document.createElement('td');
                                     td_harga_barang.classList.add('harga_barang_pesanan');
-                                    td_harga_barang.innerText = harga_barang;
+                                    td_harga_barang.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                                    td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+                                    td_harga_barang.innerText = harga_barang - parseInt(hargaKhususInput.value);
                                     let td_diskon = document.createElement('td');
-                                    td_diskon.classList.add('diskon_pesanan');
+                                    td_diskon.classList.add('diskon_pesanan')
                                     td_diskon.innerText = harga_diskon;
                                     let td_jumlah = document.createElement('td');
                                     td_jumlah.classList.add('nilai_jumlah_barang_pesanan');
@@ -290,17 +327,17 @@
 
                                     let td_total = document.createElement('td');
                                     td_total.classList.add('total');
-                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                                    td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
 
 
                                     // Membuat tombol Edit
-                                    const edit_button = document.createElement('button');
-                                    edit_button.href = '#';
-                                    edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
-                                    edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
-                                    edit_button.onclick = function() {
-                                        editPesananBarang(data_barang.hash_id_barang);
-                                    }
+                                    // const edit_button = document.createElement('button');
+                                    // edit_button.href = '#';
+                                    // edit_button.classList.add('btn', 'btn-primary', 'btn-sm');
+                                    // edit_button.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                                    // edit_button.onclick = function() {
+                                    //     editPesananBarang(data_barang.hash_id_barang);
+                                    // }
 
                                     // Membuat tombol Delete
                                     const delete_button = document.createElement('button');
@@ -314,7 +351,7 @@
 
                                     // Membuat elemen td untuk menyimpan tombol-tombol
                                     let td_aksi = document.createElement('td');
-                                    td_aksi.appendChild(edit_button);
+                                    // td_aksi.appendChild(edit_button);
                                     td_aksi.appendChild(delete_button);
 
 
@@ -334,19 +371,30 @@
                                     tbody_table.appendChild(tr_pesanan);
 
 
-                                    // Kalau gagal update ke database maka hapus element
-                                    updatePesanan(tr_pesanan);
 
-                                   
 
-                                    // Update Pesanan
-                                    // End Update Pesanan
+                                    // Append ke TBODY table
+                                    tbody_table.appendChild(tr_pesanan);
+
+
 
                                 } else {
+                                    if (tr_pesanan.getAttribute('data-pesanan-type') === 'exist' || tr_pesanan.getAttribute(
+                                            'data-pesanan-type') === 'modified') {
+                                        tr_pesanan.setAttribute('data-pesanan-type', 'modified');
+                                        if (tr_pesanan.getAttribute('data-is-deleted') === 'yes') {
+                                            tr_pesanan.setAttribute('data-is-deleted', 'no');
+                                            // Remove all inline styles
+                                            tr_pesanan.style.cssText = '';
+                                        }
 
-                                    // Update Pesanan
-                                    updatePesanan(tr_pesanan);
-                                    // End Update Pesanan
+                                    }
+
+                                    // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                                    const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                                    const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                                    const hargaKhususInput = document.getElementById('harga_khusus');
+                                    // Diskon
                                     var diskon_select_element = document.getElementById('diskon');
                                     var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
 
@@ -365,19 +413,23 @@
                                         harga_diskon = amount;
                                         harga_setelah_diskon = harga_barang - amount;
                                     }
+
+                                    const harga = tr_pesanan.querySelector('.harga_barang_pesanan');
+                                    harga.innerText = harga_barang - parseInt(hargaKhususInput.value);
+                                    harga.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                                    harga.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+
+
                                     let diskon = tr_pesanan.querySelector('.diskon_pesanan');
                                     diskon.innerText = harga_diskon;
                                     let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = tr_pesanan.querySelector('.total');
-                                    td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                                    td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
+
+                                    resetNoPesananBarang();
                                 }
-
-
-
-
-
 
 
                             }
@@ -385,13 +437,13 @@
                             function editPesananBarang(id_barang) {
                                 const tbody_table = document.querySelector('#dataTablePesanan tbody');
                                 const tr_element_select = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
-                                alert("id barang :" + id_barang);
                                 // Edit element nama barang
                                 $('#nama_barang').val(id_barang); // Select the option with a value of '1'
                                 $('#nama_barang').trigger('change'); // Notify any JS components that the value changed
 
                                 // Ambil nilai dari td ke 6
                                 const td_element_jumlah = tr_element_select.querySelector('.nilai_jumlah_barang_pesanan');
+
                                 let nilai_jumlah = td_element_jumlah.innerText;
 
                                 // Inisiasi dan Edit element jumlah barang 
@@ -402,15 +454,28 @@
                             }
 
                             function hapusPesananBarang(id_barang) {
+
+
+
                                 // Element TBODY Table
                                 const tbody_table = document.querySelector('#dataTablePesanan tbody');
-                                const tr_to_remove = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
-                                // Hapus element
-                                tr_to_remove.remove();
-                                resetNoPesananBarang();
+                                const element_to_remove = tbody_table.querySelector(`tr[data-id-barang="` + id_barang + `"]`);
 
 
-                                hapusPesanan(tr_to_remove);
+
+                                // Kalau untuk exist dan modified disimpan di table khusus
+                                if (element_to_remove.getAttribute('data-pesanan-type') === 'exist' || element_to_remove.getAttribute(
+                                        'data-pesanan-type') === 'modified') {
+                                    element_to_remove.setAttribute('data-is-deleted', 'yes');
+                                    const tbody_deleted_table = document.querySelector('#deletedPesananExist tbody');
+                                    tbody_deleted_table.appendChild(element_to_remove);
+                                    resetNoPesananBarang();
+                                } else {
+                                    // Hapus element
+                                    element_to_remove.remove();
+                                    resetNoPesananBarang();
+                                }
+
 
                             }
 
@@ -419,16 +484,25 @@
 
                                 const tbody_table = document.querySelector('#dataTablePesanan tbody');
 
-                                // Reset number pada no tr yang tersedia
-                                let total_tr = tbody_table.childElementCount;
-                                // ;
-                                const all_th_number = tbody_table.querySelectorAll('tr th');
-                                // atur number awal 1
-                                var nilaiawal = 1;
-                                for (const th_number of all_th_number) {
-                                    th_number.innerText = nilaiawal;
-                                    nilaiawal++;
+                                // Select all <tr> elements within the <tbody>
+                                const all_tr = tbody_table.querySelectorAll('tr');
+
+                                // Filter out rows with the class 'is-deleted-pesanan'
+                                const valid_trs = Array.from(all_tr).filter(tr => !tr.classList.contains('is-deleted-pesanan'));
+
+                                // Initialize the starting number
+                                let nilaiawal = 1;
+
+                                // Iterate over valid rows and set the number
+                                for (const tr of valid_trs) {
+                                    const th_number = tr.querySelector('th');
+                                    if (th_number) {
+                                        th_number.innerText = nilaiawal;
+                                        nilaiawal++;
+                                    }
                                 }
+
+
                             }
                         </script>
 
@@ -451,39 +525,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $no = 0;
-                                $harga = 0;
-                            @endphp
+
                             @foreach ($dataPesanan as $pesanan)
-                                <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}"
-                                    data-id-pesanan="{{ $pesanan->id_pesanan }}">
-                                    <th>{{ ++$no }}</th>
+                                <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}" data-pesanan-type="exist"
+                                    data-is-deleted="no">
+                                    <th>{{ $loop->iteration }}</th>
                                     <td>{{ $pesanan->Barang->nama_barang }}</td>
                                     <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
                                     <td>{{ $pesanan->Barang->ukuran }}</td>
-                                    <td class="harga_barang_pesanan">{{ (int) $pesanan->harga }}</td>
-                                    {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
+                                    <td class="harga_barang_pesanan"
+                                        data-jenis-pelanggan="{{ $pesanan->jenis_pembelian }}"
+                                        data-harga-potongan-khusus="{{ (int) $pesanan->harga_potongan }}">
+                                        {{ (int) $pesanan->harga }}</td>
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
                                     <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
                                     <td class="total">
-                                        {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
-                                    <td>
-
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="editPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-danger btn-sm ml-2"
-                                            onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
+                                        {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}
                                     </td>
+                                    <td><button class="btn btn-danger btn-sm ml-2"
+                                            onclick="hapusPesananBarang('{{ $pesanan->Barang->hash_id_barang }}')"><i
+                                                class="fas fa-trash"></i>
+                                            Delete</button></td>
                                 </tr>
-                                @php
-                                    $harga += $pesanan->Barang->harga_barang * $pesanan->jumlah_pembelian;
-                                @endphp
                             @endforeach
+
+
                         </tbody>
                         <tfoot>
                             <tr>
@@ -492,20 +558,18 @@
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
                                 <td colspan="2"><input type="number" class="form-control" name="sub_total"
-                                        id="subTotal" value="{{ $notaPembelian->sub_total }}" readonly>
-                                </td>
+                                        id="subTotal" value="{{ $notaPembelian->sub_total }}" readonly></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
-                                <td colspan="2"><input type="number" class="form-control" name="diskon_total"
-                                        id="diskonTotal" value="{{ $notaPembelian->diskon }}" readonly>
-                                </td>
+                                <td colspan="2"><input type="number" oninput="totalPembayaran()"
+                                        class="form-control" name="diskon_total" id="diskonTotal" value="{{ $notaPembelian->diskon }}"></td>
                             </tr>
                             <tr>
-                                <td colspan="2">Pajak Rp</td>
+                                <td colspan="2">Ongkir</td>
                                 <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="total_pajak" id="totalPajak"
-                                        value="{{ $notaPembelian->pajak }}"></td>
+                                        class="form-control" name="total_ongkir" min="0" id="totalOngkir"
+                                        value="{{ $notaPembelian->ongkir }}"></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
@@ -513,6 +577,24 @@
                                             id="total" value="{{ $notaPembelian->total }}" readonly></strong></td>
                             </tr>
                         </tfoot>
+                    </table>
+                    <table class="table table-bordered" id="deletedPesananExist" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Barang</th>
+                                <th>Tipe Barang</th>
+                                <th>Ukuran Barang</th>
+                                <th>Harga Barang</th>
+                                <th>Diskon</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Deleted rows will be moved here -->
+                        </tbody>
                     </table>
                 </div>
                 {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
@@ -559,10 +641,10 @@
                             <option {{ $notaPembelian->metode_pembayaran == 'lunas' ? 'CASH' : '' }} value="CASH">
                                 CASH</option>
                             <option {{ $notaPembelian->metode_pembayaran == 'Transfer' ? 'selected' : '' }}
-                                value="Transfer">Transfer</option>
+                                value="Transfer">TRANSFER</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
@@ -572,7 +654,7 @@
                                 value="hutang {{ $notaPembelian->status_pembelian == 'hutang' ? 'selected' : '' }}">
                                 Hutang</option>
                         </select>
-                    </div>
+                    </div> --}}
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
                     <button type="button" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
@@ -589,6 +671,7 @@
 
     <script>
         function totalPembayaran() {
+            // validatetotalOngkir();
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
             var totalHarga = 0;
@@ -606,11 +689,21 @@
             let sub_total = tabletfoot.querySelector('#subTotal');
             sub_total.value = totalHarga;
             let diskon = tabletfoot.querySelector('#diskonTotal');
-            diskon.value = totalDiskon;
-            let pajak = tabletfoot.querySelector('#totalPajak');
+            // diskon.value = totalDiskon;
+            let ongkir = tabletfoot.querySelector('#totalOngkir');
             let total = tabletfoot.querySelector('#total');
 
-            total.value = parseInt(sub_total.value) - parseInt(diskon.value) - parseInt(pajak.value);
+            let nilaiTotal = parseInt(sub_total.value) - parseInt(diskon.value);
+            // let nilaiPajak = nilaiTotal * (parseInt(pajak.value) / 100);
+            let nilaiOngkir = parseInt(ongkir.value);
+
+
+            total.value = nilaiTotal + nilaiOngkir;
+
+
+            console.log(total.value);
+            // Pengisian Total pada Nominal Terbayar
+            // document.querySelector('#nominalTerbayar').value = total.value;
 
 
             // Ubah ke format Rp dengan dipisah rupiah
@@ -626,6 +719,9 @@
             // var idNota = $('#id_nota').val();
             // var idPesanan = $('#id_pesanan').val();
             // var trElements = document.querySelector('tr');
+
+
+
             if (trElement.getAttribute('data-id-pesanan') !== null) {
                 let idPesanan = trElement.getAttribute('data-id-pesanan');
                 let nota = document.querySelector('#NoNota');
@@ -660,47 +756,47 @@
 
         }
 
-        function updatePesanan(trElement) {
-            let idPesanan = trElement.getAttribute('data-id-pesanan');
-            idPesanan = idPesanan !== null ? idPesanan : 0;
-            let nota = document.querySelector('#NoNota');
-            let jumlahPesanan = trElement.querySelector('td.nilai_jumlah_barang_pesanan').innerText;
+        // function updatePesanan(trElement) {
+        //     let idPesanan = trElement.getAttribute('data-id-pesanan');
+        //     idPesanan = idPesanan !== null ? idPesanan : 0;
+        //     let nota = document.querySelector('#NoNota');
+        //     let jumlahPesanan = trElement.querySelector('td.nilai_jumlah_barang_pesanan').innerText;
 
-            const itemPesanan = {
-                jumlah_pesanan: jumlahPesanan,
-                id_barang: trElement.getAttribute('data-id-barang'),
-                id_diskon: trElement.getAttribute('data-id-diskon'),
+        //     const itemPesanan = {
+        //         jumlah_pesanan: jumlahPesanan,
+        //         id_barang: trElement.getAttribute('data-id-barang'),
+        //         id_diskon: trElement.getAttribute('data-id-diskon'),
 
-            }
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('json.pesanan.updatepesanan') }}',
-                data: {
-                    id_pesanan: idPesanan,
-                    no_nota: nota.value,
-                    jumlah_pesanan: jumlahPesanan,
-                    pesanan: JSON.stringify(itemPesanan),
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response, textStatus, jqXHR) {
-                    if (jqXHR.status === 200) {
-                        alert('Berhasil menambahkan pesanan'); // Jika status code 200, tampilkan alert berhasil
-                        // trElement.setAttribute('data-id-pesanan')
-                    } else {
-                        console.error('Request error:',
-                            textStatus); // Jika status code bukan 200, log pesan error
-                   
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Request error:', textStatus); // Log pesan error jika request gagal
-                    trElement.remove(); // Menghapus elemen <tr> jika status_update adalah false
-                  
-                }
-            });
+        //     }
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '{{ route('json.pesanan.updatepesanan') }}',
+        //         data: {
+        //             id_pesanan: idPesanan,
+        //             no_nota: nota.value,
+        //             jumlah_pesanan: jumlahPesanan,
+        //             pesanan: JSON.stringify(itemPesanan),
+        //             _token: '{{ csrf_token() }}'
+        //         },
+        //         success: function(response, textStatus, jqXHR) {
+        //             if (jqXHR.status === 200) {
+        //                 alert('Berhasil menambahkan pesanan'); // Jika status code 200, tampilkan alert berhasil
+        //                 // trElement.setAttribute('data-id-pesanan')
+        //             } else {
+        //                 console.error('Request error:',
+        //                     textStatus); // Jika status code bukan 200, log pesan error
 
-            // return true
-        }
+        //             }
+        //         },
+        //         error: function(jqXHR, textStatus, errorThrown) {
+        //             console.error('Request error:', textStatus); // Log pesan error jika request gagal
+        //             trElement.remove(); // Menghapus elemen <tr> jika status_update adalah false
+
+        //         }
+        //     });
+
+        //     // return true
+        // }
     </script>
 
     <script>
@@ -771,11 +867,38 @@
                     jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang_pesanan').innerText,
                     id_barang: tr.getAttribute('data-id-barang'),
                     id_diskon: tr.getAttribute('data-id-diskon'),
+                    jenis_pelanggan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-jenis-pelanggan'),
+                    harga_potongan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-harga-potongan-khusus'),
+                    type_pesanan: tr.getAttribute('data-pesanan-type'),
+                    terhapus: tr.getAttribute('data-is-deleted')
+
 
                 }
                 dataPesanan.pesanan.push(itemPesanan);
             });
 
+
+
+            // Ambil TR dari table delete
+            let tr_deleted_exist = document.querySelectorAll('#deletedPesananExist tbody tr');
+            Array.from(tr_deleted_exist).forEach(function(tr) {
+                const itemPesanan = {
+                    jumlah_pesanan: tr.querySelector('td.nilai_jumlah_barang_pesanan').innerText,
+                    id_barang: tr.getAttribute('data-id-barang'),
+                    id_diskon: tr.getAttribute('data-id-diskon'),
+                    jenis_pelanggan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-jenis-pelanggan'),
+                    harga_potongan: tr.querySelector('td.harga_barang_pesanan').getAttribute(
+                        'data-harga-potongan-khusus'),
+                    type_pesanan: tr.getAttribute('data-pesanan-type'),
+                    terhapus: tr.getAttribute('data-is-deleted')
+
+
+                }
+                dataPesanan.pesanan.push(itemPesanan);
+            });
             // Buat elemen input untuk menyimpan data pesanan sebagai JSON
             const inputPesanan = document.createElement('input');
             inputPesanan.type = 'hidden';
@@ -788,13 +911,22 @@
 
 
             // Menambahkan pajak ke form
-            const totalPajak = document.querySelector('#totalPajak');
-            const inputTotalPajakHidden = document.createElement('input');
-            inputTotalPajakHidden.type = 'hidden';
-            inputTotalPajakHidden.name = 'pajak'; // Menetapkan nama input ke 'totalPajak'
-            inputTotalPajakHidden.value = totalPajak
-                .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalPajak'
-            formPembeli.appendChild(inputTotalPajakHidden); // Menambahkan input tersembunyi ke dalam form
+            const totalOngkir = document.querySelector('#totalOngkir');
+            const inputtotalOngkirHidden = document.createElement('input');
+            inputtotalOngkirHidden.type = 'hidden';
+            inputtotalOngkirHidden.name = 'total_ongkir'; // Menetapkan nama input ke 'totalOngkir'
+            inputtotalOngkirHidden.value = totalOngkir
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'totalOngkir'
+            formPembeli.appendChild(inputtotalOngkirHidden); // Menambahkan input tersembunyi ke dalam form
+
+            // Menambahkan pajak ke form
+            const TotalDiskon = document.querySelector('#diskonTotal');
+            const inputTotalDiskonHidden = document.createElement('input');
+            inputTotalDiskonHidden.type = 'hidden';
+            inputTotalDiskonHidden.name = 'diskon'; // Menetapkan nama input ke 'TotalDiskon'
+            inputTotalDiskonHidden.value = TotalDiskon
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'TotalDiskon'
+            formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
 
@@ -982,8 +1114,6 @@
         }
 
         function formatPembeliSelection(pembeli) {
-            ;
-
             if (pembeli && pembeli.nama_pembeli !== undefined && pembeli.nama_pembeli !== null) {
 
                 // Isi alamat
