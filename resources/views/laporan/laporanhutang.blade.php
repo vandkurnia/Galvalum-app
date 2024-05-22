@@ -41,6 +41,31 @@
         @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+                <div class="container mt-5">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
+                        <div>
+                            <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan perubahan hingga <span
+                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime($dateToFinishMaintenance)) }}</span> atau lebih cepat.
+                        </div>
+                    </div>
+                </div>
+
+                {{-- <script>
+                    // Set the maintenance date here
+                    var underMaintenanceDate = '2024-06-01'; // Example date
+
+                    // Format the date for display
+                    var options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    };
+                    var maintenanceDate = new Date(underMaintenanceDate).toLocaleDateString('id-ID', options);
+
+                    // Display the date in the alert
+                    document.getElementById('maintenance-date').textContent = maintenanceDate;
+                </script> --}}
 
                 <h6 class="m-0 font-weight-bold text-primary">Laporan Hutang</h6>
                 <!-- Filter Tanggal -->

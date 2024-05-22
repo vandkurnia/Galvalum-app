@@ -247,6 +247,7 @@
     <script>
         $(document).ready(function() {
             $('#laporanPiutang').DataTable();
+            $('#laporanPiutangLunas').DataTable();
         });
     </script>
 @endsection

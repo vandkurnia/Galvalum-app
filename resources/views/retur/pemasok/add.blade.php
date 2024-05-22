@@ -14,6 +14,7 @@
 @section('content')
 
 
+
     <!-- Begin Page Content -->
     <div class="container-fluid">
         @if (session('success'))
@@ -61,6 +62,18 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-4">
+
+                <div class="container mt-5">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
+                        <div>
+                            <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan
+                            perubahan hingga <span
+                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-22 23:59:59')) }}</span>
+                            atau lebih cepat.
+                        </div>
+                    </div>
+                </div>
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">

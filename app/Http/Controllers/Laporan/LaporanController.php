@@ -126,7 +126,7 @@ class LaporanController extends Controller
     public function laporanHutang(Request $request)
     {
 
-
+        $dateToFinisihConstruction = date('Y-m-d H:i:s', strtotime('2024-05-22 23:59:59'));
         $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
 
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
@@ -152,21 +152,52 @@ class LaporanController extends Controller
                     pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
                 JOIN
                     stok_barang ON stok_barang.id_barang = barangs.id_barang
-                LEFT JOIN
-                    bukubesar ON bukubesar.id_bukubesar = stok_barang.id_bukubesar
+                
+               
                 WHERE barangs.nominal_terbayar < barangs.total
                 GROUP BY
                     barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
                 ',
             []
         );
+        // $dataLaporanHutang = DB::select(
+        //     '
+        //         SELECT
+        //             barangs.hash_id_barang as id_barang,
+        //             pemasok_barangs.nama_pemasok,
+        //             barangs.nama_barang,
+        //             SUM(stok_barang.stok_masuk - stok_barang.stok_keluar) as total_pesanan,
+        //             pemasok_barangs.created_at as tanggal_stok,
+        //             barangs.total as harga_bayar,
+        //             barangs.nominal_terbayar as jumlah_terbayar,
+        //             barangs.tenggat_bayar as jatuh_tempo,
+        //             CASE
+        //             WHEN barangs.total > barangs.nominal_terbayar THEN "Belum Lunas"
+        //             WHEN barangs.total < barangs.nominal_terbayar THEN "Kelebihan"
+        //             ELSE "Lunas"
+        //             END AS status_pembayaran
+        //         FROM
+        //             `barangs`
+        //         LEFT JOIN
+        //             pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
+        //         JOIN
+        //             stok_barang ON stok_barang.id_barang = barangs.id_barang
+                
+        //         LEFT JOIN
+        //             bukubesar ON bukubesar.id_bukubesar = bukubesar_barang.id_bukubesar
+        //         WHERE barangs.nominal_terbayar < barangs.total
+        //         GROUP BY
+        //             barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
+        //         ',
+        //     []
+        // );
 
         // Mengubah hasil query menjadi array
         $dataLaporanHutangArray = collect($dataLaporanHutang)->map(function ($item) {
             return (array) $item;
         })->toArray();
 
-        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray]);
+        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray, 'dateToFinishMaintenance' => $dateToFinisihConstruction]);
     }
 
     public function laporanPiutang(Request $request)

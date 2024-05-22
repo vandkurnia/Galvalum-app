@@ -44,6 +44,7 @@ class ReturPemasokController extends Controller
     }
     public function store(Request $request)
     {
+        return redirect()->back();
         $validatedData = $request->validate([
             'tanggal_retur_pemasok' => 'required|date',
             'bukti_retur_pemasok' => 'required', // 10MB max
