@@ -68,7 +68,7 @@
                         <div>
                             <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan
                             perubahan hingga <span
-                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-22 23:59:59')) }}</span>
+                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-23 20:00:00')) }}</span>
                             atau lebih cepat.
                         </div>
                     </div>
