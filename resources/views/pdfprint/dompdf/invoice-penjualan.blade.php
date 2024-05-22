@@ -284,7 +284,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Item</th>
+                    {{-- <th>Item</th> --}}
                     <th>Deskripsi</th>
                     <th>Qty</th>
                     <th>Unit</th>
@@ -297,7 +297,7 @@
                 @foreach ($dataRincianBarang['list_barang'] as $index => $data)
                     <tr>
                         <td style="width: 20px;">{{ $index + 1 }}</td>
-                        <td style="width: 50px;">{{ $data['item'] }}</td>
+                        {{-- <td style="width: 50px;">{{ $data['item'] }}</td> --}}
                         <td style="height:10px;">{{ $data['deskripsi'] }}</td>
                         <td style="width: 60px;">{{ (int) $data['qty'] }}</td>
                         <td>{{ $data['pesanan'] }}</td>
@@ -309,65 +309,68 @@
 
             </tbody>
             @if ($dataRincianBarang['status'] == 'hutang')
-            <tfoot>
-                <tr>
-                    <td rowspan="5" colspan="5">
-                        <h2>Keterangan</h2>
-                        <ol>
-                            <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
-                            <li>BRI : 388401024665532 / An. Budiono</li>
-                            <li>BCA : 1771837226 / An. Budiono</li>
-                        </ol>
-                    </td>
-                    <td colspan="1" style="height:10px;">Subtotal</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Diskon</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Ongkir</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Total</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Dp</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['dp'], 0, ',', '.') }}</td>
-                </tr>
-            </tfoot>
-        @else
-            <tfoot>
-                <tr>
-                    <td rowspan="4" colspan="5">
-                        <h2>Keterangan</h2>
-                        <ol>
-                            <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
-                            <li>BRI : 388401024665532 / An. Budiono</li>
-                            <li>BCA : 1771837226 / An. Budiono</li>
-                        </ol>
-                    </td>
-                    <td colspan="1" style="height:10px;">Subtotal</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Diskon</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Ongkir</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1">Total</td>
-                    <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
-                </tr>
-            </tfoot>
-        @endif
-        
+                <tfoot>
+                    <tr>
+                        <td rowspan="5" colspan="4">
+                            <h2>Keterangan</h2>
+                            <ol>
+                                <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
+                                <li>BRI : 388401024665532 / An. Budiono</li>
+                                <li>BCA : 1771837226 / An. Budiono</li>
+                            </ol>
+                        </td>
+                        <td colspan="1" style="height:10px;">Subtotal</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Diskon</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Ongkir</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Dp</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['dp'], 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Total</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
+                    </tr>
+
+                </tfoot>
+            @else
+                <tfoot>
+                    <tr>
+                        <td rowspan="4" colspan="4">
+                            <h2>Keterangan</h2>
+                            <ol>
+                                <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
+                                <li>BRI : 388401024665532 / An. Budiono</li>
+                                <li>BCA : 1771837226 / An. Budiono</li>
+                            </ol>
+                        </td>
+                        <td colspan="1" style="height:10px;">Subtotal</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Diskon</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Ongkir</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Total</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
+                    </tr>
+                </tfoot>
+            @endif
+
 
 
 
