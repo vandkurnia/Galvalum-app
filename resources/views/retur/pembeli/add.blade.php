@@ -61,6 +61,18 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-4">
+
+                <div class="container mt-5">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
+                        <div>
+                            <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan
+                            perubahan hingga <span
+                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-22 23:59:59')) }}</span>
+                            atau lebih cepat.
+                        </div>
+                    </div>
+                </div>
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">
@@ -279,20 +291,22 @@
                         </tr>
                         <tr>
                             <td colspan="2">Diskon Rp</td>
-                            <td colspan="2"><input type="number"  class="form-control"
-                                    name="diskon_total" id="diskonTotal" value="{{ $notaPembelian->diskon }}" readonly></td>
+                            <td colspan="2"><input type="number" class="form-control" name="diskon_total"
+                                    id="diskonTotal" value="{{ $notaPembelian->diskon }}" readonly></td>
                             {{-- <td colspan="2"><input type="number" oninput="totalPembayaran()" class="form-control"
                                     name="diskon_total" id="diskonTotal" value="0"></td> --}}
                         </tr>
                         <tr>
                             <td colspan="2">Ongkir</td>
                             <td colspan="2"><input oninput="totalPembayaran()" type="number" class="form-control"
-                                    name="total_ongkir" min="0" id="totalOngkir" value="{{ $notaPembelian->ongkir }}" readonly></td>
+                                    name="total_ongkir" min="0" id="totalOngkir"
+                                    value="{{ $notaPembelian->ongkir }}" readonly></td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>Total Rp</strong></td>
                             <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                        id="total" value="{{  -$notaPembelian->diskon + $notaPembelian->ongkir }}" readonly></strong></td>
+                                        id="total" value="{{ -$notaPembelian->diskon + $notaPembelian->ongkir }}"
+                                        readonly></strong></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -328,8 +342,8 @@
                     </div>
                     <div class="form-group">
                         <label for="bukti_retur_pembeli">Bukti Retur Pembeli</label>
-                        <input type="file" name="bukti_retur_pembeli" class="filepond" data-max-file-size="10MB" id="bukti_retur_pembeli"
-                            name="upload" required>
+                        <input type="file" name="bukti_retur_pembeli" class="filepond" data-max-file-size="10MB"
+                            id="bukti_retur_pembeli" name="upload" required>
                         {{-- <input type="file" class="filepond" multiple data-allow-reorder="true"
                             data-max-file-size="10MB" data-max-files="3" id="bukti_retur_pembeli"
                             name="bukti_retur_pembeli" required> --}}
@@ -413,11 +427,11 @@
         // });
         // Select the file input and use 
         // create a FilePond instance at the fieldset element location
-      
+
         const pond = FilePond.create(
             document.querySelector('#bukti_retur_pembeli'), {
                 imagePreviewMinHeight: 80
-               
+
             }
         );
 

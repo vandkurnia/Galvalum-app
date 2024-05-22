@@ -51,6 +51,7 @@ class ReturPembeliController extends Controller
     }
     public function store(Request $request)
     {
+        return redirect()->back();
         $request->validate([
             'id_nota' => 'required|exists:nota_pembelis,id_nota',
             'tanggal_retur_pembeli' => 'required|date',
