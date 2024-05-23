@@ -62,7 +62,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-4">
 
-                <div class="container mt-5">
+                {{-- <div class="container mt-5">
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
                         <div>
@@ -72,7 +72,7 @@
                             atau lebih cepat.
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">
