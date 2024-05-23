@@ -268,7 +268,7 @@ class PembelianController extends Controller
             }
 
 
-            // $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
+            $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
             // $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
             // $totalDiskon += $hargaDiskon;
 
@@ -276,7 +276,7 @@ class PembelianController extends Controller
 
 
 
-
+      
             // Data ada tetapi ada perubahan
             if ($pesanan['type_pesanan'] == 'exist') {
                 // Pesanan Pembeli
@@ -290,6 +290,7 @@ class PembelianController extends Controller
                 $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
                 $pesananPembeli->diskon = $hargaDiskon;
 
+        
 
                 $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
                 if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
