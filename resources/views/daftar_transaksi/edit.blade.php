@@ -101,12 +101,12 @@
                     <div class="form-group">
                         <label for="noHp">Nomor HP:</label>
                         <input type="text" class="form-control" id="noHp" name="no_hp"
-                            placeholder="Masukkan nomor HP" value="{{ $notaPembelian->Pembeli->alamat_pembeli }}" required>
+                            placeholder="Masukkan nomor HP" value="{{ $notaPembelian->Pembeli->no_hp }}" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat:</label>
                         <input type="text" class="form-control" id="alamat" name="alamat_pembeli"
-                            placeholder="Masukkan alamat" required>
+                            placeholder="Masukkan alamat" value="{{ $notaPembelian->Pembeli->alamat_pembeli }}" required>
                     </div>
 
 
@@ -578,7 +578,7 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <table class="table table-bordered" id="deletedPesananExist" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="deletedPesananExist" width="100%" style="display: none;" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
