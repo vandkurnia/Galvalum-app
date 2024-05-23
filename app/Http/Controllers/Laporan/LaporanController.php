@@ -292,11 +292,11 @@ class LaporanController extends Controller
         if ($tanggal) {
             $queryLunasdanKelebihan .= ' AND DATE(nota_pembelis.created_at) = ? ';
             $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
-            $queryLunasdanKelebihan .= "ORDER BY nota_pembelis.created_at DESC";
+            $queryLunasdanKelebihan .= " ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, [$tanggal]);
         } else {
             $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
-            $queryLunasdanKelebihan .= "ORDER BY nota_pembelis.created_at DESC";
+            $queryLunasdanKelebihan .= " ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, []);
         }
 
