@@ -235,8 +235,8 @@ class PembelianController extends Controller
 
 
         // Sub Total seluruhnya 
-        $subTotal = 0;
-        $totalDiskon = 0;
+        // $subTotal = 0;
+        // $totalDiskon = 0;
         $pesananData = json_decode($request->pesanan, true);
         // Perulangan untuk pesanan
         foreach ($pesananData as $pesanan) {
@@ -268,9 +268,9 @@ class PembelianController extends Controller
             }
 
 
-            $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
-            $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
-            $totalDiskon += $hargaDiskon;
+            // $hargaSetelahDiskon = $hargaSetelahDiskon - $pesanan['harga_potongan'];
+            // $subTotal += $hargaSetelahDiskon *  $pesanan['jumlah_pesanan'];
+            // $totalDiskon += $hargaDiskon;
 
 
 
@@ -421,9 +421,12 @@ class PembelianController extends Controller
         $notaPembeliPesanan = NotaPembeli::with('PesananPembeli')->find($notaPembeli->id_nota);
         foreach ($notaPembeliPesanan->PesananPembeli as $pesananPembeli3) {
 
-            $subTotal += $pesananPembeli3->harga *  $pesananPembeli->jumlah_pembelian;
-            $totalDiskon += $pesananPembeli->diskon;
+
+            $subTotal += $pesananPembeli3->harga *  $pesananPembeli3->jumlah_pembelian;
+            $totalDiskon += $pesananPembeli3->diskon;
         }
+   
+
         // Menghitung kembali total dari pesanan
         $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
 
