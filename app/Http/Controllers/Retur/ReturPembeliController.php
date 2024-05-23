@@ -51,7 +51,7 @@ class ReturPembeliController extends Controller
     }
     public function store(Request $request)
     {
-        return redirect()->back();
+
         $request->validate([
             'id_nota' => 'required|exists:nota_pembelis,id_nota',
             'tanggal_retur_pembeli' => 'required|date',
@@ -188,6 +188,7 @@ class ReturPembeliController extends Controller
             $pesananCekQtynya = PesananPembeli::where('id_pesanan', $returMrni['id_pesanan'])->first();
             if ($pesananCekQtynya->jumlah_pembelian == 0) {
                 $pesananCekQtynya->delete();
+
                 $stokBarangDelete = StokBarangModel::find($pesananCekQtynya->id_stokbarang);
 
                 $stokBarangDelete->delete();
@@ -338,22 +339,17 @@ class ReturPembeliController extends Controller
 
 
 
-        // Perhitungan Nota Pembeli
+        // Perhitungan Sub Total dan Total
         $updateNotaPembeli = NotaPembeli::find($notaPembelian->id_nota);
 
         $updateNotaPembeli->sub_total = $subTotalbaru + $subTotalReturMurni;
-
-        // $updateNotaPembeli->diskon = $request->get('diskon');
-        // $updateNotaPembeli->ongkir = $request->get('ongkir');
-
-
-
         // Perhitungan Pajak (Masih belum bisa)
         $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
         // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
         // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
         $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
         $updateNotaPembeli->save();
+        // Perhitungan nilai retur
         DB::commit();
 
         return redirect()->route('retur.index')->with('success', 'Retur berhasil ditambahkan');
@@ -467,18 +463,17 @@ class ReturPembeliController extends Controller
                     $pesananPembeli->restore();
 
                     // Find the stock item related to the restored order, including trashed items
-                    $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->barang_id);
-
+                    $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
                     // If the stock item was trashed, restore it as well
                     if ($stokBarang && $stokBarang->trashed()) {
                         $stokBarang->restore();
                     }
 
                     // Update the stock quantity based on the order quantity
-                    if ($stokBarang) {
-                        $stokBarang->jumlah += $pesananPembeli->jumlah_pembelian;
-                        $stokBarang->save();
-                    }
+                    // if ($stokBarang) {
+                    //     $stokBarang->stok_keluar += $pesananPembeli->jumlah_pembelian;
+                    //     $stokBarang->save();
+                    // }
                 }
                 // Hapus retur pesanan pembeli setelah memprosesnya
                 $returPesanan->delete();
@@ -499,15 +494,21 @@ class ReturPembeliController extends Controller
             }
 
 
-            // Perhitungan Pajak (Masih belum bisa)
-            $nilaiTotal = $subTotal - $notaPembeli->diskon;
+            // Menghitung kembali total dari pesanan
+            $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
+
+            $updateNotaPembeli->sub_total = $subTotal;
+
+            // Perhitungan Pajak
+            $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
             // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
-            // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
-            $notaPembeli->total = $nilaiTotal + $notaPembeli->ongkir;
-            $notaPembeli->save();
+            $nilaiOngkir =  $updateNotaPembeli->ongkir;
+            $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
+            $updateNotaPembeli->save();
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } catch (\Exception $e) {
+      
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
