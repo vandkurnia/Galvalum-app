@@ -243,14 +243,18 @@ class LaporanController extends Controller
                 bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
             WHERE 
                 bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total
+            
         ';
 
         if ($tanggal) {
             $query .= ' AND DATE(nota_pembelis.created_at) = ? ';
             $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $query .= " ORDER BY nota_pembelis.created_at DESC";
+            
             $dataNotaPembelian = DB::select($query, [$tanggal]);
         } else {
             $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $query .= " ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelian = DB::select($query, []);
         }
 
@@ -288,9 +292,11 @@ class LaporanController extends Controller
         if ($tanggal) {
             $queryLunasdanKelebihan .= ' AND DATE(nota_pembelis.created_at) = ? ';
             $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $queryLunasdanKelebihan .= "ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, [$tanggal]);
         } else {
             $queryLunasdanKelebihan .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $queryLunasdanKelebihan .= "ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelianLunasdanKelebihan = DB::select($queryLunasdanKelebihan, []);
         }
 
