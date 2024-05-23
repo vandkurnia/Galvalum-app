@@ -350,6 +350,20 @@ class ReturPembeliController extends Controller
         $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
         $updateNotaPembeli->save();
         // Perhitungan nilai retur
+        
+        $returPembelihitung = ReturPembeliModel::with('returPesananPembelis')->find($dataReturPembeli->id_retur_pembeli);
+        $totalNilaiRetur = 0;
+        foreach ($returPembelihitung->returPesananPembelis as $returPesananPembeli)
+        {
+            $totalNilaiRetur = $returPesananPembeli->total;
+            
+        }
+
+
+        $returPembelihitung->total_nilai_retur = $totalNilaiRetur;
+        $returPembelihitung->save();
+
+
         DB::commit();
 
         return redirect()->route('retur.index')->with('success', 'Retur berhasil ditambahkan');

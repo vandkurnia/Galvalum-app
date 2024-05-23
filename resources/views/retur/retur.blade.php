@@ -1,18 +1,9 @@
 @extends('app')
 @section('title', 'Retur')
 @section('header-custom')
-    <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
 
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style>
+    <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
+
 
 
 
@@ -157,7 +148,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="returPembeli" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No. Retur</th>
@@ -166,8 +157,8 @@
                                 <th>Bukti Retur</th>
                                 <th>Jenis Retur</th>
                                 <th>Total Nilai Retur</th>
-                                <th>Pengembalian Data</th>
-                                <th>Kekurangan</th>
+                                {{-- <th>Pengembalian Data</th> --}}
+                                {{-- <th>Kekurangan</th> --}}
                                 <th>Status</th>
                                 <th>Nama Pembeli</th>
                                 <th>Aksi</th>
@@ -179,11 +170,12 @@
                                     <td>{{ $retur->no_retur_pembeli }}</td>
                                     <td>{{ $retur->faktur_retur_pembeli }}</td>
                                     <td>{{ $retur->tanggal_retur_pembeli }}</td>
-                                    <td><img src="{{ secure_asset('retur/pembeli/' . $retur->bukti_retur_pembeli )  }}" alt="Bukti Retur" width="150px" height="150px"></td>
+                                    <td><img src="{{ secure_asset('retur/pembeli/' . $retur->bukti_retur_pembeli) }}"
+                                            alt="Bukti Retur" width="150px" height="150px"></td>
                                     <td>{{ $retur->jenis_retur }}</td>
-                                    <td>{{ $retur->total_nilai_retur }}</td>
-                                    <td>{{ $retur->pengembalian_data }}</td>
-                                    <td>{{ $retur->kekurangan }}</td>
+                                    <td>{{ 'Rp. ' . number_format($retur->total_nilai_retur, 0, '.', ',') }}</td>
+                                    {{-- <td>{{ $retur->pengembalian_data }}</td>
+                                    <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
                                     <td>{{ $retur->pembeli->nama_pembeli }}</td>
                                     <td>
@@ -191,11 +183,11 @@
                                         {{-- <a class="btn btn-primary btn-sm"
                                             href="{{ route('retur.pembeli.edit', ['id_retur' => $retur->hash_id_retur_pembeli]) }}"><i class="fas fa-edit"></i>Edit</a> --}}
 
-                             
+
                                         <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('retur.pembeli.destroy', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
-                                            Delete</button>
+                                            Batalkan Retur</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -380,5 +372,13 @@
 
 
         }
+    </script>
+
+    <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('#returPembeli').DataTable();
+        });
     </script>
 @endsection
