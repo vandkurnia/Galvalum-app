@@ -581,7 +581,7 @@
                 td_jumlah.innerText = jumlah_barang.value;
 
                 let td_total = document.createElement('td');
-                td_total.classList.add('total');
+                td_total.classList.add('totalperpesanan');
                 td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
 
 
@@ -669,7 +669,7 @@
                 td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaPotonganKhusus.value);
 
 
-                let td_total = tr_pesanan.querySelector('.total');
+                let td_total = tr_pesanan.querySelector('.totalperpesanan');
                 td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
             }
 
@@ -763,7 +763,7 @@
             // qtyPesananInput.innerText = newQtyPesananValue <= 0 ? 0 : newQtyPesananValue;
 
             totalRetur.innerText = (parseInt(hargaPesanan.innerText) - parseInt(diskonPesanan.innerText)) *
-                parseInt(qtyPesananInput.value);
+                parseFloat(qtyPesananInput.value);
 
             resetNoPesananBarang();
             // retur Section 
@@ -774,14 +774,28 @@
             var totalHarga = 0;
             totalNilaiRetur = 0;
             // Perhitungan Sub Total
+            // $('#datatableGantiPesanandanRetur tbody tr').each(function(rows) {
+            //     var harga = parseInt($(this).find('.harga_barang_pesanan').text())
+            //     var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
+            //     var diskon = parseInt($(this).find('.diskon_pesanan').text());
+            //     // totalDiskon += diskon;
+            //     var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
+            //     // totalHarga += (harga - diskon) * jumlah;
+            //     totalHarga += totalpesanan;
+            //     console.log(totalHarga);
+            // });
             $('#dataTablePesanan tbody tr').each(function(rows) {
                 var harga = parseInt($(this).find('.harga_barang_pesanan').text())
                 var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
                 var diskon = parseInt($(this).find('.diskon_pesanan').text());
                 var qtyRetur = parseInt($(this).find('#qtyRetur').val());
                 totalDiskon += diskon;
-                totalHarga += (harga - diskon) * jumlah;
-                totalNilaiRetur += (harga - diskon) * qtyRetur;
+
+                var totalReturHarga = parseInt($(this).find('.returHargaTotal').text());
+                // totalHarga += (harga - diskon) * jumlah;
+                // totalHarga += totalpesanan;
+                // totalNilaiRetur += (harga - diskon) * qtyRetur;
+                totalNilaiRetur += totalReturHarga;
             });
 
             const tabletfoot = document.querySelector('#dataTablePesanan tfoot');
@@ -831,11 +845,15 @@
                 var harga = parseInt($(this).find('.harga_barang_pesanan').text())
                 var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
                 var diskon = parseInt($(this).find('.diskon_pesanan').text());
-                totalDiskon += diskon;
-                totalHarga += (harga - diskon) * jumlah;
+                // totalDiskon += diskon;
+                // totalHarga += (harga - diskon) * jumlah;
+                var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
+                totalHarga += totalpesanan;
+                console.log(totalHarga);
 
 
             });
+
 
 
 
@@ -854,6 +872,9 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
+            console.log(total);
+            console.log(nilaiTotal);
+            console.log(nilaiOngkir);
             total.value = nilaiTotal + nilaiOngkir;
 
 

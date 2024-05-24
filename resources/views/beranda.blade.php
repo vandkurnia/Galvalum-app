@@ -316,8 +316,13 @@
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = document.createElement('td');
-                                    td_total.classList.add('total');
-                                    td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
+                                    td_total.classList.add('totalperpesanan');
+
+
+                                    let total = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
+                                    // Round up to 2 decimal places
+                                    total = Math.ceil(total * 100) / 100;
+                                    td_total.innerText = total.toFixed(0); // Display with comma separators if needed
 
 
                                     // Membuat tombol Edit
@@ -593,7 +598,7 @@
                 formCicilan.style.display = 'block';
 
                 const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.removeAttribute('readonly'); 
+                nominalTerbayar.removeAttribute('readonly');
                 nominalTerbayar.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.removeAttribute('disabled');
@@ -615,13 +620,16 @@
             // window.history.back(1);
             // Ambil semua harga barang dari tabel dan hitung totalnya
             var totalHarga = 0;
-            var totalDiskon = 0;
+            // var totalDiskon = 0;
             $('#dataTablePesanan tbody tr').each(function(rows) {
                 var harga = parseInt($(this).find('.harga_barang_pesanan').text())
                 var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
                 var diskon = parseInt($(this).find('.diskon_pesanan').text());
-                totalDiskon += diskon;
-                totalHarga += (harga - diskon) * jumlah;
+                // totalDiskon += diskon;
+                var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
+                // totalHarga += (harga - diskon) * jumlah;
+                totalHarga += totalpesanan;
+                console.log(totalHarga);
             });
 
 

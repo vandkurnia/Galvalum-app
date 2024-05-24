@@ -48,7 +48,7 @@
             <div class="card-body">
                 <div>
                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah user</button>
+                            class="fa fa-plus"></i> Tambah Tipe Barang</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="tipeBarang" width="100%" cellspacing="0">

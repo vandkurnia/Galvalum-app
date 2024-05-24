@@ -312,7 +312,7 @@ class PembelianController extends Controller
                     }
                 } else {
                     DB::rollBack();
-                    return redirect()->back()->with('error', 'Terjadi Kesalahan');
+                    return redirect()->back()->with('error', 'Terjadi Kesalahan: Stok Tidak Terseida');
                 }
                 $pesananPembeli->save();
 

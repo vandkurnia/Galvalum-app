@@ -326,7 +326,7 @@
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = document.createElement('td');
-                                    td_total.classList.add('total');
+                                    td_total.classList.add('totalperpesanan');
                                     td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
 
 
@@ -425,7 +425,8 @@
                                     let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
 
-                                    let td_total = tr_pesanan.querySelector('.total');
+                                    let td_total = tr_pesanan.querySelector('.totalperpesanan');
+                                
                                     td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
 
                                     resetNoPesananBarang();
@@ -539,7 +540,7 @@
                                         {{ (int) $pesanan->harga }}</td>
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
                                     <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
-                                    <td class="total">
+                                    <td class="totalperpesanan">
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}
                                     </td>
                                     <td><button class="btn btn-danger btn-sm ml-2"
@@ -680,8 +681,10 @@
                 var harga = parseInt($(this).find('.harga_barang_pesanan').text())
                 var jumlah = parseInt($(this).find('.nilai_jumlah_barang_pesanan').text());
                 var diskon = parseInt($(this).find('.diskon_pesanan').text());
-                totalDiskon += diskon;
-                totalHarga += (harga - diskon) * jumlah;
+                // totalDiskon += diskon;
+                var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
+                // totalHarga += (harga - diskon) * jumlah;
+                totalHarga += totalpesanan;
             });
 
 
@@ -700,8 +703,6 @@
 
             total.value = nilaiTotal + nilaiOngkir;
 
-
-            console.log(total.value);
             // Pengisian Total pada Nominal Terbayar
             // document.querySelector('#nominalTerbayar').value = total.value;
 

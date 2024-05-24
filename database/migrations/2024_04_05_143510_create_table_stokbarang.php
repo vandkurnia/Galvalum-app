@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreign('id_barang')->references('id_barang')->on('barangs')->onUpdate('cascade')->onDelete('cascade');
             // $table->unsignedBigInteger('id_bukubesar')->nullable(); // Delete Soon Nullablenya
             // $table->foreign('id_bukubesar')->references('id_bukubesar')->on('bukubesar')->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('stok_masuk')->default(0);
-            $table->integer('stok_keluar')->default(0);
+            $table->decimal('stok_masuk', 20, 2)->default(0); // Adjusted precision and scale
+    $table->decimal('stok_keluar', 20, 2)->default(0); // Adjusted precision and scale
             $table->timestamps();
             $table->softDeletes(); // Add this line for soft deletes
         });
