@@ -276,11 +276,12 @@ class PembelianController extends Controller
 
 
 
-      
+
             // Data ada tetapi ada perubahan
             if ($pesanan['type_pesanan'] == 'exist') {
                 // Pesanan Pembeli
                 $pesananPembeli = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->where('id_barang', $barangData->id_barang)->first();
+                $jumlahStokOld = $pesananPembeli->jumlah_pembelian;
                 $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
                 $pesananPembeli->id_diskon = $diskonId;
                 $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
@@ -290,10 +291,10 @@ class PembelianController extends Controller
                 $pesananPembeli->harga_potongan = $pesanan['harga_potongan'];
                 $pesananPembeli->diskon = $hargaDiskon;
 
-        
+
 
                 $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
-                if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+                if (($stokTersedia->stok + $jumlahStokOld) >=  $pesanan['jumlah_pesanan']) {
 
 
 
@@ -328,6 +329,7 @@ class PembelianController extends Controller
             } elseif ($pesanan['type_pesanan'] == 'modified') {
                 // Pesanan Pembeli
                 $pesananPembeli = PesananPembeli::where('id_nota', $notaPembeli->id_nota)->where('id_barang', $barangData->id_barang)->first();
+                $jumlahStokOld = $pesananPembeli->jumlah_pembelian;
                 $pesananPembeli->jumlah_pembelian = $pesanan['jumlah_pesanan']; // Contoh nilai untuk jumlah_pembelian
                 $pesananPembeli->id_diskon = $diskonId;
                 $pesananPembeli->id_nota = $notaPembeli->id_nota; // Gunakan ID NotaPembeli yang baru saja dibuat
@@ -339,7 +341,7 @@ class PembelianController extends Controller
                 $pesananPembeli->save();
 
                 $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
-                if ($stokTersedia->stok >=  $pesanan['jumlah_pesanan']) {
+                if (($stokTersedia->stok + $jumlahStokOld) >=  $pesanan['jumlah_pesanan']) {
 
 
 
@@ -358,7 +360,8 @@ class PembelianController extends Controller
                     }
                 } else {
                     DB::rollBack();
-                    return redirect()->back()->with('error', 'Terjadi Kesalahan');
+                    $stokTersediaSaatIni = $stokTersedia->stok;
+                    return redirect()->back()->with('error', "Terjadi Kesalahan : Stok Tersedia {$stokTersediaSaatIni}  ");
                 }
 
 
@@ -426,7 +429,7 @@ class PembelianController extends Controller
             $subTotal += $pesananPembeli3->harga *  $pesananPembeli3->jumlah_pembelian;
             $totalDiskon += $pesananPembeli3->diskon;
         }
-   
+
 
         // Menghitung kembali total dari pesanan
         $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
@@ -460,7 +463,8 @@ class PembelianController extends Controller
             // 'PesananPembeli',
             'PesananPembeli.stokBarang',
             'returPembelis',
-            'returPembelis.returPesananPembelis'
+            'returPembelis.returPesananPembelis',
+
         ])->where('id_nota', $id)->first();
         DB::beginTransaction();
         if ($notaPembeli) {
@@ -485,6 +489,13 @@ class PembelianController extends Controller
                     $returPesananPembeli->delete();
                 }
                 $returPembeli->delete();
+            }
+
+            // Hapus Semua Laporan Piutang
+            // Check if NotaPembeli is found
+            if ($notaPembeli) {
+                // Delete all related bukuBesar records
+                $notaPembeli->bukuBesar()->delete();
             }
 
             // Hapus NotaPembeli itu sendiri

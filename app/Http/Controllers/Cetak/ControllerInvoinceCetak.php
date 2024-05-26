@@ -49,7 +49,12 @@ class ControllerInvoinceCetak extends Controller
 
 
         // $namaKasir = "Sasa";
-        $namaKasir = $notaPembeliModel->Admin->nama_admin;
+        // Asli
+        // $namaKasir = $notaPembeliModel->Admin->nama_admin;
+        // Sementara
+        // Seharusnya tiap cetak dicatat
+        $namaKasir = Auth::user()->nama_admin;
+        // dd($namaKasir);
 
         $dataPembayaran = [
             [

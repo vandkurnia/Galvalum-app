@@ -22,7 +22,7 @@ class CicilanHutangController extends Controller
     }
     public function index($id_barang)
     {
-        return redirect()->back();
+        // return redirect()->back();
         $barangData = Barang::where('hash_id_barang', $id_barang)->with('bukuBesar')->first();
         // dd($barangData);
 

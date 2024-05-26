@@ -32,4 +32,5 @@ class StokBarangModel extends Model
     {
         return $this->belongsTo(PesananPembeli::class, 'id', 'id_stokbarang');
     }
+    
 }

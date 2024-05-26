@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BukubesarBarangModel;
 use App\Models\BukubesarModel;
 use App\Models\PemasokBarang;
 use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +42,17 @@ class StokController extends Controller
     public function edit(Request $request, $id)
     {
         $dataBarang = Barang::where('hash_id_barang', $id)->first();
+
+        if ($dataBarang) {
+            // Mengambil jumlah total stok barang
+            $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)
+                ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+                ->whereNull('deleted_at')
+                ->first();
+
+            // Menambahkan jumlah stok ke dalam data barang
+            $dataBarang->stok = $stokbarang->stok;
+        }
         $dataTipeBarang = TipeBarang::all();
         $dataPemasok = PemasokBarang::all();
         if (!$dataBarang) {
@@ -109,9 +122,14 @@ class StokController extends Controller
 
         StokBarangModel::create([
             'stok_masuk' => $request->stok,
-            'id_barang' => $barang->id_barang,
-            'id_bukubesar' => $bukuBesar->id_bukubesar
+            'id_barang' => $barang->id_barang
         ]);
+
+
+        $bukubesarBarang = new BukubesarBarangModel();
+        $bukubesarBarang->id_barang = $barang->id_barang;
+        $bukubesarBarang->id_bukubesar = $bukuBesar->id_bukubesar;
+        $bukubesarBarang->save();
         DB::commit();
 
 
@@ -122,20 +140,27 @@ class StokController extends Controller
     {
         // Validasi input
         $validator = Validator::make($request->all(), [
-            'id_pemasok' => 'nullable|exists:pemasok_barangs,id_pemasok',
-            'kode_barang' => 'required',
+            // 'id_pemasok' => 'nullable|exists:pemasok,id_pemasok',
+            'kode_barang' => 'required|string|max:255',
             'nama_barang' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
-            'id_tipe_barang' => 'required|exists:tipe_barangs,id_tipe_barang',
+            // 'id_tipe_barang' => 'required|exists:tipe_barang,id_tipe_barang',
+            'stok' => 'required|integer|min:0',
             'harga_barang' => 'required|numeric|min:0',
             'harga_barang_pemasok' => 'required|numeric|min:0',
+            'status_pembelian' => 'required|in:lunas,hutang',
+            'nominal_terbayar' => 'nullable|numeric|min:0',
+            'tenggat_bayar' => 'nullable|date',
+
         ]);
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
         // Mencari barang berdasarkan hash_id_barang
-        $barang = Barang::where('hash_id_barang', $id)->first();
+        $barang = Barang::with('bukuBesar')->where('hash_id_barang', $id)->first();
 
         if (!$barang) {
             return redirect()->back()->with('error', 'Barang tidak ada');
@@ -149,16 +174,108 @@ class StokController extends Controller
         $barang->id_tipe_barang = $request->id_tipe_barang;
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_barang_pemasok = $request->harga_barang_pemasok;
+        $nominal_terbayar_lama =  $barang->nominal_terbayar;
+        $barang->nominal_terbayar = $request->nominal_terbayar;
+
+
+        $stokBarangFirst =  StokBarangModel::where('id_barang', $barang->id_barang)->first();
+
+
+        // Update total
+        $barang->total = $stokBarangFirst->stok_masuk * $barang->harga_barang_pemasok;
+        $barang->save();
+
+
+
+
 
         // Menghitung total stok
         $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
             ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
             ->first();
 
-        // Update total
-        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
 
-        $barang->save();
+
+        $stok = $request->stok;
+
+        if ($stok != $stokBarang->stok) {
+
+
+            $selisihStokReqdanAsli = $stok  - $stokBarang->stok;
+
+            // Proses pembaruan stok barang
+            $stok_barang = DB::table('stok_barang')
+                ->where('id_barang', $barang->id_barang)
+                ->orderBy('created_at', 'asc')
+                ->lockForUpdate()
+                ->first();
+
+            if ($stok_barang) {
+                // Mendapatkan waktu sekarang
+                $now = Carbon::now();
+
+
+
+                // Proses pembaruan stok barang
+                $stokupdate = $stok_barang->stok_masuk + $selisihStokReqdanAsli;
+                // dd([
+                //     'stokmasuk' => $stok_barang->stok_masuk,
+                //     'selisih' => $selisihStokReqdanAsli,
+                //     'stok_update' => $stokupdate
+                // ]);
+                $stokBarangubahStok = StokBarangModel::find($stok_barang->id);
+                // dd($stokBarangubahStok);
+                $stokBarangubahStok->stok_masuk = $stokupdate;
+                $stokBarangubahStok->save();
+
+
+                // Update total barang setelah mengubah stok masuk
+                $updatebarangtotal = Barang::find($barang->id_barang);
+                $updatebarangtotal->total = $stokBarangubahStok->stok_masuk * $barang->harga_barang_pemasok;
+                $updatebarangtotal->save();
+            }
+        }
+
+
+        // Menggunakan DB::transaction untuk menjaga integritas transaksi
+        // $bukubesarBarang = $barang->bukuBesar;
+        // dd([
+        //     'nominal_terbayar' => $barang->nominal_terbayar,
+        //     'request nominal terbayar' => $request->nominal_terbayar,
+        //     'status' => $nominal_terbayar_lama != $request->nominal_terbayar,
+        //     'nominal_terbayar_lama' =>  $nominal_terbayar_lama
+        // ]);
+        if ($nominal_terbayar_lama != $request->nominal_terbayar) {
+            // dd("aman kan ?");
+            $totalnominalTerbayar = 0;
+            foreach ($barang->bukuBesar as $bukuBesar) {
+                $totalnominalTerbayar += $bukuBesar->debit;
+            }
+            $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+            $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+
+            // Selisih antara debit pertama dengan 
+            $bukubesar->debit = $request->nominal_terbayar;
+            $bukubesar->save();
+
+
+
+            // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
+            $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                ->skip(1) // Lewatkan entri pertama
+                ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
+                ->get();
+
+            // Hapus semua entri buku besar setelah yang pertama
+            foreach ($bukubesarBarangs as $bukubesarBarang) {
+                $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
+                if ($bukubesarToDelete) {
+                    $bukubesarToDelete->forceDelete();
+                }
+            }
+        }
+        DB::commit();
+
 
         return redirect()->route('stok.index')->with('success', 'Data barang berhasil diperbarui');
     }
@@ -203,7 +320,6 @@ class StokController extends Controller
     }
 
     public function addStock(Request $request)
-
     {
 
 
@@ -229,106 +345,92 @@ class StokController extends Controller
 
         DB::beginTransaction();
         // $barang->stok += $validatedData['stok_tambah'];
-
-
-        // $bukuBesar = new BukubesarModel();
-        // $bukuBesar->tanggal = date('Y-m-d');
-        // $bukuBesar->kategori =  "barang";
-        // $bukuBesar->sub_kategori = "hutang";
-        // $bukuBesar->kredit = $validatedData['stok_tambah'] * $barang->harga_barang_pemasok;
-        // $bukuBesar->keterangan = "penambahan stok " . $validatedData['stok_tambah'];
-        // $bukuBesar->save();
-
-        StokBarangModel::create([
-            'stok_masuk' => $validatedData['stok_tambah'],
-            'id_barang' => $barang->id_barang
-        ]);
-
-
-        // Mencari barang berdasarkan hash_id_barang
-        $barang = Barang::find($barang->id_barang);
-
+    
         // Kembalikan jika barang tidak ada
         if (!$barang) {
             return redirect()->back()->with('error', 'Barang tidak ada');
         }
+
+
+
         // Menghitung total stok
-        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
-            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
-            ->first();
+        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)->first();
+        // Jumlah Stok Final Stok dari input
+        $stoktambah = $validatedData['stok_tambah'] +  $stokBarang->stok_masuk;
+        $stokBarang->stok_masuk = $stoktambah;
+        $stokBarang->save();
 
         // Update total
-        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
+        $barang->total = $stokBarang->stok_masuk * $barang->harga_barang_pemasok;
 
-   
         $barang->save();
 
         DB::commit();
 
         return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
     }
-    public function minusStok(Request $request)
-    {
+    // public function minusStok(Request $request)
+    // {
 
 
-        $validatedData = $request->validate([
-            'stok_kurang' => 'required|numeric|min:0',
-            'id_barang' => 'required|exists:barangs,hash_id_barang',
-        ], [
-            'stok_kurang.required' => 'Pengurangan Stok harus diisi.',
-            'stok_kurang.numeric' => 'Pengurangan Stok harus berupa angka.',
-            'stok_kurang.min' => 'Pengurangan Stok harus lebih dari atau sama dengan 0.',
-            'id_barang.exists' => 'Barang tidak ditemukan.',
-        ]);
+    //     $validatedData = $request->validate([
+    //         'stok_kurang' => 'required|numeric|min:0',
+    //         'id_barang' => 'required|exists:barangs,hash_id_barang',
+    //     ], [
+    //         'stok_kurang.required' => 'Pengurangan Stok harus diisi.',
+    //         'stok_kurang.numeric' => 'Pengurangan Stok harus berupa angka.',
+    //         'stok_kurang.min' => 'Pengurangan Stok harus lebih dari atau sama dengan 0.',
+    //         'id_barang.exists' => 'Barang tidak ditemukan.',
+    //     ]);
 
-        $barang = Barang::where('hash_id_barang', $validatedData['id_barang'])->first();
+    //     $barang = Barang::where('hash_id_barang', $validatedData['id_barang'])->first();
 
-        if (!$barang) {
-            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
-        }
+    //     if (!$barang) {
+    //         return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+    //     }
 
-        if ($validatedData['stok_kurang'] <= 0) {
-            return redirect()->back()->with('error', 'Pengurangan tidak valid atau 0.');
-        }
-
-
-        DB::beginTransaction();
-        // $bukuBesar = new BukubesarModel();
-        // $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-        // $bukuBesar->keterangan = 'STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-        // $bukuBesar->tanggal = date('Y-m-d');
-        // $bukuBesar->sub_kategori = "hutang";
-        // $bukuBesar->debit = $validatedData['stok_kurang'];
-        // $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
-        // $bukuBesar->save();
+    //     if ($validatedData['stok_kurang'] <= 0) {
+    //         return redirect()->back()->with('error', 'Pengurangan tidak valid atau 0.');
+    //     }
 
 
-        StokBarangModel::create([
-            'stok_keluar' => $validatedData['stok_kurang'],
-            'id_barang' => $barang->id_barang
-            // 'id_bukubesar' => $bukuBesar->id_bukubesar
-        ]);
+    //     DB::beginTransaction();
+    //     // $bukuBesar = new BukubesarModel();
+    //     // $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
+    //     // $bukuBesar->keterangan = 'STOK BARANG ' . $barang->hash_id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+    //     // $bukuBesar->tanggal = date('Y-m-d');
+    //     // $bukuBesar->sub_kategori = "hutang";
+    //     // $bukuBesar->debit = $validatedData['stok_kurang'];
+    //     // $bukuBesar->keterangan = "Pengurangan stok " . $validatedData['stok_kurang'];
+    //     // $bukuBesar->save();
+
+
+    //     StokBarangModel::create([
+    //         'stok_keluar' => $validatedData['stok_kurang'],
+    //         'id_barang' => $barang->id_barang
+    //         // 'id_bukubesar' => $bukuBesar->id_bukubesar
+    //     ]);
 
 
 
-        // Mencari barang berdasarkan hash_id_barang
-        $barang = Barang::find($barang->id_barang);
+    //     // Mencari barang berdasarkan hash_id_barang
+    //     $barang = Barang::find($barang->id_barang);
 
-        // Kembalikan jika barang tidak ada
-        if (!$barang) {
-            return redirect()->back()->with('error', 'Barang tidak ada');
-        }
-        // Menghitung total stok
-        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
-            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
-            ->first();
+    //     // Kembalikan jika barang tidak ada
+    //     if (!$barang) {
+    //         return redirect()->back()->with('error', 'Barang tidak ada');
+    //     }
+    //     // Menghitung total stok
+    //     $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
+    //         ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+    //         ->first();
 
-        // Update total
-        $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
+    //     // Update total
+    //     $barang->total = $stokBarang->stok * $barang->harga_barang_pemasok;
 
-        $barang->save();
-        DB::commit();
+    //     $barang->save();
+    //     DB::commit();
 
-        return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
-    }
+    //     return redirect()->route('stok.index')->with('success', 'Berhasil mengupdate stok barang.');
+    // }
 }

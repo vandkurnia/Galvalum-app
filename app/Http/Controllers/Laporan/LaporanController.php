@@ -242,7 +242,7 @@ class LaporanController extends Controller
             JOIN
                 bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
             WHERE 
-                bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total
+                bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total AND nota_pembelis.deleted_at IS NULL
             
         ';
 
