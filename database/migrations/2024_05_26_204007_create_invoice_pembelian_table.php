@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('surat_jalan', function (Blueprint $table) {
-            $table->id('id_surat_jalan');
-            // $table->string('no_surat_jalan')->unique();
-            $table->string('no_surat_jalan');
-            // Nanti Perbiaki
-            // Menambahkan kolom user_id
+        Schema::create('invoice_pembelian', function (Blueprint $table) {
+            $table->id();
+
             $table->unsignedBigInteger('users');
             $table->foreign('users')->references('id_admin')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_nota');
             $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis')->onUpdate('cascade')->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('surat_jalan');
+        Schema::dropIfExists('invoice_pembelian');
     }
 };

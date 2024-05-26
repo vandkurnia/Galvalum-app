@@ -110,15 +110,18 @@
                     </div>
 
 
-                 
+
 
                     <div class="form-group">
                         <label for="jenisPelanggan">Jenis Pelanggan:</label>
                         <select class="form-control" name="jenis_pelanggan" id="jenisPelanggan" required>
 
-                            <option {{ $notaPembelian->jenis_pembelian == 'harga_normal' ? 'selected' : '' }} value="harga_normal">Harga Normal</option>
-                            <option {{ $notaPembelian->jenis_pembelian == 'aplicator' ? 'selected' : '' }} value="aplicator">Aplicator</option>
-                            <option  {{ $notaPembelian->jenis_pembelian == 'potongan' ? 'selected' : '' }} value="potongan">Potongan</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'harga_normal' ? 'selected' : '' }}
+                                value="harga_normal">Harga Normal</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'aplicator' ? 'selected' : '' }}
+                                value="aplicator">Aplicator</option>
+                            <option {{ $notaPembelian->jenis_pembelian == 'potongan' ? 'selected' : '' }} value="potongan">
+                                Potongan</option>
                         </select>
                     </div>
 
@@ -426,7 +429,7 @@
                                     td_jumlah.innerText = jumlah_barang.value;
 
                                     let td_total = tr_pesanan.querySelector('.totalperpesanan');
-                                
+
                                     td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
 
                                     resetNoPesananBarang();
@@ -564,7 +567,8 @@
                             <tr>
                                 <td colspan="2">Diskon Rp</td>
                                 <td colspan="2"><input type="number" oninput="totalPembayaran()"
-                                        class="form-control" name="diskon_total" id="diskonTotal" value="{{ $notaPembelian->diskon }}"></td>
+                                        class="form-control" name="diskon_total" id="diskonTotal"
+                                        value="{{ $notaPembelian->diskon }}"></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Ongkir</td>
@@ -579,7 +583,8 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <table class="table table-bordered" id="deletedPesananExist" width="100%" style="display: none;" cellspacing="0">
+                    <table class="table table-bordered" id="deletedPesananExist" width="100%" style="display: none;"
+                        cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -645,17 +650,30 @@
                                 value="Transfer">TRANSFER</option>
                         </select>
                     </div>
-                    {{-- <div class="form-group">
+                    <div class="form-group">
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
                             <option value="lunas"
-                                {{ $notaPembelian->status_pembelian == 'lunas' ? 'selected' : '' }}>Lunas</option>
-                            <option
-                                value="hutang {{ $notaPembelian->status_pembelian == 'hutang' ? 'selected' : '' }}">
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'selected' : '' }}>
+                                Lunas</option>
+                            <option value="hutang"
+                                {{ $notaPembelian->total != $notaPembelian->nominal_terbayar ? 'selected' : '' }}>
                                 Hutang</option>
                         </select>
-                    </div> --}}
+                    </div>
+                    <div id="formCicilan" style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'display:none;' : '' }}">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="{{ (int) $notaPembelian->nominal_terbayar }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'readonly' : '' }}>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
+                        </div>
+                    </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
                     <button type="button" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
@@ -671,6 +689,35 @@
 
 
     <script>
+        // Metode Pembayaran dan Status
+        document.getElementById('statusPembayaran').addEventListener('change', function() {
+            var formCicilan = document.getElementById('formCicilan');
+
+            var valueString = String(this.value).trim();
+
+            if (valueString === 'hutang') {
+
+                formCicilan.style.display = 'block';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.removeAttribute('readonly');
+                nominalTerbayar.value = 0;
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.removeAttribute('disabled');
+            } else {
+                formCicilan.style.display = 'none';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.readOnly = true;
+                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.disabled = true;
+            }
+        });
+
+
+
         function totalPembayaran() {
             // validatetotalOngkir();
             // window.history.back(1);
@@ -704,7 +751,13 @@
             total.value = nilaiTotal + nilaiOngkir;
 
             // Pengisian Total pada Nominal Terbayar
-            // document.querySelector('#nominalTerbayar').value = total.value;
+
+            let statusPembayaran = document.getElementById('statusPembayaran');
+            var valueString = String(statusPembayaran.value).trim();
+            if (valueString === 'lunas') {
+                document.querySelector('#nominalTerbayar').value = total.value;
+            } 
+
 
 
             // Ubah ke format Rp dengan dipisah rupiah

@@ -2,6 +2,8 @@
 
 namespace App\Models\pdf;
 
+use App\Models\NotaPembeli;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,15 +14,25 @@ class SuratJalanModel extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'surat_jalan'; // Nama tabel di database
-
-    protected $primaryKey = 'id_surat_jalan'; // Nama kolom primary key
+    protected $table = 'surat_jalan';
+    protected $primaryKey = 'id_surat_jalan';
 
     protected $fillable = [
         'no_surat_jalan',
-        'id_nota'
+        'users',
+        'id_nota',
+        // tambahkan kolom lain yang ada di tabel jika diperlukan
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users', 'id_admin');
+    }
+
+    public function notaPembeli()
+    {
+        return $this->belongsTo(NotaPembeli::class, 'id_nota', 'id_nota');
+    }
     protected static function booted()
     {
         static::creating(function ($suratjalan) {

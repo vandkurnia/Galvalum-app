@@ -202,6 +202,7 @@ class PembelianController extends Controller
             'pesanan' => 'required|json',
             'total_ongkir' => 'required|integer',
             'diskon' => 'required|integer',
+            'nominal_terbayar' => 'required'
         ]);
 
         DB::beginTransaction();
@@ -228,7 +229,29 @@ class PembelianController extends Controller
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
         // Nominal Terbayar
+        $nominalTerbayarOld =  $notaPembeli->nominal_terbayar;
+        $notaPembeli->nominal_terbayar = $request->nominal_terbayar;
 
+        if($nominalTerbayarOld != $notaPembeli->nominal_terbayar)
+        {
+       
+            // Update pada bukubesar
+            $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
+            $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+            $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+            $bukuBesar->save();
+
+
+            // Hapus seluruh bukubesar yang setelah edit
+            $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
+            $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                $notaBukuBesar->delete();
+
+            });
+
+
+
+        }
 
         // Nominal Terbayar
         $notaPembeli->save();
@@ -417,6 +440,8 @@ class PembelianController extends Controller
 
 
         }
+
+
 
         // Menghitung lagi pesanan
         // Sub Total seluruhnya 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cetak;
 
 use App\Http\Controllers\Controller;
 use App\Models\NotaPembeli;
+use App\Models\pdf\InvoicePembayaranModel;
 use App\Models\pdf\SuratJalanModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -16,14 +17,23 @@ class ControllerInvoinceCetak extends Controller
     public function print_invoice($no_nota)
     {
         $data['title'] = 'Print Invoice ' . $no_nota;
-        $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang', 'bukuBesar')->where('no_nota', $no_nota)->first();
-     
+        $notaPembeli = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang', 'bukuBesar')->where('no_nota', $no_nota)->first();
 
+
+        // Membuat instance baru dari model InvoicePembelian
+        $invoiceCetak = new InvoicePembayaranModel();
+
+        // Mengatur properti model
+        $invoiceCetak->users = Auth::user()->id_admin;   // Ganti dengan id_admin yang valid dari tabel users
+        $invoiceCetak->id_nota = $notaPembeli->id_nota;                      // Ganti dengan id_nota yang valid dari tabel nota_pembelis
+
+        // Menyimpan data ke database
+        $invoiceCetak->save();
         $dataPembeli = [
             [
-                "nama" => $notaPembeliModel->Pembeli->nama_pembeli,
-                "alamat" => $notaPembeliModel->Pembeli->alamat_pembeli,
-                "telp" => $notaPembeliModel->Pembeli->no_hp_pembeli
+                "nama" => $notaPembeli->Pembeli->nama_pembeli,
+                "alamat" => $notaPembeli->Pembeli->alamat_pembeli,
+                "telp" => $notaPembeli->Pembeli->no_hp_pembeli
             ]
         ];
         // $dataPembeli = [
@@ -36,8 +46,8 @@ class ControllerInvoinceCetak extends Controller
         // $dataPembeli = ;
         $dataNota = [
             [
-                "tanggal" => date("Y-m-d", strtotime($notaPembeliModel->created_at)),
-                "no_nota" => $notaPembeliModel->no_nota
+                "tanggal" => date("Y-m-d", strtotime($notaPembeli->created_at)),
+                "no_nota" => $notaPembeli->no_nota
             ]
         ];
         // $dataNota = [
@@ -50,7 +60,7 @@ class ControllerInvoinceCetak extends Controller
 
         // $namaKasir = "Sasa";
         // Asli
-        // $namaKasir = $notaPembeliModel->Admin->nama_admin;
+        // $namaKasir = $notaPembeli->Admin->nama_admin;
         // Sementara
         // Seharusnya tiap cetak dicatat
         $namaKasir = Auth::user()->nama_admin;
@@ -58,13 +68,13 @@ class ControllerInvoinceCetak extends Controller
 
         $dataPembayaran = [
             [
-                "termin" =>  $notaPembeliModel->status_pembayaran == "lunas" ? "-" : $notaPembeliModel->nominal_terbayar,
-                "jatuh_tempo" =>  $notaPembeliModel->tenggat_bayar
+                "termin" =>  $notaPembeli->status_pembayaran == "lunas" ? "-" : $notaPembeli->nominal_terbayar,
+                "jatuh_tempo" =>  $notaPembeli->tenggat_bayar
             ]
         ];
 
         $productsData = [];
-        foreach ($notaPembeliModel->pesananPembeli as $pesananPembeli) {
+        foreach ($notaPembeli->pesananPembeli as $pesananPembeli) {
 
             $productsData[] =  [
                 "item" => "001222",
@@ -108,12 +118,12 @@ class ControllerInvoinceCetak extends Controller
 
         $rincian = [
 
-            'subtotalHarga' => $notaPembeliModel->sub_total,
-            'diskon' => $notaPembeliModel->diskon,
-            'ongkir' => $notaPembeliModel->ongkir,
-            'total' => $notaPembeliModel->total,
-            'dp' => ($notaPembeliModel['bukuBesar'][0]['debit'] - $notaPembeliModel['bukuBesar'][0]['kredit']),
-            'status' => $notaPembeliModel['total'] == $notaPembeliModel['nominal_terbayar'] ? 'lunas' : 'hutang',
+            'subtotalHarga' => $notaPembeli->sub_total,
+            'diskon' => $notaPembeli->diskon,
+            'ongkir' => $notaPembeli->ongkir,
+            'total' => $notaPembeli->total,
+            'dp' => ($notaPembeli['bukuBesar'][0]['debit'] - $notaPembeli['bukuBesar'][0]['kredit']),
+            'status' => $notaPembeli['total'] == $notaPembeli['nominal_terbayar'] ? 'lunas' : 'hutang',
             'list_barang' => $productsData
         ];
         $type = 2;
@@ -173,8 +183,8 @@ class ControllerInvoinceCetak extends Controller
     {
 
         $notaPembeliModel = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang')->where('no_nota', $no_nota)->first();
-        $suratJalanModel = SuratJalanModel::firstOrCreate(['id_nota' => $notaPembeliModel->id_nota], ['id_nota' => $notaPembeliModel->id_nota]);
-
+        $suratJalanFirst = SuratJalanModel::firstOrCreate(['id_nota' => $notaPembeliModel->id_nota, 'users' => Auth::user()->id_admin], ['id_nota' => $notaPembeliModel->id_nota,  'users' => Auth::user()->id_admin]);
+      
         $title = 'Print Surat Jalan ' . $no_nota;
         $dataPembeli = [
             [
@@ -186,14 +196,14 @@ class ControllerInvoinceCetak extends Controller
 
         $dataSuratJalan = [
             [
-                "tanggal" => date("Y-m-d", strtotime($suratJalanModel->created_at)),
-                "no_surat" => $suratJalanModel->no_surat_jalan
+                "tanggal" => date("Y-m-d", strtotime($suratJalanFirst->created_at)),
+                "no_surat" => $suratJalanFirst->no_surat_jalan
             ]
         ];
 
-        $dataAdmin = [
-            'nama_admin' => $notaPembeliModel->Admin->nama_admin
-        ];
+        // $dataAdmin = [
+        //     'nama_admin' => $notaPembeliModel->Admin->nama_admin
+        // ];
         // $dataSuratJalan = [
         //     [
         //         "tanggal" => "14-Nov-24",
@@ -218,7 +228,7 @@ class ControllerInvoinceCetak extends Controller
             'dataPembeli' => $dataPembeli,
             'dataSuratJalan' => $dataSuratJalan,
             'dataRincianBarang' => $productsData,
-            'dataAdmin' => $dataAdmin
+            // 'dataAdmin' => $dataAdmin
         ];
 
 
@@ -226,13 +236,13 @@ class ControllerInvoinceCetak extends Controller
 
         switch ($type) {
             case 1:
-                
+
                 $pdf = Pdf::loadView('pdfprint.dompdf.surat-jalan', $data)->setOptions(['defaultFont' => 'sans-serif']);
                 return $pdf->download('invoice.pdf');
                 break;
             case 2:
 
-              
+
                 $pdf = Pdf::loadView('pdfprint.dompdf.surat-jalan', $data)->setOptions(
                     [
                         'defaultFont' => 'sans-serif',
@@ -254,7 +264,7 @@ class ControllerInvoinceCetak extends Controller
                     'dataPembeli' => $dataPembeli,
                     'dataSuratJalan' => $dataSuratJalan,
                     'dataRincianBarang' => $productsData,
-                    'dataAdmin' => $dataAdmin
+                    // 'dataAdmin' => $dataAdmin
                 ], $data);
                 break;
         }
