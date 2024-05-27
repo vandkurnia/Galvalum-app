@@ -120,6 +120,7 @@
                                     <td>Hutang</td>
                                     <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}"
                                             class="btn btn-primary">Update cicilan</a></td>
+
                                 </tr>
                             @endforeach
 
@@ -201,8 +202,15 @@
                                         @endif
                                     </td>
                                     <td>Hutang</td>
-                                    <td><a href="{{ route('cicilan.index', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}"
-                                            class="btn btn-primary">Update cicilan</a></td>
+                                    <td> <a href="{{ route('cicilan.index', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-info-circle"></i> <!-- Ikon detail -->
+                                        </a>
+                                        <a href="{{ route('cicilan.notvisible', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> <!-- Ikon tong sampah --> 
+                                        </a>
+                                    </td>
+
                                 </tr>
                             @endforeach
 

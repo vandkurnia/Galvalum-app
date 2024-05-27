@@ -18,13 +18,13 @@ class NotaPembeli extends Model
         'id_pembeli',
         'id_admin',
         'metode_pembayaran',
-        // 'status_pembayaran',
         'sub_total',
-        'totalTerbayar',
+        'nominal_terbayar',
         'tenggat_bayar',
         'diskon',
         'ongkir',
         'total',
+        'piutang_is_visible'
     ];
 
     // public function bukuBesar()

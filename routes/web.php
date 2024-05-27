@@ -180,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::prefix('cicilanpiutang')->name('')->group(function () {
+        Route::get('/{id_nota}/hide', [CicilanPiutangController::class, 'notVisible'])->name('cicilan.notvisible');
         Route::get('/{id_nota}', [CicilanPiutangController::class, 'index' ])->name('cicilan.index');
         Route::get('/edit/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'edit'])->name('cicilan.edit');
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');

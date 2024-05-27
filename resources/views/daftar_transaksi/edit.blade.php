@@ -542,7 +542,7 @@
                                         data-harga-potongan-khusus="{{ (int) $pesanan->harga_potongan }}">
                                         {{ (int) $pesanan->harga }}</td>
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
-                                    <td class="nilai_jumlah_barang_pesanan">{{ (int) $pesanan->jumlah_pembelian }}</td>
+                                    <td class="nilai_jumlah_barang_pesanan">{{  $pesanan->jumlah_pembelian }}</td>
                                     <td class="totalperpesanan">
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}
                                     </td>

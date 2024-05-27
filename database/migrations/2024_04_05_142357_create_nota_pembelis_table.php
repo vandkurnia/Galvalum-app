@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('diskon', 45)->default(0);
             $table->string('ongkir', 45)->default(0);
             $table->string('total', 45)->default(0);
-            
+            $table->enum('piutang_is_visible', ['yes', 'no'])->default('no'); // Replace 'existing_column' with the actual column name after which you want to add the new column
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_pembeli')->references('id_pembeli')->on('pembelis');

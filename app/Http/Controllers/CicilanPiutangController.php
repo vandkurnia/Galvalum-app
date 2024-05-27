@@ -190,4 +190,20 @@ class CicilanPiutangController extends Controller
             return redirect()->route('cicilan.index', ['id_nota' => $id_nota])->with('error', 'Terjadi kesalahan saat menghapus cicilan piutang: ' . $e->getMessage());
         }
     }
+
+    public function notVisible($id_nota)
+    {
+        // Cari nota pembeli berdasarkan id_nota
+        $notaPembeli = NotaPembeli::find($id_nota);
+
+        if ($notaPembeli) {
+            // Update piutang_is_visible menjadi 'no'
+            $notaPembeli->piutang_is_visible = 'no';
+            $notaPembeli->save();
+
+            return redirect()->back()->with('success', 'Cicilan berhasil dihapus.');
+        } else {
+            return redirect()->back()->with('error', 'Nota tidak ditemukan.');
+        }
+    }
 }
