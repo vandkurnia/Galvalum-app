@@ -59,7 +59,9 @@ class ReturPembeliController extends Controller
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
             // 'status' => 'required|in:Belum Selesai,Selesai',
             'retur_murni' => 'required',
-            'retur_tambahan' => 'required'
+            'retur_tambahan' => 'required',
+            'total_nilai_retur' => 'required|numeric|min:0',
+            'nominal_terbayar' => 'required'
         ]);
 
 
@@ -119,7 +121,7 @@ class ReturPembeliController extends Controller
 
 
 
-        $dataReturPembeli->total_nilai_retur = 0;
+        // $dataReturPembeli->total_nilai_retur = 0;
         $dataReturPembeli->pengembalian_data = 0;
         $dataReturPembeli->kekurangan = 0;
 
@@ -279,10 +281,21 @@ class ReturPembeliController extends Controller
                 // Update data barang
                 $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
                 if ($stokTersedia->stok >=  $returTmbhn['jumlah_pesanan']) {
-                    $stokBarang = StokBarangModel::find($pesananData->id_stokbarang);
-                    $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
-                    $stokBarang->id_barang = $barangData->id_barang;
-                    $stokBarang->save();
+
+                    // Cari StokBarang termasuk yang sudah dihapus
+                    $stokBarang = StokBarangModel::withTrashed()->find($pesananData->id_stokbarang);
+
+                    if ($stokBarang) {
+                        $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
+                        $stokBarang->id_barang = $barangData->id_barang;
+
+                        // Restore jika stok_keluar > 0
+                        if ($stokBarang->stok_keluar > 0 && $stokBarang->trashed()) {
+                            $stokBarang->restore();
+                        }
+
+                        $stokBarang->save();
+                    }
                 } else {
                     DB::rollBack();
                     return redirect()->back()->with('error', 'Gagal memasukkan data');
@@ -340,28 +353,62 @@ class ReturPembeliController extends Controller
 
 
         // Perhitungan Sub Total dan Total
-        $updateNotaPembeli = NotaPembeli::find($notaPembelian->id_nota);
+        // Menghitung lagi pesanan
+        // Sub Total seluruhnya 
+        $subTotal = 0;
+        $totalDiskon = 0;
+        $notaPembeliPesanan = NotaPembeli::with('PesananPembeli')->find($notaPembelian->id_nota);
 
-        $updateNotaPembeli->sub_total = $subTotalbaru + $subTotalReturMurni;
-        // Perhitungan Pajak (Masih belum bisa)
-        $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
-        // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
-        // $updateNotaPembeli->total = $nilaiTotal + $nilaiPajak;
-        $updateNotaPembeli->total = $nilaiTotal + $updateNotaPembeli->ongkir;
-        $updateNotaPembeli->save();
-        // Perhitungan nilai retur
-        
-        $returPembelihitung = ReturPembeliModel::with('returPesananPembelis')->find($dataReturPembeli->id_retur_pembeli);
-        $totalNilaiRetur = 0;
-        foreach ($returPembelihitung->returPesananPembelis as $returPesananPembeli)
-        {
-            $totalNilaiRetur = $returPesananPembeli->total;
-            
+
+
+        foreach ($notaPembeliPesanan->PesananPembeli as $pesananPembeli3) {
+
+
+            $subTotal += $pesananPembeli3->harga *  $pesananPembeli3->jumlah_pembelian;
+            $totalDiskon += $pesananPembeli3->diskon;
         }
 
 
-        $returPembelihitung->total_nilai_retur = $totalNilaiRetur;
-        $returPembelihitung->save();
+        $nominalTerbayarOld = $notaPembeliPesanan->nominal_terbayar;
+        $totalOld = $notaPembeliPesanan->total;
+
+
+        $notaPembeliPesanan->sub_total = $subTotalbaru + $subTotalReturMurni;
+
+        $nilaiTotal = $notaPembeliPesanan->sub_total - $notaPembeliPesanan->diskon;
+
+        $notaPembeliPesanan->nominal_terbayar = $request->nominal_terbayar;
+        // $nilaiPajak = $nilaiTotal * ( $notaPembeliPesanan->pajak / 100);
+        // $notaPembeliPesanan->total = $nilaiTotal + $nilaiPajak;
+        $notaPembeliPesanan->total = $nilaiTotal + $notaPembeliPesanan->ongkir;
+        $notaPembeliPesanan->save();
+
+        
+        // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
+        if ($totalOld == $nominalTerbayarOld) {
+            // Update pada bukubesar
+            $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+            $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+            $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+            $bukuBesar->save();
+        } else {
+            if ($nominalTerbayarOld != $notaPembeliPesanan->nominal_terbayar) {
+
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+
+
+                // Hapus seluruh bukubesar yang setelah edit
+                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                    $notaBukuBesar->delete();
+                });
+            }
+        }
+
 
 
         DB::commit();
@@ -522,7 +569,7 @@ class ReturPembeliController extends Controller
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } catch (\Exception $e) {
-      
+
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

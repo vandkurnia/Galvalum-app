@@ -229,29 +229,12 @@ class PembelianController extends Controller
         $notaPembeli->id_pembeli = $pembeliData->id_pembeli; // Contoh nilai untuk id_pembeli
         $notaPembeli->id_admin = Auth::id(); // Contoh nilai untuk id_admin
         // Nominal Terbayar
+        $totalOld = $notaPembeli->total;
         $nominalTerbayarOld =  $notaPembeli->nominal_terbayar;
         $notaPembeli->nominal_terbayar = $request->nominal_terbayar;
 
-        if($nominalTerbayarOld != $notaPembeli->nominal_terbayar)
-        {
-       
-            // Update pada bukubesar
-            $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
-            $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-            $bukuBesar->debit = $notaPembeli->nominal_terbayar;
-            $bukuBesar->save();
 
 
-            // Hapus seluruh bukubesar yang setelah edit
-            $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
-            $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                $notaBukuBesar->delete();
-
-            });
-
-
-
-        }
 
         // Nominal Terbayar
         $notaPembeli->save();
@@ -323,15 +306,21 @@ class PembelianController extends Controller
 
                     // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
                     // $barangData->save();
-                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                    // Cari StokBarang termasuk yang sudah dihapus
+                    $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
 
                     if ($stokBarang) {
-                        $stokBarang->stok_keluar = $pesanan['jumlah_pesanan'];
+                        $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->id_barang = $barangData->id_barang;
+
+                        // Restore jika stok_keluar > 0 dan stokBarang dalam keadaan terhapus
+                        if ($stokBarang->stok_keluar > 0 && $stokBarang->trashed()) {
+                            $stokBarang->restore();
+                        }
+
                         $stokBarang->save();
                     } else {
                         // Handle the case where the stock entry does not exist
-                        // You might want to create a new entry or return an error
                         return redirect()->back()->with('error', 'Stock entry not found for this order.');
                     }
                 } else {
@@ -370,15 +359,21 @@ class PembelianController extends Controller
 
                     // $barangData->stok = $barangData->stok - $pesanan['jumlah_pesanan'];
                     // $barangData->save();
-                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                    // Cari StokBarang termasuk yang sudah dihapus
+                    $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
 
                     if ($stokBarang) {
-                        $stokBarang->stok_keluar = $pesanan['jumlah_pesanan'];
+                        $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->id_barang = $barangData->id_barang;
+
+                        // Restore jika stok_keluar > 0 dan stokBarang dalam keadaan terhapus
+                        if ($stokBarang->stok_keluar > 0 && $stokBarang->trashed()) {
+                            $stokBarang->restore();
+                        }
+
                         $stokBarang->save();
                     } else {
                         // Handle the case where the stock entry does not exist
-                        // You might want to create a new entry or return an error
                         return redirect()->back()->with('error', 'Stock entry not found for this order.');
                     }
                 } else {
@@ -459,6 +454,8 @@ class PembelianController extends Controller
         // Menghitung kembali total dari pesanan
         $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
 
+
+
         $updateNotaPembeli->sub_total = $subTotal;
         $updateNotaPembeli->diskon = $request->get('diskon');
         $updateNotaPembeli->ongkir = $request->get('total_ongkir');
@@ -470,6 +467,31 @@ class PembelianController extends Controller
         $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
         $updateNotaPembeli->save();
 
+
+        // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
+        if ($totalOld == $nominalTerbayarOld) {
+            // Update pada bukubesar
+            $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+            $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+            $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+            $bukuBesar->save();
+        } else {
+            if ($nominalTerbayarOld != $notaPembeliPesanan->nominal_terbayar) {
+
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+
+
+                // Hapus seluruh bukubesar yang setelah edit
+                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                    $notaBukuBesar->delete();
+                });
+            }
+        }
 
 
 

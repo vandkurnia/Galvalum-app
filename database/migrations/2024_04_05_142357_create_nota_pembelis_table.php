@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('diskon', 45)->default(0);
             $table->string('ongkir', 45)->default(0);
             $table->string('total', 45)->default(0);
+            
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_pembeli')->references('id_pembeli')->on('pembelis');

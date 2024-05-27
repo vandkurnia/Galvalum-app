@@ -352,6 +352,12 @@
                         </button> --}}
                         {{-- <input type="text" class="form-control" id="bukti_retur_pembeli123"> --}}
                     </div>
+                    <div class="form-group">
+                        <label for="total_nilai_retur">Total Nilai Retur</label>
+                        <input type="number" class="form-control" id="total_nilai_retur" name="total_nilai_retur"
+                            value="0" required>
+                    </div>
+
 
                     <div class="form-group">
                         <label for="jenis_retur">Jenis Retur</label>
@@ -371,6 +377,29 @@
                     {{-- <div class="form-group">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div> --}}
+
+
+                    <div class="form-group">
+                        <label for="statusPembayaran">Status Pembayaran:</label>
+                        <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
+
+                            <option value="lunas">Lunas</option>
+                            <option value="hutang">Hutang</option>
+                        </select>
+                    </div>
+
+                    <div id="formCicilan" style="display: none;">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="{{ $notaPembelian->total }}" readonly >
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d') }}" disabled>
+                        </div>
+                    </div>
 
 
                     <div class="form-group">
@@ -408,6 +437,31 @@
     <!-- Load FilePond library -->
     <script src="{{ secure_asset('library/filepond/dist/filepond.js') }}"></script>
 
+    <script>
+        document.getElementById('statusPembayaran').addEventListener('change', function() {
+            var formCicilan = document.getElementById('formCicilan');
+            if (this.value === 'hutang') {
+                formCicilan.style.display = 'block';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.removeAttribute('readonly');
+                nominalTerbayar.value = 0;
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.removeAttribute('disabled');
+            } else {
+                formCicilan.style.display = 'none';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.readOnly = true;
+                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.disabled = true;
+                totalNominalTerbayar();
+            }
+
+        });
+    </script>
     <script>
         // We want to preview images, so we register
         // the Image Preview plugin, We also register 
@@ -514,6 +568,7 @@
             jumlah_barang_input.value = ''; // Mengatur input number kembali ke nilai awalnya
 
             totalPembayaran();
+            totalNominalTerbayar();
 
         }
 
@@ -816,8 +871,29 @@
             } else {
                 total_retur.value = 0;
             }
+            totalNominalTerbayar();
 
 
+        }
+
+
+        function totalNominalTerbayar() {
+            var statusPembayaran = document.getElementById('statusPembayaran').value;
+
+            if (statusPembayaran === 'lunas') {
+                var subTotalRetur = parseFloat(document.getElementById('subTotalRetur').value);
+                var subTotal1 = parseFloat(document.getElementById('subTotal1').value);
+                var subTotal = parseFloat(document.getElementById('subTotal').value);
+                var diskonTotal = parseFloat(document.getElementById('diskonTotal').value);
+                var totalOngkir = parseFloat(document.getElementById('totalOngkir').value);
+
+                var nominalTerbayar = subTotal1 -  subTotalRetur + subTotal - diskonTotal + totalOngkir;
+
+                document.getElementById('nominalTerbayar').value = nominalTerbayar;
+            } else if (statusPembayaran === 'hutang') {
+                // Logika untuk mengisi nilai secara manual jika status adalah "hutang"
+                document.getElementById('nominalTerbayar').value = "Isi sesuai kebutuhan";
+            }
         }
     </script>
 
