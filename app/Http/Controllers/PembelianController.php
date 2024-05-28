@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\DiskonModel;
+use App\Models\Log\LogNotaModel;
 use App\Models\Notabukubesar;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
@@ -180,6 +181,23 @@ class PembelianController extends Controller
         $bukuBesarPembelian->save();
         $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
+
+
+
+
+
+
+
+        // Log Nota
+        // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
+        $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeli->id_nota)->toArray();
+        $logNota = new LogNotaModel();
+        $logNota->json_content = $notaPembeliToSave;
+        $logNota->tipe_log = 'create';
+        $logNota->keterangan = 'Membuat Nota Pembeli baru';
+        $logNota->id_nota = $notaPembeli->id_nota;
+        $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
+        $logNota->save();
 
 
 
@@ -492,6 +510,19 @@ class PembelianController extends Controller
                 });
             }
         }
+
+
+
+        // Log Nota
+        // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
+        $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeliPesanan->id_nota)->toArray();
+        $logNota = new LogNotaModel();
+        $logNota->json_content = $notaPembeliToSave;
+        $logNota->tipe_log = 'update';
+        $logNota->keterangan = 'Update nota pembelian';
+        $logNota->id_nota = $notaPembeli->id_nota;
+        $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
+        $logNota->save();
 
 
 

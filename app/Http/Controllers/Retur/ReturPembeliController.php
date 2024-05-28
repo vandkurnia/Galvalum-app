@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\DiskonModel;
+use App\Models\Log\LogNotaModel;
 use App\Models\Notabukubesar;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
@@ -15,6 +16,7 @@ use App\Models\Retur\ReturPesananPembeliModel;
 use App\Models\StokBarangModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReturPembeliController extends Controller
@@ -383,7 +385,7 @@ class ReturPembeliController extends Controller
         $notaPembeliPesanan->total = $nilaiTotal + $notaPembeliPesanan->ongkir;
         $notaPembeliPesanan->save();
 
-        
+
         // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
         if ($totalOld == $nominalTerbayarOld) {
             // Update pada bukubesar
@@ -410,6 +412,17 @@ class ReturPembeliController extends Controller
         }
 
 
+
+
+        // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
+        $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeliPesanan->id_nota)->toArray();
+        $logNota = new LogNotaModel();
+        $logNota->json_content = $notaPembeliToSave;
+        $logNota->tipe_log = 'retur_pembeli_create';
+        $logNota->keterangan = 'Retur Pembelian';
+        $logNota->id_nota = $notaPembeliPesanan->id_nota;
+        $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
+        $logNota->save();
 
         DB::commit();
 
@@ -566,6 +579,19 @@ class ReturPembeliController extends Controller
             $nilaiOngkir =  $updateNotaPembeli->ongkir;
             $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
             $updateNotaPembeli->save();
+
+
+
+
+            // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
+            $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeli->id_nota)->toArray();
+            $logNota = new LogNotaModel();
+            $logNota->json_content = $notaPembeliToSave;
+            $logNota->tipe_log = 'retur_pembeli_revoke';
+            $logNota->keterangan = 'Mengembalikan retur pembeli';
+            $logNota->id_nota = $notaPembeli->id_nota;
+            $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
+            $logNota->save();
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } catch (\Exception $e) {

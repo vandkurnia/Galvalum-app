@@ -145,7 +145,7 @@ class StokController extends Controller
             'nama_barang' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
             // 'id_tipe_barang' => 'required|exists:tipe_barang,id_tipe_barang',
-            'stok' => 'required|integer|min:0',
+            'stok' => 'required|min:0',
             'harga_barang' => 'required|numeric|min:0',
             'harga_barang_pemasok' => 'required|numeric|min:0',
             'status_pembelian' => 'required|in:lunas,hutang',

@@ -15,6 +15,7 @@ use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
 use App\Http\Controllers\JsonType\PemesananBarangJsonController;
 use App\Http\Controllers\Laporan\LaporanController;
+use App\Http\Controllers\Log\LogNotaController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembeliController;
@@ -224,4 +225,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laba-rugi-csv', [LaporanController::class, 'labaRugiCSV'])->name('laporan.labarugiCSV');
         Route::get('/filter', [LaporanController::class, 'filterKas'])->name('laporan.filterKas');
     });
+
+
+    Route::get('/log-nota/{id_nota}', [LogNotaController::class, 'index'])->name('log-nota.index');
 });

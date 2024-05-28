@@ -43,6 +43,12 @@
                                 <th>Payment Methode</th>
                                 <th data-orderable="false">Cetak</th>
                                 <th data-orderable="false">Aksi</th>
+
+                                @if (Auth::user()->role == 'admin')
+                                    <th data-orderable="false">
+                                        Log
+                                    </th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -94,6 +100,17 @@
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>
+
+                                    @if (Auth::user()->role == 'admin')
+                                        <td>
+                                            <a href="{{ route('log-nota.index', ['id_nota' => $notaPembeli['id_nota']]) }}"
+                                                class="btn btn-info btn-sm">
+                                                <i class="fas fa-info-circle"></i>
+                                            </a>
+
+                                        </td>
+                                    @endif
+
                                 </tr>
                             @endforeach
 
