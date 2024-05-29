@@ -394,8 +394,23 @@ class ReturPembeliController extends Controller
             $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
             $bukuBesar->save();
         } else {
+
+            $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
             if ($nominalTerbayarOld != $notaPembeliPesanan->nominal_terbayar) {
 
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+
+
+                // Hapus seluruh bukubesar yang setelah edit
+                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                    $notaBukuBesar->delete();
+                });
+            } else if ($notaPembeliCheck->total != $totalOld) {
                 // Update pada bukubesar
                 $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
                 $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
@@ -483,7 +498,16 @@ class ReturPembeliController extends Controller
             $returPesananPembeli = ReturPesananPembeliModel::where('id_retur_pembeli', $dataReturPembeli->id_retur_pembeli)
                 ->latest('id_retur_pesanan')
                 ->get();
+            // Untuk mengambil total lama dan nominal_terbayar lama sebelum diupdate
 
+            $notaPembeli = NotaPembeli::find($dataReturPembeli->id_nota);
+            $total_lama = $notaPembeli->total;
+            $nominal_terbayar_lama = $notaPembeli->nominal_terbayar;
+
+            // dd([
+            //     'total_lama' => $total_lama,
+            //     'nominal_terbayar' => $nominal_terbayar_lama
+            // ]);
 
 
             foreach ($returPesananPembeli as $returPesanan) {
@@ -583,6 +607,57 @@ class ReturPembeliController extends Controller
 
 
 
+
+            // dd($total_lama == $nominal_terbayar_lama);
+
+            // Menghitung jika lunas maka otomatis nominal terbayar langsung mengisi bukubesar pertama jika hutang maka hapus seluruh bukubesar lalu hitung lagi
+            if ($total_lama == $nominal_terbayar_lama) {
+                $notaPembeli1 = NotaPembeli::find($notaPembeli->id_nota);
+                $notaPembeli1->nominal_terbayar = $notaPembeli1->total;
+                $notaPembeli1->save();
+
+
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli1->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeli1->total;
+                $bukuBesar->save();
+               
+            } else {
+                $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeli->id_nota)->first();
+                if ($nominal_terbayar_lama != $notaPembeli->nominal_terbayar) {
+
+                    // Update pada bukubesar
+                    $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
+                    $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                    $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+                    $bukuBesar->save();
+
+
+                    // Hapus seluruh bukubesar yang setelah edit
+                    $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
+                    $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                        $notaBukuBesar->delete();
+                    });
+                } else if ($notaPembeliCheck->total != $total_lama) {
+                    // Update pada bukubesar
+                    $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
+                    $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                    $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+                    $bukuBesar->save();
+
+
+                    // Hapus seluruh bukubesar yang setelah edit
+                    $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
+                    $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                        $notaBukuBesar->delete();
+                    });
+                }
+            }
+
+
+
+
             // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
             $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeli->id_nota)->toArray();
             $logNota = new LogNotaModel();
@@ -592,6 +667,7 @@ class ReturPembeliController extends Controller
             $logNota->id_nota = $notaPembeli->id_nota;
             $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
             $logNota->save();
+            // dd("Coomit");
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } catch (\Exception $e) {

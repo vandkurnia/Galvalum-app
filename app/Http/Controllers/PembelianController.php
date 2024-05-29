@@ -494,8 +494,22 @@ class PembelianController extends Controller
             $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
             $bukuBesar->save();
         } else {
+            $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
             if ($nominalTerbayarOld != $notaPembeliPesanan->nominal_terbayar) {
 
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+
+
+                // Hapus seluruh bukubesar yang setelah edit
+                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                    $notaBukuBesar->delete();
+                });
+            } else if ($notaPembeliCheck->total != $totalOld) {
                 // Update pada bukubesar
                 $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
                 $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
