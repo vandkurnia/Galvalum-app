@@ -104,8 +104,8 @@
                                 <th>Bukti Retur</th>
                                 <th>Jenis Retur</th>
                                 <th>Total Nilai Retur</th>
-                                <th>Pengembalian Data</th>
-                                <th>Kekurangan</th>
+                                {{-- <th>Pengembalian Data</th> --}}
+                                {{-- <th>Kekurangan</th> --}}
                                 <th>Status</th>
                                 <th>Nama Pemasok</th>
                                 <th>Aksi</th>
@@ -120,8 +120,8 @@
                                     <td>{{ $retur->bukti_retur_pemasok }}</td>
                                     <td>{{ $retur->jenis_retur }}</td>
                                     <td>{{ $retur->total_nilai_retur }}</td>
-                                    <td>{{ $retur->pengembalian_data }}</td>
-                                    <td>{{ $retur->kekurangan }}</td>
+                                    {{-- <td>{{ $retur->pengembalian_data }}</td> --}}
+                                    {{-- <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
                                     <td>{{ $retur->pemasok->nama_pemasok ?? '-' }}</td>
                                     <td>

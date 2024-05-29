@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Retur;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\BukubesarBarangModel;
+use App\Models\BukubesarModel;
 use App\Models\PemasokBarang;
 use App\Models\PesananPembeli;
 use App\Models\Retur\ReturPemasokModel;
@@ -44,12 +46,12 @@ class ReturPemasokController extends Controller
     }
     public function store(Request $request)
     {
-        return redirect()->back();
         $validatedData = $request->validate([
             'tanggal_retur_pemasok' => 'required|date',
             'bukti_retur_pemasok' => 'required', // 10MB max
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
-            'retur_data' => 'required'
+            'retur_data' => 'required',
+            // 'nominal_terbayar' => 'required'
         ]);
 
         $returData = json_decode($validatedData['retur_data'], true);
@@ -58,16 +60,21 @@ class ReturPemasokController extends Controller
         try {
             foreach ($returData as $item) {
                 // Validate each item
-                $barang = Barang::with('Pemasok')->find($item['id_barang']);
+                $barang = Barang::with('Pemasok', 'stokBarang')->where('hash_id_barang',$item['id_barang'])->first();
+             
+                $total_lama = $barang->total;
+                $nominal_terbayar_lama =  $barang->nominal_terbayar;
+               
                 if (!$barang) {
                     throw new Exception('Barang Tidak ada');
                 }
 
                 // Calculate stock
-                $stok = StokBarangModel::where('id_barang', $item['id_barang'])
+                $stok = StokBarangModel::where('id_barang', $barang->id_barang)
                     ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
                     ->value('stok');
 
+                   
                 if ($stok < $item['qty']) {
                     throw new Exception('Stok tidak cukup untuk retur');
                 }
@@ -81,7 +88,7 @@ class ReturPemasokController extends Controller
                     $totalIdReturPembeli = $totalIdReturPembeli + 1;
                 }
 
-                $NoreturPembeli = "RETUR" . date('YmdHis') . $totalIdReturPembeli;
+                $NoreturPembeli = "RETURP" . date('YmdHis') . $totalIdReturPembeli;
 
 
 
@@ -96,7 +103,7 @@ class ReturPemasokController extends Controller
                 // Decode base64 data ke file binary
                 $fileBinary = base64_decode($base64Data);
                 // Direktori tujuan penyimpanan file
-                $targetDirectory = public_path('retur/pembeli/');
+                $targetDirectory = public_path('retur/pemasok/');
                 if (!file_exists($targetDirectory)) {
                     mkdir($targetDirectory, 0777, true); // Buat direktori secara rekursif
                 }
@@ -112,34 +119,159 @@ class ReturPemasokController extends Controller
                 $buktiReturPemasok = $fileName;
 
                 // Create StokBarang record
-                $stokBarang = StokBarangModel::create([
-                    'id_barang' => $barang->id_barang,
-                    'stok_keluar' => $item['qty'],
-                ]);
+                $stokBarangupdatelama = StokBarangModel::find($barang->stokBarang[0]->id);
+                $stokbaru = $stokBarangupdatelama->stok_masuk - $item['qty'];
+                $totalbaru = $stokBarangupdatelama->stok_masuk * $stokbaru;
+                $stokBarangupdatelama->stok_masuk = $stokbaru;
+                $stokBarangupdatelama->save();
 
                 // Create ReturPemasok record
-                ReturPemasokModel::create([
-                    'no_retur_pemasok' => $NoreturPembeli,
-                    'tanggal_retur' => $validatedData['tanggal_retur_pemasok'],
-                    'bukti_retur_pemasok' => $buktiReturPemasok,
-                    'jenis_retur' => $validatedData['jenis_retur'],
-                    'total_nilai_retur' => $item['total'],
-                    'pengembalian_data' => '0',
-                    'kekurangan' => '0',
-                    'status' => 'Selesai',
-                    'id_pemasok' => $barang->Pemasok->id_pemasok ?? null,
-                    'id_barang' =>$barang->id_barang,
-                    'id_stok_barang' => $stokBarang->id,
-                ]);
+                $returPemasok = new ReturPemasokModel();
+
+                // Set the attributes
+                $returPemasok->no_retur_pemasok = $NoreturPembeli;
+                $returPemasok->tanggal_retur = now()->format('Y-m-d');
+                $returPemasok->bukti_retur_pemasok = $buktiReturPemasok; // Example file content
+                $returPemasok->jenis_retur = $request->jenis_retur;
+                $returPemasok->total_nilai_retur = $request->total_nilai_retur;
+                $returPemasok->pengembalian_data = '0';
+                $returPemasok->kekurangan = '0';
+                $returPemasok->harga = $barang->harga_barang_pemasok;
+                $returPemasok->total = $barang->harga_barang_pemasok * $item['qty'];
+                $returPemasok->qty = $item['qty'];
+                $returPemasok->qty_sebelum_perubahan = null;
+
+                if ($validatedData['jenis_retur'] == 'Rusak') {
+
+                    $returPemasok->type_retur_pesanan = 'retur_murni_rusak';
+                } else {
+                    $returPemasok->type_retur_pesanan = 'retur_murni_tidak_rusak';
+                }
+                $returPemasok->status = 'Selesai';
+                $returPemasok->id_pemasok = $barang->id_pemasok; // Assuming id_pemasok 1 exists
+                $returPemasok->id_barang = $barang->id_barang; // Assuming id_barang 1 exists
+                $returPemasok->id_stok_barang = $stokBarangupdatelama->id; // Assuming id_stok_barang 1 exists
+
+
+
+
+
+                // Save the record to the database
+                $returPemasok->save();
+
+                // Update nominal_terbayar 
+                $barangUpdate = Barang::find($barang->id_barang);
+                $barangUpdate->nominal_terbayar;
+                $barangUpdate->save(); 
+
+
+
+
+                // // Menghitung jika lunas maka otomatis nominal terbayar langsung mengisi bukubesar pertama jika hutang maka hapus seluruh bukubesar lalu hitung lagi
+                // if ($total_lama == $nominal_terbayar_lama) {
+
+
+
+
+                //     $barangTerbaru =  Barang::find($barang->id_barang);
+
+
+
+                //     $bukubesarbarang = BukubesarModel::where('id_barang', $barang->id_barang)->first();
+                //     $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+                //     $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
+
+                //     // Selisih antara debit pertama dengan 
+                //     $bukubesar->debit = $barangTerbaru->harga_pemasok * $stokBarangpertama->stok_masuk;
+                //     $bukubesar->save();
+                // } else {
+                //     // dd([
+                //     //     'test' => $nominal_terbayar_lama != $request->nominal_terbayar,
+                //     //     'nominal_terbayar' => $nominal_terbayar_lama,
+                //     //     'nominal_terbayar_hehe' => $request->nominal_terbayar
+                //     // ]);
+                //     $cekTotal =  Barang::find($barang->id_barang);
+                //     // Kalau total berbeda dengan total lama maka refresh
+                //     if ($total_lama !=  $cekTotal->total) {
+
+                //         $barangTerbaru =  Barang::find($barang->id_barang);
+                //         $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                //         $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+
+                //         // Selisih antara debit pertama dengan 
+                //         $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
+                //         $bukubesarUpdate->save();
+
+
+                //         // $bukuBesarIkut = BukubesarModel::find($bukubesarUpdate->id_bukubesar);
+
+
+                //         // dd([
+                //         //     'barang' => $bukubesarUpdate,
+                //         //     'kucing' => $barangTerbaru,
+                //         //     'test' => $bukuBesarIkut
+                //         // ]);
+
+
+                //         // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
+                //         $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                //             ->skip(1) // Lewatkan entri pertama
+                //             ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
+                //             ->get();
+
+                //         // Hapus semua entri buku besar setelah yang pertama
+                //         foreach ($bukubesarBarangs as $bukubesarBarang) {
+                //             $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
+                //             if ($bukubesarToDelete) {
+                //                 $bukubesarToDelete->forceDelete();
+                //             }
+                //         }
+                //     } else if ($nominal_terbayar_lama != $request->nominal_terbayar) {
+                //         $barangTerbaru =  Barang::find($barang->id_barang);
+                //         $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                //         $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+
+                //         // Selisih antara debit pertama dengan 
+                //         $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
+                //         $bukubesarUpdate->save();
+
+
+                //         // $bukuBesarIkut = BukubesarModel::find($bukubesarUpdate->id_bukubesar);
+
+
+                //         // dd([
+                //         //     'barang' => $bukubesarUpdate,
+                //         //     'kucing' => $barangTerbaru,
+                //         //     'test' => $bukuBesarIkut
+                //         // ]);
+
+
+                //         // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
+                //         $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                //             ->skip(1) // Lewatkan entri pertama
+                //             ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
+                //             ->get();
+
+                //         // Hapus semua entri buku besar setelah yang pertama
+                //         foreach ($bukubesarBarangs as $bukubesarBarang) {
+                //             $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
+                //             if ($bukubesarToDelete) {
+                //                 $bukubesarToDelete->forceDelete();
+                //             }
+                //         }
+                //     }
+                // }
             }
+
+
 
             DB::commit();
 
-            if ($validatedData['jenis_retur'] === 'Rusak') {
-                echo "Ini Rusak";
-            } else {
-                echo "Ini Tidak Rusak";
-            }
+            // if ($validatedData['jenis_retur'] === 'Rusak') {
+            //     echo "Ini Rusak";
+            // } else {
+            //     echo "Ini Tidak Rusak";
+            // }
 
             return redirect()->route('retur.index')->with('success', 'Berhasil melakukan retur Pemasok');
         } catch (Exception $e) {
@@ -229,6 +361,11 @@ class ReturPemasokController extends Controller
 
         $dataRetur = ReturPemasokModel::find($this->hashToId($id_retur)->id_retur_pemasok);
         if ($dataRetur) {
+            $barang = Barang::with('stokBarang')->find($dataRetur->id_barang);
+            $stokBarangpertama = $barang->stokBarang[0];
+            $stokBarang = StokBarangModel::find($barang->stokBarang[0]->id);
+            $stokBarang->stok_masuk = $stokBarang->stok_masuk + $dataRetur->qty;
+            $stokBarang->save();
             $dataRetur->delete();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } else {

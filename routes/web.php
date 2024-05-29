@@ -126,7 +126,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('pemasok')->group(function () {
             // Route::get('/', [ReturController::class, 'index'])->name('retur.pemasok.index');
             Route::get('/add/{id_pesanan}', [ReturPemasokController::class, 'add'])->name('retur.pemasok.add');
-            Route::post('/', [ReturPemasokController::class, 'store'])->name('retur.pemasok.store');
+            Route::post('/store', [ReturPemasokController::class, 'store'])->name('retur.pemasok.store');
             // Route::get('/', [ReturPemasokController::class, 'index']);
             Route::get('/edit/{id_retur}', [ReturPemasokController::class, 'edit'])->name('retur.pemasok.edit');
             Route::put('/{id_retur}', [ReturPemasokController::class, 'update'])->name('retur.pemasok.update'); // Mengupdate tipebarang berdasarkan ID

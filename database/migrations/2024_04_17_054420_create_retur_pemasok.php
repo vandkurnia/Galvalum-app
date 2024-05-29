@@ -24,6 +24,11 @@ return new class extends Migration
             $table->decimal('total_nilai_retur', 10, 2)->default(0);
             $table->string('pengembalian_data')->default('0');
             $table->string('kekurangan')->default('0');
+            $table->decimal('harga', 20, 2);
+            $table->decimal('total', 20, 2);
+            $table->decimal('qty', 20, 2);
+            $table->decimal('qty_sebelum_perubahan', 20, 2)->nullable();
+            $table->enum('type_retur_pesanan', ['retur_tambah_barang', 'retur_tambah_stok', 'retur_murni_rusak', 'retur_murni_tidak_rusak']);
             $table->enum('status', ['Belum Selesai', 'Selesai'])->default('Belum Selesai');
             $table->unsignedBigInteger('id_pemasok')->nullable();
             $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs')->onUpdate('CASCADE')->onDelete('cascade');

@@ -64,18 +64,7 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        {{-- <tfoot>
-                            <tr>
-                                <th>No</th>
-                                <th>Pemasok</th>
-                                <th>Nama Barang</th>
-                                <th>Tipe Barang</th>
-                                <th>Ukuran Barang</th>
-                                <th>Harga Barang</th>
-                                <th>Jumlah Stok</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot> --}}
+
                         <tbody>
                             @php
 
@@ -121,6 +110,15 @@
 
 
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">Total</th>
+                                <th id="totalHargaPenjualan">Rp. 0</th>
+                                <th id="totalHargaPemasok">Rp. 0</th>
+                                <th id="totalStok">0</th>
+                                <th colspan="2"></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -428,7 +426,7 @@
             statusChangeCheckbox.checked = true;
         }
 
-        
+
     }
     // Fungsi untuk kalkulasi nominal_terbayar 
     function calculateTotalNominalTerbayar() {
@@ -442,9 +440,9 @@
         const nominalTerbayar = modalEdit.querySelector('#nominalTerbayar');
 
         if (statusPembelian === 'lunas') {
-            let perbedaan =   (parseFloat(stokElement.getAttribute('stok-total')) - stok) * -1 ;
+            let perbedaan = (parseFloat(stokElement.getAttribute('stok-total')) - stok) * -1;
 
-            let stok_akhir  = parseFloat(stokElement.getAttribute('stok-original')) + perbedaan;
+            let stok_akhir = parseFloat(stokElement.getAttribute('stok-original')) + perbedaan;
             total = stok_akhir * hargaBarangPemasok;
             console.log("Perbedaan :" + perbedaan, stok_akhir, total);
 
@@ -719,7 +717,59 @@
 
     <script>
         $(document).ready(function() {
-            $('#stokbarang').DataTable();
+            $('#stokbarang').DataTable({
+                "columnDefs": [{
+                        "orderable": false,
+                        "targets": [8, 9]
+                    } // Disable sorting on the "Retur" and "Aksi" columns
+                ],
+                "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\Rp.,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+
+                    // Calculate total for Harga Penjualan
+                    var totalHargaPenjualan = api
+                        .column(5, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Calculate total for Harga Pemasok
+                    var totalHargaPemasok = api
+                        .column(6, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Calculate total for Stok
+                    var totalStok = api
+                        .column(7, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Update footer
+                    $(api.column(5).footer()).html('Rp. ' + totalHargaPenjualan.toLocaleString());
+                    $(api.column(6).footer()).html('Rp. ' + totalHargaPemasok.toLocaleString());
+                    $(api.column(7).footer()).html(totalStok.toLocaleString());
+                }
+            });
         });
     </script>
 @endsection

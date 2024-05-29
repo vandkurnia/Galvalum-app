@@ -64,15 +64,15 @@
             <div class="card-header py-4">
 
                 <div class="container mt-5">
-                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
                         <div>
                             <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan
                             perubahan hingga <span
-                                id="maintenance-date">{{ date('d-m-Y H:i:s',strtotime('2024-05-23 20:00:00')) }}</span>
+                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-23 20:00:00')) }}</span>
                             atau lebih cepat.
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
@@ -176,6 +176,35 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="total_nilai_retur">Total Nilai Retur</label>
+                        <input type="number" class="form-control" id="total_nilai_retur" name="total_nilai_retur"
+                            value="0" required>
+                    </div>
+{{-- 
+                    <div class="form-group">
+                        <label for="statusPembayaran">Status Pembayaran:</label>
+                        <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
+
+                            <option value="lunas">Lunas</option>
+                            <option value="hutang">Hutang</option>
+                        </select>
+                    </div>
+
+                    <div id="formCicilan" style="display: none;">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="{{ $dataBarang->nominal_terbayar }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d',strtotime($dataBarang->tenggat_bayar)) }}" disabled>
+                        </div>
+                    </div> --}}
+
+
+                    <div class="form-group">
                         <button type="button" class="btn btn-primary mt-4 float-right"
                             onclick="kirimPesanan()">Retur</button>
                     </div>
@@ -196,6 +225,32 @@
 
 @section('javascript-custom')
 
+
+<script>
+    document.getElementById('statusPembayaran').addEventListener('change', function() {
+        var formCicilan = document.getElementById('formCicilan');
+        if (this.value === 'hutang') {
+            formCicilan.style.display = 'block';
+
+            const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+            nominalTerbayar.removeAttribute('readonly');
+            nominalTerbayar.value = 0;
+            const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+            tanggalTenggatBayar.removeAttribute('disabled');
+        } else {
+            formCicilan.style.display = 'none';
+
+            const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+            nominalTerbayar.readOnly = true;
+            nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+            const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+            tanggalTenggatBayar.disabled = true;
+            
+        }
+
+    });
+</script>
     <script src="{{ secure_asset('library/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js') }}"></script>
     <script
         src="{{ secure_asset('library/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js') }}">
