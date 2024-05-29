@@ -218,7 +218,7 @@
                                     readonly>
 
                             </div>
-                         
+
                             <div class="form-group">
                                 <label for="statusPembayaran">Status Pembayaran:</label>
                                 <select class="form-control" name="status_pembelian" id="statusPembayaran"
@@ -237,7 +237,7 @@
                                 <div class="form-group">
                                     <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                                     <input type="date" class="form-control" name="tenggat_bayar"
-                                        id="tenggatBayar" value="2024-04-30">
+                                        id="tenggatBayar" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                         </div>
@@ -292,6 +292,28 @@
                         <input type="number" class="form-control" id="stok_tambahTambahStok" name="stok_tambah"
                             min="0" oninput="updateStokTambah()" value="0">
                     </div>
+
+                    <div class="form-group">
+                        <label for="statusPembayaran">Status Pembayaran:</label>
+                        <select class="form-control" name="status_pembelian" id="statusPembayaran"
+                            onchange="checkNominalTerbayarStokTambah()" required="">
+
+                            <option value="lunas">Lunas</option>
+                            <option value="hutang">Hutang</option>
+                        </select>
+                    </div>
+                    <div id="formCicilanEdit" style="display: none;">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d') }}">
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -326,6 +348,29 @@
 </div>
 
 <script>
+    function checkNominalTerbayarStokTambah() {
+        const stokModal = document.querySelector('#tambahStokModal .modal-body')
+        const statusPembayaran = stokModal.querySelector('#statusPembayaran').value;
+        const formCicilanEdit = stokModal.querySelector('#formCicilanEdit');
+        const nominalTerbayar = stokModal.querySelector('#nominalTerbayar');
+        const tenggatBayar = stokModal.querySelector('#tenggatBayar');
+
+        const stokReferensi = stokModal.querySelector('#stok_referensiTambahStok');
+        const stok = stokModal.querySelector('#stok_tambahTambahStok');
+        if (statusPembayaran === 'lunas') {
+            formCicilanEdit.style.display = 'none';
+            nominalTerbayar.readOnly = true;
+            tenggatBayar.disabled = true;
+            let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
+            nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
+        } else if (statusPembayaran === 'hutang') {
+            formCicilanEdit.style.display = 'block';
+            nominalTerbayar.readOnly = false;
+            tenggatBayar.disabled = false;
+            nominalTerbayar.value = 0;
+        }
+    }
+
     // Fungsi untuk menangani perubahan status pembayaran
     function handleStatusPembayaranChange() {
         // Ambil elemen select
@@ -361,6 +406,7 @@
             nominalTerbayarInput.readOnly = false; // Hapus keterbacaan hanya-baca pada input nominal terbayar
             nominalTerbayarInput.value = ''; // Kosongkan nilai input nominal terbayar
         }
+        calculateTotalNominalTerbayar();
     }
     // Fungsi untuk checklist
     // Fungsi untuk menangani perubahan status pembayaran
@@ -381,8 +427,36 @@
             // Jika berbeda, tandai checkbox
             statusChangeCheckbox.checked = true;
         }
+
+        
+    }
+    // Fungsi untuk kalkulasi nominal_terbayar 
+    function calculateTotalNominalTerbayar() {
+        const modalEdit = document.querySelector('#editUser');
+        const hargaBarangPemasok = parseFloat(modalEdit.querySelector('#harga_barang_pemasok').value);
+        const stokElement = modalEdit.querySelector('#stok');
+        const stok = parseFloat(stokElement.value);
+        let total = hargaBarangPemasok * stok;
+
+        const statusPembelian = modalEdit.querySelector('#statusPembayaranEdit').value;
+        const nominalTerbayar = modalEdit.querySelector('#nominalTerbayar');
+
+        if (statusPembelian === 'lunas') {
+            let perbedaan =   (parseFloat(stokElement.getAttribute('stok-total')) - stok) * -1 ;
+
+            let stok_akhir  = parseFloat(stokElement.getAttribute('stok-original')) + perbedaan;
+            total = stok_akhir * hargaBarangPemasok;
+            console.log("Perbedaan :" + perbedaan, stok_akhir, total);
+
+            // nominalTerbayar.value = total.toFixed(0);
+            nominalTerbayar.value = total.toFixed(0);
+            console.log(nominalTerbayar.value);
+        }
     }
 </script>
+
+
+
 {{-- End of Modal Edit --}}
 
 {{-- Modal Delete --}}
@@ -537,7 +611,9 @@
                 let maxReferensi = parseInt(stokReferensiHasil.attr('max'));
 
                 $('#stok_referensiHasil').val(maxReferensi + stokTambah);
+                checkNominalTerbayarStokTambah();
             }
+
         }
     </script>
     <script>
@@ -559,6 +635,7 @@
                     $('#id_barangTambahStok').val(response.data.hash_id_barang);
                     // Mengisi nilai modal dengan data yang diterima
                     $('#stok_referensiTambahStok').val(response.data.stok);
+                    $('#stok_referensiTambahStok').attr('harga-pemasok', response.data.harga_barang_pemasok);
                     $('#stok_referensiHasil').val(response.data.stok);
                     $('#stok_referensiHasil').attr('max', response.data.stok); // Set nilai maksimum
                     $('#tambahStokModal').modal('show');
@@ -567,8 +644,8 @@
                     console.error(xhr.responseText);
                 }
             });
-
         }
+
 
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');

@@ -52,6 +52,8 @@ class StokController extends Controller
 
             // Menambahkan jumlah stok ke dalam data barang
             $dataBarang->stok = $stokbarang->stok;
+            $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)->first();
+            $dataBarang->stokoriginal = $stokbarang->stok_masuk;
         }
         $dataTipeBarang = TipeBarang::all();
         $dataPemasok = PemasokBarang::all();
@@ -174,17 +176,17 @@ class StokController extends Controller
         $barang->id_tipe_barang = $request->id_tipe_barang;
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_barang_pemasok = $request->harga_barang_pemasok;
+        $total_lama = $barang->total;
         $nominal_terbayar_lama =  $barang->nominal_terbayar;
         $barang->nominal_terbayar = $request->nominal_terbayar;
-
-
-        $stokBarangFirst =  StokBarangModel::where('id_barang', $barang->id_barang)->first();
-
-
-        // Update total
-        $barang->total = $stokBarangFirst->stok_masuk * $barang->harga_barang_pemasok;
         $barang->save();
 
+
+        // dd([
+        //     'nominal_terbayar_lama' => $nominal_terbayar_lama,
+        //     'nominal_terbayar_baru' => $request->nominal_terbayar,
+        //     'total' => $total_lama
+        // ]);
 
 
 
@@ -231,8 +233,12 @@ class StokController extends Controller
 
                 // Update total barang setelah mengubah stok masuk
                 $updatebarangtotal = Barang::find($barang->id_barang);
-                $updatebarangtotal->total = $stokBarangubahStok->stok_masuk * $barang->harga_barang_pemasok;
+                $updatebarangtotal->total = $stokBarangubahStok->stok_masuk * $updatebarangtotal->harga_barang_pemasok;
                 $updatebarangtotal->save();
+                // dd([
+                //     'stok_masuk' => $stokBarangubahStok->stok_masuk,
+                //     'harga_barang_pemasok' => $updatebarangtotal->harga_barang_pemasok
+                // ]);
             }
         }
 
@@ -245,35 +251,67 @@ class StokController extends Controller
         //     'status' => $nominal_terbayar_lama != $request->nominal_terbayar,
         //     'nominal_terbayar_lama' =>  $nominal_terbayar_lama
         // ]);
-        if ($nominal_terbayar_lama != $request->nominal_terbayar) {
-            // dd("aman kan ?");
-            $totalnominalTerbayar = 0;
-            foreach ($barang->bukuBesar as $bukuBesar) {
-                $totalnominalTerbayar += $bukuBesar->debit;
-            }
+
+
+        // Menghitung jika lunas maka otomatis nominal terbayar langsung mengisi bukubesar pertama jika hutang maka hapus seluruh bukubesar lalu hitung lagi
+        if ($total_lama == $nominal_terbayar_lama) {
+
+
+
+
+            $barangTerbaru =  Barang::find($barang->id_barang);
+
+
+
             $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
             $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+            $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
 
             // Selisih antara debit pertama dengan 
-            $bukubesar->debit = $request->nominal_terbayar;
+            $bukubesar->debit = $barangTerbaru->harga_pemasok * $stokBarangpertama->stok_masuk;
             $bukubesar->save();
+        } else {
+
+            // dd([
+            //     'barang' => $barang,
+            //     'nominal_terbayar_lama' => $nominal_terbayar_lama ,
+            //     'nominal_terbayar' => $request->nominal_terbayar
+            // ]);
+            if ($nominal_terbayar_lama != $request->nominal_terbayar) {
+
+                // dd("aman kan ?");
+                // $totalnominalTerbayar = 0;
+                // foreach ($barang->bukuBesar as $bukuBesar) {
+                //     $totalnominalTerbayar += $bukuBesar->debit;
+                // }
+
+
+                $barangTerbaru =  Barang::find($barang->id_barang);
+                $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+
+                // Selisih antara debit pertama dengan 
+                $bukubesar->debit = $barangTerbaru->nominal_terbayar;
+                $bukubesar->save();
 
 
 
-            // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-            $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
-                ->skip(1) // Lewatkan entri pertama
-                ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
-                ->get();
+                // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
+                $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                    ->skip(1) // Lewatkan entri pertama
+                    ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
+                    ->get();
 
-            // Hapus semua entri buku besar setelah yang pertama
-            foreach ($bukubesarBarangs as $bukubesarBarang) {
-                $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
-                if ($bukubesarToDelete) {
-                    $bukubesarToDelete->forceDelete();
+                // Hapus semua entri buku besar setelah yang pertama
+                foreach ($bukubesarBarangs as $bukubesarBarang) {
+                    $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
+                    if ($bukubesarToDelete) {
+                        $bukubesarToDelete->forceDelete();
+                    }
                 }
             }
         }
+
         DB::commit();
 
 
@@ -326,6 +364,8 @@ class StokController extends Controller
         $validatedData = $request->validate([
             'stok_tambah' => 'required|numeric|min:0',
             'id_barang' => 'required|exists:barangs,hash_id_barang',
+            'nominal_terbayar' => 'required',
+
         ], [
             'stok_tambah.required' => 'Stok tambah harus diisi.',
             'stok_tambah.numeric' => 'Stok tambah harus berupa angka.',
@@ -345,7 +385,7 @@ class StokController extends Controller
 
         DB::beginTransaction();
         // $barang->stok += $validatedData['stok_tambah'];
-    
+
         // Kembalikan jika barang tidak ada
         if (!$barang) {
             return redirect()->back()->with('error', 'Barang tidak ada');
@@ -364,6 +404,34 @@ class StokController extends Controller
         $barang->total = $stokBarang->stok_masuk * $barang->harga_barang_pemasok;
 
         $barang->save();
+
+
+
+        // Buat record baru untuk BukuBesar
+        $bukuBesar = new BukubesarModel();
+
+        $bukuBesar->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
+        $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
+        $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
+        $bukuBesar->keterangan = 'STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        $bukuBesar->debit = $request->nominal_terbayar; // Isi dengan nilai kredit yang sesuai
+        $bukuBesar->save();
+
+        $bukubesarBarang = new BukubesarBarangModel();
+        $bukubesarBarang->id_barang = $barang->id_barang;
+        $bukubesarBarang->id_bukubesar = $bukuBesar->id_bukubesar;
+        $bukubesarBarang->save();
+
+        // Hitung lagi nominal terbayar stok 
+        $barangupdated = Barang::with('bukuBesar')->find($barang->id_barang);
+        $totalNominalTerbayar = 0;
+        foreach ($barangupdated->bukuBesar as $bukuBesar) {
+            $totalNominalTerbayar += $bukuBesar->debit;
+        }
+
+        $barangupdated->nominal_terbayar = $totalNominalTerbayar;
+        $barangupdated->save();
+
 
         DB::commit();
 

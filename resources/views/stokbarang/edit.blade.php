@@ -47,8 +47,8 @@
             </div>
             <div class="form-group">
                 <label for="stok">Stok:</label>
-                <input type="number" class="form-control" name="stok" id="stok"
-                    value="{{ (int) $dataBarang->stok }}" required>
+                <input type="number" class="form-control" stok-original="{{ $dataBarang->stokoriginal }}" stok-total="{{  $dataBarang->stok }}" name="stok" id="stok"
+                    value="{{  $dataBarang->stok }}" oninput="calculateTotalNominalTerbayar()" required>
             </div>
 
         </div>
@@ -62,7 +62,7 @@
                 <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
                 <input id="harga_barang_pemasok" type="text"
                     class="form-control @error('harga_barang_pemasok') is-invalid @enderror" min="0"
-                    name="harga_barang_pemasok" value="{{ (int) $dataBarang->harga_barang_pemasok }}" required>
+                    name="harga_barang_pemasok" oninput="calculateTotalNominalTerbayar()" value="{{ (int) $dataBarang->harga_barang_pemasok }}" required>
                 @error('harga_barang_pemasok')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
