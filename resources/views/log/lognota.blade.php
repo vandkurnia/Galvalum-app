@@ -30,7 +30,26 @@
                         <div>
                             <strong>
                                 <h2>{{ $logNota->admin->nama_admin }} | {{ $logNota->nota->no_nota }} |
-                                    {{ \Carbon\Carbon::parse($logNota->created_at)->translatedFormat('l, d F Y') }}</h2>
+                                    {{ \Carbon\Carbon::parse($logNota->created_at)->translatedFormat('l, d F Y') }} | @switch($logNota->tipe_log)
+                                    @case('create')
+                                        <span class="badge badge-primary">Baru</span>
+                                        @break
+                    
+                                    @case('retur_pembeli_create')
+                                        <span class="badge badge-success">Retur</span>
+                                        @break
+                    
+                                    @case('retur_pembeli_revoke')
+                                        <span class="badge badge-warning">Tidak jadi retur</span>
+                                        @break
+                    
+                                    @case('update')
+                                        <span class="badge badge-info">Update</span>
+                                        @break
+                    
+                                    @default
+                                        <span class="badge badge-secondary">Unknown</span>
+                                @endswitch</h2>
                             </strong>
 
                             <table class="table">
@@ -82,6 +101,7 @@
                             <table class="table">
 
                                 <tr>
+                                    <th>Nama Barang</th>
                                     <th>Jumlah Pembelian</th>
                                     <th>Harga</th>
                                     <th>Jenis Pembelian</th>
@@ -89,9 +109,22 @@
                                 </tr>
                                 @foreach ($logNota->json_content['pesanan_pembeli'] as $pesanan_pembeli)
                                     <tr>
+                                        <td>@php
+                                            $barangs = DB::table('barangs')->where('id_barang', $pesanan_pembeli['id_barang'])->first();
+                                            echo $barangs->nama_barang;
+                                        @endphp</td>
                                         <td>{{ (int) $pesanan_pembeli['jumlah_pembelian'] }}</td>
                                         <td>{{ $pesanan_pembeli['harga'] }}</td>
-                                        <td>{{ $pesanan_pembeli['jenis_pembelian'] }}</td>
+                                        <td> @switch($pesanan_pembeli['jenis_pembelian'])
+                                            @case('aplicator')
+                                                Aplicator
+                                                @break
+                                            @case('potongan')
+                                                Potongan
+                                                @break
+                                            @default
+                                                Harga Normal
+                                        @endswitch </td>
                                         <td>{{ $pesanan_pembeli['harga_potongan'] }}</td>
                                     </tr>
                                 @endforeach
