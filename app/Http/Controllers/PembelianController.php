@@ -488,14 +488,19 @@ class PembelianController extends Controller
 
         // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
         if ($totalOld == $nominalTerbayarOld) {
-            // Update pada bukubesar
-            $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-            $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-            $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-            $bukuBesar->save();
-        } else {
-            $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-            if ($nominalTerbayarOld != $notaPembeliPesanan->nominal_terbayar) {
+            // Lunas ke lunas 
+            $total_baru = $notaPembeliPesanan->total;
+            $nominal_terbayar_baru = $notaPembeliPesanan->nominal_terbayar;
+            if ($total_baru == $nominal_terbayar_baru) {
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+            }
+
+            // Lunas ke hutang
+            else {
 
                 // Update pada bukubesar
                 $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
@@ -509,7 +514,31 @@ class PembelianController extends Controller
                 $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
                     $notaBukuBesar->delete();
                 });
-            } else if ($notaPembeliCheck->total != $totalOld) {
+            }
+        } else {
+
+            $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+            $total_baru = $notaPembeliCheck->total;
+            $nominal_terbayar_baru = $notaPembeliCheck->nominal_terbayar;
+
+            // Hutang ke lunas
+            if ($total_baru == $nominal_terbayar_baru) {
+
+                // Update pada bukubesar
+                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
+                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $bukuBesar->save();
+
+
+                // Hapus seluruh bukubesar yang setelah edit
+                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
+                    $notaBukuBesar->delete();
+                });
+
+                // Hutang ke hutang
+            } else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
                 // Update pada bukubesar
                 $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
                 $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
@@ -524,6 +553,7 @@ class PembelianController extends Controller
                 });
             }
         }
+
 
 
 

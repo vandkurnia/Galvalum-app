@@ -64,37 +64,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    {{-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Tipe Barang</th>
-                                <th>Ukuran Barang</th>
-                                <th>Harga Barang</th>
-                                <th>Jumlah</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>Galvalum Sheet 0.3mm</td>
-                                <td>Sheet</td>
-                                <td>0.3mm</td>
-                                <td>150000</td>
-                                <td>100</td>
-                                <td>
-                                    <a>
-                                        <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal"
-                                            data-target="#modalRetur">
-                                            <span><i class="fas fa-edit"></i></span>Edit</button>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> --}}
+                    
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -117,7 +87,9 @@
                                     <td>{{ $retur->no_retur_pemasok }}</td>
                                     {{-- <td>{{ $retur->faktur_retur_pemasok }}</td> --}}
                                     <td>{{ $retur->tanggal_retur }}</td>
-                                    <td>{{ $retur->bukti_retur_pemasok }}</td>
+                                
+                                    <td><img src="{{ secure_asset('retur/pemasok/' . $retur->bukti_retur_pemasok) }}"
+                                        alt="Bukti Retur" width="150px" height="150px"></td>
                                     <td>{{ $retur->jenis_retur }}</td>
                                     <td>{{ $retur->total_nilai_retur }}</td>
                                     {{-- <td>{{ $retur->pengembalian_data }}</td> --}}

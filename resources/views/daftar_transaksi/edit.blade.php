@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Beranda')
+@section('title', 'Pemesanan Barang')
 @section('header-custom')
     {{-- <style>
         /* Sembunyikan Showing entries */
@@ -669,9 +669,9 @@
                                 value="{{ (int) $notaPembelian->nominal_terbayar }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'readonly' : '' }}>
                         </div>
                         <div class="form-group">
-                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                                value="{{ date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
+                                value="{{$notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d')  }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
                         </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}

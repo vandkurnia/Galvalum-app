@@ -41,7 +41,7 @@
         @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <div class="container mt-5">
+                {{-- <div class="container mt-5">
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
                         <div>
@@ -49,7 +49,7 @@
                                 id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime(strtotime('2024-05-23 20:00:00'))) }}</span> atau lebih cepat.
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- <script>
                     // Set the maintenance date here
@@ -129,6 +129,7 @@
                             </tr> --}}
                         </tbody>
                     </table>
+                 
                 </div>
             </div>
         </div>
