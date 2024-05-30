@@ -402,7 +402,7 @@
             // Jika status pembayaran adalah hutang
             tenggatBayarInput.disabled = false; // Aktifkan input tanggal tenggat bayar
             nominalTerbayarInput.readOnly = false; // Hapus keterbacaan hanya-baca pada input nominal terbayar
-            nominalTerbayarInput.value = ''; // Kosongkan nilai input nominal terbayar
+            nominalTerbayarInput.value = 0; // Kosongkan nilai input nominal terbayar
         }
         calculateTotalNominalTerbayar();
     }
@@ -574,7 +574,7 @@
 
 
 
-                nominalTerbayar.value = parseInt(hargaBarangPemasok.value) * parseInt(jumlahStok.value);
+                nominalTerbayar.value = parseFloat(hargaBarangPemasok.value) * parseFloat(jumlahStok.value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -582,8 +582,8 @@
 
 
             let nilaiTotal = document.querySelector('#nilaitotal');
-            console.log(nilaiTotal);
-            nilaiTotal.value = parseInt(hargaBarangPemasok.value) * parseInt(jumlahStok.value);
+
+            nilaiTotal.value = parseInt(hargaBarangPemasok.value) * parseFloat(jumlahStok.value);
         }
 
         function funcTambahStokSubmit() {
@@ -734,6 +734,15 @@
                             i : 0;
                     };
 
+                    // Function to parse values as floats
+                    var floatVal = function(i) {
+                        return typeof i === 'string' ?
+                            parseFloat(i.replace(/[\$,]/g, '')) :
+                            // Remove any commas or dollar signs, then parse as float
+                            typeof i === 'number' ?
+                            i : 0;
+                    }
+
                     // Calculate total for Harga Penjualan
                     var totalHargaPenjualan = api
                         .column(5, {
@@ -761,7 +770,7 @@
                         })
                         .data()
                         .reduce(function(a, b) {
-                            return intVal(a) + intVal(b);
+                            return floatVal(a) + floatVal(b);
                         }, 0);
 
                     // Update footer

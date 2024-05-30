@@ -255,32 +255,60 @@ class StokController extends Controller
 
         // dd(['test' => $total_lama == $nominal_terbayar_lama]);
 
-        // Menghitung jika lunas maka otomatis nominal terbayar langsung mengisi bukubesar pertama jika hutang maka hapus seluruh bukubesar lalu hitung lagi
+        // Menghitung lagi untuk konversi status pembayaran
         if ($total_lama == $nominal_terbayar_lama) {
-
-
-
-
             $barangTerbaru =  Barang::find($barang->id_barang);
+            $total_baru = $barangTerbaru->total;
+            $nominal_terbayar_baru = $barangTerbaru->nominal_terbayar;
+            // Lunas ke lunas
+            if ($total_baru == $nominal_terbayar_baru) {
 
 
 
-            $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
-            $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
-            $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
 
-            // Selisih antara debit pertama dengan 
-            $bukubesar->debit = $barangTerbaru->harga_pemasok * $stokBarangpertama->stok_masuk;
-            $bukubesar->save();
+                $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+                $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
+
+                // Selisih antara debit pertama dengan 
+                $bukubesar->debit = $barangTerbaru->harga_pemasok * $stokBarangpertama->stok_masuk;
+                $bukubesar->save();
+            }
+
+            // Lunas ke hutang
+            else {
+
+
+
+                $barangTerbaru =  Barang::find($barang->id_barang);
+                $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+
+                // Selisih antara debit pertama dengan 
+                $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
+                $bukubesarUpdate->save();
+
+                // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
+                $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                    ->skip(1) // Lewatkan entri pertama
+                    ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
+                    ->get();
+
+                // Hapus semua entri buku besar setelah yang pertama
+                foreach ($bukubesarBarangs as $bukubesarBarang) {
+                    $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
+                    if ($bukubesarToDelete) {
+                        $bukubesarToDelete->forceDelete();
+                    }
+                }
+            }
         } else {
-            // dd([
-            //     'test' => $nominal_terbayar_lama != $request->nominal_terbayar,
-            //     'nominal_terbayar' => $nominal_terbayar_lama,
-            //     'nominal_terbayar_hehe' => $request->nominal_terbayar
-            // ]);
+
             $cekTotal =  Barang::find($barang->id_barang);
-            // Kalau total berbeda dengan total lama maka refresh
-            if ($total_lama !=  $cekTotal->total) {
+            $total_baru = $cekTotal->total;
+            $nominal_terbayar_baru = $cekTotal->nominal_terbayar;
+            // Hutang ke lunas 
+            if ($total_baru == $nominal_terbayar_baru) {
 
                 $barangTerbaru =  Barang::find($barang->id_barang);
                 $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
@@ -314,7 +342,7 @@ class StokController extends Controller
                         $bukubesarToDelete->forceDelete();
                     }
                 }
-            } else if ($nominal_terbayar_lama != $request->nominal_terbayar) {
+            } else if ($total_lama != $total_baru || $nominal_terbayar_lama != $request->nominal_terbayar) {
                 $barangTerbaru =  Barang::find($barang->id_barang);
                 $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
                 $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
@@ -360,8 +388,15 @@ class StokController extends Controller
 
     public function destroy($id)
     {
-        $dataBarang = Barang::where('hash_id_barang', $id)->first();
+        $dataBarang = Barang::with('bukuBesar')->where('hash_id_barang', $id)->first();
         if ($dataBarang) {
+            
+            // hapus bukubesar
+            foreach ($dataBarang->bukuBesar as $bukubesar)
+            {
+                $bukuBesar = BukubesarModel::find($bukubesar->id_bukubesar);
+                $bukuBesar->delete();
+            }
             $dataBarang->delete();
 
             return redirect()->route('stok.index')->with('success', 'Barang berhasil dihapus');

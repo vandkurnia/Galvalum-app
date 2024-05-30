@@ -112,11 +112,11 @@
                         {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'readonly' : '' }}>
                 </div>
                 <div class="form-group">
-                    @dump($dataBarang)
+                  
                     <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                     <input type="date" class="form-control" name="tenggat_bayar"
                         {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'disabled' : '' }} id="tenggatBayar"
-                        value="{{ $dataBarang->tenggat_bayar }}">
+                        value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}">
                 </div>
             </div>
 

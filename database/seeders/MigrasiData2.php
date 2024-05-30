@@ -12,6 +12,8 @@ use App\Models\pdf\SuratJalanModel;
 use App\Models\PemasokBarang;
 use App\Models\Pembeli;
 use App\Models\PesananPembeli;
+use App\Models\Retur\ReturPembeliModel;
+use App\Models\Retur\ReturPesananPembeliModel;
 use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
 use App\Models\User;
@@ -30,7 +32,24 @@ class MigrasiData2 extends Seeder
      */
     public function run()
     {
+        $usersjson = file_get_contents(public_path('datamigration/users.json'));
+        $users = json_decode($usersjson, true);
 
+        foreach ($users[2]['data'] as $item) {
+            User::create([
+                'id_admin' => $item['id_admin'],
+                'hash_id_admin' => $item['hash_id_admin'],
+                'nama_admin' => $item['nama_admin'],
+                'no_telp_admin' => $item['no_telp_admin'],
+                'email_admin' => $item['email_admin'],
+                'password' => $item['password'],
+                'role' => $item['role'],
+                'remember_token' => $item['remember_token'],
+                'created_at' => Carbon::parse($item['created_at']),
+                'updated_at' => Carbon::parse($item['updated_at']),
+                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
+            ]);
+        }
 
         // Diskon
         $jsondiskon = file_get_contents(public_path('datamigration/diskon.json'));
@@ -86,24 +105,7 @@ class MigrasiData2 extends Seeder
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
             ]);
         }
-        $usersjson = file_get_contents(public_path('datamigration/users.json'));
-        $users = json_decode($usersjson, true);
 
-        foreach ($users[2]['data'] as $item) {
-            User::create([
-                'id_admin' => $item['id_admin'],
-                'hash_id_admin' => $item['hash_id_admin'],
-                'nama_admin' => $item['nama_admin'],
-                'no_telp_admin' => $item['no_telp_admin'],
-                'email_admin' => $item['email_admin'],
-                'password' => $item['password'],
-                'role' => $item['role'],
-                'remember_token' => $item['remember_token'],
-                'created_at' => Carbon::parse($item['created_at']),
-                'updated_at' => Carbon::parse($item['updated_at']),
-                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
-            ]);
-        }
 
         // Tipe Barang
         $tipe_barangjson = file_get_contents(public_path('datamigration/tipe_barangs.json'));
@@ -121,6 +123,7 @@ class MigrasiData2 extends Seeder
         }
         // Barangs
         $jsonbarangs = file_get_contents(public_path('datamigration/barangs.json'));
+
         $databarangs = json_decode($jsonbarangs, true);
 
         foreach ($databarangs[2]['data'] as $item) {
@@ -143,10 +146,10 @@ class MigrasiData2 extends Seeder
                 'updated_at' => Carbon::parse($item['updated_at']),
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
             ]);
-            StokBarangModel::create([
-                'id_barang' => $barangs->id_barang,  // Ensure this matches an existing id_barang in barangs table
-                'stok_masuk' => $item['stok']
-            ]);
+            // StokBarangModel::create([
+            //     'id_barang' => $barangs->id_barang,  // Ensure this matches an existing id_barang in barangs table
+            //     'stok_masuk' => $item['stok']
+            // ]);
         }
 
 
@@ -176,6 +179,28 @@ class MigrasiData2 extends Seeder
                 'diskon' => $item['diskon'],
                 'ongkir' => $item['ongkir'],
                 'total' => $item['total'],
+                'created_at' => Carbon::parse($item['created_at']),
+                'updated_at' => Carbon::parse($item['updated_at']),
+                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
+            ]);
+        }
+
+
+        // Stok Barang
+        // Path to the JSON file
+        $jsonFilePath = public_path('datamigration/stok_barang.json');
+
+        // Get the JSON data
+        $jsonStokBarang = file_get_contents($jsonFilePath);
+        $stokBarangData = json_decode($jsonStokBarang, true);
+
+        // Iterate through each item and create a new StokBarang record
+        foreach ($stokBarangData[2]['data'] as $item) {
+            StokBarangModel::create([
+                'id' => $item['id'],
+                'id_barang' => $item['id_barang'],
+                'stok_masuk' => $item['stok_masuk'],
+                'stok_keluar' => $item['stok_keluar'],
                 'created_at' => Carbon::parse($item['created_at']),
                 'updated_at' => Carbon::parse($item['updated_at']),
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
@@ -221,6 +246,7 @@ class MigrasiData2 extends Seeder
                 'id_surat_jalan' => $item['id_surat_jalan'],
                 'no_surat_jalan' => $item['no_surat_jalan'],
                 'id_nota' => $item['id_nota'],
+                'users' => 1,
                 'created_at' => Carbon::parse($item['created_at']),
                 'updated_at' => Carbon::parse($item['updated_at']),
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
@@ -272,6 +298,66 @@ class MigrasiData2 extends Seeder
                 'id_bukubesar' => $item['id_bukubesar'],
                 'created_at' => Carbon::parse($item['created_at']),
                 'updated_at' => Carbon::parse($item['updated_at']),
+            ]);
+        }
+
+
+
+
+        // 
+        // Retur Section //
+        //  Retur Pembeli
+        $jsonFilePath = public_path('datamigration/retur_pembeli.json');
+
+        // Get the JSON data
+        $jsonReturPembeli = file_get_contents($jsonFilePath);
+        $returPembeliData = json_decode($jsonReturPembeli, true);
+
+        // Iterate through each item and create a new ReturPembeli record
+        foreach ($returPembeliData[2]['data'] as $item) {
+            ReturPembeliModel::create([
+                'id_retur_pembeli' => $item['id_retur_pembeli'],
+                'hash_id_retur_pembeli' => $item['hash_id_retur_pembeli'],
+                'id_nota' => $item['id_nota'],
+                'no_retur_pembeli' => $item['no_retur_pembeli'],
+                'faktur_retur_pembeli' => $item['faktur_retur_pembeli'],
+                'tanggal_retur_pembeli' => $item['tanggal_retur_pembeli'],
+                'bukti_retur_pembeli' => $item['bukti_retur_pembeli'],
+                'jenis_retur' => $item['jenis_retur'],
+                'total_nilai_retur' => $item['total_nilai_retur'],
+                'pengembalian_data' => $item['pengembalian_data'],
+                'kekurangan' => $item['kekurangan'],
+                'status' => $item['status'],
+                'id_pembeli' => $item['id_pembeli'],
+                'created_at' => Carbon::parse($item['created_at']),
+                'updated_at' => Carbon::parse($item['updated_at']),
+                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
+            ]);
+        }
+
+
+        //  Retur Pesanan Pembeli
+        // Path to the JSON file
+        $jsonFilePath = public_path('datamigration/retur_pesanan_pembeli.json');
+
+        // Get the JSON data
+        $jsonReturPesananPembeli = file_get_contents($jsonFilePath);
+        $returPesananPembeliData = json_decode($jsonReturPesananPembeli, true);
+
+        // Iterate through each item and create a new ReturPesananPembeli record
+        foreach ($returPesananPembeliData[2]['data'] as $item) {
+            ReturPesananPembeliModel::create([
+                'id_retur_pesanan' => $item['id_retur_pesanan'],
+                'id_retur_pembeli' => $item['id_retur_pembeli'],
+                'id_pesanan_pembeli' => $item['id_pesanan_pembeli'],
+                'harga' => $item['harga'],
+                'total' => $item['total'],
+                'qty' => $item['qty'],
+                'qty_sebelum_perubahan' => $item['qty_sebelum_perubahan'],
+                'type_retur_pesanan' => $item['type_retur_pesanan'],
+                'created_at' => Carbon::parse($item['created_at']),
+                'updated_at' => Carbon::parse($item['updated_at']),
+                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
             ]);
         }
     }

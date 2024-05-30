@@ -15,7 +15,7 @@
         "data": [
             {
                 "id_tipe_barang": "1",
-                "hash_id_tipe_barang": "336400eb-19c0-47d3-aff2-1b318e017799",
+                "hash_id_tipe_barang": "666dca88-2fe3-4d4f-b02a-2bab55457c0e",
                 "nama_tipe": "Btg",
                 "created_at": "2024-05-07 00:15:58",
                 "updated_at": "2024-05-07 00:15:58",
@@ -23,7 +23,7 @@
             },
             {
                 "id_tipe_barang": "2",
-                "hash_id_tipe_barang": "ac66704b-9614-4369-ba51-827f6c5c66d0",
+                "hash_id_tipe_barang": "8b24af6c-87cb-4d08-8c3b-570a6f095f50",
                 "nama_tipe": "Lbr",
                 "created_at": "2024-05-07 00:15:59",
                 "updated_at": "2024-05-07 00:15:59",
@@ -31,7 +31,7 @@
             },
             {
                 "id_tipe_barang": "3",
-                "hash_id_tipe_barang": "c8c2965c-01d8-4d6f-aee0-7538139a3104",
+                "hash_id_tipe_barang": "1ed36673-bfe5-4066-9fa8-ea1ca8786a22",
                 "nama_tipe": "pcs",
                 "created_at": "2024-05-07 00:16:12",
                 "updated_at": "2024-05-07 00:16:12",
@@ -39,7 +39,7 @@
             },
             {
                 "id_tipe_barang": "4",
-                "hash_id_tipe_barang": "dd0bc999-7d23-483d-91c7-b85114be550c",
+                "hash_id_tipe_barang": "6abde6d0-40f4-4df5-a7f0-19349e2437ae",
                 "nama_tipe": "m",
                 "created_at": "2024-05-07 00:16:18",
                 "updated_at": "2024-05-07 00:16:18",
@@ -47,7 +47,7 @@
             },
             {
                 "id_tipe_barang": "5",
-                "hash_id_tipe_barang": "6e337620-ce82-40de-8a6e-de95d3f67e74",
+                "hash_id_tipe_barang": "6d6a4fac-99d8-46cd-ba4f-903bb3f5821b",
                 "nama_tipe": "Sak",
                 "created_at": "2024-05-07 00:16:20",
                 "updated_at": "2024-05-07 00:16:20",
@@ -55,7 +55,7 @@
             },
             {
                 "id_tipe_barang": "6",
-                "hash_id_tipe_barang": "22bf60d1-19d3-4dc5-966f-df57b6411015",
+                "hash_id_tipe_barang": "ebfab3cd-1eeb-4cc0-8111-c4d36408223d",
                 "nama_tipe": "Plastik",
                 "created_at": "2024-05-07 00:16:21",
                 "updated_at": "2024-05-07 00:16:21",
@@ -63,7 +63,7 @@
             },
             {
                 "id_tipe_barang": "7",
-                "hash_id_tipe_barang": "44c5a63a-c6de-4a8a-9464-8e9b0a18074e",
+                "hash_id_tipe_barang": "15d56862-7e36-4c19-b303-0b36ae8395ce",
                 "nama_tipe": "Box",
                 "created_at": "2024-05-07 00:16:21",
                 "updated_at": "2024-05-07 00:16:21",
@@ -71,7 +71,7 @@
             },
             {
                 "id_tipe_barang": "8",
-                "hash_id_tipe_barang": "c74983b3-c730-452b-97e2-7420b6dcfba7",
+                "hash_id_tipe_barang": "6bb48b76-2675-4af9-b0c8-1c661969f8ba",
                 "nama_tipe": "roll",
                 "created_at": "2024-05-07 00:16:22",
                 "updated_at": "2024-05-17 06:04:11",
@@ -79,7 +79,7 @@
             },
             {
                 "id_tipe_barang": "9",
-                "hash_id_tipe_barang": "b1860293-a826-489b-9501-f0434c17be6a",
+                "hash_id_tipe_barang": "a030f35e-4d96-4cc6-be3a-f6768494aeae",
                 "nama_tipe": "Paket",
                 "created_at": "2024-05-07 00:16:25",
                 "updated_at": "2024-05-07 00:16:25",
@@ -87,7 +87,7 @@
             },
             {
                 "id_tipe_barang": "10",
-                "hash_id_tipe_barang": "1020ea75-cce9-4d61-b9c2-4564c718eb86",
+                "hash_id_tipe_barang": "87e79d3b-25f1-4f4f-a2f3-4ad206e31309",
                 "nama_tipe": "Kaleng",
                 "created_at": "2024-05-07 00:16:26",
                 "updated_at": "2024-05-07 00:16:26",
@@ -95,10 +95,18 @@
             },
             {
                 "id_tipe_barang": "11",
-                "hash_id_tipe_barang": "f26758f4-7d71-4fc8-ada9-d62368cc63f3",
+                "hash_id_tipe_barang": "7cd0a367-db28-485f-9734-c098dd739545",
                 "nama_tipe": "Pail",
                 "created_at": "2024-05-07 00:16:26",
                 "updated_at": "2024-05-07 00:16:26",
+                "deleted_at": null
+            },
+            {
+                "id_tipe_barang": "12",
+                "hash_id_tipe_barang": "09c7c84d-b76c-4aa5-8f5d-8a5810ae6a01",
+                "nama_tipe": "set",
+                "created_at": "2024-05-28 05:00:35",
+                "updated_at": "2024-05-28 05:00:35",
                 "deleted_at": null
             }
         ]

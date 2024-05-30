@@ -154,7 +154,7 @@ class LaporanController extends Controller
                     stok_barang ON stok_barang.id_barang = barangs.id_barang
                 
                
-                WHERE barangs.nominal_terbayar < barangs.total
+                WHERE barangs.nominal_terbayar < barangs.total AND barangs.deleted_at IS NULL
                 GROUP BY
                     barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
                 ',
