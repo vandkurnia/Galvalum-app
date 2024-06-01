@@ -15,6 +15,7 @@ use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
 use App\Http\Controllers\JsonType\PemesananBarangJsonController;
 use App\Http\Controllers\Laporan\LaporanController;
+use App\Http\Controllers\Log\LogController;
 use App\Http\Controllers\Log\LogNotaController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
@@ -227,5 +228,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-    Route::get('/log-nota/{id_nota}', [LogNotaController::class, 'index'])->name('log-nota.index');
+    Route::get('/log-nota/{id_nota}', [LogController::class, 'index'])->name('log-nota.index');
+    Route::get('/log-stok-barang/{id_barang}', [LogController::class, 'LogStokBarang'])->name('log-stok-barang.index');
 });

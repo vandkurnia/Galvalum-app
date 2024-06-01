@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\DiskonModel;
 use App\Models\Log\LogNotaModel;
+use App\Models\Log\LogStokBarangModel;
 use App\Models\Notabukubesar;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
@@ -142,6 +143,16 @@ class PembelianController extends Controller
                     'stok_keluar' => $pesanan['jumlah_pesanan'],
                     'id_barang' => $barangData->id_barang,
                 ]);
+
+                // Simpan ke log
+                $logStokBarang = new LogStokBarangModel();
+                $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                $logStokBarang->tipe_log = 'pesanan_create';
+                $logStokBarang->keterangan = 'Tambah pesanan';
+                $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                $logStokBarang->save();
                 // Pindah ke PesananPembeli
                 $pesananPembeli->id_stokbarang = $stokBarang->id;
             } else {
@@ -337,6 +348,16 @@ class PembelianController extends Controller
                         }
 
                         $stokBarang->save();
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'pesanan_update';
+                        $logStokBarang->keterangan = 'Update pesanan';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
                     } else {
                         // Handle the case where the stock entry does not exist
                         return redirect()->back()->with('error', 'Stock entry not found for this order.');
@@ -355,6 +376,16 @@ class PembelianController extends Controller
                     $pesananPembelidelete->delete();
                     $stokBarangdelete = StokBarangModel::find($pesananPembelidelete->id_stokbarang);
                     $stokBarangdelete->delete();
+
+                    // Simpan ke log
+                    $logStokBarang = new LogStokBarangModel();
+                    $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                    $logStokBarang->tipe_log = 'pesanan_update';
+                    $logStokBarang->keterangan = 'Hapus Stok Pesanan';
+                    $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                    $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                    $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->save();
                 }
             } elseif ($pesanan['type_pesanan'] == 'modified') {
                 // Pesanan Pembeli
@@ -390,6 +421,16 @@ class PembelianController extends Controller
                         }
 
                         $stokBarang->save();
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'pesanan_update';
+                        $logStokBarang->keterangan = 'Update pesanan';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
                     } else {
                         // Handle the case where the stock entry does not exist
                         return redirect()->back()->with('error', 'Stock entry not found for this order.');
@@ -436,6 +477,16 @@ class PembelianController extends Controller
                     ]);
                     // Pindah ke PesananPembeli
                     $pesananPembeli->id_stokbarang = $stokBarang->id;
+
+                    // Simpan ke log
+                    $logStokBarang = new LogStokBarangModel();
+                    $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                    $logStokBarang->tipe_log = 'pesanan_update';
+                    $logStokBarang->keterangan = 'Update pesanan';
+                    $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                    $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                    $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->save();
                 } else {
                     DB::rollBack();
                     return redirect()->back()->with('error', 'Terjadi Kesalahan');
@@ -601,8 +652,18 @@ class PembelianController extends Controller
 
                 // dump($notaPembeli->PesananPembeli);
                 $stokBarangtoDelete = StokBarangModel::find($pesananPembeli2->id_stokbarang);
-              
+                // Simpan ke log
+                $logStokBarang = new LogStokBarangModel();
+                $logStokBarang->json_content = $stokBarangtoDelete; // Sesuaikan dengan isi json_content Anda
+                $logStokBarang->tipe_log = 'pesanan_delete';
+                $logStokBarang->keterangan = 'Hapus pesanan';
+                $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                $logStokBarang->id_stok_barang = $stokBarangtoDelete->id; // Sesuaikan dengan id_stok_barang yang ada
+                $logStokBarang->id_barang = $stokBarangtoDelete->id_barang; // Sesuaikan dengan id_barang yang ada
+                $logStokBarang->save();
                 $stokBarangtoDelete->delete();
+
+
                 // Hapus PesananPembeli2 itu sendiri
                 $pesananPembeli2->delete();
             }
@@ -626,7 +687,7 @@ class PembelianController extends Controller
 
             // Hapus NotaPembeli itu sendiri
             $notaPembeli->delete();
-      
+
             DB::commit();
 
             return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');

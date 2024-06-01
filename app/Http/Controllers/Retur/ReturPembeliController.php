@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\DiskonModel;
 use App\Models\Log\LogNotaModel;
+use App\Models\Log\LogStokBarangModel;
 use App\Models\Notabukubesar;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
@@ -172,6 +173,16 @@ class ReturPembeliController extends Controller
                     $stokBarang->id_barang = $pesananData->id_barang;
                     $stokBarang->save();
 
+                    // Simpan ke log
+                    $logStokBarang = new LogStokBarangModel();
+                    $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                    $logStokBarang->tipe_log = 'retur_pembeli_create';
+                    $logStokBarang->keterangan = 'Tambah Retur Pembeli ';
+                    $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                    $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                    $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->save();
+
                     // Associate the return order with the stock entry
                     $returPesanan = ReturPesananPembeliModel::find($returPesanan->id_retur_pesanan);
                     $returPesanan->type_retur_pesanan = "retur_murni_tidak_rusak";
@@ -194,7 +205,15 @@ class ReturPembeliController extends Controller
                 $pesananCekQtynya->delete();
 
                 $stokBarangDelete = StokBarangModel::find($pesananCekQtynya->id_stokbarang);
-
+                // Simpan ke log
+                $logStokBarang = new LogStokBarangModel();
+                $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                $logStokBarang->tipe_log = 'retur_pembeli_create';
+                $logStokBarang->keterangan = 'Hapus Stok Barang Retur Pembeli ';
+                $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                $logStokBarang->save();
                 $stokBarangDelete->delete();
             }
 
@@ -363,6 +382,16 @@ class ReturPembeliController extends Controller
                     $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
                     $stokBarang->id_barang = $barangData->id_barang;
                     $stokBarang->save();
+
+                    // Simpan ke log
+                    $logStokBarang = new LogStokBarangModel();
+                    $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                    $logStokBarang->tipe_log = 'retur_pembeli_create';
+                    $logStokBarang->keterangan = 'Hapus Stok Barang ';
+                    $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                    $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                    $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->save();
 
 
                     $pesananData->id_stokbarang = $stokBarang->id;
@@ -587,6 +616,16 @@ class ReturPembeliController extends Controller
                         $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
                         $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->save();
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Tidak Rusak';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
                         break;
 
                     case 'retur_murni_rusak':
@@ -597,6 +636,17 @@ class ReturPembeliController extends Controller
                         $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
                         $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
                         $stokBarang->save();
+
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Rusak';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
                         break;
 
                     case 'retur_tambah_stok':
@@ -609,6 +659,17 @@ class ReturPembeliController extends Controller
                         $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
                         $stokBarang->save();
 
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Tambah Stok';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
+
                         break;
 
                     case 'retur_tambah_barang':
@@ -618,7 +679,20 @@ class ReturPembeliController extends Controller
 
                         // Hapus stok barang
                         $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+
+                        // Simpan ke log
+                        $logStokBarang = new LogStokBarangModel();
+                        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Hapus Tambah Barang';
+                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->save();
+
                         $stokBarang->delete();
+
+
 
                         // Jika jumlah_pembelian menjadi 0, hapus pesanan
                         if ($pesananPembeli->jumlah_pembelian == 0) {
@@ -736,7 +810,7 @@ class ReturPembeliController extends Controller
             $logNota->id_nota = $notaPembeli->id_nota;
             $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
             $logNota->save();
-          
+
 
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');

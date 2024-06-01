@@ -60,8 +60,13 @@
                                 <th>Harga Barang</th>
                                 <th>Harga Supplier</th>
                                 <th>Jumlah Stok</th>
-                                <th>Retur</th>
-                                <th>Aksi</th>
+                                <th data-orderable="false">Retur</th>
+                                <th data-orderable="false">Aksi</th>
+                                @if (Auth::user()->role == 'admin')
+                                    <th data-orderable="false">
+                                        Log
+                                    </th>
+                                @endif
                             </tr>
                         </thead>
 
@@ -104,6 +109,16 @@
                                             onclick="funcHapusUser('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
                                                 class="fas fa-trash"></i></button>
                                     </td>
+
+                                    @if (Auth::user()->role == 'admin')
+                                        <td>
+                                            <a href="{{ route('log-stok-barang.index', ['id_barang' => $databarang->hash_id_barang]) }}"
+                                                class="btn btn-info">
+                                                <i class="bi bi-info-circle"></i> Info
+                                            </a>
+
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
 
