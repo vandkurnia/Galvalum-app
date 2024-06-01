@@ -410,7 +410,7 @@
                                     let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                                     td_jumlah.innerText = jumlah_barang.value;
 
-                                    let td_total = tr_pesanan.querySelector('.total');
+                                    let td_total = tr_pesanan.querySelector('.totalperpesanan');
                                     td_total.innerText = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
                                 }
 

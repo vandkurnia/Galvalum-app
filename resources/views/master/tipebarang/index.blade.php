@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Tipe Barang')
 @section('header-custom')
 
 

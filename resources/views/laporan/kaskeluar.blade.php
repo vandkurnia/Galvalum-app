@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Kas Keluar')
 @section('header-custom')
 
     <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">

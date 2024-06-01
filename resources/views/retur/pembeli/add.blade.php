@@ -113,7 +113,7 @@
                                         {{ (int) $pesanan->harga }}</td>
                                     {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
-                                    <td class="nilai_jumlah_barang_pesanan">{{  $pesanan->jumlah_pembelian }}</td>
+                                    <td class="nilai_jumlah_barang_pesanan">{{ $pesanan->jumlah_pembelian }}</td>
 
                                     <td class="total">
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
@@ -392,7 +392,7 @@
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{ $notaPembelian->total }}" readonly >
+                                value="{{ $notaPembelian->total }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
@@ -604,8 +604,10 @@
                     harga_setelah_diskon = harga_barang - amount;
                 }
 
-
-
+                // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                const hargaKhususInput = document.getElementById('harga_khusus');
                 var tr_pesanan = document.createElement('tr');
                 tr_pesanan.setAttribute('data-id-barang', data_barang.hash_id_barang);
                 tr_pesanan.setAttribute('data-id-diskon', diskon_select_element.value);
@@ -620,7 +622,11 @@
                 td_ukuran_barang.innerText = data_barang.ukuran;
                 let td_harga_barang = document.createElement('td');
                 td_harga_barang.classList.add('harga_barang_pesanan');
-                td_harga_barang.innerText = harga_barang;
+                td_harga_barang.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+                // td_harga_barang.innerText = harga_barang;
+                console.log(hargaKhususInput.value);
+                td_harga_barang.innerText = harga_barang - parseInt(hargaKhususInput.value);
 
                 const jenis_pelanggan = document.querySelector('#jenis_pembelian');
                 td_harga_barang.setAttribute('data-jenis-pelanggan', jenis_pelanggan.value);
@@ -637,7 +643,10 @@
 
                 let td_total = document.createElement('td');
                 td_total.classList.add('totalperpesanan');
-                td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                let total = (harga_setelah_diskon - parseInt(hargaKhususInput.value)) * jumlah_barang.value;
+                // Round up to 2 decimal places
+                total = Math.ceil(total * 100) / 100;
+                td_total.innerText = total.toFixed(0); // Display with comma separators if needed
 
 
                 // Membuat tombol Edit
@@ -691,9 +700,11 @@
 
             } else {
 
-                // Update Pesanan
-                // updatePesanan(tr_pesanan);
-                // End Update Pesanan
+                // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+                const jenisPelangganElement = document.getElementById('jenis_pembelian');
+                const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+                const hargaKhususInput = document.getElementById('harga_khusus');
+                // Diskon
                 var diskon_select_element = document.getElementById('diskon');
                 var selected_diskon_element = diskon_select_element.options[diskon_select_element.selectedIndex];
 
@@ -712,20 +723,20 @@
                     harga_diskon = amount;
                     harga_setelah_diskon = harga_barang - amount;
                 }
+
+                const harga = tr_pesanan.querySelector('.harga_barang_pesanan');
+                harga.innerText = harga_barang - parseInt(hargaKhususInput.value);
+                harga.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
+                harga.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+
+
                 let diskon = tr_pesanan.querySelector('.diskon_pesanan');
                 diskon.innerText = harga_diskon;
                 let td_jumlah = tr_pesanan.querySelector('.nilai_jumlah_barang_pesanan');
                 td_jumlah.innerText = jumlah_barang.value;
 
-                let td_harga_barang = tr_pesanan.querySelector('.harga_barang_pesanan');
-                const jenis_pelanggan = document.querySelector('#jenis_pembelian');
-                td_harga_barang.setAttribute('data-jenis-pelanggan', jenis_pelanggan.value);
-                const hargaPotonganKhusus = document.querySelector('#harga_khusus');
-                td_harga_barang.setAttribute('data-harga-potongan-khusus', hargaPotonganKhusus.value);
-
-
                 let td_total = tr_pesanan.querySelector('.totalperpesanan');
-                td_total.innerText = harga_setelah_diskon * jumlah_barang.value;
+                td_total.innerText = (harga_setelah_diskon - parseFloat(hargaKhususInput.value)) * jumlah_barang.value;
             }
 
 
@@ -887,7 +898,7 @@
                 var diskonTotal = parseFloat(document.getElementById('diskonTotal').value);
                 var totalOngkir = parseFloat(document.getElementById('totalOngkir').value);
 
-                var nominalTerbayar = subTotal1 -  subTotalRetur + subTotal - diskonTotal + totalOngkir;
+                var nominalTerbayar = subTotal1 - subTotalRetur + subTotal - diskonTotal + totalOngkir;
 
                 document.getElementById('nominalTerbayar').value = nominalTerbayar;
             } else if (statusPembayaran === 'hutang') {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Retur\ReturPesananPembeliModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,6 +44,10 @@ class PesananPembeli extends Model
     public function diskon()
     {
         return $this->belongsTo(DiskonModel::class, 'id_diskon');
+    }
+    public function returPesananPembeli()
+    {
+        return $this->hasMany(ReturPesananPembeliModel::class, 'id_pesanan_pembeli');
     }
 
 

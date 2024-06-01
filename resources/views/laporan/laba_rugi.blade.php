@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Laba Rugi')
 @section('header-custom')
     <style>
         /* Sembunyikan Showing entries */

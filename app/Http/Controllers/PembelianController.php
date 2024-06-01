@@ -598,7 +598,11 @@ class PembelianController extends Controller
             // Hapus semua PesananPembeli dan StokBarang terkait
             foreach ($notaPembeli->PesananPembeli as $pesananPembeli2) {
                 // Hapus StokBarang terkait dengan PesananPembeli2
-                $pesananPembeli2->stokBarang->delete();
+
+                // dump($notaPembeli->PesananPembeli);
+                $stokBarangtoDelete = StokBarangModel::find($pesananPembeli2->id_stokbarang);
+              
+                $stokBarangtoDelete->delete();
                 // Hapus PesananPembeli2 itu sendiri
                 $pesananPembeli2->delete();
             }
@@ -622,7 +626,7 @@ class PembelianController extends Controller
 
             // Hapus NotaPembeli itu sendiri
             $notaPembeli->delete();
-
+      
             DB::commit();
 
             return redirect()->route('pemesanan.index')->with('success', 'Nota Pembelian dihapus');

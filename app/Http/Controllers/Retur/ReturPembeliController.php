@@ -226,7 +226,9 @@ class ReturPembeliController extends Controller
             }
             $diskon = DiskonModel::where('hash_id_diskon', $returTmbhn['id_diskon'])->first();
             $diskonId = $diskon ? $diskon->id_diskon : null;
-            // Inisiasi diskon
+
+
+            // Diskon diskon
             $amountDiskon = isset($diskon->amount) ? $diskon->amount : 0;
             $typeDiskon = $diskon->type ?? 'amount'; // Jika $diskon->type tidak ada, maka gunakan 'amount'
             $amountDiskon = $diskon->amount ?? 0; // Jika $diskon->amount tidak ada, maka gunakan 0
@@ -247,7 +249,7 @@ class ReturPembeliController extends Controller
             $hargaSetelahDiskon = $hargaSetelahDiskon - $returTmbhn['harga_potongan'];
             $subTotalbaru += $hargaSetelahDiskon *  $returTmbhn['jumlah_pesanan'];
             $totalDiskon += $hargaDiskon;
-            $pesananData = PesananPembeli::where('id_nota', $notaPembelian->id_nota)
+            $pesananData = PesananPembeli::with('returPesananPembeli')->where('id_nota', $notaPembelian->id_nota)
                 ->where('id_barang', $barangData->id_barang)
                 ->withTrashed()->first();
 
@@ -288,19 +290,53 @@ class ReturPembeliController extends Controller
                     $stokBarang = StokBarangModel::withTrashed()->find($pesananData->id_stokbarang);
 
                     if ($stokBarang) {
-                        $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
-                        $stokBarang->id_barang = $barangData->id_barang;
+
+                        // Cek jika rusak maka stoknya berkurang
+                        foreach ($pesananData->returPesananPembeli as  $returPesananPembeli) {
+                            if ($returPesananPembeli->type_retur_pesanan == 'retur_murni_rusak') {
+                                // dd([
+                                //     'jumlah_retur' => $returPesananPembeli->qty,
+                                //     'stok' => $pesananData->jumlah_pembelian,
+
+                                //     'total' => $returPesananPembeli->qty + $pesananData->jumlah_pembelian
+                                // ]);
+                                $stokBarang->stok_keluar = $returPesananPembeli->qty + $pesananData->jumlah_pembelian;
+                                $stokBarang->id_barang = $barangData->id_barang;
+                                $stokBarang->save();
+                            } else {
+                                $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
+                                $stokBarang->id_barang = $barangData->id_barang;
+                                $stokBarang->save();
+                            }
+                        };
+
+
 
                         // Restore jika stok_keluar > 0
                         if ($stokBarang->stok_keluar > 0 && $stokBarang->trashed()) {
                             $stokBarang->restore();
                         }
-
-                        $stokBarang->save();
                     }
                 } else {
                     DB::rollBack();
                     return redirect()->back()->with('error', 'Gagal memasukkan data');
+                }
+
+
+                // Cek pesanan terbaru
+                $pesanan = PesananPembeli::withTrashed()->find($pesananData->id_pesanan);
+                // Check if the record exists
+                if ($pesanan) {
+                    $jumlah_pembelian_terbaru = $pesanan->jumlah_pembelian;
+
+                    // If jumlah_pembelian is greater than 0, restore the record
+                    if ($jumlah_pembelian_terbaru > 0) {
+                        $pesanan->restore();
+                    }
+                    // If jumlah_pembelian is 0 or less, force delete the record
+                    else {
+                        $pesanan->delete();
+                    }
                 }
             } else {
                 // Pesanan belum ada, buat pesanan baru
@@ -438,7 +474,7 @@ class ReturPembeliController extends Controller
                 });
 
                 // Hutang ke hutang
-            } else if ( $totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
+            } else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
                 // Update pada bukubesar
                 $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
                 $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
@@ -540,49 +576,55 @@ class ReturPembeliController extends Controller
 
             foreach ($returPesananPembeli as $returPesanan) {
                 $pesananPembeli = PesananPembeli::withTrashed()->find($returPesanan->id_pesanan_pembeli);
+                dump($returPesanan);
+                switch ($returPesanan->type_retur_pesanan) {
+                    case 'retur_murni_tidak_rusak':
+                        $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                        $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->save();
 
-                if ($returPesanan->type_retur_pesanan === 'retur_murni_tidak_rusak') {
-                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
-                    $pesananPembeli->harga = $returPesanan->harga;
-                    $pesananPembeli->save();
+                        // Update Stok barang
+                        $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                        $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
+                        $stokBarang->save();
+                        break;
 
-                    // Hapus stok barang
-                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
-                    $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
-                    $stokBarang->delete();
-                } elseif ($returPesanan->type_retur_pesanan === 'retur_murni_rusak') {
+                    case 'retur_murni_rusak':
+                        $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                        $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->save();
+                        // Update Stok Barang
+                        $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                        $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
+                        $stokBarang->save();
+                        break;
 
-                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
-                    $pesananPembeli->harga = $returPesanan->harga;
-                    $pesananPembeli->save();
-                } elseif ($returPesanan->type_retur_pesanan === 'retur_tambah_stok') {
-                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
-                    $pesananPembeli->harga = $returPesanan->harga;
-                    $pesananPembeli->save();
+                    case 'retur_tambah_stok':
+                        $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                        $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->save();
 
-                    // Hapus stok barang
-                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
-                    $stokBarang->delete();
+                        // Update Stok Barang
+                        $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                        $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
+                        $stokBarang->save();
 
+                        break;
 
-                    // Jika jumlah_pembelian menjadi 0, hapus pesanan
-                    // if ($pesananPembeli->jumlah_pembelian == 0) {
-                    //     $pesananPembeli->delete();
-                    // }
-                } elseif ($returPesanan->type_retur_pesanan === 'retur_tambah_barang') {
-                    $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
-                    $pesananPembeli->harga = $returPesanan->harga;
-                    $pesananPembeli->save();
+                    case 'retur_tambah_barang':
+                        $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
+                        $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->save();
 
-                    // Hapus stok barang
-                    $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
-                    $stokBarang->delete();
+                        // Hapus stok barang
+                        $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                        $stokBarang->delete();
 
-
-                    // Jika jumlah_pembelian menjadi 0, hapus pesanan
-                    if ($pesananPembeli->jumlah_pembelian == 0) {
-                        $pesananPembeli->delete();
-                    }
+                        // Jika jumlah_pembelian menjadi 0, hapus pesanan
+                        if ($pesananPembeli->jumlah_pembelian == 0) {
+                            $pesananPembeli->delete();
+                        }
+                        break;
                 }
                 // Jika pesanan pembeli dihapus dan jumlah pembelian lebih dari 0, lakukan restore
                 if ($pesananPembeli->trashed() && $pesananPembeli->jumlah_pembelian > 0) {
@@ -694,7 +736,8 @@ class ReturPembeliController extends Controller
             $logNota->id_nota = $notaPembeli->id_nota;
             $logNota->id_admin = Auth::user()->id_admin; // Mengambil id_admin dari user yang sedang login
             $logNota->save();
-            // dd("Coomit");
+          
+
             DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } catch (\Exception $e) {

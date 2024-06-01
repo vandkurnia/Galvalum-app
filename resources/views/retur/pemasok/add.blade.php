@@ -126,7 +126,7 @@
                     input.value = qtyAvailable;
                 }
 
-                const newQtyRetur = parseInt(input.value);
+                const newQtyRetur = parseFloat(input.value);
                 const total = hargaPemasok * newQtyRetur;
                 totalCell.innerText = total;
 
