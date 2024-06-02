@@ -15,7 +15,7 @@ class StokBarangModel extends Model
     protected $table = 'stok_barang';
     protected $fillable = ['id_barang',
     //  'id_bukubesar',
-      'stok_masuk', 'stok_keluar'];
+      'stok_masuk', 'stok_keluar', 'tipe_stok'];
 
     public function barang()
     {
