@@ -542,8 +542,8 @@ class StokController extends Controller
 
         $bukuBesar->id_akunbayar = 1; // Isi dengan nilai id_akunbayar yang sesuai
         $bukuBesar->tanggal = date('Y-m-d'); // Isi dengan tanggal yang sesuai
-        $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
-        $bukuBesar->keterangan = 'STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
+        $bukuBesar->kategori = "barang_tambah_stok"; // Isi dengan kategori yang sesuai
+        $bukuBesar->keterangan = 'TAMBAH STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
         $bukuBesar->debit = $request->nominal_terbayar; // Isi dengan nilai kredit yang sesuai
         $bukuBesar->save();
 
