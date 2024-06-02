@@ -137,7 +137,9 @@ class LaporanController extends Controller
                     pemasok_barangs.nama_pemasok,
                     barangs.nama_barang,
                     SUM(stok_barang.stok_masuk - stok_barang.stok_keluar) as total_pesanan,
-                    pemasok_barangs.created_at as tanggal_stok,
+                    barangs.updated_at as tanggal_stok,
+                    barangs.created_at as tanggal_stok_alt,
+                    barangs.created_at as jatuh_tempo_alt,
                     barangs.total as harga_bayar,
                     barangs.nominal_terbayar as jumlah_terbayar,
                     barangs.tenggat_bayar as jatuh_tempo,
@@ -156,7 +158,7 @@ class LaporanController extends Controller
                
                 WHERE barangs.nominal_terbayar < barangs.total AND barangs.deleted_at IS NULL
                 GROUP BY
-                    barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
+                    barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, barangs.created_at, barangs.updated_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
                 ',
             []
         );

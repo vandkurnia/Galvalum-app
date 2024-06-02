@@ -142,13 +142,14 @@ class PembelianController extends Controller
                 $stokBarang = StokBarangModel::create([
                     'stok_keluar' => $pesanan['jumlah_pesanan'],
                     'id_barang' => $barangData->id_barang,
+                    'tipe_stok' => 'pesanan'
                 ]);
 
                 // Simpan ke log
                 $logStokBarang = new LogStokBarangModel();
                 $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                 $logStokBarang->tipe_log = 'pesanan_create';
-                $logStokBarang->keterangan = 'Tambah pesanan';
+                $logStokBarang->keterangan = 'Pesanan nota ' . $notaPembeli->no_nota . ' stok keluar sebanyak ' . $stokBarang->stok_keluar . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -339,6 +340,7 @@ class PembelianController extends Controller
                     $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
 
                     if ($stokBarang) {
+                        $stokKeluarLama = $stokBarang->stok_keluar;
                         $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->id_barang = $barangData->id_barang;
 
@@ -353,7 +355,7 @@ class PembelianController extends Controller
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'pesanan_update';
-                        $logStokBarang->keterangan = 'Update pesanan';
+                        $logStokBarang->keterangan = 'Update pesanan qty dari ' . $stokKeluarLama . ' ke ' . $stokBarang->stok_keluar . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -381,7 +383,7 @@ class PembelianController extends Controller
                     $logStokBarang = new LogStokBarangModel();
                     $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                     $logStokBarang->tipe_log = 'pesanan_update';
-                    $logStokBarang->keterangan = 'Hapus Stok Pesanan';
+                    $logStokBarang->keterangan = 'Hapus pesanan awal  dari nota ' . $notaPembeli->no_nota . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -412,6 +414,7 @@ class PembelianController extends Controller
                     $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
 
                     if ($stokBarang) {
+                        $stokKeluarLama = $stokBarang->stok_keluar;
                         $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->id_barang = $barangData->id_barang;
 
@@ -426,7 +429,7 @@ class PembelianController extends Controller
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'pesanan_update';
-                        $logStokBarang->keterangan = 'Update pesanan';
+                        $logStokBarang->keterangan = 'Update pesanan qty dari ' . $stokKeluarLama . ' ke ' . $stokBarang->stok_keluar  . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -449,6 +452,15 @@ class PembelianController extends Controller
                     $pesananPembelidelete = PesananPembeli::find($pesananPembeli->id_pesanan);
                     $pesananPembelidelete->delete();
                     $stokBarangdelete = StokBarangModel::find($pesananPembelidelete->id_stokbarang);
+                    // Simpan ke log
+                    $logStokBarang = new LogStokBarangModel();
+                    $logStokBarang->json_content = $stokBarangdelete; // Sesuaikan dengan isi json_content Anda
+                    $logStokBarang->tipe_log = 'pesanan_update';
+                    $logStokBarang->keterangan = 'Mengupdate hapus pesanan dari nota ' . $notaPembeli->no_nota  . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
+                    $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                    $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                    $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->save();
                     $stokBarangdelete->delete();
                 }
             } elseif ($pesanan['type_pesanan'] == 'new') {
@@ -474,6 +486,7 @@ class PembelianController extends Controller
                     $stokBarang = StokBarangModel::create([
                         'stok_keluar' => $pesanan['jumlah_pesanan'],
                         'id_barang' => $barangData->id_barang,
+                        'tipe_stok' => 'pesanan'
                     ]);
                     // Pindah ke PesananPembeli
                     $pesananPembeli->id_stokbarang = $stokBarang->id;
@@ -482,7 +495,7 @@ class PembelianController extends Controller
                     $logStokBarang = new LogStokBarangModel();
                     $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                     $logStokBarang->tipe_log = 'pesanan_update';
-                    $logStokBarang->keterangan = 'Update pesanan';
+                    $logStokBarang->keterangan = 'Tambah barang di nota ' . $notaPembeli->no_nota  . ' pada pelanggan ' .  $pembeliData->nama_pembeli;
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -633,6 +646,7 @@ class PembelianController extends Controller
         // Temukan NotaPembeli dengan relasi yang terkait
         $notaPembeli = NotaPembeli::with([
             'bukuBesar',
+            'Pembeli',
             // 'PesananPembeli',
             'PesananPembeli.stokBarang',
             'returPembelis',
@@ -656,7 +670,7 @@ class PembelianController extends Controller
                 $logStokBarang = new LogStokBarangModel();
                 $logStokBarang->json_content = $stokBarangtoDelete; // Sesuaikan dengan isi json_content Anda
                 $logStokBarang->tipe_log = 'pesanan_delete';
-                $logStokBarang->keterangan = 'Hapus pesanan';
+                $logStokBarang->keterangan = 'Hapus pesanan barang dari ' . $notaPembeli->no_nota . ' pada pelanggan ' . $notaPembeli->Pembeli->nama_pembeli;
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 $logStokBarang->id_stok_barang = $stokBarangtoDelete->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $stokBarangtoDelete->id_barang; // Sesuaikan dengan id_barang yang ada

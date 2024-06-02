@@ -93,7 +93,12 @@
                                     @endswitch
                                 </h2>
                             </strong>
-
+                            <div class="mb-3">
+                             
+                                <div id="description3" class="p-2 border">
+                                    {{  $logStkbrng->keterangan }}
+                                </div>
+                            </div>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -110,8 +115,8 @@
 
                                     <tr>
                                         <td>{{ 1 }}</td>
-                                        <td>{{ $stok_barang['stok_masuk'] ?? 0 }}</td>
-                                        <td>{{ $stok_barang['stok_keluar'] ?? 0 }}</td>
+                                        <td>{{ number_format($stok_barang['stok_masuk'] ?? 0, 1) }}</td>
+                                        <td>{{ number_format($stok_barang['stok_keluar'] ?? 0, 1) }}</td>
                                     </tr>
 
                                 </tbody>

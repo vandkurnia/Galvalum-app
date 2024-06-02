@@ -177,7 +177,7 @@ class ReturPembeliController extends Controller
                     $logStokBarang = new LogStokBarangModel();
                     $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                     $logStokBarang->tipe_log = 'retur_pembeli_create';
-                    $logStokBarang->keterangan = 'Tambah Retur Pembeli ';
+                    $logStokBarang->keterangan = 'Barang pesanan masuk ke retur pembeli';
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -209,7 +209,7 @@ class ReturPembeliController extends Controller
                 $logStokBarang = new LogStokBarangModel();
                 $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
                 $logStokBarang->tipe_log = 'retur_pembeli_create';
-                $logStokBarang->keterangan = 'Hapus Stok Barang Retur Pembeli ';
+                $logStokBarang->keterangan = 'Hapus Stok Barang Retur Pembeli';
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada

@@ -105,7 +105,8 @@
                                     <td>{{ number_format($notaPembelian['terbayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaPembelian['total'] - $notaPembelian['terbayar'], 0, ',', '.') }}
                                     </td>
-                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'])) }}</td>
+                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'] ?? $notaPembelian['tanggal_pembelian'])) }}</td>
+
                                     <td>
                                         @if ($notaPembelian['status_bayar'] == 'Lunas')
                                             <span class="badge badge-success">{{ $notaPembelian['status_bayar'] }}</span>
@@ -186,7 +187,7 @@
                                     <td>{{ number_format($notaLunasdanKelebihan['terbayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaLunasdanKelebihan['total'] - $notaLunasdanKelebihan['terbayar'], 0, ',', '.') }}
                                     </td>
-                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaLunasdanKelebihan['jatuh_tempo'])) }}</td>
+                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaLunasdanKelebihan['jatuh_tempo'] ?? $notaLunasdanKelebihan['tanggal_pembelian'])) }}</td>
                                     <td>
                                         @if ($notaLunasdanKelebihan['status_bayar'] == 'Lunas')
                                             <span

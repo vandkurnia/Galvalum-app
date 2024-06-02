@@ -84,7 +84,7 @@
                                 <th>Nama Supplier</th>
                                 <th>Barang Pesanan</th>
                                 <th>Total Pemesanan</th>
-                                <th>Tanggal Stock</th>
+                                <th>Tanggal Pembelian</th>
                                 <th>Harga Bayar</th>
                                 <th>Jumlah Terbayar</th>
                                 <th>Kekurangan</th>
@@ -101,11 +101,13 @@
                                     <td>{{ $laporan['nama_pemasok'] }}</td>
                                     <td>{{ $laporan['nama_barang'] }}</td>
                                     <td>{{ $laporan['total_pesanan'] }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok'])) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok_alt'])) }}</td>
                                     <td>{{ (int) $laporan['harga_bayar'] }}</td>
                                     <td>{{ (int) $laporan['jumlah_terbayar'] }}</td>
                                     <td>{{ $laporan['harga_bayar'] - $laporan['jumlah_terbayar'] }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'])) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}
+                                    </td>
+
                                     <td><span class="badge badge-warning">Belum Lunas</span></td>
                                     <td>Unpaid</td>
                                     <td><a href="{{ route('cicilan.hutang.index', ['id_barang' => $laporan['id_barang']]) }}"
@@ -129,7 +131,7 @@
                             </tr> --}}
                         </tbody>
                     </table>
-                 
+
                 </div>
             </div>
         </div>

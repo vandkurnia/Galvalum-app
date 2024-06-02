@@ -113,7 +113,7 @@
                                             $barangs = DB::table('barangs')->where('id_barang', $pesanan_pembeli['id_barang'])->first();
                                             echo $barangs->nama_barang;
                                         @endphp</td>
-                                        <td>{{ (int) $pesanan_pembeli['jumlah_pembelian'] }}</td>
+                                       <td>{{ number_format($pesanan_pembeli['jumlah_pembelian'] ?? 0, 1) }}</td>
                                         <td>{{ $pesanan_pembeli['harga'] }}</td>
                                         <td> @switch($pesanan_pembeli['jenis_pembelian'])
                                             @case('aplicator')

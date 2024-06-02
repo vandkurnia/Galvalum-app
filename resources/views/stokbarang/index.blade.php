@@ -131,7 +131,7 @@
                                 <th id="totalHargaPenjualan">Rp. 0</th>
                                 <th id="totalHargaPemasok">Rp. 0</th>
                                 <th id="totalStok">0</th>
-                                <th colspan="2"></th>
+                                <th colspan="3"></th>
                             </tr>
                         </tfoot>
                     </table>
