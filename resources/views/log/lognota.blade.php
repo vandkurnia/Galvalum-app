@@ -27,9 +27,9 @@
 
                 <div class="table-responsive">
                     @foreach ($logNotaData as $logNota)
-                        <div>
+                    <div style="margin-bottom: 90px; border-top: 2px solid gray; padding-top: 20px;">
                             <strong>
-                                <h2>{{ $logNota->admin->nama_admin }} | {{ $logNota->nota->no_nota }} |
+                                <h2 >{{ $logNota->admin->nama_admin }} | {{ $logNota->nota->no_nota }} |
                                     {{ \Carbon\Carbon::parse($logNota->created_at)->translatedFormat('l, d F Y') }} | @switch($logNota->tipe_log)
                                     @case('create')
                                         <span class="badge badge-primary">Baru</span>
@@ -114,7 +114,7 @@
                                             echo $barangs->nama_barang;
                                         @endphp</td>
                                        <td>{{ number_format($pesanan_pembeli['jumlah_pembelian'] ?? 0, 1) }}</td>
-                                        <td>{{ $pesanan_pembeli['harga'] }}</td>
+                                        <td>{{ 'Rp ' . number_format($pesanan_pembeli['harga'], 0, ',', '.')  }}</td>
                                         <td> @switch($pesanan_pembeli['jenis_pembelian'])
                                             @case('aplicator')
                                                 Aplicator
