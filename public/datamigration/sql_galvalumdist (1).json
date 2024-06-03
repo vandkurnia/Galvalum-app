@@ -1,0 +1,38 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "sql_galvalumdist"
+    },
+  
+   
+ 
+   
+
+
+ 
+ 
+ 
+    {
+        "type": "table",
+        "name": "retur",
+        "database": "sql_galvalumdist",
+        "data": []
+    },
+    {
+        "type": "table",
+        "name": "retur_pemasok",
+        "database": "sql_galvalumdist",
+        "data": []
+    },
+  
+
+  
+ 
+  
+  
+]

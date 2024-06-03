@@ -114,7 +114,7 @@
                                         <td>
                                             <a href="{{ route('log-stok-barang.index', ['id_barang' => $databarang->hash_id_barang]) }}"
                                                 class="btn btn-info">
-                                                <i class="bi bi-info-circle"></i> Info
+                                                <i class="fas fa-info-circle"></i>
                                             </a>
 
                                         </td>

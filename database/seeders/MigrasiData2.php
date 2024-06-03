@@ -146,10 +146,11 @@ class MigrasiData2 extends Seeder
                 'updated_at' => Carbon::parse($item['updated_at']),
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
             ]);
-            // StokBarangModel::create([
-            //     'id_barang' => $barangs->id_barang,  // Ensure this matches an existing id_barang in barangs table
-            //     'stok_masuk' => $item['stok']
-            // ]);
+            StokBarangModel::create([
+                'id_barang' => $barangs->id_barang,  // Ensure this matches an existing id_barang in barangs table
+                'stok_masuk' => 0,
+                'tipe_stok' => 'stokbarang'
+            ]);
         }
 
 
@@ -186,26 +187,43 @@ class MigrasiData2 extends Seeder
         }
 
 
-        // Stok Barang
-        // Path to the JSON file
-        $jsonFilePath = public_path('datamigration/stok_barang.json');
+        // // Stok Barang
+        // // Path to the JSON file
+        // $jsonFilePath = public_path('datamigration/stok_barang.json');
 
-        // Get the JSON data
-        $jsonStokBarang = file_get_contents($jsonFilePath);
-        $stokBarangData = json_decode($jsonStokBarang, true);
+        // // Get the JSON data
+        // $jsonStokBarang = file_get_contents($jsonFilePath);
+        // $stokBarangData = json_decode($jsonStokBarang, true);
 
-        // Iterate through each item and create a new StokBarang record
-        foreach ($stokBarangData[2]['data'] as $item) {
-            StokBarangModel::create([
-                'id' => $item['id'],
-                'id_barang' => $item['id_barang'],
-                'stok_masuk' => $item['stok_masuk'],
-                'stok_keluar' => $item['stok_keluar'],
-                'created_at' => Carbon::parse($item['created_at']),
-                'updated_at' => Carbon::parse($item['updated_at']),
-                'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
-            ]);
-        }
+        // // Iterate through each item and create a new StokBarang record
+
+        // foreach ($stokBarangData[2]['data'] as $item) {
+        //     // $id = $item['id'];
+        //     // $stokMasuk = $item['stok_masuk'];
+        //     // $stokKeluar = $item['stok_keluar'];
+
+        //     // $netStok = $stokMasuk - $stokKeluar;
+
+        //     // if (isset($stokBarangList[$id])) {
+        //     //     // If the ID already exists, update the stock
+        //     //     $stokBarangList[$id] += $netStok;
+        //     // } else {
+        //     //     // If the ID does not exist, set the initial stock
+        //     //     $stokBarangList[$id] = $netStok;
+        //     // }
+
+
+        //     StokBarangModel::create([
+        //         'id' => $item['id'],
+        //         'id_barang' => $item['id_barang'],
+        //         'stok_masuk' => $item['stok_masuk'],
+        //         'stok_keluar' => $item['stok_keluar'],
+        //         'created_at' => Carbon::parse($item['created_at']),
+        //         'updated_at' => Carbon::parse($item['updated_at']),
+        //         'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
+        //     ]);
+        // }
+
 
 
 
@@ -215,10 +233,18 @@ class MigrasiData2 extends Seeder
 
         foreach ($pesananPembeli[2]['data'] as $item) {
 
+
+
+            // $stokLama = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $item['id_barang'])->groupBy('id_barang')->first();
+
             $stokBarang = StokBarangModel::create([
                 'stok_keluar' => $item['jumlah_pembelian'],
-                'id_barang' => $item['id_barang']
+                'id_barang' => $item['id_barang'],
+                'tipe_stok' => 'pesanan'
             ]);
+
+
+            // Buat entri baru di PesananPembeli
             PesananPembeli::create([
                 'id_pesanan' => $item['id_pesanan'],
                 'jumlah_pembelian' => $item['jumlah_pembelian'],
@@ -234,6 +260,8 @@ class MigrasiData2 extends Seeder
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
                 'id_stokbarang' => $stokBarang->id
             ]);
+
+          
         }
 
 
