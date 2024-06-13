@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Barang;
 use App\Models\BukubesarModel;
 use App\Models\StokBarangModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -51,6 +52,7 @@ class MigrasiData3 extends Seeder
         $jsonStok_barang = file_get_contents(public_path('barang_stok.json'));
         $Stok_barang = json_decode($jsonStok_barang, true);
         foreach ($Stok_barang as $id_barang => $data) {
+            
 
             // $stokBarang->
             $totalStok = DB::table('stok_barang')
@@ -58,15 +60,9 @@ class MigrasiData3 extends Seeder
                 ->where('id_barang', $id_barang)
                 ->value('stok');
           
-            // Given values
-            $a = $totalStok; // Stok Lama
-            $result = $data['stok']; // Stok yang akan disetuju
-
-            // Calculate b
-            $b = $result - $a;
-            $stokBarang = StokBarangModel::where('id_barang', $id_barang)->first();
-            $stokBarang->stok_masuk = $stokBarang->stok_masuk + $b;
-            $stokBarang->save();
+            $barang = Barang::find($id_barang);
+            $barang->stok = $data['stok'];
+            $barang->save();
         }
     }
 }

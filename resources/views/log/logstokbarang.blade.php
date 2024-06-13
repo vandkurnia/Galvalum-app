@@ -94,17 +94,20 @@
                                 </h2>
                             </strong>
                             <div class="mb-3">
-                             
+
                                 <div id="description3" class="p-2 border">
-                                    {{  $logStkbrng->keterangan }}
+                                    {{ $logStkbrng->keterangan }}
                                 </div>
+                            
                             </div>
                             <table class="table table-bordered">
+                               
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th>Stok</th>
                                         <th>Stok Masuk</th>
                                         <th>Stok Keluar</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -114,9 +117,9 @@
                                     @endphp
 
                                     <tr>
-                                        <td>{{ 1 }}</td>
-                                        <td>{{ number_format($stok_barang['stok_masuk'] ?? 0, 1) }}</td>
-                                        <td>{{ number_format($stok_barang['stok_keluar'] ?? 0, 1) }}</td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_terkini ?? 0, 1, '.', '')}}</td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_masuk ?? 0,  1, '.', '') }}</td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_keluar ?? 0,  1, '.', '') }}</td>
                                     </tr>
 
                                 </tbody>

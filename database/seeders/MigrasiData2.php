@@ -211,6 +211,7 @@ class MigrasiData2 extends Seeder
         //     //     // If the ID does not exist, set the initial stock
         //     //     $stokBarangList[$id] = $netStok;
         //     // }
+           
 
 
         //     StokBarangModel::create([

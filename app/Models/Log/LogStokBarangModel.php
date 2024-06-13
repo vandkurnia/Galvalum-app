@@ -3,6 +3,7 @@
 namespace App\Models\Log;
 
 use App\Models\Barang;
+use App\Models\StokBarangHistoryModel;
 use App\Models\StokBarangModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,8 @@ class LogStokBarangModel extends Model
         'keterangan',
         'id_admin',
         'id_stok_barang',
-        'id_barang'
+        'id_barang',
+        'id_stok_barang_history'
     ];
 
     // Definisikan relasi dengan model User (admin)
@@ -42,5 +44,11 @@ class LogStokBarangModel extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
+    }
+
+    // Relasi dengan model StokBarangHistoryModel
+    public function stokBarangHistory()
+    {
+        return $this->belongsTo(StokBarangHistoryModel::class, 'id_stok_barang_history', 'id_stok');
     }
 }

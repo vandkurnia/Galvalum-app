@@ -7,6 +7,7 @@ use App\Models\BukubesarBarangModel;
 use App\Models\BukubesarModel;
 use App\Models\Log\LogStokBarangModel;
 use App\Models\PemasokBarang;
+use App\Models\StokBarangHistoryModel;
 use App\Models\StokBarangModel;
 use App\Models\TipeBarang;
 use Carbon\Carbon;
@@ -22,8 +23,8 @@ class StokController extends Controller
         $dataSemuaBarang = Barang::with('pemasok', 'tipeBarang', 'stokBarang')->get();
         $dataBaruSemuaBarang = [];
         foreach ($dataSemuaBarang as $barang) {
-            $totalStok = $barang->stokBarang->sum('stok_masuk') - $barang->stokBarang->sum('stok_keluar');
-            $barang->stok = $totalStok;
+            // $totalStok = $barang->stokBarang->sum('stok_masuk') - $barang->stokBarang->sum('stok_keluar');
+            // $barang->stok = $totalStok;
             $dataBaruSemuaBarang[] = $barang;
         }
 
@@ -110,6 +111,7 @@ class StokController extends Controller
         $barang->total = $barang->harga_barang_pemasok * $request->stok;
         $barang->nominal_terbayar =  $request->get('nominal_terbayar');
         $barang->tenggat_bayar = $request->get('tenggat_bayar');
+        $barang->stok = $request->stok;
         $barang->save();
 
 
@@ -124,11 +126,19 @@ class StokController extends Controller
         $bukuBesar->debit = $request->stok * $request->harga_barang_pemasok; // Isi dengan nilai kredit yang sesuai
         $bukuBesar->save();
 
+        // Buat instance dari model
+        $stokbarangHistory = new StokBarangHistoryModel();
+        $stokbarangHistory->id_barang = $barang->id_barang;
+        $stokbarangHistory->stok_masuk = $request->stok;
+        $stokbarangHistory->stok_terkini = $barang->stok;
+        $stokbarangHistory->save();
+
         $stokBarang = StokBarangModel::create([
             'stok_masuk' => $request->stok,
             'id_barang' => $barang->id_barang,
             'tipe_stok' => 'stokbarang'
         ]);
+
 
 
 
@@ -150,6 +160,7 @@ class StokController extends Controller
         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
         $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
+        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
         $logStokBarang->save();
         DB::commit();
 
@@ -199,6 +210,7 @@ class StokController extends Controller
         $nominal_terbayar_lama =  $barang->nominal_terbayar;
         $barang->nominal_terbayar = $request->nominal_terbayar;
         $barang->tenggat_bayar = $request->tenggat_bayar;
+        $barang->stok = $request->stok;
         $barang->save();
 
 
@@ -268,6 +280,14 @@ class StokController extends Controller
 
 
 
+                // Buat instance dari model
+                $stokbarangHistory = new StokBarangHistoryModel();
+                $stokbarangHistory->id_barang = $barang->id_barang;
+                $stokbarangHistory->stok_masuk = $stokupdate;
+                $stokbarangHistory->stok_terkini = $stokBaru;
+                $stokbarangHistory->save();
+
+
 
 
                 // Simpan ke log
@@ -278,6 +298,7 @@ class StokController extends Controller
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 $logStokBarang->id_stok_barang = $stokBarangubahStok->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $stokBarangubahStok->id_barang; // Sesuaikan dengan id_barang yang ada
+                $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                 $logStokBarang->save();
             }
         }
@@ -512,7 +533,16 @@ class StokController extends Controller
         // Jumlah Stok Final Stok dari input
         $stoktambah = $validatedData['stok_tambah'] +  $stokBarang->stok_masuk;
         $stokBarang->stok_masuk = $stoktambah;
+
+
         $stokBarang->save();
+
+        // Buat instance dari model
+        $stokbarangHistory = new StokBarangHistoryModel();
+        $stokbarangHistory->id_barang = $barang->id_barang;
+        $stokbarangHistory->stok_masuk = $validatedData['stok_tambah'];
+        $stokbarangHistory->stok_terkini = $stoktambah;
+        $stokbarangHistory->save();
 
 
 
@@ -525,12 +555,15 @@ class StokController extends Controller
         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
         $logStokBarang->save();
 
 
 
 
         // Update total
+        $barang->stok =  $barang->stok + $validatedData['stok_tambah'];
+     
         $barang->total = $stokBarang->stok_masuk * $barang->harga_barang_pemasok;
 
         $barang->save();

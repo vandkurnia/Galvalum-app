@@ -86,7 +86,7 @@
                                     <td>{{ $databarang->ukuran }}</td>
                                     <td>{{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
                                     <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
-                                    <td>{{ $databarang->stok }}</td>
+                                    <td>{{ number_format($databarang->stok, 1, '.','') }}</td>
                                     <td> <button class="btn btn-primary btn-sm"
                                             onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
                                             Retur
