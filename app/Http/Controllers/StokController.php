@@ -479,8 +479,8 @@ class StokController extends Controller
         }
 
         $dataBarangBaru = [];
-        $totalStok = $dataBarang->stokBarang->sum('stok_masuk') - $dataBarang->stokBarang->sum('stok_keluar');
-        $dataBarang->stok = $totalStok;
+        // $totalStok = $dataBarang->stokBarang->sum('stok_masuk') - $dataBarang->stokBarang->sum('stok_keluar');
+        // $dataBarang->stok = $totalStok;
         $dataBarangBaru = $dataBarang;
         // print_r($dataBarang);
         return response()->json([

@@ -86,7 +86,7 @@
                                     <td>{{ $databarang->ukuran }}</td>
                                     <td>{{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
                                     <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($databarang->stok, 1, '.','') }}</td>
+                                    <td>{{ number_format($databarang->stok, 1, '.', '') }}</td>
                                     <td> <button class="btn btn-primary btn-sm"
                                             onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
                                             Retur
@@ -616,17 +616,15 @@
 
         function updateStokTambah() {
             var stokReferensiHasil = $('#stok_referensiHasil');
-            var stokTambah = parseInt($('#stok_tambahTambahStok').val());
+            var stokTambah = parseFloat($('#stok_tambahTambahStok').val()); // Changed to parseFloat
 
             if (!isNaN(stokTambah)) {
+                let maxReferensi = parseFloat(stokReferensiHasil.attr('max')); // Changed to parseFloat
 
-
-                let maxReferensi = parseInt(stokReferensiHasil.attr('max'));
-
-                $('#stok_referensiHasil').val(maxReferensi + stokTambah);
+                // Update the value and ensure it has up to two decimal places
+                $('#stok_referensiHasil').val((maxReferensi + stokTambah).toFixed(2));
                 checkNominalTerbayarStokTambah();
             }
-
         }
     </script>
     <script>
