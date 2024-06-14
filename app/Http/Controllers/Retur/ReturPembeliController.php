@@ -14,6 +14,7 @@ use App\Models\Pembeli;
 use App\Models\PesananPembeli;
 use App\Models\Retur\ReturPembeliModel;
 use App\Models\Retur\ReturPesananPembeliModel;
+use App\Models\StokBarangHistoryModel;
 use App\Models\StokBarangModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -173,6 +174,22 @@ class ReturPembeliController extends Controller
                     $stokBarang->id_barang = $pesananData->id_barang;
                     $stokBarang->save();
 
+
+
+
+                    // $perbedaan = $pesananData->jumlah_pembelian - $returPesanan->qty;
+                    $barang = Barang::find($stokBarang->id_barang);
+                    $barang->stok = $barang->stok +  $returPesanan->qty;
+                    $barang->save();
+                    // Buat instance dari model
+                    $stokbarangHistory = new StokBarangHistoryModel();
+                    $stokbarangHistory->id_barang = $barang->id_barang;
+                    $stokbarangHistory->stok_masuk = $returPesanan->qty;
+                    // $stokbarangHistory->stok_keluar = $item['qty'];
+
+                    $stokbarangHistory->stok_terkini = $barang->stok;
+                    $stokbarangHistory->save();
+
                     // Simpan ke log
                     $logStokBarang = new LogStokBarangModel();
                     $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -181,7 +198,9 @@ class ReturPembeliController extends Controller
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                     $logStokBarang->save();
+
 
                     // Associate the return order with the stock entry
                     $returPesanan = ReturPesananPembeliModel::find($returPesanan->id_retur_pesanan);
@@ -205,6 +224,23 @@ class ReturPembeliController extends Controller
                 $pesananCekQtynya->delete();
 
                 $stokBarangDelete = StokBarangModel::find($pesananCekQtynya->id_stokbarang);
+
+
+
+
+
+                // $perbedaan = $pesananData->jumlah_pembelian - $returPesanan->qty;
+                $barang = Barang::find($stokBarang->id_barang);
+                $barang->stok = $barang->stok +  $returPesanan->qty;
+                $barang->save();
+                // Buat instance dari model
+                $stokbarangHistory = new StokBarangHistoryModel();
+                $stokbarangHistory->id_barang = $barang->id_barang;
+                //   $stokbarangHistory->stok_masuk =$returPesanan->qty;
+                // $stokbarangHistory->stok_keluar = $item['qty'];
+
+                $stokbarangHistory->stok_terkini = $barang->stok;
+                $stokbarangHistory->save();
                 // Simpan ke log
                 $logStokBarang = new LogStokBarangModel();
                 $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -213,6 +249,7 @@ class ReturPembeliController extends Controller
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                 $logStokBarang->save();
                 $stokBarangDelete->delete();
             }
@@ -310,24 +347,72 @@ class ReturPembeliController extends Controller
 
                     if ($stokBarang) {
 
-                        // Cek jika rusak maka stoknya berkurang
-                        foreach ($pesananData->returPesananPembeli as  $returPesananPembeli) {
-                            if ($returPesananPembeli->type_retur_pesanan == 'retur_murni_rusak') {
-                                // dd([
-                                //     'jumlah_retur' => $returPesananPembeli->qty,
-                                //     'stok' => $pesananData->jumlah_pembelian,
 
-                                //     'total' => $returPesananPembeli->qty + $pesananData->jumlah_pembelian
-                                // ]);
-                                $stokBarang->stok_keluar = $returPesananPembeli->qty + $pesananData->jumlah_pembelian;
-                                $stokBarang->id_barang = $barangData->id_barang;
-                                $stokBarang->save();
-                            } else {
-                                $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
-                                $stokBarang->id_barang = $barangData->id_barang;
-                                $stokBarang->save();
-                            }
-                        };
+                        $returMurniRusak = ReturPesananPembeliModel::where('id_pesanan_pembeli', $pesananData->id_pesanan)
+                            ->where('id_retur_pembeli', $dataReturPembeli->id_retur_pembeli)
+                            ->where('type_retur_pesanan', 'retur_murni_rusak')
+                            ->first();
+
+                        $returMurniTidakRusak = ReturPesananPembeliModel::where('id_pesanan_pembeli', $pesananData->id_pesanan)
+                            ->where('id_retur_pembeli', $dataReturPembeli->id_retur_pembeli)
+                            ->where('type_retur_pesanan', 'retur_murni_tidak_rusak')
+                            ->first();
+
+                        if ($returMurniRusak) {
+                            $stokBarang->stok_keluar = $returMurniRusak->qty + $pesananData->jumlah_pembelian;
+                            $stokBarang->id_barang = $barangData->id_barang;
+                            $stokBarang->save();
+
+                            $barang = Barang::find($pesananData->id_barang);
+                            $barang->stok = $barang->stok - $returTmbhn['jumlah_pesanan'];
+                            $barang->save();
+
+                            // Create an instance of the model
+                            $stokbarangHistory = new StokBarangHistoryModel();
+                            $stokbarangHistory->id_barang = $barang->id_barang;
+                            $stokbarangHistory->stok_keluar = $returTmbhn['jumlah_pesanan'];
+                            $stokbarangHistory->stok_terkini = $barang->stok;
+                            $stokbarangHistory->save();
+
+                            // Save to log
+                            $logStokBarang = new LogStokBarangModel();
+                            $logStokBarang->json_content = json_encode($stokBarang); // Ensure json_content is a valid JSON string
+                            $logStokBarang->tipe_log = 'retur_pembeli_create';
+                            $logStokBarang->keterangan = 'Retur Tambah Stok';
+                            $logStokBarang->id_admin = Auth::user()->id_admin;
+                            $logStokBarang->id_stok_barang = $stokBarang->id;
+                            $logStokBarang->id_barang = $stokBarang->id_barang;
+                            $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+                            $logStokBarang->save();
+                        }
+
+                        if ($returMurniTidakRusak) {
+                            $stokBarang->stok_keluar = $pesananData->jumlah_pembelian;
+                            $stokBarang->id_barang = $barangData->id_barang;
+                            $stokBarang->save();
+
+                            $barang = Barang::find($pesananData->id_barang);
+                            $barang->stok -= $returTmbhn['jumlah_pesanan'];
+                            $barang->save();
+
+                            // Create an instance of the model
+                            $stokbarangHistory = new StokBarangHistoryModel();
+                            $stokbarangHistory->id_barang = $barang->id_barang;
+                            $stokbarangHistory->stok_keluar = $returTmbhn['jumlah_pesanan'];
+                            $stokbarangHistory->stok_terkini = $barang->stok;
+                            $stokbarangHistory->save();
+
+                            // Save to log
+                            $logStokBarang = new LogStokBarangModel();
+                            $logStokBarang->json_content = json_encode($stokBarang); // Ensure json_content is a valid JSON string
+                            $logStokBarang->tipe_log = 'retur_pembeli_create';
+                            $logStokBarang->keterangan = 'Retur Tambah Stok';
+                            $logStokBarang->id_admin = Auth::user()->id_admin;
+                            $logStokBarang->id_stok_barang = $stokBarang->id;
+                            $logStokBarang->id_barang = $stokBarang->id_barang;
+                            $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+                            $logStokBarang->save();
+                        }
 
 
 
@@ -383,6 +468,19 @@ class ReturPembeliController extends Controller
                     $stokBarang->id_barang = $barangData->id_barang;
                     $stokBarang->save();
 
+
+
+                    $barang->stok = $barang->stok - $pesananData->jumlah_pembelian;
+                    $barang->save();
+                    // Buat instance dari model
+                    $stokbarangHistory = new StokBarangHistoryModel();
+                    $stokbarangHistory->id_barang = $barang->id_barang;
+                    // $stokbarangHistory->stok_masuk = $validatedData['stok_tambah'];
+                    $stokbarangHistory->stok_keluar = $pesananData->jumlah_pembelian;
+                    $stokbarangHistory->stok_terkini = $barang->stok;
+                    $stokbarangHistory->save();
+
+
                     // Simpan ke log
                     $logStokBarang = new LogStokBarangModel();
                     $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -391,6 +489,7 @@ class ReturPembeliController extends Controller
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                    $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                     $logStokBarang->save();
 
 
@@ -605,7 +704,7 @@ class ReturPembeliController extends Controller
 
             foreach ($returPesananPembeli as $returPesanan) {
                 $pesananPembeli = PesananPembeli::withTrashed()->find($returPesanan->id_pesanan_pembeli);
-                dump($returPesanan);
+
                 switch ($returPesanan->type_retur_pesanan) {
                     case 'retur_murni_tidak_rusak':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
@@ -617,6 +716,21 @@ class ReturPembeliController extends Controller
                         $stokBarang->stok_keluar = $pesananPembeli->jumlah_pembelian;
                         $stokBarang->save();
 
+
+
+
+
+                        $barang = Barang::find($stokBarang->id_barang);
+                        $barang->stok = $barang->stok - $returPesanan->qty;
+                        $barang->save();
+
+                        // Buat instance dari model
+                        $stokbarangHistory = new StokBarangHistoryModel();
+                        $stokbarangHistory->id_barang = $barang->id_barang;
+                        $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        $stokbarangHistory->stok_terkini = $barang->stok;
+                        $stokbarangHistory->save();
+
                         // Simpan ke log
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -625,6 +739,7 @@ class ReturPembeliController extends Controller
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                         $logStokBarang->save();
                         break;
 
@@ -633,9 +748,31 @@ class ReturPembeliController extends Controller
                         $pesananPembeli->harga = $returPesanan->harga;
                         $pesananPembeli->save();
                         // Update Stok Barang
-                        $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
+                        $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
                         $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
                         $stokBarang->save();
+
+
+
+
+
+
+
+                        $barang = Barang::find($stokBarang->id_barang);
+                        $barang->stok = $barang->stok;
+                        $barang->save();
+
+                        // Buat instance dari model
+                        $stokbarangHistory = new StokBarangHistoryModel();
+                        $stokbarangHistory->id_barang = $barang->id_barang;
+                        // $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        // $stokbarangHistory->stok_keluar = $item['qty'];
+                        $stokbarangHistory->stok_terkini = $barang->stok;
+                        $stokbarangHistory->save();
+
+
+
+
 
 
                         // Simpan ke log
@@ -646,6 +783,7 @@ class ReturPembeliController extends Controller
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                         $logStokBarang->save();
                         break;
 
@@ -660,6 +798,25 @@ class ReturPembeliController extends Controller
                         $stokBarang->save();
 
 
+
+
+
+
+                        // New Stok Barang History
+                        $barang = Barang::find($stokBarang->id_barang);
+
+                        $barang->stok = $barang->stok + $pesananPembeli->jumlah_pembelian;
+                        $barang->save();
+                        // Buat instance dari model
+                        $stokbarangHistory = new StokBarangHistoryModel();
+                        $stokbarangHistory->id_barang = $barang->id_barang;
+                        $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        // $stokbarangHistory->stok_keluar = $item['qty'];
+                        $stokbarangHistory->stok_terkini = $barang->stok;
+                        $stokbarangHistory->save();
+
+
+
                         // Simpan ke log
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -668,6 +825,7 @@ class ReturPembeliController extends Controller
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                         $logStokBarang->save();
 
                         break;
@@ -680,6 +838,21 @@ class ReturPembeliController extends Controller
                         // Hapus stok barang
                         $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
 
+
+
+
+                        // New Stok Barang History
+                        $barang = Barang::find($stokBarang->id_barang);
+
+                        $barang->stok = $barang->stok + $pesananPembeli->jumlah_pembelian;
+                        $barang->save();
+                        // Buat instance dari model
+                        $stokbarangHistory = new StokBarangHistoryModel();
+                        $stokbarangHistory->id_barang = $barang->id_barang;
+                        $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        // $stokbarangHistory->stok_keluar = $item['qty'];
+                        $stokbarangHistory->stok_terkini = $barang->stok;
+                        $stokbarangHistory->save();
                         // Simpan ke log
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
@@ -688,6 +861,7 @@ class ReturPembeliController extends Controller
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                         $logStokBarang->save();
 
                         $stokBarang->delete();
