@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class LogStokBarangModel extends Model
 {
     use HasFactory;
-    use HasFactory;
 
     // Nama tabel yang sesuai
     protected $table = 'log_stok_barang';

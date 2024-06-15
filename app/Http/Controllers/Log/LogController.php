@@ -20,7 +20,7 @@ class LogController extends Controller
     public function LogStokBarang($id_barang)
     {
         $barang = Barang::where('hash_id_barang', $id_barang)->first();
-        $logStokBarang = LogStokBarangModel::with('admin', 'barang', 'stokBarangHistory')->where('id_barang', $barang->id_barang)->orderBy('created_at', 'desc')->get();
+        $logStokBarang = LogStokBarangModel::with('admin', 'barang', 'stokBarangHistory')->where('id_barang', $barang->id_barang)->orderBy('id', 'desc')->get();
 
 
   

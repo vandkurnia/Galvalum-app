@@ -54,9 +54,11 @@ class StokController extends Controller
                 ->first();
 
             // Menambahkan jumlah stok ke dalam data barang
-            $dataBarang->stok = $stokbarang->stok;
+            // $dataBarang->stok = $stokbarang->stok;
+
             $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)->first();
-            $dataBarang->stokoriginal = $stokbarang->stok_masuk;
+            // $dataBarang->stokoriginal = $stokbarang->stok_masuk;
+            $dataBarang->stokoriginal = $dataBarang->stok;
         }
         $dataTipeBarang = TipeBarang::all();
         $dataPemasok = PemasokBarang::all();
@@ -481,6 +483,7 @@ class StokController extends Controller
         $dataBarangBaru = [];
         // $totalStok = $dataBarang->stokBarang->sum('stok_masuk') - $dataBarang->stokBarang->sum('stok_keluar');
         // $dataBarang->stok = $totalStok;
+        
         $dataBarangBaru = $dataBarang;
         // print_r($dataBarang);
         return response()->json([
