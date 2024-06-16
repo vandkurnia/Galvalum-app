@@ -19,7 +19,7 @@ class PesananPembeli extends Model
         'diskon',
         'id_nota',
         'id_barang',
-        'id_stokbarang',
+        // 'id_stokbarang',
         'jenis_pembelian',
         'harga_potongan',
         'id_diskon'

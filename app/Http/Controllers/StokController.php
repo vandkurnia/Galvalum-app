@@ -48,15 +48,15 @@ class StokController extends Controller
 
         if ($dataBarang) {
             // Mengambil jumlah total stok barang
-            $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)
-                ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
-                ->whereNull('deleted_at')
-                ->first();
+            // $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)
+            //     ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+            //     ->whereNull('deleted_at')
+            //     ->first();
 
             // Menambahkan jumlah stok ke dalam data barang
             // $dataBarang->stok = $stokbarang->stok;
 
-            $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)->first();
+            // $stokbarang = StokBarangModel::where('id_barang', $dataBarang->id_barang)->first();
             // $dataBarang->stokoriginal = $stokbarang->stok_masuk;
             $dataBarang->stokoriginal = $dataBarang->stok;
         }
@@ -135,11 +135,11 @@ class StokController extends Controller
         $stokbarangHistory->stok_terkini = $barang->stok;
         $stokbarangHistory->save();
 
-        $stokBarang = StokBarangModel::create([
-            'stok_masuk' => $request->stok,
-            'id_barang' => $barang->id_barang,
-            'tipe_stok' => 'stokbarang'
-        ]);
+        // $stokBarang = StokBarangModel::create([
+        //     'stok_masuk' => $request->stok,
+        //     'id_barang' => $barang->id_barang,
+        //     'tipe_stok' => 'stokbarang'
+        // ]);
 
 
 
@@ -156,11 +156,14 @@ class StokController extends Controller
 
         // Simpan ke log
         $logStokBarang = new LogStokBarangModel();
-        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+        $logStokBarang->json_content = [
+            'type' => 'stok_store',
+            'data' => []
+        ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
         $logStokBarang->tipe_log = 'barang_create';
-        $logStokBarang->keterangan = 'Tambah barang ke stok dengan total stok awal ' . $stokBarang->stok_masuk;
+        $logStokBarang->keterangan = 'Tambah barang ke stok dengan total stok awal ' . $request->stok;
         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+        // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
         $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
         $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
         $logStokBarang->save();
@@ -226,83 +229,142 @@ class StokController extends Controller
 
 
         // Menghitung total stok
-        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
-            ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
-            ->first();
+        // $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)
+        //     ->selectRaw('SUM(stok_masuk - stok_keluar) as stok')
+        //     ->first();
 
         // Stok Lama 
-        $stokLama = $stokBarang->stok;
+        // $stokLama = $stokBarang->stok;
+        $stokLama = $barang->stok;
 
 
 
         $stok = $request->stok;
 
-        if ($stok != $stokBarang->stok) {
+        if ($stok != $stokLama) {
 
 
-            $selisihStokReqdanAsli = $stok  - $stokBarang->stok;
+            $selisihStokReqdanAsli = $stok  - $stokLama;
 
             // Proses pembaruan stok barang
-            $stok_barang = DB::table('stok_barang')
-                ->where('id_barang', $barang->id_barang)
-                ->orderBy('created_at', 'asc')
-                ->lockForUpdate()
-                ->first();
+            // $stok_barang = DB::table('stok_barang')
+            //     ->where('id_barang', $barang->id_barang)
+            //     ->orderBy('created_at', 'asc')
+            //     ->lockForUpdate()
+            //     ->first();
 
-            if ($stok_barang) {
-                // Mendapatkan waktu sekarang
-                $now = Carbon::now();
-
-
-
-                // Proses pembaruan stok barang
-                $stokupdate = $stok_barang->stok_masuk + $selisihStokReqdanAsli;
-                // dd([
-                //     'stokmasuk' => $stok_barang->stok_masuk,
-                //     'selisih' => $selisihStokReqdanAsli,
-                //     'stok_update' => $stokupdate
-                // ]);
-                $stokBarangubahStok = StokBarangModel::find($stok_barang->id);
-                // dd($stokBarangubahStok);
-                $stokBarangubahStok->stok_masuk = $stokupdate;
-
-                $stokBarangubahStok->save();
+            // if ($stok_barang) {
+            //     // Mendapatkan waktu sekarang
+            //     $now = Carbon::now();
 
 
-                $stokBaru = $stokBarangubahStok->stok_masuk;
-                // Stok Baru
+
+            //     // Proses pembaruan stok barang
+            //     $stokupdate = $stok_barang->stok_masuk + $selisihStokReqdanAsli;
+
+            //     $stokBarangubahStok = StokBarangModel::find($stok_barang->id);
+            //     // dd($stokBarangubahStok);
+            //     $stokBarangubahStok->stok_masuk = $stokupdate;
+
+            //     $stokBarangubahStok->save();
+
+
+            //     $stokBaru = $stokBarangubahStok->stok_masuk;
+            //     // Stok Baru
 
 
 
 
-                // Update total barang setelah mengubah stok masuk
-                $updatebarangtotal = Barang::find($barang->id_barang);
-                $updatebarangtotal->total = $stokBarangubahStok->stok_masuk * $updatebarangtotal->harga_barang_pemasok;
-                $updatebarangtotal->save();
+            //     // Update total barang setelah mengubah stok masuk
+            //     $updatebarangtotal = Barang::find($barang->id_barang);
+            //     $updatebarangtotal->total = $stokBarangubahStok->stok_masuk * $updatebarangtotal->harga_barang_pemasok;
+            //     $updatebarangtotal->save();
 
 
 
-                // Buat instance dari model
-                $stokbarangHistory = new StokBarangHistoryModel();
-                $stokbarangHistory->id_barang = $barang->id_barang;
-                $stokbarangHistory->stok_masuk = $stokupdate;
-                $stokbarangHistory->stok_terkini = $stokBaru;
-                $stokbarangHistory->save();
+            //     // Buat instance dari model
+            //     $stokbarangHistory = new StokBarangHistoryModel();
+            //     $stokbarangHistory->id_barang = $barang->id_barang;
+            //     $stokbarangHistory->stok_masuk = $stokupdate;
+            //     $stokbarangHistory->stok_terkini = $stokBaru;
+            //     $stokbarangHistory->save();
 
 
 
 
-                // Simpan ke log
-                $logStokBarang = new LogStokBarangModel();
-                $logStokBarang->json_content = $stokBarangubahStok; // Sesuaikan dengan isi json_content Anda
-                $logStokBarang->tipe_log = 'barang_update';
-                $logStokBarang->keterangan = 'Update barang dari ' . $stokLama . ' ke ' . $stokBaru;
-                $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-                $logStokBarang->id_stok_barang = $stokBarangubahStok->id; // Sesuaikan dengan id_stok_barang yang ada
-                $logStokBarang->id_barang = $stokBarangubahStok->id_barang; // Sesuaikan dengan id_barang yang ada
-                $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
-                $logStokBarang->save();
-            }
+            //     // Simpan ke log
+            //     $logStokBarang = new LogStokBarangModel();
+            //     $logStokBarang->json_content = $stokBarangubahStok; // Sesuaikan dengan isi json_content Anda
+            //     $logStokBarang->tipe_log = 'barang_update';
+            //     $logStokBarang->keterangan = 'Update barang dari ' . $stokLama . ' ke ' . $stokBaru;
+            //     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+            //     $logStokBarang->id_stok_barang = $stokBarangubahStok->id; // Sesuaikan dengan id_stok_barang yang ada
+            //     $logStokBarang->id_barang = $stokBarangubahStok->id_barang; // Sesuaikan dengan id_barang yang ada
+            //     $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+            //     $logStokBarang->save();
+            // }
+
+
+
+
+
+            // Mendapatkan waktu sekarang
+            $now = Carbon::now();
+
+
+
+            // Proses pembaruan stok barang
+            // $stokupdate = $stokLama + $selisihStokReqdanAsli;
+
+            // $stokBarangubahStok = StokBarangModel::find($stok_barang->id);
+            // dd($stokBarangubahStok);
+            // $stokBarangubahStok->stok_masuk = $stokupdate;
+
+            // $stokBarangubahStok->save();
+
+
+            // $stokBaru = $stokBarangubahStok->stok_masuk;
+            $stokBaru = $stokLama + $selisihStokReqdanAsli;
+
+            // Stok Baru
+
+
+
+
+            // Update total barang setelah mengubah stok masuk
+            $updatebarangtotal = Barang::find($barang->id_barang);
+            $updatebarangtotal->total = $stokBaru * $updatebarangtotal->harga_barang_pemasok;
+            $updatebarangtotal->save();
+
+
+
+            // Buat instance dari model
+            $stokbarangHistory = new StokBarangHistoryModel();
+            $stokbarangHistory->id_barang = $barang->id_barang;
+            $stokbarangHistory->stok_masuk = $selisihStokReqdanAsli;
+            $stokbarangHistory->stok_terkini = $stokBaru;
+            $stokbarangHistory->save();
+
+
+
+
+            // Simpan ke log
+            $logStokBarang = new LogStokBarangModel();
+            $logStokBarang->json_content = [
+                'type' => 'stok_update',
+                'data' => [
+                    'stok_lama' => $stokLama,
+                    'stok_baru' => $stokBaru,
+
+                ]
+            ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
+            $logStokBarang->tipe_log = 'barang_update';
+            $logStokBarang->keterangan = 'Update barang dari ' . $stokLama . ' ke ' . $stokBaru;
+            $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+            // $logStokBarang->id_stok_barang = $stokBarangubahStok->id; // Sesuaikan dengan id_stok_barang yang ada
+            $logStokBarang->id_barang = $updatebarangtotal->id_barang; // Sesuaikan dengan id_barang yang ada
+            $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+            $logStokBarang->save();
         }
 
 
@@ -330,10 +392,12 @@ class StokController extends Controller
 
                 $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
                 $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
-                $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
+                // $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
 
+
+                $barangData = Barang::find($barang->id_barang);
                 // Selisih antara debit pertama dengan 
-                $bukubesar->debit = $barangTerbaru->harga_pemasok * $stokBarangpertama->stok_masuk;
+                $bukubesar->debit = $barangTerbaru->harga_pemasok * $barangData->stok;
                 $bukubesar->save();
             }
 
@@ -483,7 +547,7 @@ class StokController extends Controller
         $dataBarangBaru = [];
         // $totalStok = $dataBarang->stokBarang->sum('stok_masuk') - $dataBarang->stokBarang->sum('stok_keluar');
         // $dataBarang->stok = $totalStok;
-        
+
         $dataBarangBaru = $dataBarang;
         // print_r($dataBarang);
         return response()->json([
@@ -530,15 +594,18 @@ class StokController extends Controller
 
 
         // Menghitung total stok
-        $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)->first();
+        // $stokBarang = StokBarangModel::where('id_barang', $barang->id_barang)->first();
 
 
         // Jumlah Stok Final Stok dari input
-        $stoktambah = $validatedData['stok_tambah'] +  $stokBarang->stok_masuk;
-        $stokBarang->stok_masuk = $stoktambah;
+        // $stoktambah = $validatedData['stok_tambah'] +  $stokBarang->stok_masuk;
+        // $stokBarang->stok_masuk = $stoktambah;
 
 
-        $stokBarang->save();
+        // $stokBarang->save();
+
+
+        $stoktambah = $validatedData['stok_tambah'];
 
         // Buat instance dari model
         $stokbarangHistory = new StokBarangHistoryModel();
@@ -552,12 +619,15 @@ class StokController extends Controller
 
         // Simpan ke log
         $logStokBarang = new LogStokBarangModel();
-        $logStokBarang->json_content = $stokBarang; // Sesuaikan dengan isi json_content Anda
+        $logStokBarang->json_content = [
+            'type' => 'pembelian_store',
+            'data' => []
+        ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
         $logStokBarang->tipe_log = 'barang_tambah_stok';
         $logStokBarang->keterangan = 'Tambah stok barang sebanyak ' . $validatedData['stok_tambah'];
         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-        $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
-        $logStokBarang->id_barang = $stokBarang->id_barang; // Sesuaikan dengan id_barang yang ada
+        // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+        $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
         $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
         $logStokBarang->save();
 
@@ -566,8 +636,8 @@ class StokController extends Controller
 
         // Update total
         $barang->stok =  $barang->stok + $validatedData['stok_tambah'];
-     
-        $barang->total = $stokBarang->stok_masuk * $barang->harga_barang_pemasok;
+
+        $barang->total = $barang->stok * $barang->harga_barang_pemasok;
 
         $barang->save();
 

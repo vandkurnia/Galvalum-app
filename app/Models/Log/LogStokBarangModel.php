@@ -27,6 +27,10 @@ class LogStokBarangModel extends Model
         'id_stok_barang_history'
     ];
 
+    // Atribut yang harus dikonversi ke array saat diakses
+    protected $casts = [
+        'json_content' => 'array',
+    ];
     // Definisikan relasi dengan model User (admin)
     public function admin()
     {
@@ -34,10 +38,10 @@ class LogStokBarangModel extends Model
     }
 
     // Definisikan relasi dengan model StokBarang
-    public function stokBarang()
-    {
-        return $this->belongsTo(StokBarangModel::class, 'id_stok_barang');
-    }
+    // public function stokBarang()
+    // {
+    //     return $this->belongsTo(StokBarangModel::class, 'id_stok_barang');
+    // }
 
     // Definisikan relasi dengan model Barang
     public function barang()

@@ -24,12 +24,12 @@ class BarangJsonController extends Controller
                 $barang['id'] = $barang['hash_id_barang'];
                 $barang['text'] = $barang['nama_barang'];
 
-                $stokBarang = StokBarangModel::where('id_barang', $barang['id_barang'])
-                    ->selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')
-                    ->groupBy('id_barang')
-                    ->first();
+                // $stokBarang = StokBarangModel::where('id_barang', $barang['id_barang'])
+                //     ->selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')
+                //     ->groupBy('id_barang')
+                //     ->first();
 
-                $barang['stok'] = $stokBarang->stok;
+                // $barang['stok'] = $stokBarang->stok;
                 $dataBarangTambahan[] = $barang;
             }
 

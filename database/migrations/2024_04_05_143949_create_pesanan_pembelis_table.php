@@ -20,14 +20,14 @@ return new class extends Migration
             $table->decimal('diskon', 24, 2)->default(0); // 24 digit total, 2 digit di belakang koma            
             $table->unsignedBigInteger('id_nota');
             $table->unsignedBigInteger('id_barang');
-            $table->unsignedBigInteger('id_stokbarang')->unique();
+            // $table->unsignedBigInteger('id_stokbarang')->unique();
             $table->enum('jenis_pembelian', ['harga_normal', 'aplicator', 'potongan'])->nullable();
             $table->decimal('harga_potongan', 24, 2)->default(0);
             // $table->unsignedBigInteger('id_jenis_pelanggan')->nullable();
             $table->unsignedBigInteger('id_diskon')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('id_stokbarang')->references('id')->on('stok_barang')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('id_stokbarang')->references('id')->on('stok_barang')->onUpdate('cascade')->onDelete('cascade');
          
             $table->foreign('id_diskon')->references('id_diskon')->on('diskon')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_nota')->references('id_nota')->on('nota_pembelis')->onUpdate('cascade')->onDelete('cascade');

@@ -34,8 +34,8 @@ return new class extends Migration
             $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok_barangs')->onUpdate('CASCADE')->onDelete('cascade');
             $table->unsignedBigInteger('id_barang');
             $table->foreign('id_barang')->references('id_barang')->on('barangs')->onUpdate('CASCADE')->onDelete('cascade');
-            $table->unsignedBigInteger('id_stok_barang');
-            $table->foreign('id_stok_barang')->references('id')->on('stok_barang')->onUpdate('CASCADE')->onDelete('cascade');
+            // $table->unsignedBigInteger('id_stok_barang');
+            // $table->foreign('id_stok_barang')->references('id')->on('stok_barang')->onUpdate('CASCADE')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
