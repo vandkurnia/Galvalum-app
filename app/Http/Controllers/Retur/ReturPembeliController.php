@@ -70,7 +70,7 @@ class ReturPembeliController extends Controller
 
 
         DB::beginTransaction();
-        $notaPembelian = NotaPembeli::find($request->id_nota);
+        $notaPembelian = NotaPembeli::with('Pembeli')->find($request->id_nota);
         $dataReturPembeli = new ReturPembeliModel();
         // $dataReturPembeli->hash_id_retur_pembeli = "KUcing Sigma";
 
@@ -199,10 +199,14 @@ class ReturPembeliController extends Controller
                         $logStokBarang = new LogStokBarangModel();
                         $logStokBarang->json_content = [
                             'type' => 'retur_pembeli_store',
-                            'data' => []
+                            'data' => [
+                                'pelanggan' => $notaPembelian->id_pelanggan,
+                                'no_nota' => $notaPembelian->no_nota,
+
+                            ]
                         ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'retur_pembeli_create';
-                        $logStokBarang->keterangan = 'Barang pesanan masuk ke retur pembeli';
+                        $logStokBarang->keterangan = 'Pengembalian barang tidak rusak sebanyak ' . $stokbarangHistory->stok_masuk . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -253,13 +257,13 @@ class ReturPembeliController extends Controller
                 $logStokBarang->json_content = [
                     'type' => 'retur_pembeli_store',
                     'data' => [
-                        'no_nota' => $pesananData->no_nota,
-                        'stok_keluar' => 0,
-                        // 'pelanggan' => $pembeliData->id_pelanggan
+                        'pelanggan' => $notaPembelian->id_pelanggan,
+                        'no_nota' => $notaPembelian->no_nota,
+
                     ]
                 ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                 $logStokBarang->tipe_log = 'retur_pembeli_create';
-                $logStokBarang->keterangan = 'Hapus Stok Barang Retur Pembeli';
+                $logStokBarang->keterangan = 'Pesanan dihapus di nota ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
                 $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                 // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                 $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -469,13 +473,13 @@ class ReturPembeliController extends Controller
                         $logStokBarang->json_content = [
                             'type' => 'retur_pembeli_store',
                             'data' => [
-                                // 'no_nota' => $notaPembeli->no_nota,
-                                'stok_keluar' => $returTmbhn['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
+                                'pelanggan' => $notaPembelian->id_pelanggan,
+                                'no_nota' => $notaPembelian->no_nota,
+
                             ]
                         ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'retur_pembeli_create';
-                        $logStokBarang->keterangan = 'Retur Tambah Stok';
+                        $logStokBarang->keterangan = 'Retur tambah pesanan  ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
                         $logStokBarang->id_admin = Auth::user()->id_admin;
                         // $logStokBarang->id_stok_barang = $stokBarang->id;
                         $logStokBarang->id_barang = $barang->id_barang;
@@ -504,13 +508,14 @@ class ReturPembeliController extends Controller
                         $logStokBarang->json_content = [
                             'type' => 'retur_pembeli_store',
                             'data' => [
-                                // 'no_nota' => $notaPembeli->no_nota,
-                                'stok_keluar' => $returTmbhn['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
+                                'pelanggan' => $notaPembelian->id_pelanggan,
+                                'no_nota' => $notaPembelian->no_nota,
+
                             ]
                         ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'retur_pembeli_create';
-                        $logStokBarang->keterangan = 'Retur Tambah Stok';
+                        $logStokBarang->keterangan = 'Retur tambah pesanan  ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
+
                         $logStokBarang->id_admin = Auth::user()->id_admin;
                         // $logStokBarang->id_stok_barang = $stokBarang->id;
                         $logStokBarang->id_barang = $barang->id_barang;
@@ -583,13 +588,14 @@ class ReturPembeliController extends Controller
                     $logStokBarang->json_content = [
                         'type' => 'retur_pembeli_store',
                         'data' => [
-                            // 'no_nota' => $notaPembeli->no_nota,
-                            // 'stok_keluar' => $pesanan['jumlah_pesanan'],
-                            // 'pelanggan' => $pembeliData->id_pelanggan
+                            'pelanggan' => $notaPembelian->id_pelanggan,
+                            'no_nota' => $notaPembelian->no_nota,
+
                         ]
                     ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                     $logStokBarang->tipe_log = 'retur_pembeli_create';
-                    $logStokBarang->keterangan = 'Hapus Stok Barang ';
+                    $logStokBarang->keterangan = 'Tambah jumlah pesanan  ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
+
                     $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                     // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                     $logStokBarang->id_barang = $barangData->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -830,30 +836,32 @@ class ReturPembeliController extends Controller
                         $barang->stok = $barang->stok - $returPesanan->qty;
                         $barang->save();
 
-                        // Buat instance dari model
-                        $stokbarangHistory = new StokBarangHistoryModel();
-                        $stokbarangHistory->id_barang = $barang->id_barang;
-                        $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
-                        $stokbarangHistory->stok_terkini = $barang->stok;
-                        $stokbarangHistory->save();
+                        // Buat log jika qty tidak sama dengan 0
+                        if ($returPesanan->qty != 0) {
+                            // Buat instance dari model
+                            $stokbarangHistory = new StokBarangHistoryModel();
+                            $stokbarangHistory->id_barang = $barang->id_barang;
+                            $stokbarangHistory->stok_keluar = $returPesanan->qty;
+                            $stokbarangHistory->stok_terkini = $barang->stok;
+                            $stokbarangHistory->save();
+                            // Simpan ke log
+                            $logStokBarang = new LogStokBarangModel();
+                            $logStokBarang->json_content = [
+                                'type' => 'pembelian_store',
+                                'data' => [
+                                    'pelanggan' => $notaPembeli->id_pelanggan,
+                                    'no_nota' => $notaPembeli->no_nota,
+                                ]
+                            ]; // Sesuaikan dengan isi json_content Anda
+                            $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                            $logStokBarang->keterangan = 'Hapus retur pesanan tidak rusak ' . $notaPembeli->no_nota . ' pada pelanggan ' . $notaPembeli->Pembeli->nama_pembeli;
 
-                        // Simpan ke log
-                        $logStokBarang = new LogStokBarangModel();
-                        $logStokBarang->json_content = [
-                            'type' => 'pembelian_store',
-                            'data' => [
-                                'no_nota' => $notaPembeli->no_nota,
-                                // 'stok_keluar' => $pesanan['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
-                            ]
-                        ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
-                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
-                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Tidak Rusak';
-                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-                        // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
-                        $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
-                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
-                        $logStokBarang->save();
+                            $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                            // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                            $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
+                            $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+                            $logStokBarang->save();
+                        }
                         break;
 
                     case 'retur_murni_rusak':
@@ -871,40 +879,41 @@ class ReturPembeliController extends Controller
 
 
 
-                        $barang = Barang::find($pesananPembeli->id_barang);
-                        $barang->stok = $barang->stok;
-                        $barang->save();
+                        // $barang = Barang::find($pesananPembeli->id_barang);
+                        // $barang->stok = $barang->stok;
+                        // $barang->save();
 
-                        // Buat instance dari model
-                        $stokbarangHistory = new StokBarangHistoryModel();
-                        $stokbarangHistory->id_barang = $barang->id_barang;
-                        // $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
-                        // $stokbarangHistory->stok_keluar = $item['qty'];
-                        $stokbarangHistory->stok_terkini = $barang->stok;
-                        $stokbarangHistory->save();
-
-
+                        // // Buat instance dari model
+                        // $stokbarangHistory = new StokBarangHistoryModel();
+                        // $stokbarangHistory->id_barang = $barang->id_barang;
+                        // // $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        // // $stokbarangHistory->stok_keluar = $item['qty'];
+                        // $stokbarangHistory->stok_terkini = $barang->stok;
+                        // $stokbarangHistory->save();
 
 
 
 
-                        // Simpan ke log
-                        $logStokBarang = new LogStokBarangModel();
-                        $logStokBarang->json_content = [
-                            'type' => 'retur_pembeli_destroy',
-                            'data' => [
-                                // 'no_nota' => $notaPembeli->no_nota,
-                                // 'stok_keluar' => $pesanan['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
-                            ]
-                        ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
-                        $logStokBarang->tipe_log = 'retur_pembeli_delete';
-                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Rusak';
-                        $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-                        // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
-                        $logStokBarang->id_barang = $pesananPembeli->id_barang; // Sesuaikan dengan id_barang yang ada
-                        $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
-                        $logStokBarang->save();
+
+
+                        // // Simpan ke log
+                        // $logStokBarang = new LogStokBarangModel();
+                        // $logStokBarang->json_content = [
+                        //     'type' => 'retur_pembeli_destroy',
+                        //     'data' => [
+                        //         'pelanggan' => $notaPembeli->id_pelanggan,
+                        //         'no_nota' => $notaPembeli->no_nota,
+
+                        //     ]
+                        // ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
+                        // $logStokBarang->tipe_log = 'retur_pembeli_delete';
+                        // $logStokBarang->keterangan = 'Hapus retur pesanan rusak ' . $notaPembeli->no_nota . ' pada pelanggan ' . $notaPembeli->Pembeli->nama_pembeli;
+
+                        // $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                        // // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                        // $logStokBarang->id_barang = $pesananPembeli->id_barang; // Sesuaikan dengan id_barang yang ada
+                        // $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+                        // $logStokBarang->save();
                         break;
 
                     case 'retur_tambah_stok':
@@ -946,13 +955,14 @@ class ReturPembeliController extends Controller
                         $logStokBarang->json_content = [
                             'type' => 'retur_pembeli_destroy',
                             'data' => [
-                                // 'no_nota' => $notaPembeli->no_nota,
-                                // 'stok_keluar' => $pesanan['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
+                                'pelanggan' => $notaPembeli->id_pelanggan,
+                                'no_nota' => $notaPembeli->no_nota,
+
                             ]
                         ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'retur_pembeli_delete';
-                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Tambah Stok';
+                        $logStokBarang->keterangan = 'Hapus retur pesanan tambah jumlah  ' . $notaPembeli->no_nota . ' pada pelanggan ' . $notaPembeli->Pembeli->nama_pembeli;
+
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $pesananPembeli->id_barang; // Sesuaikan dengan id_barang yang ada
@@ -987,13 +997,14 @@ class ReturPembeliController extends Controller
                         $logStokBarang->json_content = [
                             'type' => 'retur_pembeli_destroy',
                             'data' => [
-                                // 'no_nota' => $notaPembeli->no_nota,
-                                // 'stok_keluar' => $pesanan['jumlah_pesanan'],
-                                // 'pelanggan' => $pembeliData->id_pelanggan
+                                'pelanggan' => $notaPembeli->id_pelanggan,
+                                'no_nota' => $notaPembeli->no_nota,
+
                             ]
                         ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
                         $logStokBarang->tipe_log = 'retur_pembeli_delete';
-                        $logStokBarang->keterangan = 'Hapus Pesanan Retur Pembeli Hapus Tambah Barang';
+                        $logStokBarang->keterangan = 'Hapus retur pesanan tambah barang di nota ' . $notaPembeli->no_nota . ' pada pelanggan ' . $notaPembeli->Pembeli->nama_pembeli;
+
                         $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
                         // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
                         $logStokBarang->id_barang = $pesananPembeli->id_barang; // Sesuaikan dengan id_barang yang ada
