@@ -126,7 +126,7 @@ class LaporanController extends Controller
     public function laporanHutang(Request $request)
     {
 
-        $dateToFinisihConstruction = date('Y-m-d H:i:s', strtotime('2024-05-22 23:59:59'));
+        // $dateToFinisihConstruction = date('Y-m-d H:i:s', strtotime('2024-05-22 23:59:59'));
         $tanggalDariInput = $request->get('tanggal') ?? date('Y-m-d');
 
         $tanggalSaatIni = date('Y-m-d', strtotime($tanggalDariInput));
@@ -136,7 +136,7 @@ class LaporanController extends Controller
                     barangs.hash_id_barang as id_barang,
                     pemasok_barangs.nama_pemasok,
                     barangs.nama_barang,
-                    SUM(stok_barang.stok_masuk - stok_barang.stok_keluar) as total_pesanan,
+                    barangs.stok as total_pesanan,
                     barangs.updated_at as tanggal_stok,
                     barangs.created_at as tanggal_stok_alt,
                     barangs.created_at as jatuh_tempo_alt,
@@ -152,13 +152,9 @@ class LaporanController extends Controller
                     `barangs`
                 LEFT JOIN
                     pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
-                JOIN
-                    stok_barang ON stok_barang.id_barang = barangs.id_barang
-                
+              
                
                 WHERE barangs.nominal_terbayar < barangs.total AND barangs.deleted_at IS NULL
-                GROUP BY
-                    barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, barangs.created_at, barangs.updated_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
                 ',
             []
         );
@@ -199,7 +195,7 @@ class LaporanController extends Controller
             return (array) $item;
         })->toArray();
 
-        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray, 'dateToFinishMaintenance' => $dateToFinisihConstruction]);
+        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray    ]);
     }
 
     public function laporanPiutang(Request $request)
