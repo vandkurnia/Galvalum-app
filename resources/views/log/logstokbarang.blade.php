@@ -111,10 +111,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-
-                                        $stok_barang = json_decode($logStkbrng->json_content, true);
-                                    @endphp
+                                  
 
                                     <tr>
                                         <td>{{ number_format($logStkbrng->stokBarangHistory->stok_terkini ?? 0, 1, '.', '')}}</td>
