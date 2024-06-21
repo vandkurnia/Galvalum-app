@@ -84,9 +84,12 @@
                                     <td>{{ $databarang->nama_barang }}</td>
                                     <td>{{ $databarang->tipeBarang->nama_tipe }}</td>
                                     <td>{{ $databarang->ukuran }}</td>
-                                    <td>{{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($databarang->stok, 1, '.', '') }}</td>
+                                    <td data-harga-jual="{{ $databarang->harga_barang }}">
+                                        {{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
+                                    <td data-harga="{{ $databarang->harga_barang_pemasok }}">
+                                        {{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
+                                    <td data-stok="{{ $databarang->stok }}">
+                                        {{ number_format($databarang->stok, 1, '.', '') }}</td>
                                     <td> <button class="btn btn-primary btn-sm"
                                             onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
                                             Retur
@@ -761,20 +764,25 @@
                         .column(5, {
                             page: 'current'
                         })
-                        .data()
-                        .reduce(function(a, b) {
-                            return intVal(a) + intVal(b);
+                        .nodes()
+                        .reduce(function(sum, cell) {
+                            var hargaPenjualan = parseFloat($(cell).data('harga-jual'))
+                           
+                            var stok = parseFloat($(cell).siblings('[data-stok]').data('stok'));
+
+                            // return intVal(a) + intVal(b);
+                            return sum + (hargaPenjualan * stok);
                         }, 0);
 
                     // Calculate total for Harga Pemasok
-                    var totalHargaPemasok = api
-                        .column(6, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function(a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
+                    // Calculate the total Harga Pemasok and total Stok
+                    var totalHargaPemasok = api.column(6, {
+                        page: 'current'
+                    }).nodes().reduce(function(sum, cell) {
+                        var hargaPemasok = parseFloat($(cell).data('harga'));
+                        var stok = parseFloat($(cell).siblings('[data-stok]').data('stok'));
+                        return sum + (hargaPemasok * stok);
+                    }, 0);
 
                     // Calculate total for Stok
                     var totalStok = api

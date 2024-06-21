@@ -17,7 +17,7 @@ class ControllerInvoinceCetak extends Controller
     public function print_invoice($no_nota)
     {
         $data['title'] = 'Print Invoice ' . $no_nota;
-        $notaPembeli = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang', 'bukuBesar')->where('no_nota', $no_nota)->first();
+        $notaPembeli = NotaPembeli::with('Pembeli', 'Admin', 'PesananPembeli', 'PesananPembeli.Barang', 'bukuBesar', 'Admin')->where('no_nota', $no_nota)->first();
 
 
         // Membuat instance baru dari model InvoicePembelian
@@ -63,7 +63,7 @@ class ControllerInvoinceCetak extends Controller
         // $namaKasir = $notaPembeli->Admin->nama_admin;
         // Sementara
         // Seharusnya tiap cetak dicatat
-        $namaKasir = Auth::user()->nama_admin;
+        $namaKasir = $notaPembeli->Admin->nama_admin;
         // dd($namaKasir);
 
         $dataPembayaran = [

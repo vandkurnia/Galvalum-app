@@ -32,6 +32,8 @@ class MigrasiData2 extends Seeder
      */
     public function run()
     {
+
+        DB::beginTransaction();
         $usersjson = file_get_contents(public_path('datamigration/users.json'));
         $users = json_decode($usersjson, true);
 
@@ -238,11 +240,11 @@ class MigrasiData2 extends Seeder
 
             // $stokLama = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $item['id_barang'])->groupBy('id_barang')->first();
 
-            $stokBarang = StokBarangModel::create([
-                'stok_keluar' => $item['jumlah_pembelian'],
-                'id_barang' => $item['id_barang'],
-                'tipe_stok' => 'pesanan'
-            ]);
+            // $stokBarang = StokBarangModel::create([
+            //     'stok_keluar' => $item['jumlah_pembelian'],
+            //     'id_barang' => $item['id_barang'],
+            //     'tipe_stok' => 'pesanan'
+            // ]);
 
 
             // Buat entri baru di PesananPembeli
@@ -259,7 +261,7 @@ class MigrasiData2 extends Seeder
                 'created_at' => Carbon::parse($item['created_at']),
                 'updated_at' => Carbon::parse($item['updated_at']),
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
-                'id_stokbarang' => $stokBarang->id
+                // 'id_stokbarang' => $stokBarang->id
             ]);
 
           
@@ -287,6 +289,7 @@ class MigrasiData2 extends Seeder
         $bukubesar = json_decode($bukubesarjson, true);
 
         foreach ($bukubesar[2]['data'] as $item) {
+            
             BukubesarModel::create([
                 'id_bukubesar' => $item['id_bukubesar'],
                 'hash_id_bukubesar' => $item['hash_id_bukubesar'],
@@ -389,5 +392,7 @@ class MigrasiData2 extends Seeder
                 'deleted_at' => $item['deleted_at'] ? Carbon::parse($item['deleted_at']) : null,
             ]);
         }
+
+        DB::commit();
     }
 }

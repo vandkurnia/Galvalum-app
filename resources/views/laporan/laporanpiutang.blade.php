@@ -97,16 +97,14 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $notaPembelian['nama_pembeli'] }}</td>
                                     <td>{{ $notaPembelian['no_hp_pembeli'] }}</td>
-                                    {{-- <td>{{ "Barang Pembelian" }}</td> --}}
                                     <td>{{ (int) $notaPembelian['total_pembelian'] }}</td>
-                                    {{-- <td>{{ $notaPembelian['jenis_pelanggan'] }}</td> --}}
                                     <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
                                     <td>{{ number_format($notaPembelian['total'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaPembelian['terbayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaPembelian['total'] - $notaPembelian['terbayar'], 0, ',', '.') }}
                                     </td>
-                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'] ?? $notaPembelian['tanggal_pembelian'])) }}</td>
-
+                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaPembelian['jatuh_tempo'] ?? $notaPembelian['tanggal_pembelian'])) }}
+                                    </td>
                                     <td>
                                         @if ($notaPembelian['status_bayar'] == 'Lunas')
                                             <span class="badge badge-success">{{ $notaPembelian['status_bayar'] }}</span>
@@ -121,27 +119,18 @@
                                     <td>Hutang</td>
                                     <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}"
                                             class="btn btn-primary">Update cicilan</a></td>
-
                                 </tr>
                             @endforeach
-
-                            {{-- <tr>
-                                <td>2</td>
-                                <td>Pembeli B</td>
-                                <td>08123456788</td>
-                                <td>Barang B</td>
-                                <td>20</td>
-                                <td>Pelanggan B</td>
-                                <td>2024-05-05</td>
-                                <td>$200</td>
-                                <td>$200</td>
-                                <td>$0</td>
-                                <td>2024-06-05</td>
-                                <td><span class="badge badge-success">Lunas</span></td>
-                                <td>Dibayar</td>
-                                <td><button class="btn btn-primary">Update</button></td>
-                            </tr> --}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">Total</th>
+                                <th id="totalHargaTotal">Rp. 0</th>
+                                <th id="totalJumlahTerbayar">Rp. 0</th>
+                                <th id="totalKekurangan">Rp. 0</th>
+                                <th colspan="4"></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -187,7 +176,8 @@
                                     <td>{{ number_format($notaLunasdanKelebihan['terbayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaLunasdanKelebihan['total'] - $notaLunasdanKelebihan['terbayar'], 0, ',', '.') }}
                                     </td>
-                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaLunasdanKelebihan['jatuh_tempo'] ?? $notaLunasdanKelebihan['tanggal_pembelian'])) }}</td>
+                                    <td>{{ date('Y-m-d 00:00:00', strtotime($notaLunasdanKelebihan['jatuh_tempo'] ?? $notaLunasdanKelebihan['tanggal_pembelian'])) }}
+                                    </td>
                                     <td>
                                         @if ($notaLunasdanKelebihan['status_bayar'] == 'Lunas')
                                             <span
@@ -207,8 +197,9 @@
                                             class="btn btn-primary">
                                             <i class="fas fa-info-circle"></i> <!-- Ikon detail -->
                                         </a>
-                                        <a href="{{ route('cicilan.notvisible', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i> <!-- Ikon tong sampah --> 
+                                        <a href="{{ route('cicilan.notvisible', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}"
+                                            class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> <!-- Ikon tong sampah -->
                                         </a>
                                     </td>
 
@@ -232,6 +223,15 @@
                                 <td><button class="btn btn-primary">Update</button></td>
                             </tr> --}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">Total</th>
+                                <th id="totalHargaTotalLunas">Rp. 0</th>
+                                <th id="totalJumlahTerbayarLunas">Rp. 0</th>
+                                <th id="totalKekuranganLunas">Rp. 0</th>
+                                <th colspan="4"></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -255,8 +255,57 @@
     <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#laporanPiutang').DataTable();
-            $('#laporanPiutangLunas').DataTable();
+            $('#laporanPiutang').DataTable({
+                drawCallback: function() {
+                    var api = this.api();
+
+                    // Function to calculate column totals
+                    function getColumnTotal(columnIndex) {
+                        return api.column(columnIndex, {
+                            page: 'current'
+                        }).data().reduce(function(sum, value) {
+                            return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g,
+                                ''), 10);
+                        }, 0);
+                    }
+
+                    // Calculate totals for each column
+                    var totalHargaTotal = getColumnTotal(5);
+                    var totalJumlahTerbayar = getColumnTotal(6);
+                    var totalKekurangan = getColumnTotal(7);
+
+                    // Update the footer with formatted totals
+                    $('#totalHargaTotal').text('Rp. ' + totalHargaTotal.toLocaleString('id-ID'));
+                    $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
+                        'id-ID'));
+                    $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
+                }
+            });
+            $('#laporanPiutangLunas').DataTable({
+                drawCallback: function() {
+                    var api = this.api();
+
+                    function getColumnTotal(columnIndex) {
+                        return api.column(columnIndex, {
+                            page: 'current'
+                        }).data().reduce(function(sum, value) {
+                            return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g,
+                                ''), 10);
+                        }, 0);
+                    }
+
+                    // Calculate totals for each column
+                    var totalHargaTotal = getColumnTotal(5);
+                    var totalJumlahTerbayar = getColumnTotal(6);
+                    var totalKekurangan = getColumnTotal(7);
+
+                    // Update the footer with formatted totals
+                    $('#totalHargaTotalLunas').text('Rp. ' + totalHargaTotal.toLocaleString('id-ID'));
+                    $('#totalJumlahTerbayarLunas').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
+                        'id-ID'));
+                    $('#totalKekuranganLunas').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
+                }
+            });
         });
     </script>
 @endsection

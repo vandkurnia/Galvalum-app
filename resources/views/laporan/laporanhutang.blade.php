@@ -100,36 +100,29 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $laporan['nama_pemasok'] }}</td>
                                     <td>{{ $laporan['nama_barang'] }}</td>
-                                    <td>{{ $laporan['total_pesanan'] }}</td>
+                                    <td>{{ number_format((int) $laporan['total_pesanan'], 0, ',', '.') }}</td>
                                     <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok_alt'])) }}</td>
-                                    <td>{{ (int) $laporan['harga_bayar'] }}</td>
-                                    <td>{{ (int) $laporan['jumlah_terbayar'] }}</td>
-                                    <td>{{ $laporan['harga_bayar'] - $laporan['jumlah_terbayar'] }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}
-                                    </td>
-
+                                    <td>{{ number_format((int) $laporan['harga_bayar'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format((int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format((int) $laporan['harga_bayar'] - (int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}</td>
                                     <td><span class="badge badge-warning">Belum Lunas</span></td>
                                     <td>Unpaid</td>
-                                    <td><a href="{{ route('cicilan.hutang.index', ['id_barang' => $laporan['id_barang']]) }}"
-                                            class="btn btn-primary">Update cicilan</a></td>
+                                    <td><a href="{{ route('cicilan.hutang.index', ['id_barang' => $laporan['id_barang']]) }}" class="btn btn-primary">Update cicilan</a></td>
                                 </tr>
                             @endforeach
-
-                            {{-- <tr>
-                                <td>2</td>
-                                <td>Supplier B</td>
-                                <td>Barang B</td>
-                                <td>$200</td>
-                                <td>2024-05-05</td>
-                                <td>$200</td>
-                                <td>$200</td>
-                                <td>$0</td>
-                                <td>2024-06-05</td>
-                                <td><span class="badge badge-success">Lunas</span></td>
-                                <td>Paid</td>
-                                <td><button class="btn btn-primary">Update</button></td>
-                            </tr> --}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Total</th>
+                                <th id="totalPemesanan">Rp. 0</th>
+                                <th></th>
+                                <th id="totalHargaBayar">Rp. 0</th>
+                                <th id="totalJumlahTerbayar">Rp. 0</th>
+                                <th id="totalKekurangan">Rp. 0</th>
+                                <th colspan="4"></th>
+                            </tr>
+                        </tfoot>
                     </table>
 
                 </div>
@@ -153,7 +146,31 @@
     <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#laporanHutang').DataTable();
+            $('#laporanHutang').DataTable({
+
+                drawCallback: function() {
+                var api = this.api();
+
+                // Function to calculate column totals
+                function getColumnTotal(columnIndex) {
+                    return api.column(columnIndex, { page: 'current' }).data().reduce(function(sum, value) {
+                        return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g, ''), 10);
+                    }, 0);
+                }
+
+                // Calculate totals for each column
+                var totalPemesanan = getColumnTotal(3);
+                var totalHargaBayar = getColumnTotal(5);
+                var totalJumlahTerbayar = getColumnTotal(6);
+                var totalKekurangan = getColumnTotal(7);
+
+                // Update the footer with formatted totals
+                $('#totalPemesanan').text( totalPemesanan);
+                $('#totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
+                $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString('id-ID'));
+                $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
+            }
+            });
         });
     </script>
 @endsection

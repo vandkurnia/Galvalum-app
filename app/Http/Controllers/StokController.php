@@ -320,7 +320,9 @@ class StokController extends Controller
 
 
                 $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
-                $bukubesar = BukubesarModel::find($bukubesarbarang->id_bukubesar);
+              
+                $bukubesar = BukubesarModel::withTrashed()->find($bukubesarbarang->id_bukubesar);
+        
                 // $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
 
 
@@ -328,6 +330,11 @@ class StokController extends Controller
                 // Selisih antara debit pertama dengan 
                 $bukubesar->debit = $barangTerbaru->harga_pemasok * $barangData->stok;
                 $bukubesar->save();
+
+                if($bukubesar && $bukubesar->debit > 0)
+                {
+                    $bukubesar->restore();
+                }
             }
 
             // Lunas ke hutang
