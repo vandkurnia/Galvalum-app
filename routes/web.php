@@ -57,28 +57,35 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/change-password/{id_admin}', [UserController::class, 'changePassword'])->name('user.changepassword');
     });
     // Master Tipe Barang
-    Route::middleware('role:admin')->prefix('tipe-barang')->group(function () {
+    Route::prefix('tipe-barang')->group(function () {
         Route::get('/', [TipeBarangController::class, 'index'])->name('tipebarang.index'); // Menampilkan semua user
-        Route::get('/edit/{id}', [TipeBarangController::class, 'edit'])->name('tipebarang.edit');
-        Route::post('/', [TipeBarangController::class, 'store'])->name('tipebarang.store'); // Menyimpan tipebarang baru
-        Route::put('/{id}', [TipeBarangController::class, 'update'])->name('tipebarang.update'); // Mengupdate tipebarang berdasarkan ID
-        Route::delete('/{id}', [TipeBarangController::class, 'destroy'])->name('tipebarang.destroy'); // Menghapus tipebarang berdasarkan ID
+
+        Route::middleware('role:admin')->group(function () {
+            Route::get('/edit/{id}', [TipeBarangController::class, 'edit'])->name('tipebarang.edit');
+            Route::post('/', [TipeBarangController::class, 'store'])->name('tipebarang.store'); // Menyimpan tipebarang baru
+            Route::put('/{id}', [TipeBarangController::class, 'update'])->name('tipebarang.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id}', [TipeBarangController::class, 'destroy'])->name('tipebarang.destroy'); // Menghapus tipebarang berdasarkan ID
+        });
     });
     // Master Pemasok Barang
-    Route::middleware('role:admin')->prefix('pemasok-barang')->group(function () {
+    Route::prefix('pemasok-barang')->group(function () {
         Route::get('/', [PemasokBarangController::class, 'index'])->name('pemasokbarang.index');
-        Route::get('/edit/{id}', [PemasokBarangController::class, 'edit'])->name('pemasokbarang.edit');
-        Route::post('/', [PemasokBarangController::class, 'store'])->name('pemasokbarang.store'); // Menyimpan tipebarang baru
-        Route::put('/{id}', [PemasokBarangController::class, 'update'])->name('pemasokbarang.update'); // Mengupdate tipebarang berdasarkan ID
-        Route::delete('/{id}', [PemasokBarangController::class, 'destroy'])->name('pemasokbarang.destroy'); // Menghapus tipebarang berdasarkan ID
+        Route::middleware('role:admin')->group(function () {
+            Route::get('/edit/{id}', [PemasokBarangController::class, 'edit'])->name('pemasokbarang.edit');
+            Route::post('/', [PemasokBarangController::class, 'store'])->name('pemasokbarang.store'); // Menyimpan tipebarang baru
+            Route::put('/{id}', [PemasokBarangController::class, 'update'])->name('pemasokbarang.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id}', [PemasokBarangController::class, 'destroy'])->name('pemasokbarang.destroy'); // Menghapus tipebarang berdasarkan ID
+        });
     });
     // Master Pemasok Barang
-    Route::middleware('role:admin')->prefix('pembeli')->group(function () {
+    Route::prefix('pembeli')->group(function () {
         Route::get('/', [PembeliController::class, 'index'])->name('pembeli.index');
-        Route::get('/edit/{id}', [PembeliController::class, 'edit'])->name('pembeli.edit');
-        Route::post('/', [PembeliController::class, 'store'])->name('pembeli.store'); // Menyimpan tipebarang baru
-        Route::put('/{id}', [PembeliController::class, 'update'])->name('pembeli.update'); // Mengupdate tipebarang berdasarkan ID
-        Route::delete('/{id}', [PembeliController::class, 'destroy'])->name('pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
+        Route::middleware('role:admin')->group(function () {
+            Route::get('/edit/{id}', [PembeliController::class, 'edit'])->name('pembeli.edit');
+            Route::post('/', [PembeliController::class, 'store'])->name('pembeli.store'); // Menyimpan tipebarang baru
+            Route::put('/{id}', [PembeliController::class, 'update'])->name('pembeli.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id}', [PembeliController::class, 'destroy'])->name('pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
+        });
     });
 
     // Route untuk json type api internal
@@ -103,15 +110,17 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
-    Route::middleware('role:admin')->prefix('stok')->group(function () {
+    Route::prefix('stok')->group(function () {
         Route::get('/', [StokController::class, 'index'])->name('stok.index');
-        Route::get('/edit/{id}', [StokController::class, 'edit'])->name('stok.edit');
-        Route::post('/', [StokController::class, 'store'])->name('stok.store'); // Menyimpan tipebarang baru
-        Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
-        Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
-        Route::get('/stokbarang/{id}', [StokController::class, 'showStokBarang'])->name('stok.detail');
-        Route::post('/addstok', [StokController::class, 'addStock'])->name('stok.addstok.new');
-        Route::post('/minusstok', [StokController::class, 'minusStok'])->name('stok.minusstok.new');
+        Route::middleware('role:admin')->group(function () {
+            Route::get('/edit/{id}', [StokController::class, 'edit'])->name('stok.edit');
+            Route::post('/', [StokController::class, 'store'])->name('stok.store'); // Menyimpan tipebarang baru
+            Route::put('/{id}', [StokController::class, 'update'])->name('stok.update'); // Mengupdate tipebarang berdasarkan ID
+            Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy'); // Menghapus tipebarang berdasarkan ID
+            Route::get('/stokbarang/{id}', [StokController::class, 'showStokBarang'])->name('stok.detail');
+            Route::post('/addstok', [StokController::class, 'addStock'])->name('stok.addstok.new');
+            Route::post('/minusstok', [StokController::class, 'minusStok'])->name('stok.minusstok.new');
+        });
     });
 
     Route::prefix('laporan_penjualan')->group(function () {
@@ -132,7 +141,6 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id_retur}', [ReturPemasokController::class, 'destroy'])->name('retur.pemasok.destroy'); // Menghapus tipebarang berdasarkan 
             // web.php
             Route::put('/retur/pemasok/{id_retur}/hide', [ReturPemasokController::class, 'hide'])->name('retur.pemasok.hide');
-            
         });
         Route::prefix('pembeli')->group(function () {
 
@@ -143,7 +151,6 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{id_retur}', [ReturPembeliController::class, 'update'])->name('retur.pembeli.update'); // Mengupdate tipebarang berdasarkan ID
             Route::delete('/{id_retur}', [ReturPembeliController::class, 'destroy'])->name('retur.pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
             Route::put('/retur/pembeli/{id_retur}/hide', [ReturPembeliController::class, 'hide'])->name('retur.pembeli.hide');
-
         });
     });
 
@@ -170,12 +177,14 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Master Diskon
-    Route::middleware('role:admin')->prefix('diskon')->group(function () {
+    Route::prefix('diskon')->group(function () {
         Route::get('/', [DiskonController::class, 'index'])->name('diskon.index'); // Menampilkan semua user
-        Route::get('/edit/{id}', [DiskonController::class, 'edit'])->name('diskon.edit');
-        Route::post('/', [DiskonController::class, 'store'])->name('diskon.store'); // Menyimpan user baru
-        Route::put('/{id}', [DiskonController::class, 'update'])->name('diskon.update'); // Mengupdate user berdasarkan ID
-        Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
+        Route::middleware('role:admin')->group(function () {
+            Route::get('/edit/{id}', [DiskonController::class, 'edit'])->name('diskon.edit');
+            Route::post('/', [DiskonController::class, 'store'])->name('diskon.store'); // Menyimpan user baru
+            Route::put('/{id}', [DiskonController::class, 'update'])->name('diskon.update'); // Mengupdate user berdasarkan ID
+            Route::delete('/{id}', [DiskonController::class, 'destroy'])->name('diskon.destroy'); // Menghapus user berdasarkan ID
+        });
     });
     Route::prefix('cetak')->group(function () {
         Route::get('invoice-penjualan/{no_nota}', [ControllerInvoinceCetak::class, 'print_invoice'])->name('cetak.invoice');
@@ -187,10 +196,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('cicilanpiutang')->name('')->group(function () {
         Route::get('/{id_nota}/hide', [CicilanPiutangController::class, 'notVisible'])->name('cicilan.notvisible');
         Route::get('/{id_nota}', [CicilanPiutangController::class, 'index'])->name('cicilan.index');
-        Route::get('/edit/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'edit'])->name('cicilan.edit');
+        Route::get('/edit/{id_nota}/{id_piutang}', [CicilanPiutangController::class, 'edit'])->name('cicilan.edit');
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
-        Route::put('/update/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
-        Route::delete('/hapus/{id_bukubesar}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
+        Route::put('/update/{id_nota}/{id_piutang}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/hapus/{id_piutang}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
     });
     Route::prefix('cicilanhutang')->name('')->group(function () {
         Route::get('/{id_barang}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');

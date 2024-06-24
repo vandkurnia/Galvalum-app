@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Riwayat Piutang')
 @section('header-custom')
     <style>
         /* Sembunyikan Showing entries */
@@ -51,21 +51,21 @@
                 </div>
             @endforeach
         @endif
-          {{-- Error flashdata --}}
-          @if (session('error'))
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                  <path
-                      d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-              </svg>
-              <strong>Error!</strong> {{ session('error') }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-      @endif
+        {{-- Error flashdata --}}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <strong>Error!</strong> {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="card shadow mb-4">
 
             <div class="card-body">
@@ -100,21 +100,21 @@
 
                         <tbody>
 
-                            @foreach ($notaPembelian->bukuBesar as $bkBesar)
+                            @foreach ($notaPembelian->Piutang as $piutg)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
 
 
-                                    <td>{{ date('Y-m-d', strtotime($bkBesar->created_at)) }}</td>
-                                    <td>{{ $bkBesar->debit }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($piutg->created_at)) }}</td>
+                                    <td>{{ $piutg->nominal_dibayar }}</td>
                                     <td>
 
                                         <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('cicilan.edit', ['id_bukubesar' => $bkBesar->hash_id_bukubesar, 'id_nota' => $notaPembelian->id_nota]) }}')"><i
+                                            onclick="funcEditUser('{{ route('cicilan.edit', ['id_piutang' => $piutg->id_piutang, 'id_nota' => $notaPembelian->id_nota]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
                                         <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('cicilan.destroy', ['id_bukubesar' => $bkBesar->hash_id_bukubesar, 'id_nota' => $notaPembelian->id_nota]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('cicilan.destroy', ['id_piutang' => $piutg->id_piutang, 'id_nota' => $notaPembelian->id_nota]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>

@@ -46,48 +46,46 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah pembeli</button>
+                    @if (Auth::user()->role == 'admin')
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                                class="fa fa-plus"></i> Tambah Pembeli</button>
+                    @endif
                 </div>
                 <div class="table-responsive pt-4">
                     <table class="table table-bordered" id="pembeli" width="100%" cellspacing="0">
                         <thead>
-
-
                             <tr>
-                                <th>Nama Pembeli </th>
+                                <th>Nama Pembeli</th>
                                 <th>Alamat Pembeli</th>
                                 <th>No HP Pembeli</th>
-                                <th>Aksi</th>
+                                @if (Auth::user()->role == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($dataPembeli as $dtpembeli)
                                 <tr>
                                     <td>{{ $dtpembeli->nama_pembeli }}</td>
                                     <td>{{ $dtpembeli->alamat_pembeli }}</td>
                                     <td>{{ $dtpembeli->no_hp_pembeli }}</td>
-
-                                    <td>
-
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('pembeli.edit', ['id' => $dtpembeli->hash_id_pembeli]) }}')"><i
-                                                class="fas fa-edit"></i>
-                                            Edit</button>
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('pembeli.destroy', ['id' => $dtpembeli->hash_id_pembeli]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
-                                    </td>
+                                    @if (Auth::user()->role == 'admin')
+                                        <td>
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="funcEditUser('{{ route('pembeli.edit', ['id' => $dtpembeli->hash_id_pembeli]) }}')"><i
+                                                    class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('pembeli.destroy', ['id' => $dtpembeli->hash_id_pembeli]) }}', 0)"><i
+                                                    class="fas fa-trash"></i> Delete</button>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 

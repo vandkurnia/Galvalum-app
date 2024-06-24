@@ -48,14 +48,14 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah Diskon</button>
+                    @if (Auth::user()->role == 'admin')
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                                class="fa fa-plus"></i> Tambah Diskon</button>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-
-
                             <tr>
                                 <th>No</th>
                                 <th>Kode Diskon</th>
@@ -63,10 +63,11 @@
                                 <th>Type</th>
                                 <th>Besaran</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                @if (Auth::user()->role == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($dataDiskon as $diskon)
                                 <tr>
@@ -76,25 +77,23 @@
                                     <td>{{ $diskon->type }}</td>
                                     <td>{{ $diskon->besaran }}</td>
                                     <td>{{ $diskon->status }}</td>
-                                    <td>
-
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('diskon.edit', ['id' => $diskon->hash_id_diskon]) }}')"><i
-                                                class="fas fa-edit"></i>
-                                            Edit</button>
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('diskon.destroy', ['id' => $diskon->hash_id_diskon]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
-                                    </td>
+                                    @if (Auth::user()->role == 'admin')
+                                        <td>
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="funcEditUser('{{ route('diskon.edit', ['id' => $diskon->hash_id_diskon]) }}')"><i
+                                                    class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('diskon.destroy', ['id' => $diskon->hash_id_diskon]) }}', 0)"><i
+                                                    class="fas fa-trash"></i> Delete</button>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 

@@ -47,45 +47,44 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah Tipe Barang</button>
+                    @if (Auth::user()->role == 'admin')
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                                class="fa fa-plus"></i> Tambah Tipe Barang</button>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="tipeBarang" width="100%" cellspacing="0">
                         <thead>
-
-
                             <tr>
                                 <th>Nama Tipe</th>
-
+                                @if (Auth::user()->role == 'admin')
                                 <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($dataTipeBarang as $tpbrng)
                                 <tr>
                                     <td>{{ $tpbrng->nama_tipe }}</td>
-
+                                    @if (Auth::user()->role == 'admin')
                                     <td>
-
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('tipebarang.edit', ['id' => $tpbrng->hash_id_tipe_barang]) }}')"><i
-                                                class="fas fa-edit"></i>
-                                            Edit</button>
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('tipebarang.destroy', ['id' => $tpbrng->hash_id_tipe_barang]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
+                                      
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="funcEditUser('{{ route('tipebarang.edit', ['id' => $tpbrng->hash_id_tipe_barang]) }}')"><i
+                                                    class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('tipebarang.destroy', ['id' => $tpbrng->hash_id_tipe_barang]) }}', 0)"><i
+                                                    class="fas fa-trash"></i> Delete</button>
+                                       
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 

@@ -48,48 +48,46 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah Pemasok</button>
+                    @if (Auth::user()->role == 'admin')
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                                class="fa fa-plus"></i> Tambah Pemasok</button>
+                    @endif
                 </div>
                 <div class="table-responsive pt-4">
                     <table class="table table-bordered" id="pemasokbarang" width="100%" cellspacing="0">
                         <thead>
-
-
                             <tr>
                                 <th>Nama Pemasok</th>
                                 <th>No Telp Pemasok</th>
                                 <th>Alamat</th>
-
-                                <th>Aksi</th>
+                                @if (Auth::user()->role == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($dataPemasokTerpilih as $dataPemasok)
                                 <tr>
                                     <td>{{ $dataPemasok->nama_pemasok }}</td>
                                     <td>{{ $dataPemasok->no_telp_pemasok }}</td>
                                     <td>{{ $dataPemasok->alamat_pemasok }}</td>
-                                    <td>
-
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('pemasokbarang.edit', ['id' => $dataPemasok->hash_id_pemasok]) }}')"><i
-                                                class="fas fa-edit"></i>
-                                            Edit</button>
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('pemasokbarang.destroy', ['id' => $dataPemasok->hash_id_pemasok]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
-                                    </td>
+                                    @if (Auth::user()->role == 'admin')
+                                        <td>
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="funcEditUser('{{ route('pemasokbarang.edit', ['id' => $dataPemasok->hash_id_pemasok]) }}')"><i
+                                                    class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('pemasokbarang.destroy', ['id' => $dataPemasok->hash_id_pemasok]) }}', 0)"><i
+                                                    class="fas fa-trash"></i> Delete</button>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 

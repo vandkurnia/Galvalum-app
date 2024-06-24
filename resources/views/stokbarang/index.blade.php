@@ -45,8 +45,10 @@
 
 
                 <div class="mb-3">
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
-                            class="fa fa-plus"></i> Tambah Barang</button>
+                    @if (Auth::user()->role == 'admin')
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                                class="fa fa-plus"></i> Tambah Barang</button>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table" id="stokbarang" width="100%" cellspacing="0">
@@ -90,27 +92,35 @@
                                         {{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
                                     <td data-stok="{{ $databarang->stok }}">
                                         {{ number_format($databarang->stok, 1, '.', '') }}</td>
-                                    <td> <button class="btn btn-primary btn-sm"
-                                            onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
-                                            Retur
-                                        </button></td>
                                     <td>
-                                        <button class="btn btn-primary"
-                                            onclick="funcTambahStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
 
-                                        <button class="btn btn-danger"
-                                            onclick="funcKurangStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
+                                        @if (Auth::user()->role == 'admin')
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="location.href='{{ route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) }}'">
+                                                Retur
+                                            </button>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (Auth::user()->role == 'admin')
+                                            <button class="btn btn-primary"
+                                                onclick="funcTambahStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
 
-                                        <button class="btn btn-primary"
-                                            onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
-                                                class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger"
-                                            onclick="funcHapusUser('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
-                                                class="fas fa-trash"></i></button>
+                                            <button class="btn btn-danger"
+                                                onclick="funcKurangStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+
+                                            <button class="btn btn-primary"
+                                                onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="btn btn-danger"
+                                                onclick="funcHapusUser('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
+                                                    class="fas fa-trash"></i></button>
+                                        @endif
+
                                     </td>
 
                                     @if (Auth::user()->role == 'admin')
@@ -448,6 +458,7 @@
             nominalTerbayar.value = 0;
         }
     }
+
     function checkNominalTerbayarStokEdit() {
         const stokModal = document.querySelector('#editStokModal .modal-body')
         const statusPembayaran = stokModal.querySelector('#statusPembayaran').value;
@@ -699,6 +710,7 @@
 
 
         }
+
         function funcEditStokSubmit() {
             var form = document.querySelector('#formeditStokModal');
             console.log(form);
@@ -724,6 +736,7 @@
                 checkNominalTerbayarStokTambah();
             }
         }
+
         function updateStokEdit() {
             var stokReferensiHasil = $('#stok_referensiHasilEdit');
             console.log(stokReferensiHasil);
@@ -767,6 +780,7 @@
                 }
             });
         }
+
         function funcKurangStok(url) {
             $.ajax({
                 url: url,
@@ -894,7 +908,7 @@
                         .nodes()
                         .reduce(function(sum, cell) {
                             var hargaPenjualan = parseFloat($(cell).data('harga-jual'))
-                           
+
                             var stok = parseFloat($(cell).siblings('[data-stok]').data('stok'));
 
                             // return intVal(a) + intVal(b);

@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notabukubesar extends Model
+class RiwayatPiutangModel extends Model
 {
     use HasFactory;
-    protected $table = 'nota_bukubesar';
-    protected $primaryKey = 'id_notabukubesar';
-    protected $fillable = ['id_nota', 'id_bukubesar'];
+    protected $table = 'riwayat_piutang';
+    protected $primaryKey = 'id_piutang';
+    protected $fillable = ['id_nota', 'id_bukubesar', 'nominal_dibayar'];
 
     public function notaPembeli()
     {

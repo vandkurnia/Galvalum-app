@@ -8,7 +8,7 @@ use App\Models\BukubesarModel;
 use App\Models\DiskonModel;
 use App\Models\Log\LogNotaModel;
 use App\Models\Log\LogStokBarangModel;
-use App\Models\Notabukubesar;
+use App\Models\RiwayatPiutangModel;
 use App\Models\NotaPembeli;
 use App\Models\Pembeli;
 use App\Models\PesananPembeli;
@@ -667,27 +667,44 @@ class ReturPembeliController extends Controller
             $nominal_terbayar_baru = $notaPembeliPesanan->nominal_terbayar;
             if ($total_baru == $nominal_terbayar_baru) {
                 // Update pada bukubesar
-                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                $bukuBesar->save();
+                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                // $bukuBesar->save();
+                $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
+                $notaPembeliPesanan->save();
+
+                $updateBukubesar = BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
+                $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $updateBukubesar->save();
             }
 
             // Lunas ke hutang
             else {
 
+
+                // RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
+                $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
+                $notaPembeliPesanan->save();
+
+
+                $updateBukubesar = BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
+                $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $updateBukubesar->save();
+
+
                 // Update pada bukubesar
-                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                $bukuBesar->save();
+                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                // $bukuBesar->save();
 
 
-                // Hapus seluruh bukubesar yang setelah edit
-                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                    $notaBukuBesar->delete();
-                });
+                // // Hapus seluruh bukubesar yang setelah edit
+                // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                //     $RiwayatPiutangModel->delete();
+                // });
             }
         } else {
 
@@ -699,32 +716,59 @@ class ReturPembeliController extends Controller
             if ($total_baru == $nominal_terbayar_baru) {
 
                 // Update pada bukubesar
-                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                $bukuBesar->save();
+                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                // $bukuBesar->save();
 
 
-                // Hapus seluruh bukubesar yang setelah edit
-                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                    $notaBukuBesar->delete();
-                });
+                // // Hapus seluruh bukubesar yang setelah edit
+                // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                //     $RiwayatPiutangModel->delete();
+                // });
+
+
+                $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
+                $notaPembeliPesanan->save();
+
+
+                $updateBukubesar = BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
+                $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $updateBukubesar->save();
+
+                $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                foreach ($riwayatPiutang as $rpiutang) {
+                    $rpiutang->delete();
+                }
 
                 // Hutang ke hutang
             } else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
-                // Update pada bukubesar
-                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                $bukuBesar->save();
+
+                $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
+                $notaPembeliPesanan->save();
 
 
-                // Hapus seluruh bukubesar yang setelah edit
-                $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                    $notaBukuBesar->delete();
-                });
+                $updateBukubesar = BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
+                $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                $updateBukubesar->save();
+
+                $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                foreach ($riwayatPiutang as $rpiutang) {
+                    $rpiutang->delete();
+                }
+                // // Update pada bukubesar
+                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                // $bukuBesar->save();
+
+
+                // // Hapus seluruh bukubesar yang setelah edit
+                // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                //     $RiwayatPiutangModel->delete();
+                // });
             }
         }
 
@@ -1066,6 +1110,8 @@ class ReturPembeliController extends Controller
             $nilaiTotal = $updateNotaPembeli->sub_total - $updateNotaPembeli->diskon;
             // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
             $nilaiOngkir =  $updateNotaPembeli->ongkir;
+            $totalOld = $updateNotaPembeli->total;
+            $nominalTerbayarOld = $updateNotaPembeli->nominal_terbayar;
             $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
             $updateNotaPembeli->save();
 
@@ -1075,47 +1121,115 @@ class ReturPembeliController extends Controller
 
             // dd($total_lama == $nominal_terbayar_lama);
 
-            // Menghitung jika lunas maka otomatis nominal terbayar langsung mengisi bukubesar pertama jika hutang maka hapus seluruh bukubesar lalu hitung lagi
-            if ($total_lama == $nominal_terbayar_lama) {
-                $notaPembeli1 = NotaPembeli::find($notaPembeli->id_nota);
-                $notaPembeli1->nominal_terbayar = $notaPembeli1->total;
-                $notaPembeli1->save();
+            // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
+            if ($totalOld == $nominalTerbayarOld) {
+                // Lunas ke lunas 
+                $total_baru = $notaPembeli->total;
+                $nominal_terbayar_baru = $notaPembeli->nominal_terbayar;
+                if ($total_baru == $nominal_terbayar_baru) {
+                    // Update pada bukubesar
+                    // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->first();
+                    // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                    // $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+                    // $bukuBesar->save();
+                    $notaPembeli->nominal_terbayar = $notaPembeli->nominal_terbayar;
+                    $notaPembeli->save();
+
+                    $updateBukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+                    $updateBukubesar->debit = $notaPembeli->nominal_terbayar;
+                    $updateBukubesar->save();
+                }
+
+                // Lunas ke hutang
+                else {
 
 
-                // Update pada bukubesar
-                $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli1->id_nota)->first();
-                $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                $bukuBesar->debit = $notaPembeli1->total;
-                $bukuBesar->save();
+                    // RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
+                    $notaPembeli->nominal_terbayar = $notaPembeli->nominal_terbayar;
+                    $notaPembeli->save();
+
+
+                    $updateBukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+                    $updateBukubesar->debit = $notaPembeli->nominal_terbayar;
+                    $updateBukubesar->save();
+
+
+                    // Update pada bukubesar
+                    // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->first();
+                    // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                    // $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+                    // $bukuBesar->save();
+
+
+                    // // Hapus seluruh bukubesar yang setelah edit
+                    // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->get();
+                    // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                    //     $RiwayatPiutangModel->delete();
+                    // });
+                }
             } else {
+
                 $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeli->id_nota)->first();
-                if ($nominal_terbayar_lama != $notaPembeli->nominal_terbayar) {
+                $total_baru = $notaPembeliCheck->total;
+                $nominal_terbayar_baru = $notaPembeliCheck->nominal_terbayar;
+
+                // Hutang ke lunas
+                if ($total_baru == $nominal_terbayar_baru) {
 
                     // Update pada bukubesar
-                    $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
-                    $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                    $bukuBesar->debit = $notaPembeli->nominal_terbayar;
-                    $bukuBesar->save();
+                    // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->first();
+                    // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                    // $bukuBesar->debit = $notaPembeli->nominal_terbayar;
+                    // $bukuBesar->save();
 
 
-                    // Hapus seluruh bukubesar yang setelah edit
-                    $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
-                    $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                        $notaBukuBesar->delete();
-                    });
-                } else if ($notaPembeliCheck->total != $total_lama) {
-                    // Update pada bukubesar
-                    $notaBukuBesar = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->first();
-                    $bukuBesar = BukubesarModel::find($notaBukuBesar->id_bukubesar);
-                    $bukuBesar->debit = $notaPembeli->nominal_terbayar;
-                    $bukuBesar->save();
+                    // // Hapus seluruh bukubesar yang setelah edit
+                    // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->get();
+                    // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                    //     $RiwayatPiutangModel->delete();
+                    // });
 
 
-                    // Hapus seluruh bukubesar yang setelah edit
-                    $notaBukuBesarList = Notabukubesar::where('id_nota', $notaPembeli->id_nota)->get();
-                    $notaBukuBesarList->skip(1)->each(function ($notaBukuBesar) {
-                        $notaBukuBesar->delete();
-                    });
+                    $notaPembeli->nominal_terbayar = $notaPembeli->nominal_terbayar;
+                    $notaPembeli->save();
+
+
+                    $updateBukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+                    $updateBukubesar->debit = $notaPembeli->nominal_terbayar;
+                    $updateBukubesar->save();
+
+                    $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->get();
+                    foreach ($riwayatPiutang as $rpiutang) {
+                        $rpiutang->delete();
+                    }
+
+                    // Hutang ke hutang
+                } else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
+
+                    $notaPembeli->nominal_terbayar = $notaPembeli->nominal_terbayar;
+                    $notaPembeli->save();
+
+
+                    $updateBukubesar = BukubesarModel::find($notaPembeli->id_bukubesar);
+                    $updateBukubesar->debit = $notaPembeli->nominal_terbayar;
+                    $updateBukubesar->save();
+
+                    $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeli->id_nota)->get();
+                    foreach ($riwayatPiutang as $rpiutang) {
+                        $rpiutang->delete();
+                    }
+                    // // Update pada bukubesar
+                    // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
+                    // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
+                    // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
+                    // $bukuBesar->save();
+
+
+                    // // Hapus seluruh bukubesar yang setelah edit
+                    // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                    // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
+                    //     $RiwayatPiutangModel->delete();
+                    // });
                 }
             }
 
@@ -1142,15 +1256,14 @@ class ReturPembeliController extends Controller
         }
     }
 
-     
-     public function hide($id_retur)
-     {
-         $retur = ReturPembeliModel::where('hash_id_retur_pembeli', $id_retur)->firstOrFail();
-         $retur->hidden = 'yes';
-         $retur->save();
- 
 
-         return redirect()->route('retur.index')->with('success', 'Retur berhasil disembunyikan');
+    public function hide($id_retur)
+    {
+        $retur = ReturPembeliModel::where('hash_id_retur_pembeli', $id_retur)->firstOrFail();
+        $retur->hidden = 'yes';
+        $retur->save();
 
-     }
+
+        return redirect()->route('retur.index')->with('success', 'Retur berhasil disembunyikan');
+    }
 }

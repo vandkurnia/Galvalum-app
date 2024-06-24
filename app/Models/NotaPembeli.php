@@ -17,6 +17,7 @@ class NotaPembeli extends Model
         'no_nota',
         'id_pembeli',
         'id_admin',
+        'id_bukubesar',
         'metode_pembayaran',
         'sub_total',
         'nominal_terbayar',
@@ -46,9 +47,21 @@ class NotaPembeli extends Model
     {
         return $this->hasMany(PesananPembeli::class, 'id_nota');
     }
+    // Delete Soon
+    // public function bukuBesar()
+    // {
+    //     return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
+    // }
+    // End Line Delete soon
+
     public function bukuBesar()
     {
-        return $this->belongsToMany(BukubesarModel::class, 'nota_bukubesar', 'id_nota', 'id_bukubesar');
+        return $this->belongsTo(BukubesarModel::class, 'id_bukubesar', 'id_bukubesar');
+    }
+
+    public function piutang()
+    {
+        return $this->hasMany(RiwayatPiutangModel::class, 'id_nota', 'id_nota');
     }
 
     // Relasi dengan ReturPembeli berdasarkan id_nota

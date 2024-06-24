@@ -235,12 +235,9 @@ class LaporanController extends Controller
                 pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
             JOIN 
                 pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
-            JOIN
-                nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
-            JOIN
-                bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
+         
             WHERE 
-                bukubesar.kategori = "transaksi" AND nota_pembelis.nominal_terbayar < nota_pembelis.total AND nota_pembelis.deleted_at IS NULL
+                 nota_pembelis.nominal_terbayar < nota_pembelis.total AND nota_pembelis.deleted_at IS NULL
             
         ';
 
@@ -279,12 +276,8 @@ class LaporanController extends Controller
               pesanan_pembelis ON pesanan_pembelis.id_nota = nota_pembelis.id_nota
           JOIN 
               pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
-          JOIN
-              nota_bukubesar ON nota_bukubesar.id_nota = nota_pembelis.id_nota
-          JOIN
-              bukubesar ON bukubesar.id_bukubesar = nota_bukubesar.id_bukubesar
           WHERE 
-            nota_pembelis.nominal_terbayar = nota_pembelis.total OR nota_pembelis.nominal_terbayar > nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes" AND bukubesar.kategori = "transaksi"  AND nota_pembelis.deleted_at IS NULL
+            nota_pembelis.nominal_terbayar = nota_pembelis.total OR nota_pembelis.nominal_terbayar > nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
               
       ';
 
@@ -524,13 +517,18 @@ class LaporanController extends Controller
         //     ->where('kategori', $kategori)
         //     ->get();
 
-        $penjualan_kotor = BukubesarModel::join('nota_bukubesar', 'bukubesar.id_bukubesar', '=', 'nota_bukubesar.id_bukubesar')
-            ->join('nota_pembelis', function ($join) {
-                $join->on('nota_bukubesar.id_nota', '=', 'nota_pembelis.id_nota')
-                    ->where('nota_pembelis.total', '=', DB::raw('nota_pembelis.nominal_terbayar'))
-                    ->whereNull('nota_pembelis.deleted_at');
-            })
-            ->where('bukubesar.tanggal', $tanggal)
+        // $penjualan_kotor = BukubesarModel::join('nota_bukubesar', 'bukubesar.id_bukubesar', '=', 'nota_bukubesar.id_bukubesar')
+        //     ->join('nota_pembelis', function ($join) {
+        //         $join->on('nota_bukubesar.id_nota', '=', 'nota_pembelis.id_nota')
+        //             ->where('nota_pembelis.total', '=', DB::raw('nota_pembelis.nominal_terbayar'))
+        //             ->whereNull('nota_pembelis.deleted_at');
+        //     })
+        //     ->where('bukubesar.tanggal', $tanggal)
+        //     ->where('bukubesar.kategori', $kategori)
+        //     ->whereNull('bukubesar.deleted_at')
+        //     ->select('bukubesar.*')
+        //     ->get();
+        $penjualan_kotor = BukubesarModel::whereDate('bukubesar.updated_at', $tanggal)
             ->where('bukubesar.kategori', $kategori)
             ->whereNull('bukubesar.deleted_at')
             ->select('bukubesar.*')

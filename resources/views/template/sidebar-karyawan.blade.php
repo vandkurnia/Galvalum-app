@@ -18,7 +18,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Galvalum App (Karyawan)</div>
+        <div class="sidebar-brand-text mx-3">Galvalum App (Admin)</div>
     </a>
 
     <!-- Divider -->
@@ -43,7 +43,7 @@
 
     <!-- Nav Item - Retur -->
     <li class="nav-item {{ request()->is('retur') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/retur') }}">
+        <a class="nav-link" href="{{ route('retur.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Retur</span></a>
     </li>
@@ -86,32 +86,32 @@
         </a>
     </li>
     <!-- Divider -->
-    {{-- <hr class="sidebar-divider"> --}}
-    {{-- <div class="sidebar-heading">
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
         Keuangan
     </div>
-    <li class="nav-item {{ request()->is('bukubesar') ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ request()->is('bukubesar') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/bukubesar') }}">
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Buku Besar</span></a>
-    </li>
+    </li> --}}
     <li class="nav-item {{ request()->is('laporan/laba-rugi') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="{{ route('laporan.labarugi') }}">
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Laporan Laba Rugi</span>
         </a>
     </li>
-    <hr class="sidebar-divider "> --}}
+    <hr class="sidebar-divider ">
 
 
-    {{-- <div class="sidebar-heading">
+    <div class="sidebar-heading">
         Master
     </div>
-    <li class="nav-item {{ request()->is('user') ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ request()->is('user') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/user') }}">
             <i class="fa fa-user" aria-hidden="true"></i>
             <span>Pengguna</span></a>
-    </li>
+    </li> --}}
     <li class="nav-item {{ request()->is('tipe-barang') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('/tipe-barang') }}">
             <i class="fa fa-archive" aria-hidden="true"></i>
@@ -149,7 +149,7 @@
             <i class="fa fa-archive" aria-hidden="true"></i>
             <span>Stok Barang</span>
         </a>
-    </li> --}}
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
