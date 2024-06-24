@@ -64,7 +64,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    
+
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -87,9 +87,9 @@
                                     <td>{{ $retur->no_retur_pemasok }}</td>
                                     {{-- <td>{{ $retur->faktur_retur_pemasok }}</td> --}}
                                     <td>{{ $retur->tanggal_retur }}</td>
-                                
+
                                     <td><img src="{{ secure_asset('retur/pemasok/' . $retur->bukti_retur_pemasok) }}"
-                                        alt="Bukti Retur" width="150px" height="150px"></td>
+                                            alt="Bukti Retur" width="150px" height="150px"></td>
                                     <td>{{ $retur->jenis_retur }}</td>
                                     <td>{{ $retur->total_nilai_retur }}</td>
                                     {{-- <td>{{ $retur->pengembalian_data }}</td> --}}
@@ -104,7 +104,11 @@
                                         <button class="btn btn-danger btn-sm"
                                             onclick="funcHapusUser('{{ route('retur.pemasok.destroy', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
-                                            Delete</button>
+                                            Batalkan Retur</button>
+                                        <button class="btn btn-warning btn-sm"
+                                            onclick="funcHideRetur('{{ route('retur.pemasok.hide', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)">
+                                            <i class="fas fa-eye-slash"></i> Sembunyikan
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -160,6 +164,11 @@
                                             onclick="funcHapusUser('{{ route('retur.pembeli.destroy', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Batalkan Retur</button>
+
+                                        <button class="btn btn-warning btn-sm"
+                                            onclick="funcHideRetur('{{ route('retur.pembeli.hide', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)">
+                                            <i class="fas fa-eye-slash"></i> Sembunyikan
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -267,6 +276,32 @@
     </div>
 </div>
 {{-- End of Modal Delete --}}
+{{-- Modal Hide --}}
+<div class="modal fade" id="HideRetur" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hide Retur</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formHideRetur" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <h1>Apakah anda yakin ingin menyembunyikan retur ini?</h1>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcHideRetur(null, 1)">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Hide --}}
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
@@ -343,6 +378,25 @@
             }
 
 
+        }
+
+        function funcHideRetur(url, typeoperasi) {
+            // 0 = Menampilkan modal, 1 = Submit penghapusan
+            if (typeof(typeoperasi) === "number") {
+                if (typeoperasi === 1) {
+                    let elementFormHide = document.querySelector('#HideRetur #formHideRetur');
+                    elementFormHide.submit();
+                } else {
+                    // Menampilkan modal delete
+                    $('#HideRetur').modal('show');
+
+                    // Mengatur nilai action formulir hapus user sesuai dengan hashIdAdmin
+                    $('#formHideRetur').attr('action', url);
+                }
+            } else {
+                console.error(typeoperasi);
+                alert('Kesalahan pada parameter typeoperasi');
+            }
         }
     </script>
 

@@ -100,10 +100,10 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
 
-                                        {{-- <button class="btn btn-danger"
+                                        <button class="btn btn-danger"
                                             onclick="funcKurangStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
                                             <i class="fa fa-minus"></i>
-                                        </button> --}}
+                                        </button>
 
                                         <button class="btn btn-primary"
                                             onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
@@ -340,6 +340,68 @@
     </div>
 </div>
 {{-- End of Modal Tambah Stok --}}
+{{-- Modal Edit Stok --}}
+<div class="modal fade" id="editStokModal" tabindex="-1" role="dialog" aria-labelledby="editStokModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Stok Barang</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('stok.minusstok.new') }}" id="formeditStokModal" method="POST">
+
+                    @csrf
+
+                    <input type="hidden" name="id_barang" id="id_barangEditStok" value="null">
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Referensi</label>
+                        <input type="text" class="form-control" id="stok_referensiEditStok" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_referensi" class="form-label">Stok Hasil</label>
+                        <input type="text" class="form-control" id="stok_referensiHasilEdit" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok_tambah" class="form-label">Pengurangan Stok</label>
+                        <input type="number" class="form-control" id="stok_tambahKurangStok" name="stok_kurang"
+                            min="0" oninput="updateStokEdit()" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statusPembayaran">Status Pembayaran:</label>
+                        <select class="form-control" name="status_pembelian" id="statusPembayaran"
+                            onchange="checkNominalTerbayarStokEdit()" required="">
+
+                            <option value="lunas">Lunas</option>
+                            <option value="hutang">Hutang</option>
+                        </select>
+                    </div>
+                    <div id="formCicilanEdit" style="display: none;">
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
+                            <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                                value="{{ date('Y-m-d') }}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="funcEditStokSubmit()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End of Modal Edit Stok --}}
 
 {{-- Modal Edit --}}
 <div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -373,6 +435,28 @@
 
         const stokReferensi = stokModal.querySelector('#stok_referensiTambahStok');
         const stok = stokModal.querySelector('#stok_tambahTambahStok');
+        if (statusPembayaran === 'lunas') {
+            formCicilanEdit.style.display = 'none';
+            nominalTerbayar.readOnly = true;
+            tenggatBayar.disabled = true;
+            let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
+            nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
+        } else if (statusPembayaran === 'hutang') {
+            formCicilanEdit.style.display = 'block';
+            nominalTerbayar.readOnly = false;
+            tenggatBayar.disabled = false;
+            nominalTerbayar.value = 0;
+        }
+    }
+    function checkNominalTerbayarStokEdit() {
+        const stokModal = document.querySelector('#editStokModal .modal-body')
+        const statusPembayaran = stokModal.querySelector('#statusPembayaran').value;
+        const formCicilanEdit = stokModal.querySelector('#formCicilanEdit');
+        const nominalTerbayar = stokModal.querySelector('#nominalTerbayar');
+        const tenggatBayar = stokModal.querySelector('#tenggatBayar');
+
+        const stokReferensi = stokModal.querySelector('#stok_referensiEditStok');
+        const stok = stokModal.querySelector('#stok_tambahKurangStok');
         if (statusPembayaran === 'lunas') {
             formCicilanEdit.style.display = 'none';
             nominalTerbayar.readOnly = true;
@@ -615,6 +699,17 @@
 
 
         }
+        function funcEditStokSubmit() {
+            var form = document.querySelector('#formeditStokModal');
+            console.log(form);
+            if (form.length > 0) {
+                form.submit();
+            } else {
+                console.error('Form not found!');
+            }
+
+
+        }
 
 
         function updateStokTambah() {
@@ -627,6 +722,19 @@
                 // Update the value and ensure it has up to two decimal places
                 $('#stok_referensiHasil').val((maxReferensi + stokTambah).toFixed(2));
                 checkNominalTerbayarStokTambah();
+            }
+        }
+        function updateStokEdit() {
+            var stokReferensiHasil = $('#stok_referensiHasilEdit');
+            console.log(stokReferensiHasil);
+            var stokKurang = parseFloat($('#stok_tambahKurangStok').val()); // Changed to parseFloat
+
+            if (!isNaN(stokKurang)) {
+                let maxReferensi = parseFloat(stokReferensiHasil.attr('max')); // Changed to parseFloat
+
+                // Update the value and ensure it has up to two decimal places
+                $('#stok_referensiHasilEdit').val((maxReferensi - stokKurang).toFixed(2));
+                checkNominalTerbayarStokEdit();
             }
         }
     </script>
@@ -653,6 +761,25 @@
                     $('#stok_referensiHasil').val(response.data.stok);
                     $('#stok_referensiHasil').attr('max', response.data.stok); // Set nilai maksimum
                     $('#tambahStokModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+        function funcKurangStok(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    $('#id_barangEditStok').val(response.data.hash_id_barang);
+                    // Mengisi nilai modal dengan data yang diterima
+                    $('#stok_referensiEditStok').val(response.data.stok);
+                    $('#stok_referensiEditStok').attr('harga-pemasok', response.data.harga_barang_pemasok);
+                    $('#stok_referensiHasilEdit').val(response.data.stok);
+                    $('#stok_referensiHasilEdit').attr('max', response.data.stok); // Set nilai maksimum
+                    $('#editStokModal').modal('show');
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

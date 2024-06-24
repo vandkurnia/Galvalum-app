@@ -1141,4 +1141,16 @@ class ReturPembeliController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+     
+     public function hide($id_retur)
+     {
+         $retur = ReturPembeliModel::where('hash_id_retur_pembeli', $id_retur)->firstOrFail();
+         $retur->hidden = 'yes';
+         $retur->save();
+ 
+
+         return redirect()->route('retur.index')->with('success', 'Retur berhasil disembunyikan');
+
+     }
 }

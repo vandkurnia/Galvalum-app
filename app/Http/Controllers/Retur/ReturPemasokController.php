@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Retur;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
-use App\Models\BukubesarBarangModel;
+use App\Models\RiwayatHutangModel;
 use App\Models\BukubesarModel;
 use App\Models\Log\LogStokBarangModel;
 use App\Models\PemasokBarang;
@@ -227,7 +227,7 @@ class ReturPemasokController extends Controller
                 //     if ($total_lama !=  $cekTotal->total) {
 
                 //         $barangTerbaru =  Barang::find($barang->id_barang);
-                //         $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                //         $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
                 //         $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
 
                 //         // Selisih antara debit pertama dengan 
@@ -246,7 +246,7 @@ class ReturPemasokController extends Controller
 
 
                 //         // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-                //         $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                //         $bukubesarBarangs = RiwayatHutangModel::where('id_barang', $barang->id_barang)
                 //             ->skip(1) // Lewatkan entri pertama
                 //             ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
                 //             ->get();
@@ -260,7 +260,7 @@ class ReturPemasokController extends Controller
                 //         }
                 //     } else if ($nominal_terbayar_lama != $request->nominal_terbayar) {
                 //         $barangTerbaru =  Barang::find($barang->id_barang);
-                //         $bukubesarbarang = BukubesarBarangModel::where('id_barang', $barang->id_barang)->first();
+                //         $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
                 //         $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
 
                 //         // Selisih antara debit pertama dengan 
@@ -279,7 +279,7 @@ class ReturPemasokController extends Controller
 
 
                 //         // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-                //         $bukubesarBarangs = BukubesarBarangModel::where('id_barang', $barang->id_barang)
+                //         $bukubesarBarangs = RiwayatHutangModel::where('id_barang', $barang->id_barang)
                 //             ->skip(1) // Lewatkan entri pertama
                 //             ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
                 //             ->get();
@@ -419,9 +419,7 @@ class ReturPemasokController extends Controller
             $logStokBarang = new LogStokBarangModel();
             $logStokBarang->json_content = [
                 'type' => 'retur_pemasok_destroy',
-                'data' => [
-                    
-                ]
+                'data' => []
             ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
             $logStokBarang->tipe_log = 'retur_pemasok_delete';
             $logStokBarang->keterangan = 'Tambah Retur Pemasok ';
@@ -435,5 +433,16 @@ class ReturPemasokController extends Controller
         } else {
             return redirect()->route('retur.index')->with('error', 'Retur tidak ditemukan');
         }
+    }
+
+    // ReturPemasokController.php
+    public function hide($id_retur)
+    {
+        $retur = ReturPemasokModel::where('hash_id_retur_pemasok', $id_retur)->firstOrFail();
+        $retur->hidden = 'yes';
+        $retur->save();
+
+        return redirect()->route('retur.index')->with('success', 'Retur berhasil disembunyikan');
+
     }
 }

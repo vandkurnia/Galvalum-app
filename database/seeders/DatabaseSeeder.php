@@ -26,17 +26,17 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AkunBayarSeeder::class,
             // BukubesarSeeder::class,
-            // UserSeeder::class,
+            UserSeeder::class,
             // KategoriSeeder::class,
-            // TipeBarangSeeder::class,
+            TipeBarangSeeder::class,
             // PemasokSeeder::class,
             // BarangSeeder::class,
           
-            // DiskonSeeder::class,
+            DiskonSeeder::class,
             // PesananSeeder::class,
             // ZulfikarData::class,
             // MigrasiData::class
-            MigrasiData2::class
+            // MigrasiData2::class
         ]);
     }
 }

@@ -27,13 +27,20 @@ class Barang extends Model
         'tenggat_bayar',
         'id_pemasok',
         'id_tipe_barang',
+        'id_bukubesar'
     ];
 
 
 
+    public function riwayatHutang()
+    {
+        return $this->hasMany(RiwayatHutangModel::class, 'id_barang', 'id_barang');
+    }
+
+    // Coming to delete soon
     public function bukuBesar()
     {
-        return $this->belongsToMany(BukubesarModel::class, 'bukubesar_barang', 'id_barang', 'id_bukubesar');
+        return $this->belongsToMany(BukubesarModel::class, 'riwayat_hutang', 'id_barang', 'id_bukubesar');
     }
     public function Pemasok()
     {

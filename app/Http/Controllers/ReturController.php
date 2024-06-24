@@ -13,8 +13,8 @@ class ReturController extends Controller
 {
     public function index()
     {
-        $dataReturPemasok = ReturPemasokModel::with('pemasok')->get();
-        $dataReturPembeli = ReturPembeliModel::with('pembeli')->get();
+        $dataReturPemasok = ReturPemasokModel::with('pemasok')->where('hidden', 'no')->get();
+        $dataReturPembeli = ReturPembeliModel::with('pembeli')->where('hidden', 'no')->get();
         return view('retur.retur', compact('dataReturPemasok', 'dataReturPembeli'));
     }
     

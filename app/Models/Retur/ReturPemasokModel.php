@@ -35,7 +35,8 @@ class ReturPemasokModel extends Model
         'status',
         'id_pemasok',
         'id_barang',
-        'id_stok_barang'
+        'id_stok_barang',
+        'hidden'
     ];
 
     public function pemasok()

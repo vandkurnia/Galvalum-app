@@ -28,6 +28,7 @@ class ReturPembeliModel extends Model
         'kekurangan',
         'status',
         'id_pembeli',
+        'hidden'
     ];
     public function pembeli()
     {

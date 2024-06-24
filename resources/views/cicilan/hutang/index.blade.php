@@ -1,8 +1,8 @@
 @extends('app')
 
-@section('title', 'User')
+@section('title', 'Detail Hutang')
 @section('header-custom')
-    <style>
+    {{-- <style>
         /* Sembunyikan Showing entries */
         #dataTable_length,
         #dataTable_info {
@@ -13,7 +13,7 @@
         #dataTable_paginate {
             display: none;
         }
-    </style>
+    </style> --}}
 
 
 @endsection
@@ -51,6 +51,14 @@
                 </div>
             @endforeach
         @endif
+
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="card shadow mb-4">
 
             <div class="card-body">
@@ -85,21 +93,21 @@
 
                         <tbody>
 
-                            @foreach ($barangData->bukuBesar as $bkBesar)
+                            @foreach ($barangData->riwayatHutang as $rh)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
 
 
-                                    <td>{{ date('Y-m-d', strtotime($bkBesar->created_at)) }}</td>
-                                    <td>{{ $bkBesar->debit }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($rh->created_at)) }}</td>
+                                    <td>Rp. {{ number_format($rh->nominal_dibayar, 0, '', '.') }}</td>
                                     <td>
 
                                         <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('cicilan.hutang.edit', ['id_bukubesar' => $bkBesar->hash_id_bukubesar, 'id_barang' => $barangData->hash_id_barang]) }}')"><i
+                                            onclick="funcEditUser('{{ route('cicilan.hutang.edit', ['id_bukubesar' => $rh->id, 'id_barang' => $barangData->hash_id_barang]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
                                         <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('cicilan.hutang.destroy', ['id_bukubesar' => $bkBesar->hash_id_bukubesar, 'id_barang' => $barangData->hash_id_barang]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('cicilan.hutang.destroy', ['id_bukubesar' => $rh->id, 'id_barang' => $barangData->hash_id_barang]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>
@@ -123,13 +131,13 @@
 </a>
 
 
-{{-- Modal Tambah User --}}
+{{-- Modal Tambah Pelunasan --}}
 <div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Pelunasan</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -161,7 +169,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Pelunasan</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -184,7 +192,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hapus User</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Pelunasan</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

@@ -55,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy'); // Menghapus user berdasarkan ID
         Route::get('/change-password/{id_admin}', [UserController::class, 'formpassword'])->name('user.formpassword');
         Route::put('/change-password/{id_admin}', [UserController::class, 'changePassword'])->name('user.changepassword');
-
     });
     // Master Tipe Barang
     Route::middleware('role:admin')->prefix('tipe-barang')->group(function () {
@@ -113,7 +112,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stokbarang/{id}', [StokController::class, 'showStokBarang'])->name('stok.detail');
         Route::post('/addstok', [StokController::class, 'addStock'])->name('stok.addstok.new');
         Route::post('/minusstok', [StokController::class, 'minusStok'])->name('stok.minusstok.new');
-
     });
 
     Route::prefix('laporan_penjualan')->group(function () {
@@ -131,7 +129,10 @@ Route::middleware(['auth'])->group(function () {
             // Route::get('/', [ReturPemasokController::class, 'index']);
             Route::get('/edit/{id_retur}', [ReturPemasokController::class, 'edit'])->name('retur.pemasok.edit');
             Route::put('/{id_retur}', [ReturPemasokController::class, 'update'])->name('retur.pemasok.update'); // Mengupdate tipebarang berdasarkan ID
-            Route::delete('/{id_retur}', [ReturPemasokController::class, 'destroy'])->name('retur.pemasok.destroy'); // Menghapus tipebarang berdasarkan ID
+            Route::delete('/{id_retur}', [ReturPemasokController::class, 'destroy'])->name('retur.pemasok.destroy'); // Menghapus tipebarang berdasarkan 
+            // web.php
+            Route::put('/retur/pemasok/{id_retur}/hide', [ReturPemasokController::class, 'hide'])->name('retur.pemasok.hide');
+            
         });
         Route::prefix('pembeli')->group(function () {
 
@@ -141,6 +142,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit/{id_retur}', [ReturPembeliController::class, 'edit'])->name('retur.pembeli.edit');
             Route::put('/{id_retur}', [ReturPembeliController::class, 'update'])->name('retur.pembeli.update'); // Mengupdate tipebarang berdasarkan ID
             Route::delete('/{id_retur}', [ReturPembeliController::class, 'destroy'])->name('retur.pembeli.destroy'); // Menghapus tipebarang berdasarkan ID
+            Route::put('/retur/pembeli/{id_retur}/hide', [ReturPembeliController::class, 'hide'])->name('retur.pembeli.hide');
+
         });
     });
 
@@ -183,14 +186,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('cicilanpiutang')->name('')->group(function () {
         Route::get('/{id_nota}/hide', [CicilanPiutangController::class, 'notVisible'])->name('cicilan.notvisible');
-        Route::get('/{id_nota}', [CicilanPiutangController::class, 'index' ])->name('cicilan.index');
+        Route::get('/{id_nota}', [CicilanPiutangController::class, 'index'])->name('cicilan.index');
         Route::get('/edit/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'edit'])->name('cicilan.edit');
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
         Route::put('/update/{id_nota}/{id_bukubesar}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
         Route::delete('/hapus/{id_bukubesar}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
     });
     Route::prefix('cicilanhutang')->name('')->group(function () {
-        Route::get('/{id_barang}', [CicilanHutangController::class, 'index' ])->name('cicilan.hutang.index');
+        Route::get('/{id_barang}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');
         Route::get('/edit/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'edit'])->name('cicilan.hutang.edit');
         Route::post('/tambah', [CicilanHutangController::class, 'store'])->name('cicilan.hutang.store');
         Route::put('/update/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'update'])->name('cicilan.hutang.update'); // Mengupdate user berdasarkan ID
@@ -210,7 +213,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/kas-keluar', [LaporanController::class, 'kasKeluar'])->name('laporan.kaskeluar');
         Route::post('/simpan-kas', [LaporanController::class, 'simpanKas'])->name('laporan.simpankas');
-        Route::get('/editKas/{id}', [LaporanController::class, 'editKas'])->name('laporan.editKas'); 
+        Route::get('/editKas/{id}', [LaporanController::class, 'editKas'])->name('laporan.editKas');
         Route::put('/updateKas/{id}', [LaporanController::class, 'updateKas'])->name('laporan.updatekas');
         Route::delete('/deletekas/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
 
