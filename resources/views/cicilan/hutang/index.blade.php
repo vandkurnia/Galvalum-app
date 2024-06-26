@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Detail Hutang')
+@section('title', 'Riwayat Hutang')
 @section('header-custom')
     {{-- <style>
         /* Sembunyikan Showing entries */
@@ -63,9 +63,18 @@
 
             <div class="card-body">
 
-                <h1><strong>Tersisa : Rp.
-                        {{ number_format($barangData->total - $barangData->nominal_terbayar, 0, ',', '.') }}</strong>
-                </h1>
+                <h4>Tersisa : Rp.
+                        {{ number_format($barangData->total - $barangData->nominal_terbayar, 0, ',', '.') }}
+                </h4>
+
+                <h4>Jatuh Tempo:
+                    {{ $barangData->tenggat_bayar ? \Carbon\Carbon::parse($barangData->tenggat_bayar)->translatedFormat('d F Y') : null }}
+                </h4>
+                <h4>Tanggal Selesai:
+                    {{ $barangData->tanggal_penyelesaian ? \Carbon\Carbon::parse($barangData->tanggal_penyelesaian)->translatedFormat('d F Y') : 'Belum ada' }}
+                </h4>
+
+
             </div>
         </div>
         <div class="card shadow mb-4">

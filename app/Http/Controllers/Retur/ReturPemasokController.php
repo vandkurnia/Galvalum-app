@@ -293,6 +293,16 @@ class ReturPemasokController extends Controller
                 //         }
                 //     }
                 // }
+
+
+                // Periksa kondisi untuk tanggal penyelesaian
+                if ($barangUpdate->nominal_terbayar == $barangUpdate->total && is_null($barangUpdate->tanggal_penyelesaian)) {
+                    $barangUpdate->tanggal_penyelesaian = $barangUpdate->updated_at;  // Atau $barangUpdate->updated_at jika diperlukan
+                    $barangUpdate->save();
+                } elseif ($barangUpdate->nominal_terbayar != $barangUpdate->total && !is_null($barangUpdate->tanggal_penyelesaian)) {
+                    $barangUpdate->tanggal_penyelesaian = null;
+                    $barangUpdate->save();
+                }
             }
 
 
@@ -429,6 +439,17 @@ class ReturPemasokController extends Controller
             $logStokBarang->id_stok_barang_history =  $stokbarangHistory->id_stok;
             $logStokBarang->save();
             $dataRetur->delete();
+
+
+
+            // Periksa kondisi untuk tanggal penyelesaian
+            if ($barang->nominal_terbayar == $barang->total && is_null($barang->tanggal_penyelesaian)) {
+                $barang->tanggal_penyelesaian = $barang->updated_at;  // Atau $barang->updated_at jika diperlukan
+                $barang->save();
+            } elseif ($barang->nominal_terbayar != $barang->total && !is_null($barang->tanggal_penyelesaian)) {
+                $barang->tanggal_penyelesaian = null;
+                $barang->save();
+            }
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } else {
             return redirect()->route('retur.index')->with('error', 'Retur tidak ditemukan');
@@ -443,6 +464,5 @@ class ReturPemasokController extends Controller
         $retur->save();
 
         return redirect()->route('retur.index')->with('success', 'Retur berhasil disembunyikan');
-
     }
 }

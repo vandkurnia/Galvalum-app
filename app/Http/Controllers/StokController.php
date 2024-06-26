@@ -115,9 +115,18 @@ class StokController extends Controller
         $barang->tenggat_bayar = $request->get('tenggat_bayar');
         $barang->stok = $request->stok;
 
+
+
         $barang->save();
 
-
+        // Periksa kondisi untuk tanggal penyelesaian
+        if ($barang->nominal_terbayar == $barang->total && is_null($barang->tanggal_penyelesaian)) {
+            $barang->tanggal_penyelesaian = $barang->updated_at;  // Atau $barang->updated_at jika diperlukan
+            $barang->save();
+        } elseif ($barang->nominal_terbayar != $barang->total && !is_null($barang->tanggal_penyelesaian)) {
+            $barang->tanggal_penyelesaian = null;
+            $barang->save();
+        }
 
         // Buat record baru untuk BukuBesar
         // $bukuBesar = new BukubesarModel();
@@ -240,7 +249,7 @@ class StokController extends Controller
         $barang->harga_barang_pemasok = $request->harga_barang_pemasok;
         $total_lama = $barang->total;
         $nominal_terbayar_lama =  $barang->nominal_terbayar;
-        // $barang->nominal_terbayar = $request->nominal_terbayar;
+        $barang->nominal_terbayar = $request->nominal_terbayar;
         $barang->tenggat_bayar = $request->tenggat_bayar;
         // $barang->stok = $request->stok;
         $barang->save();
@@ -340,6 +349,7 @@ class StokController extends Controller
             $barangTerbaru =  Barang::find($barang->id_barang);
             $total_baru = $barangTerbaru->total;
             $nominal_terbayar_baru = $barangTerbaru->nominal_terbayar;
+
             // Lunas ke lunas
             if ($total_baru == $nominal_terbayar_baru) {
 
@@ -363,6 +373,16 @@ class StokController extends Controller
                 // }
                 $barangData->nominal_terbayar = $barangData->total;
                 $barangData->save();
+
+
+                // Periksa kondisi untuk tanggal penyelesaian
+                if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
+                    $barangData->save();
+                } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = null;
+                    $barangData->save();
+                }
             }
 
             // Lunas ke hutang
@@ -370,7 +390,20 @@ class StokController extends Controller
 
                 $barangData = Barang::find($barang->id_barang);
                 $barangData->nominal_terbayar =  $request->nominal_terbayar;
+
                 $barangData->save();
+
+                // Periksa kondisi untuk tanggal penyelesaian
+                if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
+                    $barangData->save();
+                } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = null;
+                    $barangData->save();
+                }
+
+
+
                 // Delete all records where 'id_barang' matches $barang->id_barang
                 RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
 
@@ -410,6 +443,19 @@ class StokController extends Controller
                 $barangData =  Barang::find($barang->id_barang);
                 $barangData->nominal_terbayar = $barangData->total;
                 $barangData->save();
+
+
+
+                // Periksa kondisi untuk tanggal penyelesaian
+                if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
+                    $barangData->save();
+                } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = null;
+                    $barangData->save();
+                }
+
+
                 RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
                 //   $barangTer
 
@@ -453,6 +499,16 @@ class StokController extends Controller
                 $barangData = Barang::find($barang->id_barang);
                 $barangData->nominal_terbayar =  $request->nominal_terbayar;
                 $barangData->save();
+
+
+                // Periksa kondisi untuk tanggal penyelesaian
+                if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
+                    $barangData->save();
+                } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
+                    $barangData->tanggal_penyelesaian = null;
+                    $barangData->save();
+                }
 
                 RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
 
@@ -676,7 +732,7 @@ class StokController extends Controller
     public function minusStok(Request $request)
     {
 
-    
+
 
         $validatedData = $request->validate([
             'stok_kurang' => 'required|numeric|min:0',

@@ -200,6 +200,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
         Route::put('/update/{id_nota}/{id_piutang}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
         Route::delete('/hapus/{id_piutang}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
+      
     });
     Route::prefix('cicilanhutang')->name('')->group(function () {
         Route::get('/{id_barang}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');

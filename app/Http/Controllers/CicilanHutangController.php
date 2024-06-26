@@ -26,7 +26,13 @@ class CicilanHutangController extends Controller
 
         // return redirect()->back();
         $barangData = Barang::where('hash_id_barang', $id_barang)->with('riwayatHutang')->first();
-
+        if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
+            $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
+            $barangData->save();
+        } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
+            $barangData->tanggal_penyelesaian = null;
+            $barangData->save();
+        }
         // dd($barangData);
 
         return view('cicilan.hutang.index', compact('barangData'));

@@ -110,7 +110,7 @@ class LaporanController extends Controller
              pesanan_pembelis ON pesanan_pembelis.id_barang = barangs.id_barang AND pesanan_pembelis.deleted_at IS NULL
         JOIN nota_pembelis ON nota_pembelis.id_nota = pesanan_pembelis.id_nota AND nota_pembelis.deleted_at IS NULL
         WHERE 
-            DATE(pesanan_pembelis.created_at) = ? AND nota_pembelis.total = nota_pembelis.nominal_terbayar
+            DATE(nota_pembelis.tanggal_penyelesaian) = ? AND nota_pembelis.total = nota_pembelis.nominal_terbayar
         GROUP BY 
             barangs.nama_barang, pesanan_pembelis.jenis_pembelian
         ',
@@ -528,7 +528,7 @@ class LaporanController extends Controller
         //     ->whereNull('bukubesar.deleted_at')
         //     ->select('bukubesar.*')
         //     ->get();
-        $penjualan_kotor = BukubesarModel::whereDate('bukubesar.updated_at', $tanggal)
+        $penjualan_kotor = BukubesarModel::whereDate('bukubesar.created_at', $tanggal)
             ->where('bukubesar.kategori', $kategori)
             ->whereNull('bukubesar.deleted_at')
             ->select('bukubesar.*')

@@ -25,6 +25,8 @@ class NotaPembeli extends Model
         'diskon',
         'ongkir',
         'total',
+        'dp',
+        'tanggal_penyelesaian',
         'piutang_is_visible'
     ];
 
