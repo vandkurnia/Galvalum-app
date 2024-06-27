@@ -70,6 +70,11 @@ class PembelianController extends Controller
         $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
         $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         // Nominal Terbayar
+        $notaPembeli->dp = $request->dp ?? 0;
+
+ 
+
+    
         $notaPembeli->save();
 
 
@@ -312,8 +317,8 @@ class PembelianController extends Controller
         $notaPembeli->nominal_terbayar = $request->nominal_terbayar;
   
         $notaPembeli->tenggat_bayar = $request->tenggat_bayar ?? $notaPembeli->tenggat_bayar;
-
-
+     
+        $notaPembeli->dp = $request->dp ?? 0;
 
 
         // Nominal Terbayar

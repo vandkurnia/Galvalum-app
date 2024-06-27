@@ -542,7 +542,7 @@
                                         data-harga-potongan-khusus="{{ (int) $pesanan->harga_potongan }}">
                                         {{ (int) $pesanan->harga }}</td>
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
-                                    <td class="nilai_jumlah_barang_pesanan">{{  $pesanan->jumlah_pembelian }}</td>
+                                    <td class="nilai_jumlah_barang_pesanan">{{ $pesanan->jumlah_pembelian }}</td>
                                     <td class="totalperpesanan">
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}
                                     </td>
@@ -557,7 +557,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" rowspan="4">
+                                <td colspan="5" rowspan="5">
 
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
@@ -577,9 +577,16 @@
                                         value="{{ $notaPembelian->ongkir }}"></td>
                             </tr>
                             <tr>
+                                <td colspan="2">Dp</td>
+                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
+                                        class="form-control" name="dp" min="0" id="nilaiDp"
+                                        value="{{ $notaPembelian->dp }}"></td>
+                            </tr>
+                            <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="{{ $notaPembelian->total }}" readonly></strong></td>
+                                            id="total" value="{{ $notaPembelian->total - $notaPembelian->dp }}"
+                                            readonly></strong></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -662,16 +669,19 @@
                                 Hutang</option>
                         </select>
                     </div>
-                    <div id="formCicilan" style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'display:none;' : '' }}">
+                    <div id="formCicilan"
+                        style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'display:none;' : '' }}">
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{ (int) $notaPembelian->nominal_terbayar }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'readonly' : '' }}>
+                                value="{{ (int) $notaPembelian->nominal_terbayar }}"
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'readonly' : '' }}>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                                value="{{$notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d')  }}"  {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
+                                value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
                         </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
@@ -694,7 +704,7 @@
             var formCicilan = document.getElementById('formCicilan');
 
             var valueString = String(this.value).trim();
-
+            let nilaiDp = document.getElementById('nilaiDp').value;
             if (valueString === 'hutang') {
 
                 formCicilan.style.display = 'block';
@@ -709,7 +719,9 @@
 
                 const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
                 nominalTerbayar.readOnly = true;
-                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+                // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
+                nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
+
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -748,15 +760,19 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
-            total.value = nilaiTotal + nilaiOngkir;
+            var nilaiDp = tabletfoot.querySelector('#nilaiDp');
+            total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
+
+            // total.value = nilaiTotal + nilaiOngkir;
 
             // Pengisian Total pada Nominal Terbayar
 
             let statusPembayaran = document.getElementById('statusPembayaran');
             var valueString = String(statusPembayaran.value).trim();
             if (valueString === 'lunas') {
+            
                 document.querySelector('#nominalTerbayar').value = total.value;
-            } 
+            }
 
 
 
@@ -983,7 +999,13 @@
             formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
-
+            // Menambahkan Form DP
+            const nilaiDp = document.querySelector('#nilaiDp');
+            const inputTotalDp = document.createElement('input');
+            inputTotalDp.type = 'hidden';
+            inputTotalDp.name = 'dp';
+            inputTotalDp.value = nilaiDp.value;
+            formPembeli.appendChild(inputTotalDp);
 
             formPembeli.submit();
             // return true;

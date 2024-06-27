@@ -33,7 +33,7 @@
           </li>
 
           <!-- Nav Item - Alerts -->
-          {{-- <li class="nav-item dropdown no-arrow mx-1">
+          <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-bell fa-fw"></i>
@@ -46,7 +46,20 @@
                   <h6 class="dropdown-header">
                       Notifikasi Center
                   </h6>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-modal">
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                          <div class="mr-3">
+                              <div class="icon-circle bg-warning">
+                                  <i class="fas fa-exclamation-triangle text-white"></i>
+                              </div>
+                          </div>
+                          <div>
+                              <div class="small text-gray-500">December 2, 2019</div>
+                              Spending Alert: We've noticed unusually high spending for your account.
+                          </div>
+                      </a>
+                  </div>
+                  {{-- <a class="dropdown-item d-flex align-items-center" href="#">
                       <div class="mr-3">
                           <div class="icon-circle bg-primary">
                               <i class="fas fa-file-alt text-white"></i>
@@ -67,23 +80,54 @@
                           <div class="small text-gray-500">December 7, 2019</div>
                           $290.29 has been deposited into your account!
                       </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                      <div class="mr-3">
-                          <div class="icon-circle bg-warning">
-                              <i class="fas fa-exclamation-triangle text-white"></i>
-                          </div>
-                      </div>
-                      <div>
-                          <div class="small text-gray-500">December 2, 2019</div>
-                          Spending Alert: We've noticed unusually high spending for your account.
-                      </div>
-                  </a>
-                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                      Alerts</a>
+                  </a> --}}
+
+                  {{-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All
+                      Alerts</a> --}}
               </div>
-          </li> --}}
-          
+          </li>
+
+          <script>
+              $(document).ready(function() {
+                  $('#alertsDropdown').on('click', function() {
+                      $.ajax({
+                          url: '/notifications',
+                          method: 'GET',
+                          success: function(data) {
+                              var notifications = data;
+                              var notificationsList = '';
+                              if (notifications.length === 0) {
+                                  notificationsList =
+                                      '<a class="dropdown-item d-flex align-items-center" href="#"><div class="mr-3"><div class="icon-circle bg-secondary"><i class="fas fa-info text-white"></i></div></div><div><div class="small text-gray-500">No new notifications</div></div></a>';
+                              } else {
+                                  $.each(notifications, function(index, notification) {
+                                      notificationsList +=
+                                          '<a class="dropdown-item d-flex align-items-center" href="#">';
+                                      notificationsList += '<div class="mr-3">';
+                                      notificationsList +=
+                                          '<div class="icon-circle bg-warning">';
+                                      notificationsList += '<i class="' + notification.icon +
+                                          '"></i>';
+                                      notificationsList += '</div>';
+                                      notificationsList += '</div>';
+                                      notificationsList += '<div>';
+                                      notificationsList +=
+                                          '<div class="small text-gray-500">' + new Date(
+                                              notification.created_at).toLocaleDateString() +
+                                          '</div>';
+                                      notificationsList += notification.message;
+                                      notificationsList += '</div>';
+                                      notificationsList += '</a>';
+                                  });
+                              }
+                              $('.dropdown-list-modal').html(notificationsList);
+                          }
+                      });
+                  });
+              });
+          </script>
+
+
 
           <div class="topbar-divider d-none d-sm-block"></div>
 

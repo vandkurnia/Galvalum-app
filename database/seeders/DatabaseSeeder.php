@@ -31,12 +31,13 @@ class DatabaseSeeder extends Seeder
             TipeBarangSeeder::class,
             // PemasokSeeder::class,
             // BarangSeeder::class,
-          
+
             DiskonSeeder::class,
             // PesananSeeder::class,
             // ZulfikarData::class,
             // MigrasiData::class
             // MigrasiData2::class
+            CustomNotificationSeeder::class
         ]);
     }
 }

@@ -225,8 +225,8 @@ class LaporanController extends Controller
                 nota_pembelis.nominal_terbayar as terbayar,
                 nota_pembelis.tenggat_bayar as jatuh_tempo,
                 CASE
-                    WHEN nota_pembelis.total > nota_pembelis.nominal_terbayar THEN "Belum Lunas"
-                    WHEN nota_pembelis.total < nota_pembelis.nominal_terbayar THEN "Kelebihan"
+                    WHEN nota_pembelis.total > (nota_pembelis.nominal_terbayar + nota_pembelis.dp) THEN "Belum Lunas"
+                    WHEN nota_pembelis.total < (nota_pembelis.nominal_terbayar + nota_pembelis.dp) THEN "Kelebihan"
                     ELSE "Lunas"
                 END AS status_bayar
             FROM 
@@ -237,18 +237,18 @@ class LaporanController extends Controller
                 pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
          
             WHERE 
-                 nota_pembelis.nominal_terbayar < nota_pembelis.total AND nota_pembelis.deleted_at IS NULL
+                 (nota_pembelis.nominal_terbayar + nota_pembelis.dp) < nota_pembelis.total AND nota_pembelis.deleted_at IS NULL
             
         ';
 
         if ($tanggal) {
             $query .= ' AND DATE(nota_pembelis.created_at) = ? ';
-            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar, nota_pembelis.dp';
             $query .= " ORDER BY nota_pembelis.created_at DESC";
             
             $dataNotaPembelian = DB::select($query, [$tanggal]);
         } else {
-            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar';
+            $query .= 'GROUP BY nota_pembelis.id_nota, pembelis.nama_pembeli, pembelis.no_hp_pembeli, nota_pembelis.total, nota_pembelis.tenggat_bayar, nota_pembelis.created_at, nota_pembelis.nominal_terbayar, nota_pembelis.dp';
             $query .= " ORDER BY nota_pembelis.created_at DESC";
             $dataNotaPembelian = DB::select($query, []);
         }
@@ -277,7 +277,7 @@ class LaporanController extends Controller
           JOIN 
               pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
           WHERE 
-            nota_pembelis.nominal_terbayar = nota_pembelis.total OR nota_pembelis.nominal_terbayar > nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
+            (nota_pembelis.nominal_terbayar + nota_pembelis.dp) = nota_pembelis.total OR (nota_pembelis.nominal_terbayar + nota_pembelis.dp) > nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
               
       ';
 

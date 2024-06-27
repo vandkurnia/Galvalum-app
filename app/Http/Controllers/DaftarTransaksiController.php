@@ -36,11 +36,11 @@ class DaftarTransaksiController extends Controller
             }
 
 
-            if ($nota['total'] == $nota['nominal_terbayar']) {
+            if ($nota['total'] == ($nota['nominal_terbayar'] + $nota['dp'])) {
                 $statusPembayaran = "Lunas";
-            } else if ($nota['total'] < $nota['nominal_terbayar']) {
+            } else if ($nota['total'] < ($nota['nominal_terbayar'] + $nota['dp'])) {
                 $statusPembayaran = "Kelebihan";
-            } else if ($nota['total'] > $nota['nominal_terbayar']) {
+            } else if ($nota['total'] > ($nota['nominal_terbayar'] + $nota['dp'])) {
                 $statusPembayaran = "Piutang";
             } else {
                 $statusPembayaran = "Tidak Valid";

@@ -2,7 +2,7 @@
 
 @section('title', 'Pemesanan')
 @section('header-custom')
-    <style>
+    {{-- <style>
         /* Sembunyikan Showing entries */
         #dataTable_length,
         #dataTable_info {
@@ -13,7 +13,7 @@
         #dataTable_paginate {
             display: none;
         }
-    </style>
+    </style> --}}
     <script src="{{ secure_asset('library/ckeditor/ckeditor.js') }}"></script>
 
 @endsection
@@ -487,7 +487,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" rowspan="4">
+                                <td colspan="5" rowspan="5">
 
                                 </td>
                                 <td colspan="2">Sub Total Rp</td>
@@ -503,6 +503,12 @@
                                 <td colspan="2">Ongkir</td>
                                 <td colspan="2"><input oninput="totalPembayaran()" type="number"
                                         class="form-control" name="total_ongkir" min="0" id="totalOngkir"
+                                        value="0"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Dp</td>
+                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
+                                        class="form-control" name="dp" min="0" id="nilaiDp"
                                         value="0"></td>
                             </tr>
                             <tr>
@@ -594,6 +600,7 @@
     <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
+            let nilaiDp = document.getElementById('nilaiDp').value;
             if (this.value === 'hutang') {
                 formCicilan.style.display = 'block';
 
@@ -607,7 +614,8 @@
 
                 const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
                 nominalTerbayar.readOnly = true;
-                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+                // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
+                nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -646,7 +654,9 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
-            total.value = nilaiTotal + nilaiOngkir;
+            // var nilaiDp = tabletfoot.querySelector('#nilaiDp');
+            total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
+            // total.value = nilaiTotal + nilaiOngkir;
 
 
             // Pengisian Total pada Nominal Terbayar
@@ -769,6 +779,13 @@
             formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
+            // Menambahkan Form DP
+            const nilaiDp = document.querySelector('#nilaiDp');
+            const inputTotalDp = document.createElement('input');
+            inputTotalDp.type = 'hidden';
+            inputTotalDp.name = 'dp';
+            inputTotalDp.value = nilaiDp.value;
+            formPembeli.appendChild(inputTotalDp);
 
 
             formPembeli.submit();

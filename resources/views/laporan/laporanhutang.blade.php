@@ -100,7 +100,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $laporan['nama_pemasok'] }}</td>
                                     <td>{{ $laporan['nama_barang'] }}</td>
-                                    <td>{{ number_format((int) $laporan['total_pesanan'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format( $laporan['total_pesanan'], 1, ',', '.') }}</td>
                                     <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok_alt'])) }}</td>
                                     <td>{{ number_format((int) $laporan['harga_bayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format((int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>

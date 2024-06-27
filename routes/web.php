@@ -17,6 +17,7 @@ use App\Http\Controllers\JsonType\PemesananBarangJsonController;
 use App\Http\Controllers\Laporan\LaporanController;
 use App\Http\Controllers\Log\LogController;
 use App\Http\Controllers\Log\LogNotaController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PemasokBarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembeliController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Retur\ReturPemasokController;
 use App\Http\Controllers\Retur\ReturPembeliController;
 use App\Http\Controllers\TipeBarangController;
 use App\Http\Controllers\UserController;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -200,7 +202,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/tambah', [CicilanPiutangController::class, 'store'])->name('cicilan.store');
         Route::put('/update/{id_nota}/{id_piutang}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
         Route::delete('/hapus/{id_piutang}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
-      
     });
     Route::prefix('cicilanhutang')->name('')->group(function () {
         Route::get('/{id_barang}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');
@@ -243,4 +244,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/log-nota/{id_nota}', [LogController::class, 'index'])->name('log-nota.index');
     Route::get('/log-stok-barang/{id_barang}', [LogController::class, 'LogStokBarang'])->name('log-stok-barang.index');
+
+
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
 });
+
