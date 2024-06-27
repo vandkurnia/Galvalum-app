@@ -637,7 +637,7 @@
                 var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
                 // totalHarga += (harga - diskon) * jumlah;
                 totalHarga += totalpesanan;
-                console.log(totalHarga);
+              
             });
 
 

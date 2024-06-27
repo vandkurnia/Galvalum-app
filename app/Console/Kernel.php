@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // Menjadwalkan job setiap 2 jam
+        //   $schedule->job(new \App\Jobs\CheckTenggatWaktuJob)->everyTwoHours();
+        $schedule->job(new \App\Jobs\CheckTenggatWaktuJob)->at('00.00');
     }
 
     /**
@@ -25,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
