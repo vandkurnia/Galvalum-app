@@ -18,60 +18,60 @@ class AuthController extends Controller
         $data['title'] = 'Masuk';
         return view('guest.login', $data);
     }
-    public function checkTenggatWaktu()
-    {
-        $today = Carbon::today();
+    // public function checkTenggatWaktu()
+    // {
+    //     $today = Carbon::today();
 
-        // Construct the raw SQL query
-        $query = "
-                SELECT *
-                FROM nota_pembelis
-                WHERE DATE(tenggat_bayar) = ?
-                AND total != (nominal_terbayar + dp)
-            ";
+    //     // Construct the raw SQL query
+    //     $query = "
+    //             SELECT *
+    //             FROM nota_pembelis
+    //             WHERE DATE(tenggat_bayar) = ?
+    //             AND total != (nominal_terbayar + dp)
+    //         ";
 
-        // Execute the query using DB::select
-        $notas = DB::select($query, [$today]);
+    //     // Execute the query using DB::select
+    //     $notas = DB::select($query, [$today]);
 
-        foreach ($notas as $nota) {
-            // Check if notification already exists
-            $exists = CustomNotification::where('type', 'piutang')
-                ->where('id_data', $nota->id_nota)
-                ->exists();
+    //     foreach ($notas as $nota) {
+    //         // Check if notification already exists
+    //         $exists = CustomNotification::where('type', 'piutang')
+    //             ->where('id_data', $nota->id_nota)
+    //             ->exists();
 
 
-            if (!$exists) {
+    //         if (!$exists) {
      
-                // Create notification
-                CustomNotification::create([
-                    'type' => 'piutang',
-                    'id_data' => $nota->id_nota,
-                    'icon' => 'fas fa-exclamation-triangle text-white',
-                    'message' => "NotaPembeli No {$nota->no_nota} jatuh tempo pembayaran  pada hari ini.",
-                ]);
-            }
-        }
+    //             // Create notification
+    //             CustomNotification::create([
+    //                 'type' => 'piutang',
+    //                 'id_data' => $nota->id_nota,
+    //                 'icon' => 'fas fa-exclamation-triangle text-white',
+    //                 'message' => "NotaPembeli No {$nota->no_nota} jatuh tempo pembayaran  pada hari ini.",
+    //             ]);
+    //         }
+    //     }
 
-        // Check Barang with tenggat_waktu today
-        $barangs = Barang::whereDate('tenggat_bayar', $today)->get();
+    //     // Check Barang with tenggat_waktu today
+    //     $barangs = Barang::whereDate('tenggat_bayar', $today)->get();
     
-        foreach ($barangs as $barang) {
-            // Check if notification already exists
-            $exists = CustomNotification::where('type', 'hutang')
-                ->where('id_data', $barang->id_barang)
-                ->exists();
+    //     foreach ($barangs as $barang) {
+    //         // Check if notification already exists
+    //         $exists = CustomNotification::where('type', 'hutang')
+    //             ->where('id_data', $barang->id_barang)
+    //             ->exists();
 
-            if (!$exists) {
-                // Create notification
-                CustomNotification::create([
-                    'type' => 'hutang',
-                    'id_data' => $barang->id_barang,
-                    'icon' => 'fas fa-exclamation-triangle text-white',
-                    'message' => "Barang  {$barang->nama_barang} jatuh tempo pembayaran  pada hari ini.",
-                ]);
-            }
-        }
-    }
+    //         if (!$exists) {
+    //             // Create notification
+    //             CustomNotification::create([
+    //                 'type' => 'hutang',
+    //                 'id_data' => $barang->id_barang,
+    //                 'icon' => 'fas fa-exclamation-triangle text-white',
+    //                 'message' => "Barang  {$barang->nama_barang} jatuh tempo pembayaran  pada hari ini.",
+    //             ]);
+    //         }
+    //     }
+    // }
 
 
     public function login(Request $request)
@@ -89,7 +89,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($infologin, $remember)) {
             $request->session()->regenerate();
-            $this->checkTenggatWaktu();
+        
             return redirect('beranda');
         } else {
             return back()->withErrors('Email dan Password anda salah!')->withInput();

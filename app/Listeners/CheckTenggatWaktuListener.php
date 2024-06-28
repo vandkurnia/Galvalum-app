@@ -1,57 +1,56 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Listeners;
 
+use App\Events\CheckTenggatWaktu;
 use App\Models\Barang;
 use App\Models\CustomNotification;
-use App\Models\NotaPembeli;
 use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class CheckTenggatWaktuJob implements ShouldQueue
+class CheckTenggatWaktuListener
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
-     * Create a new job instance.
+     * Create the event listener.
      *
      * @return void
      */
     public function __construct()
     {
         //
+        // dd("taknak");
     }
 
     /**
-     * Execute the job.
+     * Handle the event.
      *
+     * @param  object  $event
      * @return void
      */
-    public function handle()
+    public function handle(CheckTenggatWaktu $event)
     {
-        Log::info('Job CheckTenggatWaktuJob started at: ' . now());
+        Log::info('Running CheckTenggatWaktuListener');
+
         $today = Carbon::today();
 
-        // Check NotaPembeli with tenggat_bayar today
-        $notas = NotaPembeli::whereDate('tenggat_bayar', $today)
-            ->select('id_nota', 'no_nota')
-            ->whereRaw('total != (nominal_terbayar + dp)')
-            ->get();
+        $query = "
+                SELECT *
+                FROM nota_pembelis
+                WHERE DATE(tenggat_bayar) = ?
+                AND total > (nominal_terbayar + dp)
+            ";
+
+        $notas = DB::select($query, [$today]);
 
         foreach ($notas as $nota) {
-            // Check if notification already exists
             $exists = CustomNotification::where('type', 'piutang')
                 ->where('id_data', $nota->id_nota)
                 ->exists();
 
             if (!$exists) {
-                // Create notification
                 CustomNotification::create([
                     'type' => 'piutang',
                     'id_data' => $nota->id_nota,
@@ -61,17 +60,14 @@ class CheckTenggatWaktuJob implements ShouldQueue
             }
         }
 
-        // Check Barang with tenggat_bayar today
         $barangs = Barang::whereDate('tenggat_bayar', $today)->get();
 
         foreach ($barangs as $barang) {
-            // Check if notification already exists
             $exists = CustomNotification::where('type', 'hutang')
                 ->where('id_data', $barang->id_barang)
                 ->exists();
 
             if (!$exists) {
-                // Create notification
                 CustomNotification::create([
                     'type' => 'hutang',
                     'id_data' => $barang->id_barang,
@@ -80,6 +76,7 @@ class CheckTenggatWaktuJob implements ShouldQueue
                 ]);
             }
         }
-        Log::info('Job CheckTenggatWaktuJob finished at: ' . now());
+
+        Log::info('Completed CheckTenggatWaktuListener');
     }
 }

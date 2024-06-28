@@ -21,8 +21,9 @@ return new class extends Migration
             $table->string('icon'); // Icon class for the notification
             $table->string('message'); // The notification message
             $table->timestamps();
+            $table->timestamp('read_at')->nullable(); // The datetime when the notification is read
 
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // Add foreign key constraints or additional columns if needed
         });
     }
 

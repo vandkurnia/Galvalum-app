@@ -5,6 +5,28 @@
     <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 
 
+
+    <style>
+        @keyframes blink-animation {
+            0% {
+                background-color: transparent;
+            }
+
+            50% {
+                background-color: #bcc5e2;
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        #laporanPiutang .highlight-row {
+            animation: blink-animation 0.5s infinite;
+            /* Ubah warna latar belakang sesuai kebutuhan */
+            background: #bcc5e2;
+        }
+    </style>
 @endsection
 
 
@@ -93,11 +115,11 @@
                         </thead>
                         <tbody>
                             @foreach ($dataNotaPembelian as $notaPembelian)
-                                <tr>
+                                <tr class="piutang{{ $notaPembelian['id_nota'] }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $notaPembelian['nama_pembeli'] }}</td>
                                     <td>{{ $notaPembelian['no_hp_pembeli'] }}</td>
-                                    <td>{{ number_format(  $notaPembelian['total_pembelian'] , 1, ',', '.')}}</td>
+                                    <td>{{ number_format($notaPembelian['total_pembelian'], 1, ',', '.') }}</td>
                                     <td>{{ date('Y-m-d', strtotime($notaPembelian['tanggal_pembelian'])) }}</td>
                                     <td>{{ number_format($notaPembelian['total'], 0, ',', '.') }}</td>
                                     <td>{{ number_format($notaPembelian['terbayar'], 0, ',', '.') }}</td>
@@ -169,7 +191,7 @@
                                     <td>{{ $notaLunasdanKelebihan['nama_pembeli'] }}</td>
                                     <td>{{ $notaLunasdanKelebihan['no_hp_pembeli'] }}</td>
                                     {{-- <td>{{ "Barang Pembelian" }}</td> --}}
-                                    <td>{{ number_format($notaLunasdanKelebihan['total_pembelian'] , 1, ',', '.') }}</td>
+                                    <td>{{ number_format($notaLunasdanKelebihan['total_pembelian'], 1, ',', '.') }}</td>
                                     {{-- <td>{{ $notaLunasdanKelebihan['jenis_pelanggan'] }}</td> --}}
                                     <td>{{ date('Y-m-d', strtotime($notaLunasdanKelebihan['tanggal_pembelian'])) }}</td>
                                     <td>{{ number_format($notaLunasdanKelebihan['total'], 0, ',', '.') }}</td>
@@ -252,6 +274,8 @@
 
 
 @section('javascript-custom')
+
+
     <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -306,6 +330,29 @@
                     $('#totalKekuranganLunas').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
                 }
             });
+
+            // Ambil nilai parameter solve dari URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const solveValue = urlParams.get('solve');
+
+            // Cari elemen <tr> dengan data-id yang sama dengan nilai solve
+            const targetTr = $('#laporanPiutang .piutang' + parseInt(solveValue) + '');
+            console.log(targetTr);
+
+            // Lakukan sesuatu dengan targetTr jika ditemukan
+            if (targetTr.length > 0) {
+                // Misalnya, tambahkan class untuk menyorot atau lakukan operasi lain
+                targetTr.addClass('highlight-row');
+
+                // Scroll ke elemen targetTr jika perlu
+                $('html, body').animate({
+                    scrollTop: targetTr.offset().top - 100 // Sesuaikan offset jika perlu
+                }, 1000); // Durasi animasi scroll dalam milidetik
+            } else {
+                console.log('Tidak ada elemen <tr> dengan data-id=' + solveValue);
+            }
         });
     </script>
+
+    <script></script>
 @endsection

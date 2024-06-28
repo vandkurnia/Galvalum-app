@@ -32,13 +32,19 @@
               </div>
           </li>
 
+
+          <style>
+              .is_read {
+                  background-color: #efefef;
+              }
+          </style>
           <!-- Nav Item - Alerts -->
           <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-bell fa-fw"></i>
                   <!-- Counter - Alerts -->
-                  <span class="badge badge-danger badge-counter">3+</span>
+                  <span class="badge badge-danger badge-counter" id="notification-counter">0</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -89,39 +95,109 @@
 
           <script>
               $(document).ready(function() {
-                  $('#alertsDropdown').on('click', function() {
+
+                  function ambilNotifikasi() {
                       $.ajax({
                           url: '/notifications',
                           method: 'GET',
                           success: function(data) {
                               var notifications = data;
                               var notificationsList = '';
+                              let totalnotification = 0;
+
+                              const notificationCounter = document.getElementById('notification-counter');
                               if (notifications.length === 0) {
+
+                                  notificationCounter.innerText = totalnotification;
                                   notificationsList =
                                       '<a class="dropdown-item d-flex align-items-center" href="#"><div class="mr-3"><div class="icon-circle bg-secondary"><i class="fas fa-info text-white"></i></div></div><div><div class="small text-gray-500">No new notifications</div></div></a>';
                               } else {
+
+
                                   $.each(notifications, function(index, notification) {
+                                      // Check if read_at is empty and increment the counter
+                                      if (!notification.read_at) {
+                                          totalnotification++;
+                                      }
+                                      var notification_is_read = notification.read_at ? 'is_read' :
+                                          '';
+
                                       notificationsList +=
-                                          '<a class="dropdown-item d-flex align-items-center" href="#">';
+                                          '<div class="dropdown-item d-flex align-items-center ' +
+                                          notification_is_read + '" data-id="' + notification
+                                          .id_notifikasi + '" data-url="' + notification.url + '">';
                                       notificationsList += '<div class="mr-3">';
-                                      notificationsList +=
-                                          '<div class="icon-circle bg-warning">';
+                                      notificationsList += '<div class="icon-circle bg-warning">';
                                       notificationsList += '<i class="' + notification.icon +
                                           '"></i>';
                                       notificationsList += '</div>';
                                       notificationsList += '</div>';
                                       notificationsList += '<div>';
-                                      notificationsList +=
-                                          '<div class="small text-gray-500">' + new Date(
-                                              notification.created_at).toLocaleDateString() +
+                                      notificationsList += '<div class="small text-gray-500">' +
+                                          new Date(notification.created_at).toLocaleDateString() +
                                           '</div>';
                                       notificationsList += notification.message;
                                       notificationsList += '</div>';
-                                      notificationsList += '</a>';
+                                      notificationsList +=
+                                          '<button class="btn btn-sm btn-danger ml-auto delete-notification"><i class="fas fa-trash-alt"></i></button>';
+                                      notificationsList += '</div>';
                                   });
+
+                                  notificationCounter.innerText = totalnotification;
                               }
                               $('.dropdown-list-modal').html(notificationsList);
                           }
+                      });
+                  }
+                  // Call ambilNotifikasi when the document is ready
+                  ambilNotifikasi();
+
+                  // Call ambilNotifikasi when the alertsDropdown is clicked
+                  $('#alertsDropdown').on('click', function() {
+                      ambilNotifikasi();
+                  });
+
+
+
+                  // Handle the click on the notification delete button
+                  $('.dropdown-list-modal').on('click', '.delete-notification', function(e) {
+                      e.stopPropagation(); // Prevent dropdown from closing
+
+                      var notificationId = $(this).closest('.dropdown-item').data('id');
+                      var notificationUrl = $(this).closest('.dropdown-item').data('url');
+
+                      // Send AJAX request to delete the notification
+                      $.ajax({
+                          url: '/notifications/' + notificationId + '/delete',
+                          method: 'POST',
+                          data: {
+                              _token: '{{ csrf_token() }}' // Add CSRF token if needed
+                          },
+                          success: function(response) {
+                              alert(JSON.stringify(response));
+                              // Remove the deleted notification from the list
+                              $(this).closest('.dropdown-item').remove();
+                              // Optionally, redirect to the notification URL after deletion
+                              window.location.href = notificationUrl;
+                          }.bind(this)
+                      });
+                  });
+
+
+                  // Handle the click on the notification items
+                  $('.dropdown-list-modal').on('click', '.dropdown-item', function(e) {
+                      e.preventDefault();
+                      var notificationUrl = $(this).data('url');
+
+                      $.ajax({
+                          url: notificationUrl,
+                          method: 'GET',
+                          success: function(response) {
+                              // Add class to mark as read
+                              $(this).addClass('is_read');
+                              // Redirect to the URL
+                              window.location.href = notificationUrl;
+                          }.bind(this)
                       });
                   });
               });

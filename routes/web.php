@@ -45,7 +45,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'index']);
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'check-tanggal'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Master User
@@ -246,6 +246,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/log-stok-barang/{id_barang}', [LogController::class, 'LogStokBarang'])->name('log-stok-barang.index');
 
 
-    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
-});
 
+    // notification
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+    Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/{id}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
+});

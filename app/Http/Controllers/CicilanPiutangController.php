@@ -27,10 +27,10 @@ class CicilanPiutangController extends Controller
         $notaPembelian = NotaPembeli::where('id_nota', $id_nota)->with('Piutang')->first();
 
         // Periksa kondisi untuk tanggal penyelesaian
-        if ($notaPembelian->nominal_terbayar == $notaPembelian->total && is_null($notaPembelian->tanggal_penyelesaian)) {
+        if (($notaPembelian->nominal_terbayar + $notaPembelian->dp) == $notaPembelian->total && is_null($notaPembelian->tanggal_penyelesaian)) {
             $notaPembelian->tanggal_penyelesaian = $notaPembelian->updated_at;  // Atau $notaPembelian->updated_at jika diperlukan
             $notaPembelian->save();
-        } elseif ($notaPembelian->nominal_terbayar != $notaPembelian->total && !is_null($notaPembelian->tanggal_penyelesaian)) {
+        } elseif (($notaPembelian->nominal_terbayar + $notaPembelian->dp) != $notaPembelian->total && !is_null($notaPembelian->tanggal_penyelesaian)) {
             $notaPembelian->tanggal_penyelesaian = null;
             $notaPembelian->save();
         }

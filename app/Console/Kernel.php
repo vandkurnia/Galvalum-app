@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         // Menjadwalkan job setiap 2 jam
         //   $schedule->job(new \App\Jobs\CheckTenggatWaktuJob)->everyTwoHours();
-        $schedule->job(new \App\Jobs\CheckTenggatWaktuJob)->at('00.00');
+        // $schedule->job(new \App\Jobs\CheckTenggatWaktuJob)->at('00.00');
     }
 
     /**

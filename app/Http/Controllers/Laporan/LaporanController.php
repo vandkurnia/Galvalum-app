@@ -222,7 +222,7 @@ class LaporanController extends Controller
                 SUM(pesanan_pembelis.jumlah_pembelian) AS total_pembelian,
                 DATE(nota_pembelis.created_at) AS tanggal_pembelian,
                 nota_pembelis.total,
-                nota_pembelis.nominal_terbayar as terbayar,
+                (nota_pembelis.nominal_terbayar + nota_pembelis.dp) as terbayar,
                 nota_pembelis.tenggat_bayar as jatuh_tempo,
                 CASE
                     WHEN nota_pembelis.total > (nota_pembelis.nominal_terbayar + nota_pembelis.dp) THEN "Belum Lunas"

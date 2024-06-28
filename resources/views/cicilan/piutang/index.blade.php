@@ -68,7 +68,7 @@
         @endif
         <div class="card shadow mb-4">
             <div class="card-body">
-                <h2>Tersisa: Rp. {{ number_format($notaPembelian->total - $notaPembelian->nominal_terbayar, 0, ',', '.') }}
+                <h2>Tersisa: Rp. {{ number_format($notaPembelian->total - ($notaPembelian->nominal_terbayar + $notaPembelian->dp), 0, ',', '.') }}
                 </h2>
                 <h4>Jatuh Tempo: {{ $notaPembelian->tenggat_bayar ? \Carbon\Carbon::parse($notaPembelian->tenggat_bayar)->translatedFormat('d F Y') : null }}</h4>
                 <h4>Tanggal Selesai: {{ $notaPembelian->tanggal_penyelesaian ? \Carbon\Carbon::parse($notaPembelian->tanggal_penyelesaian)->translatedFormat('d F Y') : "Belum ada" }}</h4>
