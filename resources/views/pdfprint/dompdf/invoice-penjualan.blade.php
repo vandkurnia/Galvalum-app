@@ -337,7 +337,7 @@
                     </tr>
                     <tr>
                         <td colspan="1">Total</td>
-                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'], 0, ',', '.') }}</td>
+                        <td colspan="1">Rp. {{ number_format($dataRincianBarang['total'] - $dataRincianBarang['dp'], 0, ',', '.') }}</td>
                     </tr>
 
                 </tfoot>

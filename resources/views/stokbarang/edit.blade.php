@@ -93,13 +93,15 @@
                 </div>
 
                 <label for="statusPembayaranEdit">Status Pembayaran:</label>
+                @dump($dataBarang->total )
+                @dump($dataBarang->nominal_terbayar )
                 <select class="form-control" name="status_pembelian"
                     data-status-pembayaran="{{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'lunas' : 'hutang' }}"
                     onchange="handleStatusPembayaranChange()" id="statusPembayaranEdit" required="">
 
                     <option {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'selected' : '' }} value="lunas">
                         Lunas</option>
-                    <option {{ $dataBarang->total != $dataBarang->nominal_terbayar ? 'selected' : '' }} value="hutang">
+                    <option {{ $dataBarang->total < $dataBarang->nominal_terbayar ? 'selected' : '' }} value="hutang">
                         Hutang</option>
                 </select>
             </div>

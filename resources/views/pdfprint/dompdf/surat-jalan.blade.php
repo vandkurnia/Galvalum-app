@@ -123,7 +123,7 @@
             <tbody>
                 @foreach ($dataRincianBarang as $index => $data)
                     <tr>
-                        <td>{{ (int) $data['qty']}}</td>
+                        <td>{{ number_format($data['qty'], 1, '.', '.') }}</td>
                         <td>{{ $data['nama_barang'] }}</td>
                     </tr>
                 @endforeach

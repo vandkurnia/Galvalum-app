@@ -110,7 +110,7 @@ class LaporanController extends Controller
              pesanan_pembelis ON pesanan_pembelis.id_barang = barangs.id_barang AND pesanan_pembelis.deleted_at IS NULL
         JOIN nota_pembelis ON nota_pembelis.id_nota = pesanan_pembelis.id_nota AND nota_pembelis.deleted_at IS NULL
         WHERE 
-            DATE(nota_pembelis.tanggal_penyelesaian) = ? AND nota_pembelis.total = nota_pembelis.nominal_terbayar
+            DATE(nota_pembelis.tanggal_penyelesaian) = ? AND nota_pembelis.total = (nota_pembelis.nominal_terbayar + nota_pembelis.dp)
         GROUP BY 
             barangs.nama_barang, pesanan_pembelis.jenis_pembelian
         ',

@@ -497,6 +497,7 @@
         handleStatusChange();
         // Periksa status pembayaran
         if (statusPembayaranSelect.value === 'lunas') {
+          
             cicilanEdit.style.display = 'none';
             // Jika status pembayaran adalah lunas
             tenggatBayarInput.disabled = true; // Nonaktifkan input tanggal tenggat bayar

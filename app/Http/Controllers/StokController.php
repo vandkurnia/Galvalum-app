@@ -252,6 +252,7 @@ class StokController extends Controller
         $barang->nominal_terbayar = $request->nominal_terbayar;
         $barang->tenggat_bayar = $request->tenggat_bayar;
         // $barang->stok = $request->stok;
+        
         $barang->save();
 
 
@@ -294,7 +295,8 @@ class StokController extends Controller
             // Update total barang setelah mengubah stok masuk
             $updatebarangtotal = Barang::find($barang->id_barang);
             $updatebarangtotal->stok = $stokRequest;
-            $updatebarangtotal->total = $stokBaru * $updatebarangtotal->harga_barang_pemasok;
+
+            $updatebarangtotal->total = $updatebarangtotal->stok * $updatebarangtotal->harga_barang_pemasok;
             $updatebarangtotal->save();
 
 
@@ -331,6 +333,16 @@ class StokController extends Controller
             $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
             $logStokBarang->save();
         }
+
+
+
+
+
+        // Update Total
+        $updateTotal = Barang::find($barang->id_barang);
+        $updateTotal->total = $updateTotal->stok * $updateTotal->harga_barang_pemasok;
+        $updateTotal->save();
+      
 
 
         // Menggunakan DB::transaction untuk menjaga integritas transaksi

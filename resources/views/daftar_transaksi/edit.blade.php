@@ -662,26 +662,26 @@
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
                             <option value="lunas"
-                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'selected' : '' }}>
+                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'selected' : '' }}>
                                 Lunas</option>
                             <option value="hutang"
-                                {{ $notaPembelian->total != $notaPembelian->nominal_terbayar ? 'selected' : '' }}>
+                                {{ $notaPembelian->total != ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'selected' : '' }}>
                                 Hutang</option>
                         </select>
                     </div>
                     <div id="formCicilan"
-                        style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'display:none;' : '' }}">
+                        style=" {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'display:none;' : '' }}">
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{ (int) $notaPembelian->nominal_terbayar }}"
-                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'readonly' : '' }}>
+                                value="{{  $notaPembelian->nominal_terbayar }}"
+                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'readonly' : '' }}>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
                                 value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
-                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar ? 'disabled' : '' }}>
+                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'disabled' : '' }}>
                         </div>
                     </div>
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}

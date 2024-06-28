@@ -209,7 +209,7 @@ class PembelianController extends Controller
 
 
         // Jika Langsung lunas maka tanggal penyelesaiannya hari itu juga jika hutang maka tanggal penyelesaian null
-        if ($updateNotaPembeli->total == $updateNotaPembeli->nominal_terbayar) {
+        if ($updateNotaPembeli->total == ($updateNotaPembeli->nominal_terbayar + $updateNotaPembeli->dp)) {
             $updateNotaPembeli->tanggal_penyelesaian = $updateNotaPembeli->created_at;
             $updateNotaPembeli->save();
         }
@@ -744,11 +744,8 @@ class PembelianController extends Controller
                 // $bukuBesar->save();
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
                 // Periksa kondisi untuk tanggal penyelesaian
-                if ($notaPembeliPesanan->nominal_terbayar == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                } elseif ($notaPembeliPesanan->nominal_terbayar != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = null;
-                }
+                
+              
 
                 $notaPembeliPesanan->save();
 
@@ -767,11 +764,11 @@ class PembelianController extends Controller
 
 
                 // Periksa kondisi untuk tanggal penyelesaian
-                if ($notaPembeliPesanan->nominal_terbayar == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                } elseif ($notaPembeliPesanan->nominal_terbayar != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = null;
-                }
+                // if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
+                // } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = null;
+                // }
 
                 $notaPembeliPesanan->save();
 
@@ -826,11 +823,11 @@ class PembelianController extends Controller
 
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
                 // Periksa kondisi untuk tanggal penyelesaian
-                if ($notaPembeliPesanan->nominal_terbayar == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                } elseif ($notaPembeliPesanan->nominal_terbayar != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = null;
-                }
+                // if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
+                // } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = null;
+                // }
                 $notaPembeliPesanan->save();
 
 
@@ -848,11 +845,11 @@ class PembelianController extends Controller
 
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
                 // Periksa kondisi untuk tanggal penyelesaian
-                if ($notaPembeliPesanan->nominal_terbayar == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                } elseif ($notaPembeliPesanan->nominal_terbayar != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                    $notaPembeliPesanan->tanggal_penyelesaian = null;
-                }
+                // if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
+                // } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+                //     $notaPembeliPesanan->tanggal_penyelesaian = null;
+                // }
                 $notaPembeliPesanan->save();
 
 
@@ -879,8 +876,14 @@ class PembelianController extends Controller
             }
         }
 
+        
 
-
+        if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->dp) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+            $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
+        } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->dp) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
+            $notaPembeliPesanan->tanggal_penyelesaian = null;
+        }
+        $notaPembeliPesanan->save();
 
         // Log Nota
         // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
