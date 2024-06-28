@@ -299,7 +299,7 @@
                         <td style="width: 20px;">{{ $index + 1 }}</td>
                         {{-- <td style="width: 50px;">{{ $data['item'] }}</td> --}}
                         <td style="height:10px;">{{ $data['deskripsi'] }}</td>
-                        <td style="width: 60px;">{{ (int) $data['qty'] }}</td>
+                        <td style="width: 60px;">{{ number_format($data['qty'], 1, '.', '') }}</td>
                         <td>{{ $data['pesanan'] }}</td>
                         <td style="width: 100px;">Rp. {{ number_format($data['harga'], 0, ',', '.') }}</td>
                         {{-- <td>{{ $data['disc'] }}</td> --}}
