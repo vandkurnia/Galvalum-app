@@ -277,7 +277,7 @@ class LaporanController extends Controller
           JOIN 
               pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
           WHERE 
-            (nota_pembelis.nominal_terbayar + nota_pembelis.dp) = nota_pembelis.total OR (nota_pembelis.nominal_terbayar + nota_pembelis.dp) > nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
+            ((nota_pembelis.nominal_terbayar + nota_pembelis.dp) = nota_pembelis.total OR (nota_pembelis.nominal_terbayar + nota_pembelis.dp) > nota_pembelis.total) AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
               
       ';
 
@@ -297,6 +297,7 @@ class LaporanController extends Controller
 
         // Lunas dan Kelebihan
         $NotaPembelianLunasdanKelebihan =  json_decode(json_encode($dataNotaPembelianLunasdanKelebihan), true);
+        // dd($NotaPembelianLunasdanKelebihan);
         // Logika untuk mengambil data dan menampilkan laporan piutang
         return view('laporan.laporanpiutang', compact('dataNotaPembelian', 'NotaPembelianLunasdanKelebihan'));
     }

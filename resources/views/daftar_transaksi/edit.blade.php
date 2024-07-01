@@ -101,7 +101,7 @@
                     <div class="form-group">
                         <label for="noHp">Nomor HP:</label>
                         <input type="text" class="form-control" id="noHp" name="no_hp"
-                            placeholder="Masukkan nomor HP" value="{{ $notaPembelian->Pembeli->no_hp }}" required>
+                            placeholder="Masukkan nomor HP" value="{{ $notaPembelian->Pembeli->no_hp_pembeli }}" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat:</label>
@@ -576,12 +576,7 @@
                                         class="form-control" name="total_ongkir" min="0" id="totalOngkir"
                                         value="{{ $notaPembelian->ongkir }}"></td>
                             </tr>
-                            <tr>
-                                <td colspan="2">Dp</td>
-                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="dp" min="0" id="nilaiDp"
-                                        value="{{ $notaPembelian->dp }}"></td>
-                            </tr>
+
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
@@ -662,28 +657,44 @@
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
                             <option value="lunas"
-                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'selected' : '' }}>
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'selected' : '' }}>
                                 Lunas</option>
                             <option value="hutang"
-                                {{ $notaPembelian->total != ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'selected' : '' }}>
+                                {{ $notaPembelian->total != $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'selected' : '' }}>
                                 Hutang</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="reset_cicilan" id="resetCicilan"
+                                value="1" checked>
+                            <label class="form-check-label" for="resetCicilan">
+                                Reset Cicilan Piutang yang sudah ada (jika ada).
+                            </label>
+                        </div>
+                    </div>
                     <div id="formCicilan"
-                        style=" {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'display:none;' : '' }}">
+                        style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'display:none;' : '' }}">
+
                         <div class="form-group">
+                            <label for="nilaiDp">DP:</label>
+                            <input oninput="totalPembayaran()" type="number" class="form-control" name="dp"
+                                min="0" id="nilaiDp" value="{{ $notaPembelian->dp }}">
+                        </div>
+                        <div class="form-group" style="display: none;">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{  $notaPembelian->nominal_terbayar }}"
-                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'readonly' : '' }}>
+                                value="{{ $notaPembelian->nominal_terbayar }}"
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'readonly' : '' }}>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
                                 value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
-                                {{ $notaPembelian->total == ($notaPembelian->nominal_terbayar + $notaPembelian->dp) ? 'disabled' : '' }}>
+                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'disabled' : '' }}>
                         </div>
                     </div>
+
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
                     <button type="button" onclick="kirimPesanan()" class="btn btn-primary">Bayar</button>
@@ -704,7 +715,7 @@
             var formCicilan = document.getElementById('formCicilan');
 
             var valueString = String(this.value).trim();
-            let nilaiDp = document.getElementById('nilaiDp').value;
+            let nilaiDp = document.getElementById('nilaiDp');
             if (valueString === 'hutang') {
 
                 formCicilan.style.display = 'block';
@@ -721,7 +732,7 @@
                 nominalTerbayar.readOnly = true;
                 // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
                 nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
-
+                nilaiDp.value = 0;
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -770,7 +781,8 @@
             let statusPembayaran = document.getElementById('statusPembayaran');
             var valueString = String(statusPembayaran.value).trim();
             if (valueString === 'lunas') {
-            
+                nilaiDp.value = 0;
+
                 document.querySelector('#nominalTerbayar').value = total.value;
             }
 
@@ -999,34 +1011,15 @@
             formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
-            // Menambahkan Form DP
-            const nilaiDp = document.querySelector('#nilaiDp');
-            const inputTotalDp = document.createElement('input');
-            inputTotalDp.type = 'hidden';
-            inputTotalDp.name = 'dp';
-            inputTotalDp.value = nilaiDp.value;
-            formPembeli.appendChild(inputTotalDp);
+            // // Menambahkan Form DP
+            // const nilaiDp = document.querySelector('#nilaiDp');
+            // const inputTotalDp = document.createElement('input');
+            // inputTotalDp.type = 'hidden';
+            // inputTotalDp.name = 'dp';
+            // inputTotalDp.value = nilaiDp.value;
+            // formPembeli.appendChild(inputTotalDp);
 
             formPembeli.submit();
-            // return true;
-            // kirim ke pesanan
-            // fetch(formPembeli.action, {
-            //         method: 'POST',
-            //         body: dataPembeli
-            //     })
-            //     .then(response => {
-            //         if (response.ok) {
-            //             alert("berhasil mengirim pesanan");
-            //             // window.location.reload();
-            //         } else {
-            //             alert("Terjadi kesalahan, Error :" + response.status);
-            //         }
-            //         // window.location.href = "URL_BARU"; // Ganti URL_BARU dengan URL yang diinginkan
-            //     })
-            //     .catch(error => {
-            //         alert("Terjadi kesalahan, Error :" + error.message);
-            //     });
-
 
         }
     </script>

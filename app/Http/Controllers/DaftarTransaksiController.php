@@ -51,7 +51,8 @@ class DaftarTransaksiController extends Controller
             //     $pesanan->count = $pesanan->jumlah_pembelian()->count();
             // });
         }
-        // dd($dataNotaPembeli);
+
+        
         return view('daftar_transaksi.daftar_transaksi', ['dataNotaPembeli' => $dataNotaPembeli]);
     }
     public function daftarBarangPesanan($id_nota)

@@ -70,11 +70,12 @@ class PembelianController extends Controller
         $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar');
         $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         // Nominal Terbayar
-        $notaPembeli->dp = $request->dp ?? 0;
 
- 
+        $notaPembeli->dp = $request->get('dp') ?? 0;
 
-    
+
+
+
         $notaPembeli->save();
 
 
@@ -208,25 +209,20 @@ class PembelianController extends Controller
         $updateNotaPembeli->save();
 
 
-        // Jika Langsung lunas maka tanggal penyelesaiannya hari itu juga jika hutang maka tanggal penyelesaian null
+        // Cek Pelunasan
         if ($updateNotaPembeli->total == ($updateNotaPembeli->nominal_terbayar + $updateNotaPembeli->dp)) {
             $updateNotaPembeli->tanggal_penyelesaian = $updateNotaPembeli->created_at;
             $updateNotaPembeli->save();
+        } else if ($updateNotaPembeli->total < ($updateNotaPembeli->nominal_terbayar + $updateNotaPembeli->dp)) {
+            $updateNotaPembeli->tanggal_penyelesaian = null;
+            $updateNotaPembeli->save();
+            // RiwayatPiutangModel::create([
+            //     'id_nota' => $updateNotaPembeli->id_nota,
+            //     'nominal_dibayar' => $updateNotaPembeli->dp,
+            //     'created_at' => $updateNotaPembeli->created_at
+            // ]);
         }
 
-        // dump([
-        //     'total' => $updateNotaPembeli
-        // ]);
-        // Old Bukubesar
-        // Membuat satu data baru
-        // $bukuBesarPembelian = new BukubesarModel();
-        // $bukuBesarPembelian->id_akunbayar = 1;
-        // $bukuBesarPembelian->tanggal = date('Y-m-d'); // Tanggal saat ini
-        // $bukuBesarPembelian->kategori = 'transaksi';
-        // $bukuBesarPembelian->keterangan = 'NOTA ' . $notaPembeli->no_nota; // Ganti dengan keterangan yang sesuai
-        // $bukuBesarPembelian->debit = $updateNotaPembeli->nominal_terbayar; // Misalnya debit sebesar 1000
-        // $bukuBesarPembelian->save();
-        // $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
 
 
@@ -238,7 +234,7 @@ class PembelianController extends Controller
         $bukuBesarPembelian->tanggal = date('Y-m-d'); // Tanggal saat ini
         $bukuBesarPembelian->kategori = 'transaksi';
         $bukuBesarPembelian->keterangan = 'NOTA ' . $notaPembeli->no_nota; // Ganti dengan keterangan yang sesuai
-        $bukuBesarPembelian->debit = $updateNotaPembeli->nominal_terbayar; // Misalnya debit sebesar 1000
+        $bukuBesarPembelian->debit = $updateNotaPembeli->nominal_terbayar + $updateNotaPembeli->dp; // Misalnya debit sebesar 1000
         $bukuBesarPembelian->save();
         // $updateNotaPembeli->bukuBesar()->save($bukuBesarPembelian);
 
@@ -315,9 +311,9 @@ class PembelianController extends Controller
         $totalOld = $notaPembeli->total;
         $nominalTerbayarOld =  $notaPembeli->nominal_terbayar;
         $notaPembeli->nominal_terbayar = $request->nominal_terbayar;
-  
+
         $notaPembeli->tenggat_bayar = $request->tenggat_bayar ?? $notaPembeli->tenggat_bayar;
-     
+
         $notaPembeli->dp = $request->dp ?? 0;
 
 
@@ -724,6 +720,7 @@ class PembelianController extends Controller
         // $nilaiPajak = $nilaiTotal * ( $updateNotaPembeli->pajak / 100);
         $nilaiOngkir =  $updateNotaPembeli->ongkir;
         $updateNotaPembeli->total = $nilaiTotal + $nilaiOngkir;
+
         $updateNotaPembeli->save();
 
 
@@ -744,14 +741,24 @@ class PembelianController extends Controller
                 // $bukuBesar->save();
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
                 // Periksa kondisi untuk tanggal penyelesaian
-                
-              
+
+
 
                 $notaPembeliPesanan->save();
 
                 $updateBukubesar = BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
                 $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
                 $updateBukubesar->save();
+
+
+
+                // check apakah cicilan direset ?
+                if ($request->reset_cicilan) {
+                    $riwayatPiutangDihapus = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                    foreach ($riwayatPiutangDihapus as $riwayatPiutang) {
+                        $riwayatPiutang->delete();
+                    }
+                }
             }
 
             // Lunas ke hutang
@@ -797,37 +804,32 @@ class PembelianController extends Controller
                 // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
                 //     $RiwayatPiutangModel->delete();
                 // });
+
+
+                // check apakah cicilan direset ?
+                if ($request->reset_cicilan) {
+                    $riwayatPiutangDihapus = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                    foreach ($riwayatPiutangDihapus as $riwayatPiutang) {
+                        $riwayatPiutang->delete();
+                    }
+                }
             }
         } else {
+
+
 
             $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
             $total_baru = $notaPembeliCheck->total;
             $nominal_terbayar_baru = $notaPembeliCheck->nominal_terbayar;
+           
+
 
             // Hutang ke lunas
             if ($total_baru == $nominal_terbayar_baru) {
 
-                // Update pada bukubesar
-                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
-                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                // $bukuBesar->save();
-
-
-                // // Hapus seluruh bukubesar yang setelah edit
-                // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
-                //     $RiwayatPiutangModel->delete();
-                // });
 
 
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
-                // Periksa kondisi untuk tanggal penyelesaian
-                // if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                //     $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                // } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                //     $notaPembeliPesanan->tanggal_penyelesaian = null;
-                // }
                 $notaPembeliPesanan->save();
 
 
@@ -835,21 +837,22 @@ class PembelianController extends Controller
                 $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
                 $updateBukubesar->save();
 
-                $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                foreach ($riwayatPiutang as $rpiutang) {
-                    $rpiutang->delete();
+                // check apakah cicilan direset ?
+                if ($request->reset_cicilan) {
+                    $riwayatPiutangDihapus = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                    foreach ($riwayatPiutangDihapus as $riwayatPiutang) {
+                        $riwayatPiutang->delete();
+                    }
                 }
 
                 // Hutang ke hutang
-            } else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
+            } 
+            
+            
+            
+            else if ($totalOld != $total_baru || $nominal_terbayar_baru !=  $nominalTerbayarOld) {
 
                 $notaPembeliPesanan->nominal_terbayar = $notaPembeliPesanan->nominal_terbayar;
-                // Periksa kondisi untuk tanggal penyelesaian
-                // if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                //     $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-                // } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->update) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-                //     $notaPembeliPesanan->tanggal_penyelesaian = null;
-                // }
                 $notaPembeliPesanan->save();
 
 
@@ -857,34 +860,21 @@ class PembelianController extends Controller
                 $updateBukubesar->debit = $notaPembeliPesanan->nominal_terbayar;
                 $updateBukubesar->save();
 
-                $riwayatPiutang = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                foreach ($riwayatPiutang as $rpiutang) {
-                    $rpiutang->delete();
+
+                // check apakah cicilan direset ?
+                if ($request->reset_cicilan) {
+                    $riwayatPiutangDihapus = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
+                    foreach ($riwayatPiutangDihapus as $riwayatPiutang) {
+                        $riwayatPiutang->delete();
+                    }
                 }
-                // // Update pada bukubesar
-                // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
-                // $bukuBesar = BukubesarModel::find($RiwayatPiutangModel->id_bukubesar);
-                // $bukuBesar->debit = $notaPembeliPesanan->nominal_terbayar;
-                // $bukuBesar->save();
-
-
-                // // Hapus seluruh bukubesar yang setelah edit
-                // $RiwayatPiutangModelList = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->get();
-                // $RiwayatPiutangModelList->skip(1)->each(function ($RiwayatPiutangModel) {
-                //     $RiwayatPiutangModel->delete();
-                // });
+             
             }
         }
 
-        
 
-        if (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->dp) == $notaPembeliPesanan->total && is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-            $notaPembeliPesanan->tanggal_penyelesaian = $notaPembeliPesanan->updated_at;  // Atau $notaPembeliPesanan->updated_at jika diperlukan
-        } elseif (($notaPembeliPesanan->nominal_terbayar + $notaPembeliPesanan->dp) != $notaPembeliPesanan->total && !is_null($notaPembeliPesanan->tanggal_penyelesaian)) {
-            $notaPembeliPesanan->tanggal_penyelesaian = null;
-        }
-        $notaPembeliPesanan->save();
 
+      
         // Log Nota
         // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
         $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeliPesanan->id_nota)->toArray();

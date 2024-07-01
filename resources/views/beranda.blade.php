@@ -505,12 +505,7 @@
                                         class="form-control" name="total_ongkir" min="0" id="totalOngkir"
                                         value="0"></td>
                             </tr>
-                            <tr>
-                                <td colspan="2">Dp</td>
-                                <td colspan="2"><input oninput="totalPembayaran()" type="number"
-                                        class="form-control" name="dp" min="0" id="nilaiDp"
-                                        value="0"></td>
-                            </tr>
+
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
@@ -572,7 +567,13 @@
                     </div>
 
                     <div id="formCicilan" style="display: none;">
+
                         <div class="form-group">
+                            <label for="nilaiDp">DP:</label>
+                            <input oninput="totalPembayaran()" type="number" class="form-control" name="dp"
+                                min="0" id="nilaiDp" value="0">
+                        </div>
+                        <div class="form-group" style="display: none;">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
                                 value="0" readonly>
@@ -600,7 +601,8 @@
     <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
-            let nilaiDp = document.getElementById('nilaiDp').value;
+            const nilaiDp = document.getElementById('nilaiDp').value;
+            
             if (this.value === 'hutang') {
                 formCicilan.style.display = 'block';
 
@@ -615,6 +617,7 @@
                 const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
                 nominalTerbayar.readOnly = true;
                 // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
+                nilaiDp.value = 0;
                 nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
@@ -637,7 +640,6 @@
                 var totalpesanan = parseInt($(this).find('.totalperpesanan').text());
                 // totalHarga += (harga - diskon) * jumlah;
                 totalHarga += totalpesanan;
-              
             });
 
 
@@ -654,13 +656,36 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
-            // var nilaiDp = tabletfoot.querySelector('#nilaiDp');
-            total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
-            // total.value = nilaiTotal + nilaiOngkir;
+            // total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
+            total.value = nilaiTotal + nilaiOngkir;
+
+            const nilaiDp = document.querySelector('#nilaiDp');
+         
+            const statusPembayaran = document.querySelector('#statusPembayaran');
+            const nilaiNominalTerbayar = document.querySelector('#nominalTerbayar');
+
+            // document.querySelector('#nominalTerbayar').value = total.value;
+
+            
+            switch (statusPembayaran.value) {
+                case 'lunas':
+                    nilaiDp.value = 0;
+                    nilaiNominalTerbayar.value = total.value - nilaiDp.value;
+                    break;
+
+                case 'hutang':
+                    console.log('hutang');
+                    nilaiNominalTerbayar.value = 0;
+                    break;
+                default:
+                    console.log('terjadi error');
+                    break;
+            }
+
+
 
 
             // Pengisian Total pada Nominal Terbayar
-            document.querySelector('#nominalTerbayar').value = total.value;
 
 
             // Ubah ke format Rp dengan dipisah rupiah
@@ -779,13 +804,13 @@
             formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
-            // Menambahkan Form DP
-            const nilaiDp = document.querySelector('#nilaiDp');
-            const inputTotalDp = document.createElement('input');
-            inputTotalDp.type = 'hidden';
-            inputTotalDp.name = 'dp';
-            inputTotalDp.value = nilaiDp.value;
-            formPembeli.appendChild(inputTotalDp);
+            // // Menambahkan Form DP
+            // const nilaiDp = document.querySelector('#nilaiDp');
+            // const inputTotalDp = document.createElement('input');
+            // inputTotalDp.type = 'hidden';
+            // inputTotalDp.name = 'dp';
+            // inputTotalDp.value = nilaiDp.value;
+            // formPembeli.appendChild(inputTotalDp);
 
 
             formPembeli.submit();

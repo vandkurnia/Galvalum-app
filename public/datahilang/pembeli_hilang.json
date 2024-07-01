@@ -1,0 +1,112 @@
+[
+    {
+        "id_pembeli": 241,
+        "hash_id_pembeli": "012c449e-4007-42e0-8a34-c6aacf14059c",
+        "nama_pembeli": "Pak Yudi CPM Madiun",
+        "alamat_pembeli": "Jalan Kalimantan GG. Pertama",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 00:48:52",
+        "updated_at": "2024-06-03 00:48:52",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 242,
+        "hash_id_pembeli": "86c5a41d-a1ef-4007-97d8-bc63c7f7c3df",
+        "nama_pembeli": "Pak Budi Koco",
+        "alamat_pembeli": "Bu Sutinah rt 16 teguhan",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xxx",
+        "created_at": "2024-06-03 01:13:23",
+        "updated_at": "2024-06-03 01:13:23",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 243,
+        "hash_id_pembeli": "431349b1-fc4e-4dc7-b0f0-d642fcfd158b",
+        "nama_pembeli": "Pak gufron bibrik",
+        "alamat_pembeli": "rt 9 toko mainan bibrik",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 01:21:35",
+        "updated_at": "2024-06-03 01:21:35",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 244,
+        "hash_id_pembeli": "9c84dd92-6783-4d4b-a26f-a6756deb44b4",
+        "nama_pembeli": "pak ipung",
+        "alamat_pembeli": "Kwadungan",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "085257204984",
+        "created_at": "2024-06-03 01:24:34",
+        "updated_at": "2024-06-03 01:24:34",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 245,
+        "hash_id_pembeli": "b3600acd-4001-4ce4-90a1-7adffcff012d",
+        "nama_pembeli": "pak gufron",
+        "alamat_pembeli": "Bibrik",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 01:28:38",
+        "updated_at": "2024-06-03 01:28:38",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 246,
+        "hash_id_pembeli": "7c88c17b-964c-44cd-9eae-567d1314b1b3",
+        "nama_pembeli": "Pak Sugito",
+        "alamat_pembeli": "Gambiran Jalan Pandan Gandeng Mushola",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 01:33:30",
+        "updated_at": "2024-06-03 01:33:30",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 247,
+        "hash_id_pembeli": "d2b92ceb-9059-44b8-ba26-98a3a4ce0725",
+        "nama_pembeli": "pak samiyo",
+        "alamat_pembeli": "RT 08 RW 02 Mangu Takeran perumahan New Tweety Asri",
+        "jenis_pembeli": "potongan",
+        "no_hp_pembeli": "085850500885",
+        "created_at": "2024-06-03 01:57:57",
+        "updated_at": "2024-06-03 01:57:57",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 248,
+        "hash_id_pembeli": "82202cde-a326-46c4-96c0-95932786f40d",
+        "nama_pembeli": "Pak Sunaryo Jiwan",
+        "alamat_pembeli": "Jiwan rt 8 Dekat Masjid",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 03:44:16",
+        "updated_at": "2024-06-03 03:44:16",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 249,
+        "hash_id_pembeli": "072c6172-9dcb-40c8-a954-549dbdfa9c69",
+        "nama_pembeli": "TB. Sumber Mulya",
+        "alamat_pembeli": "Madiun",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 05:31:06",
+        "updated_at": "2024-06-03 05:31:06",
+        "deleted_at": null
+    },
+    {
+        "id_pembeli": 250,
+        "hash_id_pembeli": "b04c8c86-3f40-46f0-947c-a5dee1a9dc92",
+        "nama_pembeli": "Bu Tusirah",
+        "alamat_pembeli": "Grobogan RT 07",
+        "jenis_pembeli": "harga_normal",
+        "no_hp_pembeli": "08xx",
+        "created_at": "2024-06-03 06:11:19",
+        "updated_at": "2024-06-03 06:11:19",
+        "deleted_at": null
+    }
+]

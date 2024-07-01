@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_bukubesar')->nullable()->change();
             $table->decimal('nominal_dibayar', 25, 2)->after('id_bukubesar');
+            $table->string('type_cicilan', 10)->default('cicilan');
         });
     }
 
@@ -31,6 +32,7 @@ return new class extends Migration
         // Revert the changes made to the 'riwayat_piutang' table
         Schema::table('riwayat_piutang', function (Blueprint $table) {
             // Drop the 'nominal_dibayar' column
+            $table->dropColumn('type_riwayat');
             $table->dropColumn('nominal_dibayar');
             // Change 'id_bukubesar' to be non-nullable
             $table->unsignedBigInteger('id_bukubesar')->nullable(false)->change();

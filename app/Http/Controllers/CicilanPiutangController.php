@@ -115,7 +115,7 @@ class CicilanPiutangController extends Controller
             $notaPembelian->tanggal_penyelesaian = null;
         }
 
-        if ($notaPembelian->nominal_terbayar > $notaPembelian->total) {
+        if (($notaPembelian->nominal_terbayar + $notaPembelian->dp) > $notaPembelian->total) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Nota piutang gagal  karena nominal bayar lebih besar dari total pesanan');
         }

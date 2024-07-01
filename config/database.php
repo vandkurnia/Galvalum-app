@@ -43,6 +43,36 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+
+        'sql_coba' => [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'database' => 'sql_galvalumcoba',
+            'username' => 'root',
+            'password' => '',
+            'unix_socket' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+        'sql_galvalum_asli' => [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'database' => 'sql_galvalumdist',
+            'username' => 'root',
+            'password' => '',
+            'unix_socket' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -125,7 +155,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [
