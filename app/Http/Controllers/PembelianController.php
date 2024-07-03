@@ -730,9 +730,19 @@ class PembelianController extends Controller
 
         // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
         if ($totalOld == $nominalTerbayarOld) {
+           
+            $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
             // Lunas ke lunas 
-            $total_baru = $notaPembeliPesanan->total;
-            $nominal_terbayar_baru = $notaPembeliPesanan->nominal_terbayar;
+            $total_baru = $notaPembeliCheck->total;
+            $nominal_terbayar_baru = $notaPembeliCheck->nominal_terbayar;
+
+            // dd([
+            //     'totalold' => $totalOld,
+            //     'nominalOld' => $nominalTerbayarOld,
+            //     'totalBaru' => $total_baru,
+            //     'nominalBaru' =>  $nominal_terbayar_baru
+
+            // ]);
             if ($total_baru == $nominal_terbayar_baru) {
                 // Update pada bukubesar
                 // $RiwayatPiutangModel = RiwayatPiutangModel::where('id_nota', $notaPembeliPesanan->id_nota)->first();
@@ -767,6 +777,10 @@ class PembelianController extends Controller
 
             // Lunas ke hutang
             else {
+
+
+
+              
 
 
                 // RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
@@ -825,13 +839,18 @@ class PembelianController extends Controller
             }
         } else {
 
+     
 
 
             $notaPembeliCheck = NotaPembeli::where('id_nota', $notaPembeliPesanan->id_nota)->first();
             $total_baru = $notaPembeliCheck->total;
             $nominal_terbayar_baru = $notaPembeliCheck->nominal_terbayar;
 
+            dd([
+                'totalold' => $totalOld,
+                'nominalOld' => $nominalTerbayarOld
 
+            ]);
 
             // Hutang ke lunas
             if ($total_baru == $nominal_terbayar_baru) {
