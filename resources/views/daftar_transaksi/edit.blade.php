@@ -771,8 +771,9 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
-            var nilaiDp = tabletfoot.querySelector('#nilaiDp');
-            total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
+            var nilaiDp = document.querySelector('#nilaiDp');
+            // total.value = nilaiTotal + nilaiOngkir - parseFloat(nilaiDp.value);
+            total.value = nilaiTotal + nilaiOngkir;
 
             // total.value = nilaiTotal + nilaiOngkir;
 
