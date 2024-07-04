@@ -217,7 +217,7 @@ class MigrasiData4 extends Seeder
         $this->command->info('Data riwayat hutang berhasil disimpan');
         $this->command->info('=============================== Data Penjualan ==================================');
         $nota_pembelis = DB::connection('sql_galvalum_asli')->table('nota_pembelis')->get();
-
+        $null_id_bukubesar = [];
         foreach ($nota_pembelis as $nota_pembeli) {
             // Create a new bukubesar record
             // $bukuBesarPembelian = BukubesarModel::create([
@@ -235,14 +235,41 @@ class MigrasiData4 extends Seeder
 
             $dp = 0;
             $harga_nominal_terbayar = 0;
+            $tanggal_penyelesaian = null;
+
             foreach ($nota_bukubesar_old as $index => $nota_bukubesar) {
                 $bukubesar_nota_cicilan = DB::connection('sql_galvalum_asli')->table('bukubesar')->where('id_bukubesar', $nota_bukubesar->id_bukubesar)->first();
                 if ($index == 0) {
                     $dp = $bukubesar_nota_cicilan->debit;
+
+                    // $riwayatPiutangtoDelete = RiwayatPiutangModel::where('id_piutang', (int) $nota_bukubesar->id_notabukubesar)->first();
+                    // if ($riwayatPiutangtoDelete) {
+                    //     $riwayatPiutangtoDelete->delete();
+                    //     echo "Ok deleted";
+                    // } else {
+                    //     $null_id_bukubesar[] = [
+                    //         'id_notabukubesar' => $nota_bukubesar->id_notabukubesar,
+                    //         'riwayat_piutang' => $riwayatPiutangtoDelete
+                    //     ];
+                    // }
                 } else {
-                    $harga_nominal_terbayar = $bukubesar_nota_cicilan->debit;
+                    $harga_nominal_terbayar += $bukubesar_nota_cicilan->debit;
+                }
+
+                if(($dp + $harga_nominal_terbayar) == $nota_pembeli->total)
+                {
+                    $tanggal_penyelesaian = $bukubesar_nota_cicilan->updated_at;
+                    
                 }
             }
+
+
+            // if (!empty($null_id_bukubesar)) {
+            //     $json_data = json_encode($null_id_bukubesar, JSON_PRETTY_PRINT);
+            //     file_put_contents(public_path('notrecognizedpiutang.json'), $json_data);
+            // }
+
+         
             // Insert nota_pembelis record with the new bukubesar id
             DB::table('nota_pembelis')->insert([
                 'id_nota' => $nota_pembeli->id_nota,
@@ -258,7 +285,7 @@ class MigrasiData4 extends Seeder
                 'ongkir' => $nota_pembeli->ongkir,
                 'total' => $nota_pembeli->total,
                 'dp' => $dp,
-                'tanggal_penyelesaian' => $nota_pembeli->tanggal_penyelesaian ?? null,
+                'tanggal_penyelesaian' => $tanggal_penyelesaian ?? null,
                 'piutang_is_visible' => $nota_pembeli->piutang_is_visible,
                 'created_at' => $nota_pembeli->created_at,
                 'updated_at' => $nota_pembeli->updated_at,

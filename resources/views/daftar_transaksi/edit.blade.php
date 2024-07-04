@@ -580,7 +580,7 @@
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="{{ $notaPembelian->total - $notaPembelian->dp }}"
+                                            id="total" value="{{ $notaPembelian->total}}"
                                             readonly></strong></td>
                             </tr>
                         </tfoot>
@@ -681,12 +681,12 @@
                             <input oninput="totalPembayaran()" type="number" class="form-control" name="dp"
                                 min="0" id="nilaiDp" value="{{ $notaPembelian->dp }}">
                         </div>
-                        <div class="form-group" style="display: none;">
+                        {{-- <div class="form-group" style="display: none;">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
                                 value="{{ $notaPembelian->nominal_terbayar }}"
                                 {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'readonly' : '' }}>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
@@ -720,19 +720,19 @@
 
                 formCicilan.style.display = 'block';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.removeAttribute('readonly');
-                nominalTerbayar.value = 0;
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.removeAttribute('readonly');
+                // nominalTerbayar.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.removeAttribute('disabled');
             } else {
                 formCicilan.style.display = 'none';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.readOnly = true;
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.readOnly = true;
                 // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
-                nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
-                nilaiDp.value = 0;
+                // nominalTerbayar.value = 0;
+                nilaiDp.value = parseFloat(document.querySelector('#total').value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -782,9 +782,9 @@
             let statusPembayaran = document.getElementById('statusPembayaran');
             var valueString = String(statusPembayaran.value).trim();
             if (valueString === 'lunas') {
-                nilaiDp.value = 0;
+                nilaiDp.value = total.value;
 
-                document.querySelector('#nominalTerbayar').value = total.value;
+                // document.querySelector('#nominalTerbayar').value = 0;
             }
 
 

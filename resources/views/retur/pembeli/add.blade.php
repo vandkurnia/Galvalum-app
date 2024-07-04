@@ -390,14 +390,14 @@
 
                     <div id="formCicilan" style="display: none;">
                         <div class="form-group">
-                            <label for="nominalTerbayar">Nominal Terbayar:</label>
-                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{ $notaPembelian->total }}" readonly>
+                            <label for="nominalTerbayar">DP:</label>
+                            <input type="text" class="form-control" name="dp" id="nominalTerbayar"
+                                value="{{ $notaPembelian->dp }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                                value="{{ date('Y-m-d') }}" disabled>
+                                value="{{ $notaPembelian->tenggat_bayar ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : '' }}" disabled>
                         </div>
                     </div>
 
@@ -903,7 +903,7 @@
                 document.getElementById('nominalTerbayar').value = nominalTerbayar;
             } else if (statusPembayaran === 'hutang') {
                 // Logika untuk mengisi nilai secara manual jika status adalah "hutang"
-                document.getElementById('nominalTerbayar').value = "Isi sesuai kebutuhan";
+                document.getElementById('nominalTerbayar').value = 0;
             }
         }
     </script>

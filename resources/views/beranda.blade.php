@@ -669,12 +669,13 @@
             
             switch (statusPembayaran.value) {
                 case 'lunas':
-                    nilaiDp.value = 0;
-                    nilaiNominalTerbayar.value = total.value - nilaiDp.value;
+                    nilaiDp.value = total.value - nilaiDp.value;
+                    nilaiNominalTerbayar.value = 0;
                     break;
 
                 case 'hutang':
                     console.log('hutang');
+                    // nilaiDp.value = total.value - nilaiDp.value;
                     nilaiNominalTerbayar.value = 0;
                     break;
                 default:
