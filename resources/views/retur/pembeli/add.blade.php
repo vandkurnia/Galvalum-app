@@ -120,15 +120,14 @@
 
 
                                     <td>
-                                        
+
                                         <input type="number" class="form-control"
-                                        data-id-pesanan="{{ $pesanan->id_pesanan }}" id="qtyRetur"
-                                        oninput="updateTotal(this)" min="0"
-                                        max="{{ (float) $pesanan->jumlah_pembelian }}" step="0.01"
-                                        value="0">
-                                        
-                                        
-                                        </td>
+                                            data-id-pesanan="{{ $pesanan->id_pesanan }}" id="qtyRetur"
+                                            oninput="updateTotal(this)" min="0"
+                                            max="{{ (float) $pesanan->jumlah_pembelian }}" step="0.01" value="0">
+
+
+                                    </td>
                                     <td class="returHargaTotal">
                                         0
 
@@ -393,16 +392,35 @@
                         </select>
                     </div>
 
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="reset_cicilan" id="resetCicilan"
+                                value="1" checked>
+                            <label class="form-check-label" for="resetCicilan">
+                                Reset Cicilan Piutang yang sudah ada (jika ada).
+                            </label>
+                        </div>
+                    </div>
+
                     <div id="formCicilan" style="display: none;">
                         <div class="form-group">
-                            <label for="nominalTerbayar">DP:</label>
-                            <input type="text" class="form-control" name="dp" id="nominalTerbayar"
-                                value="{{ $notaPembelian->dp }}" readonly>
+                            <label for="nilaiDp">DP:</label>
+                            <input data-default="{{ $notaPembelian->dp }}" oninput="totalPembayaran()" type="number"
+                                class="form-control" name="dp" min="0" id="nilaiDp"
+                                value="{{ $notaPembelian->dp }}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="nominalTerbayar">Nominal Terbayar:</label>
+                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                                value="{{ $notaPembelian->nominal_terbayar }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                                value="{{ $notaPembelian->tenggat_bayar ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : '' }}" disabled>
+                                value="{{ $notaPembelian->tenggat_bayar ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : '' }}"
+                                disabled>
                         </div>
                     </div>
 
@@ -445,20 +463,41 @@
     <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
+
+
+            let resetCicilan = document.getElementById('resetCicilan');
+            let resetCicilanStatus = resetCicilan.checked ? true : false;
+
             if (this.value === 'hutang') {
                 formCicilan.style.display = 'block';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.removeAttribute('readonly');
-                nominalTerbayar.value = 0;
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.removeAttribute('readonly');
+                // nominalTerbayar.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.removeAttribute('disabled');
+
+                if (resetCicilanStatus) {
+                    nilaiDp.value = 0;
+                } else {
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+                }
             } else {
                 formCicilan.style.display = 'none';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.readOnly = true;
-                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.readOnly = true;
+                // nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+
+                if (resetCicilanStatus) {
+
+                    nilaiDp.value = parseFloat(document.querySelector('#total').value);
+
+                } else {
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+
+                }
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -896,6 +935,14 @@
         function totalNominalTerbayar() {
             var statusPembayaran = document.getElementById('statusPembayaran').value;
 
+
+
+            // let statusPembayaran = document.getElementById('statusPembayaran');
+            var valueString = String(statusPembayaran.value).trim();
+
+            let resetCicilanStatus = document.getElementById('resetCicilan').checked ? 1 : 0;
+
+
             if (statusPembayaran === 'lunas') {
                 var subTotalRetur = parseFloat(document.getElementById('subTotalRetur').value);
                 var subTotal1 = parseFloat(document.getElementById('subTotal1').value);
@@ -903,18 +950,48 @@
                 var diskonTotal = parseFloat(document.getElementById('diskonTotal').value);
                 var totalOngkir = parseFloat(document.getElementById('totalOngkir').value);
 
-                var nominalTerbayar = subTotal1 - subTotalRetur + subTotal - diskonTotal + totalOngkir;
+                var totalDp = subTotal1 - subTotalRetur + subTotal - diskonTotal + totalOngkir;
 
-                document.getElementById('nominalTerbayar').value = nominalTerbayar;
+
+                if (resetCicilanStatus) {
+                    nilaiDp.value = totalDp;
+
+                } else {
+
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+                }
+
+                // document.getElementById('nilaiDp').value = nilaiDp;
             } else if (statusPembayaran === 'hutang') {
                 // Logika untuk mengisi nilai secara manual jika status adalah "hutang"
-                document.getElementById('nominalTerbayar').value = 0;
+
+
+                if (resetCicilanStatus) {
+                    nilaiDp.value = 0;
+
+                } else {
+
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+                }
+
+                // document.getElementById('nilaiDp').value = 0;
             }
         }
     </script>
 
 
     <script>
+        function checkCheckbox() {
+            if (resetCicilanCheckbox.checked) {
+               totalNominalTerbayar();
+            } else {
+               totalNominalTerbayar();
+            }
+        }
+        const resetCicilanCheckbox = document.getElementById("resetCicilan");
+        // Tambahkan event listener ke checkbox
+        resetCicilanCheckbox.addEventListener("change", checkCheckbox);
+
         function validateTotalPajak() {
             // var totalPajakInput = document.getElementById('totalPajakRetur');
             // var value = parseFloat(totalPajakInput.value);
@@ -964,13 +1041,26 @@
             let nilaiOngkir = parseInt(ongkir.value);
 
 
-            console.log(total);
-            console.log(nilaiTotal);
-            console.log(nilaiOngkir);
+
             total.value = nilaiTotal + nilaiOngkir;
 
 
 
+            let statusPembayaran = document.getElementById('statusPembayaran');
+            var valueString = String(statusPembayaran.value).trim();
+
+            let resetCicilanStatus = document.getElementById('resetCicilan').checked ? 1 : 0;
+            // if (valueString === 'lunas') {
+            //     if (resetCicilanStatus) {
+            //         nilaiDp.value = total.value;
+
+            //     } else {
+
+            //         nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+            //     }
+
+            //     // document.querySelector('#nominalTerbayar').value = 0;
+            // }
             // Ubah ke format Rp dengan dipisah rupiah
 
             // Tampilkan total harga dalam elemen span
