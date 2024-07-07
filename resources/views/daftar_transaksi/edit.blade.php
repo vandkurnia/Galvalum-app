@@ -580,8 +580,7 @@
                             <tr>
                                 <td colspan="2"><strong>Total Rp</strong></td>
                                 <td colspan="2"><strong><input type="number" class="form-control" name="total"
-                                            id="total" value="{{ $notaPembelian->total}}"
-                                            readonly></strong></td>
+                                            id="total" value="{{ $notaPembelian->total }}" readonly></strong></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -678,15 +677,17 @@
 
                         <div class="form-group">
                             <label for="nilaiDp">DP:</label>
-                            <input oninput="totalPembayaran()" type="number" class="form-control" name="dp"
-                                min="0" id="nilaiDp" value="{{ $notaPembelian->dp }}">
+                            <input data-default="{{ $notaPembelian->dp }}" oninput="totalPembayaran()"
+                                type="number" class="form-control" name="dp" min="0" id="nilaiDp"
+                                value="{{ $notaPembelian->dp }}">
                         </div>
-                        {{-- <div class="form-group" style="display: none;">
+
+
+                        <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                                value="{{ $notaPembelian->nominal_terbayar }}"
-                                {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'readonly' : '' }}>
-                        </div> --}}
+                                value="{{ $notaPembelian->nominal_terbayar }}" readonly>
+                        </div>
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
@@ -710,21 +711,42 @@
 
 
     <script>
+        function checkCheckbox() {
+            if (resetCicilanCheckbox.checked) {
+                totalPembayaran();
+            } else {
+                totalPembayaran();
+            }
+        }
+        const resetCicilanCheckbox = document.getElementById("resetCicilan");
+        // Tambahkan event listener ke checkbox
+        resetCicilanCheckbox.addEventListener("change", checkCheckbox);
         // Metode Pembayaran dan Status
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
 
             var valueString = String(this.value).trim();
             let nilaiDp = document.getElementById('nilaiDp');
+
+
+            let resetCicilan = document.getElementById('resetCicilan');
+            let resetCicilanStatus = resetCicilan.checked ? true : false;
             if (valueString === 'hutang') {
 
                 formCicilan.style.display = 'block';
+
+                if (resetCicilanStatus) {
+                    nilaiDp.value = 0;
+                } else {
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+                }
 
                 // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
                 // nominalTerbayar.removeAttribute('readonly');
                 // nominalTerbayar.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.removeAttribute('disabled');
+
             } else {
                 formCicilan.style.display = 'none';
 
@@ -732,7 +754,15 @@
                 // nominalTerbayar.readOnly = true;
                 // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
                 // nominalTerbayar.value = 0;
-                nilaiDp.value = parseFloat(document.querySelector('#total').value);
+
+                if (resetCicilanStatus) {
+
+                    nilaiDp.value = parseFloat(document.querySelector('#total').value);
+
+                } else {
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+
+                }
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -781,8 +811,16 @@
 
             let statusPembayaran = document.getElementById('statusPembayaran');
             var valueString = String(statusPembayaran.value).trim();
+
+            let resetCicilanStatus = document.getElementById('resetCicilan').checked ? 1 : 0;
             if (valueString === 'lunas') {
-                nilaiDp.value = total.value;
+                if (resetCicilanStatus) {
+                    nilaiDp.value = total.value;
+
+                } else {
+
+                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+                }
 
                 // document.querySelector('#nominalTerbayar').value = 0;
             }
@@ -799,12 +837,6 @@
     </script>
     <script>
         function hapusPesanan(trElement) {
-            // var idNota = $('#id_nota').val();
-            // var idPesanan = $('#id_pesanan').val();
-            // var trElements = document.querySelector('tr');
-
-
-
             if (trElement.getAttribute('data-id-pesanan') !== null) {
                 let idPesanan = trElement.getAttribute('data-id-pesanan');
                 let nota = document.querySelector('#NoNota');
@@ -838,48 +870,6 @@
             }
 
         }
-
-        // function updatePesanan(trElement) {
-        //     let idPesanan = trElement.getAttribute('data-id-pesanan');
-        //     idPesanan = idPesanan !== null ? idPesanan : 0;
-        //     let nota = document.querySelector('#NoNota');
-        //     let jumlahPesanan = trElement.querySelector('td.nilai_jumlah_barang_pesanan').innerText;
-
-        //     const itemPesanan = {
-        //         jumlah_pesanan: jumlahPesanan,
-        //         id_barang: trElement.getAttribute('data-id-barang'),
-        //         id_diskon: trElement.getAttribute('data-id-diskon'),
-
-        //     }
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '{{ route('json.pesanan.updatepesanan') }}',
-        //         data: {
-        //             id_pesanan: idPesanan,
-        //             no_nota: nota.value,
-        //             jumlah_pesanan: jumlahPesanan,
-        //             pesanan: JSON.stringify(itemPesanan),
-        //             _token: '{{ csrf_token() }}'
-        //         },
-        //         success: function(response, textStatus, jqXHR) {
-        //             if (jqXHR.status === 200) {
-        //                 alert('Berhasil menambahkan pesanan'); // Jika status code 200, tampilkan alert berhasil
-        //                 // trElement.setAttribute('data-id-pesanan')
-        //             } else {
-        //                 console.error('Request error:',
-        //                     textStatus); // Jika status code bukan 200, log pesan error
-
-        //             }
-        //         },
-        //         error: function(jqXHR, textStatus, errorThrown) {
-        //             console.error('Request error:', textStatus); // Log pesan error jika request gagal
-        //             trElement.remove(); // Menghapus elemen <tr> jika status_update adalah false
-
-        //         }
-        //     });
-
-        //     // return true
-        // }
     </script>
 
     <script>
@@ -1012,13 +1002,7 @@
             formPembeli.appendChild(inputTotalDiskonHidden); // Menambahkan input tersembunyi ke dalam form
 
 
-            // // Menambahkan Form DP
-            // const nilaiDp = document.querySelector('#nilaiDp');
-            // const inputTotalDp = document.createElement('input');
-            // inputTotalDp.type = 'hidden';
-            // inputTotalDp.name = 'dp';
-            // inputTotalDp.value = nilaiDp.value;
-            // formPembeli.appendChild(inputTotalDp);
+
 
             formPembeli.submit();
 
@@ -1216,50 +1200,6 @@
             }
 
 
-            // // ;
-            // var jumlahStok = document.getElementById("jumlah_barang");
-            // jumlahStok.max = barang.stok; // Set a new value (replace 100 with your desired maximum)
-
-
-
-            // // Simpan ke session untuk digunakan pada pengisian beranda
-            // // Contoh data barang
-            // var hash_id_barang = barang.id || "";
-            // var nama_barang = barang.nama_barang || "";
-            // var harga_barang = barang.harga_barang || "";
-
-            // var tipe_barang = barang.tipe_barang ? barang.tipe_barang.nama_tipe || "" : "";
-
-            // var ukuran = barang.ukuran || "";
-            // var stok = barang.stok || "";
-
-            // // Mendapatkan array dari sessionStorage atau inisiasi array kosong jika belum ada
-            // var data_barang = [];
-
-            // // Menambahkan data barang ke dalam array
-            // data_barang.push({
-            //     hash_id_barang,
-            //     nama_barang,
-            //     harga_barang,
-            //     tipe_barang,
-            //     ukuran,
-            //     stok
-            // });
-
-
-
-
-            // // Menyimpan array kembali ke dalam sessionStorage
-            // sessionStorage.setItem('data_barang', JSON.stringify(data_barang));
-
-
         }
-
-
-        // ClassicEditor
-        //     .create(document.querySelector('#editor'))
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
     </script>
 @endsection

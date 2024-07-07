@@ -60,20 +60,15 @@ class CicilanPiutangController extends Controller
             'data' => view('cicilan.piutang.edit', compact('riwayatPiutang', 'id_nota'))->render()
         ], 200);
     }
-    public function store(Request $request)
+
+    public function storeCicilan($data)
     {
 
-        $request->validate([
-            'id_nota' => 'required|string|max:10',
-            'nominal' => 'required|string|max:255',
-        ]);
-        $id_nota = $request->get('id_nota');
+
+
+        $nominal = $data['nominal'];
+        $id_nota = $data['id_nota'];
         $notaPembelian = NotaPembeli::where('id_nota', $id_nota)->first();
-
-        DB::beginTransaction();
-        $nominal = $request->get('nominal');
-
-
         // Buat Bukubesar
         $updateBukuBesar = new BukubesarModel();
         $updateBukuBesar->id_akunbayar = 1;
@@ -90,22 +85,6 @@ class CicilanPiutangController extends Controller
             'id_bukubesar' => $updateBukuBesar->id_bukubesar,
             'nominal_dibayar' =>  $nominal
         ]);
-
-
-        // $totalTerbayar = 0;
-        // $totalAngsuran = 0;
-        // $notaPembeli = NotaPembeli::with('bukuBesar')->where('id_nota', $id_nota)->first();
-
-        // foreach ($notaPembeli->bukuBesar as  $dtNotaPembeli) {
-
-        //     $totalTerbayar += $dtNotaPembeli->debit;
-        //     $totalAngsuran++;
-        // }
-
-        // $updateBukuBesar2 = BukubesarModel::where('id_bukubesar', $updateBukuBesar->id_bukubesar)->first();
-        // $updateBukuBesar2->keterangan = 'PELUNASAN PIUTANG  NOTA ' . $notaPembelian->no_nota . " Ke " . $totalAngsuran;
-        // $updateBukuBesar2->save();
-
 
 
         $notaPembelian = NotaPembeli::with('bukuBesar')->where('id_nota', $id_nota)->first();
@@ -125,21 +104,27 @@ class CicilanPiutangController extends Controller
             return redirect()->back()->with('error', 'Nota piutang gagal  karena nominal bayar lebih besar dari total pesanan');
         }
         $notaPembelian->save();
+    }
+    public function store(Request $request)
+    {
 
+        $request->validate([
+            'id_nota' => 'required|string|max:10',
+            'nominal' => 'required|string|max:255',
+        ]);
+        $nominal = $request->get('nominal');
+        $id_nota = $request->get('id_nota');
 
+        $data = [
+            'nominal' => $nominal,
+            'id_nota' => $id_nota
+        ];
 
-        $bukuBesar = BukubesarModel::find($notaPembelian->id_bukubesar);
-        $bukuBesar->debit = $notaPembelian->dp;
-        $bukuBesar->save();
-
-
-
-
-
-
-
-
-
+        DB::beginTransaction();
+        $this->storeCicilan($data);
+        // $bukuBesar = BukubesarModel::find($notaPembelian->id_bukubesar);
+        // $bukuBesar->debit = $notaPembelian->dp;
+        // $bukuBesar->save();
         DB::commit();
         // dump($updateBukuBesar);
 
@@ -188,7 +173,7 @@ class CicilanPiutangController extends Controller
 
             $notaPembelian->nominal_terbayar += $tambahan;
 
-       
+
 
             // Periksa kondisi untuk tanggal penyelesaian
             if (($notaPembelian->dp + $notaPembelian->nominal_terbayar) == $notaPembelian->total && is_null($notaPembelian->tanggal_penyelesaian)) {
@@ -286,7 +271,7 @@ class CicilanPiutangController extends Controller
 
 
 
-           
+
 
             // Periksa status lunas atau hutang
             // $this->cekLunasAtauHutang($id_nota);

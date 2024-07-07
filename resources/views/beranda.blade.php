@@ -664,7 +664,7 @@
 
                 case 'hutang':
                     // console.log('hutang');
-                    nilaiDp.value = 0;
+                    // nilaiDp.value = 0;
                     // nilaiDp.value = total.value - nilaiDp.value;
                     // nilaiNominalTerbayar.value = 0;
                     break;
