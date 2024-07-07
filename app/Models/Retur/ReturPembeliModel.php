@@ -26,6 +26,8 @@ class ReturPembeliModel extends Model
         'total_nilai_retur',
         'pengembalian_data',
         'kekurangan',
+        'dp_before',
+        'tanggal_penyelesaian_before',
         'status',
         'id_pembeli',
         'hidden'

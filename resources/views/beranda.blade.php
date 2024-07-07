@@ -1,19 +1,7 @@
-@extends('app')
+    @extends('app')
 
 @section('title', 'Pemesanan')
 @section('header-custom')
-    {{-- <style>
-        /* Sembunyikan Showing entries */
-        #dataTable_length,
-        #dataTable_info {
-            display: none;
-        }
-
-        /* Sembunyikan pagination */
-        #dataTable_paginate {
-            display: none;
-        }
-    </style> --}}
     <script src="{{ secure_asset('library/ckeditor/ckeditor.js') }}"></script>
 
 @endsection
@@ -573,11 +561,11 @@
                             <input oninput="totalPembayaran()" type="number" class="form-control" name="dp"
                                 min="0" id="nilaiDp" value="0">
                         </div>
-                        <div class="form-group" style="display: none;">
+                        {{-- <div class="form-group" style="display: none;">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
                             <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
                                 value="0" readonly>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
@@ -601,24 +589,25 @@
     <script>
         document.getElementById('statusPembayaran').addEventListener('change', function() {
             var formCicilan = document.getElementById('formCicilan');
-            const nilaiDp = document.getElementById('nilaiDp').value;
+            const nilaiDp = document.getElementById('nilaiDp');
             
             if (this.value === 'hutang') {
                 formCicilan.style.display = 'block';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.removeAttribute('readonly');
-                nominalTerbayar.value = 0;
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.removeAttribute('readonly');
+                // nominalTerbayar.value = 0;
+                nilaiDp.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.removeAttribute('disabled');
             } else {
                 formCicilan.style.display = 'none';
 
-                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                nominalTerbayar.readOnly = true;
+                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                // nominalTerbayar.readOnly = true;
                 // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
-                nilaiDp.value = 0;
-                nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
+               
+                // nominalTerbayar.value = parseFloat(document.querySelector('#total').value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
                 tanggalTenggatBayar.disabled = true;
@@ -662,21 +651,22 @@
             const nilaiDp = document.querySelector('#nilaiDp');
          
             const statusPembayaran = document.querySelector('#statusPembayaran');
-            const nilaiNominalTerbayar = document.querySelector('#nominalTerbayar');
+            // const nilaiNominalTerbayar = document.querySelector('#nominalTerbayar');
 
             // document.querySelector('#nominalTerbayar').value = total.value;
 
             
             switch (statusPembayaran.value) {
                 case 'lunas':
-                    nilaiDp.value = total.value - nilaiDp.value;
-                    nilaiNominalTerbayar.value = 0;
+                    nilaiDp.value = total.value;
+                    // nilaiNominalTerbayar.value = 0;
                     break;
 
                 case 'hutang':
-                    console.log('hutang');
+                    // console.log('hutang');
+                    nilaiDp.value = 0;
                     // nilaiDp.value = total.value - nilaiDp.value;
-                    nilaiNominalTerbayar.value = 0;
+                    // nilaiNominalTerbayar.value = 0;
                     break;
                 default:
                     console.log('terjadi error');

@@ -119,11 +119,16 @@
                                         {{ (int) ($pesanan->harga - $pesanan->diskon) * $pesanan->jumlah_pembelian }}</td>
 
 
-                                    <td><input type="number" class="form-control"
-                                            data-id-pesanan="{{ $pesanan->id_pesanan }}" id="qtyRetur"
-                                            oninput="updateTotal(this)" min="0"
-                                            max="{{ (int) $pesanan->jumlah_pembelian }}" class="form-control"
-                                            value="0"></td>
+                                    <td>
+                                        
+                                        <input type="number" class="form-control"
+                                        data-id-pesanan="{{ $pesanan->id_pesanan }}" id="qtyRetur"
+                                        oninput="updateTotal(this)" min="0"
+                                        max="{{ (float) $pesanan->jumlah_pembelian }}" step="0.01"
+                                        value="0">
+                                        
+                                        
+                                        </td>
                                     <td class="returHargaTotal">
                                         0
 
