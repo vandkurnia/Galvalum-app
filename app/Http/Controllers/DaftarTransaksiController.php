@@ -39,7 +39,7 @@ class DaftarTransaksiController extends Controller
             if ($nota['total'] == ($nota['nominal_terbayar'] + $nota['dp'])) {
                 $statusPembayaran = "Lunas";
             } else if ($nota['total'] < ($nota['nominal_terbayar'] + $nota['dp'])) {
-                $statusPembayaran = "Kelebihan";
+                $statusPembayaran = "Kelebihan " . ($nota['nominal_terbayar'] + $nota['dp'] - $nota['total']) ;
             } else if ($nota['total'] > ($nota['nominal_terbayar'] + $nota['dp'])) {
                 $statusPembayaran = "Piutang";
             } else {
