@@ -815,6 +815,12 @@ class ReturPembeliController extends Controller
         }
 
 
+
+        // Update Bukubesar
+        $bukuBesarDpUpdate =  BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
+        $bukuBesarDpUpdate->debit = $notaPembeliPesanan->dp;
+        $bukuBesarDpUpdate->save();
+
         // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
         $notaPembeliToSave = NotaPembeli::with('PesananPembeli')->find($notaPembeliPesanan->id_nota)->toArray();
         $logNota = new LogNotaModel();
