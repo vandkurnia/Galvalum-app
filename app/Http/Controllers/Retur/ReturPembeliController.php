@@ -816,9 +816,26 @@ class ReturPembeliController extends Controller
 
 
 
-        // Update Bukubesar
-        $bukuBesarDpUpdate =  BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
-        $bukuBesarDpUpdate->debit = $notaPembeliPesanan->dp;
+
+        // Check Lagi nota pembeli
+        $updateNotaPembeli2 = NotaPembeli::find($notaPembeliPesanan->id_nota);
+
+        // Jika lunas atau kelebihan maka berikan tanggal penyelesaian
+        if (($updateNotaPembeli2->total == ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar)) || ($updateNotaPembeli2->total < ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar))) {
+            // Rubah tanggal selesai 
+            if (is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                $updateNotaPembeli2->tanggal_penyelesaian =  $updateNotaPembeli2->updated_at;
+            }
+        } else {
+            if (!is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                $updateNotaPembeli2->tanggal_penyelesaian =  null;
+            }
+        }
+        $updateNotaPembeli2->save();
+
+
+        $bukuBesarDpUpdate =  BukubesarModel::find($updateNotaPembeli2->id_bukubesar);
+        $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
         $bukuBesarDpUpdate->save();
 
         // Asumsikan $notaPembeli adalah instance dari model NotaPembeli yang sudah ada
@@ -1347,9 +1364,27 @@ class ReturPembeliController extends Controller
 
 
 
-            $updateBukubesar = BukubesarModel::find($updateNotaPembeli->id_bukubesar);
-            $updateBukubesar->debit = $updateNotaPembeli->dp;
-            $updateBukubesar->save();
+            // Check Lagi nota pembeli
+            $updateNotaPembeli2 = NotaPembeli::find($updateNotaPembeli->id_nota);
+
+            // Jika lunas atau kelebihan maka berikan tanggal penyelesaian
+            if (($updateNotaPembeli2->total == ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar)) || ($updateNotaPembeli2->total < ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar))) {
+                // Rubah tanggal selesai 
+                if (is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                    $updateNotaPembeli2->tanggal_penyelesaian =  $updateNotaPembeli2->updated_at;
+                }
+            } else {
+                if (!is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                    $updateNotaPembeli2->tanggal_penyelesaian =  null;
+                }
+            }
+            $updateNotaPembeli2->save();
+
+
+            // Update lagi dpnya 
+            $bukuBesarDpUpdate =  BukubesarModel::find($updateNotaPembeli2->id_bukubesar);
+            $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
+            $bukuBesarDpUpdate->save();
 
 
 

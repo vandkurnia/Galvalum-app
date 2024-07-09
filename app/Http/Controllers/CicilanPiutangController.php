@@ -92,11 +92,16 @@ class CicilanPiutangController extends Controller
 
 
 
-        // Periksa kondisi untuk tanggal penyelesaian
-        if (($notaPembelian->dp + $notaPembelian->nominal_terbayar) == $notaPembelian->total && is_null($notaPembelian->tanggal_penyelesaian)) {
-            $notaPembelian->tanggal_penyelesaian = $notaPembelian->updated_at;  // Atau $notaPembelian->updated_at jika diperlukan
-        } elseif (($notaPembelian->dp + $notaPembelian->nominal_terbayar) != $notaPembelian->total && !is_null($notaPembelian->tanggal_penyelesaian)) {
-            $notaPembelian->tanggal_penyelesaian = null;
+        // Jika lunas atau kelebihan maka berikan tanggal penyelesaian
+        if (($notaPembelian->total == ($notaPembelian->dp + $notaPembelian->nominal_terbayar)) || ($notaPembelian->total < ($notaPembelian->dp + $notaPembelian->nominal_terbayar))) {
+            // Rubah tanggal selesai 
+            if (is_null($notaPembelian->tanggal_penyelesaian)) {
+                $notaPembelian->tanggal_penyelesaian =  $notaPembelian->updated_at;
+            }
+        } else {
+            if (!is_null($notaPembelian->tanggal_penyelesaian)) {
+                $notaPembelian->tanggal_penyelesaian =  null;
+            }
         }
 
         if (($notaPembelian->nominal_terbayar + $notaPembelian->dp) > $notaPembelian->total) {
@@ -175,11 +180,16 @@ class CicilanPiutangController extends Controller
 
 
 
-            // Periksa kondisi untuk tanggal penyelesaian
-            if (($notaPembelian->dp + $notaPembelian->nominal_terbayar) == $notaPembelian->total && is_null($notaPembelian->tanggal_penyelesaian)) {
-                $notaPembelian->tanggal_penyelesaian = $notaPembelian->updated_at;  // Atau $notaPembelian->updated_at jika diperlukan
-            } elseif (($notaPembelian->dp + $notaPembelian->nominal_terbayar) != $notaPembelian->total && !is_null($notaPembelian->tanggal_penyelesaian)) {
-                $notaPembelian->tanggal_penyelesaian = null;
+            // Jika lunas atau kelebihan maka berikan tanggal penyelesaian
+            if (($notaPembelian->total == ($notaPembelian->dp + $notaPembelian->nominal_terbayar)) || ($notaPembelian->total < ($notaPembelian->dp + $notaPembelian->nominal_terbayar))) {
+                // Rubah tanggal selesai 
+                if (is_null($notaPembelian->tanggal_penyelesaian)) {
+                    $notaPembelian->tanggal_penyelesaian =  $notaPembelian->updated_at;
+                }
+            } else {
+                if (!is_null($notaPembelian->tanggal_penyelesaian)) {
+                    $notaPembelian->tanggal_penyelesaian =  null;
+                }
             }
 
             if ($notaPembelian->nominal_terbayar > $notaPembelian->total) {

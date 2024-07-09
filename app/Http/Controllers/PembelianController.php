@@ -715,7 +715,7 @@ class PembelianController extends Controller
 
 
         // Menghitung kembali total dari pesanan
-        $updateNotaPembeli = NotaPembeli::with('bukuBesar')->find($notaPembeli->id_nota);
+        $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
 
 
 
@@ -737,8 +737,31 @@ class PembelianController extends Controller
             return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
         }
 
-        $bukuBesarDpUpdate =  BukubesarModel::find($notaPembeliPesanan->id_bukubesar);
-        $bukuBesarDpUpdate->debit = $notaPembeliPesanan->dp;
+
+
+        // Check Lagi nota pembeli
+        $updateNotaPembeli2 = NotaPembeli::find($notaPembeli->id_nota);
+
+
+
+        // Jika lunas atau kelebihan maka berikan tanggal penyelesaian
+        if (($updateNotaPembeli2->total == ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar)) || ($updateNotaPembeli2->total < ($updateNotaPembeli2->dp + $updateNotaPembeli2->nominal_terbayar))) {
+            // Rubah tanggal selesai 
+            if (is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                $updateNotaPembeli2->tanggal_penyelesaian =  $updateNotaPembeli2->updated_at;
+               
+            }
+        } else {
+            if (!is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
+                $updateNotaPembeli2->tanggal_penyelesaian =  null;
+               
+            }
+        }
+        $updateNotaPembeli2->save();
+
+        
+        $bukuBesarDpUpdate =  BukubesarModel::find($updateNotaPembeli2->id_bukubesar);
+        $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
         $bukuBesarDpUpdate->save();
 
 
@@ -1094,7 +1117,7 @@ class PembelianController extends Controller
 
         // Cicilan tidak direset
         else {
-       
+
             $status_pembayaran = $request->status_pembelian;
 
             // $notaPembeliDataCheck = notaPembeliData::where('id_nota',$id_nota)->first();
@@ -1119,7 +1142,7 @@ class PembelianController extends Controller
                         // Membuat instance dari Request dan mengisi dengan data
 
                         $nominalBaru = $totalBaru - ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar);
-                        
+
                         // $data = [
                         //     'id_nota' => (string) $notaPembeliCheck->id_nota,
                         //     'nominal' => (string) $nominalBaru
@@ -1166,81 +1189,77 @@ class PembelianController extends Controller
 
                         return true;
                     }
-                   
                 }
                 // Lunas ke Hutang
-               
-            }
-            else if($notaPembeliData->total > ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar))
-            {
-                  // dd($notaPembeliData);
-                  $notaPembeliCheck = NotaPembeli::where('id_nota', $id_nota)->first();
-                  $totalBaru = $notaPembeliCheck->total;
-  
-  
-  
-                  // Lunas ke Lunas
-                  if ($status_pembayaran == 'lunas') {
-                      // dd([
-                      //     'totalbaru' => $totalBaru,
-                      //     'dp' => $notaPembeliData->dp,
-                      //     'nominal_terbayar' => $notaPembeliData->nominal_terbayar,
-  
-                      // ]);
-                      if ($totalBaru > ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar)) {
-                        
-                          // Membuat instance dari Request dan mengisi dengan data
-  
-                          $nominalBaru = $totalBaru - ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar);
-                          
-                          // $data = [
-                          //     'id_nota' => (string) $notaPembeliCheck->id_nota,
-                          //     'nominal' => (string) $nominalBaru
-  
-                          // ];
-  
-  
-                          // // Membuat instance dari UserController
-                          // $cicilanPiutang = new CicilanPiutangController();
-  
-                          // // Memanggil metode store dengan objek request yang telah dibuat
-                          // $cicilanPiutang->storeCicilan($data);
-  
-  
-                          // return true;
-  
-  
-                          $nominal = $nominalBaru;
-                          $id_nota = $notaPembeliCheck->id_nota;
-                          // Buat Bukubesar
-                          $updateBukuBesar = new BukubesarModel();
-                          $updateBukuBesar->id_akunbayar = 1;
-                          $updateBukuBesar->tanggal = date('Y-m-d');
-                          $updateBukuBesar->kategori = 'transaksi';
-                          $updateBukuBesar->keterangan = 'PIUTANG';
-  
-                          // $updateBukuBesar->sub_kategori = 'piutang';
-                          $updateBukuBesar->debit = $nominal; // Masukkan nilai debit yang sesuai
-                          $updateBukuBesar->kredit = 0; // Jika debit maka kredit harus 0
-                          $updateBukuBesar->save();
-                          $riwayatPiutang = RiwayatPiutangModel::create([
-                              'id_nota' => $notaPembeliCheck->id_nota,
-                              'id_bukubesar' => $updateBukuBesar->id_bukubesar,
-                              'nominal_dibayar' =>  $nominal
-                          ]);
-  
-  
-                          $notaPembeliCheck->nominal_terbayar += $riwayatPiutang->nominal_dibayar;
-  
-  
-                          $notaPembeliCheck->save();
-  
-  
-  
-                          return true;
-                      }
-                     
-                  }
+
+            } else if ($notaPembeliData->total > ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar)) {
+                // dd($notaPembeliData);
+                $notaPembeliCheck = NotaPembeli::where('id_nota', $id_nota)->first();
+                $totalBaru = $notaPembeliCheck->total;
+
+
+
+                // Lunas ke Lunas
+                if ($status_pembayaran == 'lunas') {
+                    // dd([
+                    //     'totalbaru' => $totalBaru,
+                    //     'dp' => $notaPembeliData->dp,
+                    //     'nominal_terbayar' => $notaPembeliData->nominal_terbayar,
+
+                    // ]);
+                    if ($totalBaru > ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar)) {
+
+                        // Membuat instance dari Request dan mengisi dengan data
+
+                        $nominalBaru = $totalBaru - ($notaPembeliData->dp + $notaPembeliData->nominal_terbayar);
+
+                        // $data = [
+                        //     'id_nota' => (string) $notaPembeliCheck->id_nota,
+                        //     'nominal' => (string) $nominalBaru
+
+                        // ];
+
+
+                        // // Membuat instance dari UserController
+                        // $cicilanPiutang = new CicilanPiutangController();
+
+                        // // Memanggil metode store dengan objek request yang telah dibuat
+                        // $cicilanPiutang->storeCicilan($data);
+
+
+                        // return true;
+
+
+                        $nominal = $nominalBaru;
+                        $id_nota = $notaPembeliCheck->id_nota;
+                        // Buat Bukubesar
+                        $updateBukuBesar = new BukubesarModel();
+                        $updateBukuBesar->id_akunbayar = 1;
+                        $updateBukuBesar->tanggal = date('Y-m-d');
+                        $updateBukuBesar->kategori = 'transaksi';
+                        $updateBukuBesar->keterangan = 'PIUTANG';
+
+                        // $updateBukuBesar->sub_kategori = 'piutang';
+                        $updateBukuBesar->debit = $nominal; // Masukkan nilai debit yang sesuai
+                        $updateBukuBesar->kredit = 0; // Jika debit maka kredit harus 0
+                        $updateBukuBesar->save();
+                        $riwayatPiutang = RiwayatPiutangModel::create([
+                            'id_nota' => $notaPembeliCheck->id_nota,
+                            'id_bukubesar' => $updateBukuBesar->id_bukubesar,
+                            'nominal_dibayar' =>  $nominal
+                        ]);
+
+
+                        $notaPembeliCheck->nominal_terbayar += $riwayatPiutang->nominal_dibayar;
+
+
+                        $notaPembeliCheck->save();
+
+
+
+                        return true;
+                    }
+                }
             }
         }
         return true;
