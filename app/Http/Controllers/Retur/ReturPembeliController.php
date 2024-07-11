@@ -125,7 +125,7 @@ class ReturPembeliController extends Controller
         $dataReturPembeli->id_pembeli = $notaPembelian->id_pembeli;
         $dataReturPembeli->dp_before = $notaPembelian->dp;
         $dataReturPembeli->tanggal_penyelesaian_before = $notaPembelian->tanggal_penyelesaian;
-
+       
 
         // $dataReturPembeli->total_nilai_retur = 0;
         $dataReturPembeli->pengembalian_data = 0;
@@ -160,6 +160,8 @@ class ReturPembeliController extends Controller
             $returPesanan->qty = $returMrni['qty_retur'];
             $returPesanan->type_retur_pesanan = "retur_murni_rusak";
             $returPesanan->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan->qty;
+            $returPesanan->jenis_pembelian_sebelumnya = $pesananData->jenis_pembelian;
+            $returPesanan->harga_potongan_sebelumnya = $pesananData->harga_potongan;
             $returPesanan->save();
 
 
@@ -356,6 +358,8 @@ class ReturPembeliController extends Controller
                 $returPesanan2->type_retur_pesanan = 'retur_tambah_stok';
                 $returPesanan2->qty_sebelum_perubahan = $pesananSebelumnya;
                 $returPesanan2->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan2->qty;
+                $returPesanan2->jenis_pembelian_sebelumnya = $pesananData->jenis_pembelian;
+                $returPesanan2->harga_potongan_sebelumnya = $pesananData->harga_potongan;
                 $returPesanan2->save();
 
 
@@ -623,6 +627,8 @@ class ReturPembeliController extends Controller
                 $returPesanan2->qty_sebelum_perubahan = 0;
                 $returPesanan2->type_retur_pesanan = 'retur_tambah_barang';
                 $returPesanan2->total = ($pesananData->harga - $pesananData->diskon) * $returPesanan2->qty;
+                $returPesanan2->jenis_pembelian_sebelumnya = $pesananData->jenis_pembelian;
+                $returPesanan2->harga_potongan_sebelumnya = $pesananData->harga_potongan;
                 $returPesanan2->save();
             }
         }
@@ -926,6 +932,8 @@ class ReturPembeliController extends Controller
                     case 'retur_murni_tidak_rusak':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
                         $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->jenis_pembelian = $returPesanan->jenis_pembelian_sebelumnya;
+                        $pesananPembeli->harga_potongan = $returPesanan->harga_potongan_sebelumnya;
                         $pesananPembeli->save();
 
                         // Update Stok barang
@@ -974,6 +982,8 @@ class ReturPembeliController extends Controller
                     case 'retur_murni_rusak':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
                         $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->jenis_pembelian = $returPesanan->jenis_pembelian_sebelumnya;
+                        $pesananPembeli->harga_potongan = $returPesanan->harga_potongan_sebelumnya;
                         $pesananPembeli->save();
                         // Update Stok Barang
                         // $stokBarang = StokBarangModel::withTrashed()->find($pesananPembeli->id_stokbarang);
@@ -1026,6 +1036,8 @@ class ReturPembeliController extends Controller
                     case 'retur_tambah_stok':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
                         $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->jenis_pembelian = $returPesanan->jenis_pembelian_sebelumnya;
+                        $pesananPembeli->harga_potongan = $returPesanan->harga_potongan_sebelumnya;
                         $pesananPembeli->save();
 
                         // Update Stok Barang
@@ -1081,6 +1093,8 @@ class ReturPembeliController extends Controller
                     case 'retur_tambah_barang':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
                         $pesananPembeli->harga = $returPesanan->harga;
+                        $pesananPembeli->jenis_pembelian = $returPesanan->jenis_pembelian_sebelumnya;
+                        $pesananPembeli->harga_potongan = $returPesanan->harga_potongan_sebelumnya;
                         $pesananPembeli->save();
 
                         // Hapus stok barang

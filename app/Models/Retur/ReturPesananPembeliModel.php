@@ -21,7 +21,10 @@ class ReturPesananPembeliModel extends Model
         'total',
         'qty',
         'qty_sebelum_perubahan',
-        'type_retur_pesanan'
+        'type_retur_pesanan',
+        'jenis_pembelian_sebelumnya',
+        'harga_potongan_sebelumnya'
+
         // 'id_stok_barang',
     ];
 

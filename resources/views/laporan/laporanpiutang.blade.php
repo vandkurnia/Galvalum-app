@@ -109,7 +109,8 @@
                                 <th>Kekurangan</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Status</th>
-                                <th>Lunas</th>
+                                {{-- <th>Lunas</th> --}}
+                                <th>No Nota</th>
                                 <th>Update</th>
                             </tr>
                         </thead>
@@ -138,7 +139,7 @@
                                             {{ $notaPembelian['status_bayar'] }}
                                         @endif
                                     </td>
-                                    <td>Hutang</td>
+                                    <td>{{$notaPembelian['no_nota']}}</td>
                                     <td><a href="{{ route('cicilan.index', ['id_nota' => $notaPembelian['id_nota']]) }}"
                                             class="btn btn-primary">Update cicilan</a></td>
                                 </tr>
@@ -180,7 +181,7 @@
                                 <th>Kekurangan</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Status</th>
-                                <th>Lunas</th>
+                                <th>No Nota</th>
                                 <th>Update</th>
                             </tr>
                         </thead>
@@ -214,7 +215,7 @@
                                             {{ $notaLunasdanKelebihan['status_bayar'] }}
                                         @endif
                                     </td>
-                                    <td>Hutang</td>
+                                    <td>{{$notaLunasdanKelebihan['no_nota']}}</td>
                                     <td> <a href="{{ route('cicilan.index', ['id_nota' => $notaLunasdanKelebihan['id_nota']]) }}"
                                             class="btn btn-primary">
                                             <i class="fas fa-info-circle"></i> <!-- Ikon detail -->
