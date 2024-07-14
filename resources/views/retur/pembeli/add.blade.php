@@ -85,6 +85,7 @@
                                 <th>Tipe Barang</th>
                                 <th>Ukuran Barang</th>
                                 <th>Harga Barang</th>
+                                <th>Jenis Pembelian</th>
                                 {{-- <th>Jenis Pelanggan</th> Nanti di uncomment --}}
                                 <th>Diskon</th>
                                 <th>Qty Pesanan</th>
@@ -111,7 +112,7 @@
                                     <td class="harga_barang_pesanan" data-jenis-pelanggan="{{ $pesanan->jenis_pembelian }}"
                                         data-harga-potongan-khusus="{{ (int) $pesanan->harga_potongan }}">
                                         {{ (int) $pesanan->harga }}</td>
-                                    {{-- <td>Jenis Pelanggan</td> Nanti di uncomment --}}
+                                    <td>{{ $pesanan->jenis_pembelian }}</td>
                                     <td class="diskon_pesanan">{{ (int) $pesanan->diskon }}</td>
                                     <td class="nilai_jumlah_barang_pesanan">{{ $pesanan->jumlah_pembelian }}</td>
 
@@ -151,7 +152,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" rowspan="4">
+                                <td colspan="6" rowspan="4">
 
                                 </td>
                                 <td colspan="1">Sub Total Rp</td>
@@ -274,7 +275,7 @@
                             <th>Tipe Barang</th>
                             <th>Ukuran Barang</th>
                             <th>Harga Barang</th>
-                            {{-- <th>Jenis Pelanggan</th> Nanti di uncomment --}}
+                            <th>Jenis Pelanggan</th> 
                             <th>Diskon</th>
                             <th>Qty</th>
                             <th>Total</th>
@@ -286,7 +287,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" rowspan="4">
+                            <td colspan="6" rowspan="4">
 
                             </td>
                             <td colspan="2">Sub Total Rp</td>
@@ -621,7 +622,12 @@
         function buatBarisPesananBarang(data_barang, total_tr, tbody_table) {
 
 
-            var tr_pesanan = tbody_table.querySelector(`tr[data-id-barang="${data_barang.hash_id_barang}"]`);
+            // Ambil Jenis Pembelian dan Harga Potongan Khususnya
+            const jenisPelangganElement = document.getElementById('jenis_pembelian');
+            const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
+            const hargaKhususInput = document.getElementById('harga_khusus');
+
+            var tr_pesanan = tbody_table.querySelector(`tr[data-id-barang="${data_barang.hash_id_barang}"][data-jenis-pembelian="${jenisPelangganTerpilih}"][data-harga-khusus="${hargaKhususInput.value}"]`);
             let check_id_tr_sudah_ada = tr_pesanan ? true :
                 false;
 
@@ -648,13 +654,13 @@
                     harga_setelah_diskon = harga_barang - amount;
                 }
 
-                // Ambil Jenis Pembelian dan Harga Potongan Khususnya
-                const jenisPelangganElement = document.getElementById('jenis_pembelian');
-                const jenisPelangganTerpilih = jenisPelangganElement.options[jenisPelangganElement.selectedIndex].value;
-                const hargaKhususInput = document.getElementById('harga_khusus');
+
                 var tr_pesanan = document.createElement('tr');
                 tr_pesanan.setAttribute('data-id-barang', data_barang.hash_id_barang);
                 tr_pesanan.setAttribute('data-id-diskon', diskon_select_element.value);
+                tr_pesanan.setAttribute('data-jenis-pembelian', jenisPelangganTerpilih);
+                tr_pesanan.setAttribute('data-harga-khusus', hargaKhususInput.value);
+                
                 // Pembuatan TD
                 let th_no = document.createElement('th');
                 th_no.innerText = total_tr;
@@ -671,6 +677,10 @@
                 // td_harga_barang.innerText = harga_barang;
                 console.log(hargaKhususInput.value);
                 td_harga_barang.innerText = harga_barang - parseInt(hargaKhususInput.value);
+
+                let td_jenis_pembelian = document.createElement('td');
+                td_jenis_pembelian.innerText = jenisPelangganTerpilih;
+                td_jenis_pembelian.classList.add('jenis_pembelian_pelanggan');
 
                 const jenis_pelanggan = document.querySelector('#jenis_pembelian');
                 td_harga_barang.setAttribute('data-jenis-pelanggan', jenis_pelanggan.value);
@@ -724,6 +734,7 @@
                 tr_pesanan.appendChild(td_tipe_barang);
                 tr_pesanan.appendChild(td_ukuran_barang);
                 tr_pesanan.appendChild(td_harga_barang);
+                tr_pesanan.appendChild(td_jenis_pembelian);
                 tr_pesanan.appendChild(td_diskon);
                 tr_pesanan.appendChild(td_jumlah);
                 tr_pesanan.appendChild(td_total);
@@ -772,6 +783,10 @@
                 harga.innerText = harga_barang - parseInt(hargaKhususInput.value);
                 harga.setAttribute('data-jenis-pelanggan', jenisPelangganTerpilih);
                 harga.setAttribute('data-harga-potongan-khusus', hargaKhususInput.value);
+
+
+                let td_jenis_pembelian = tr_pesanan.querySelector('.jenis_pembelian_pelanggan');
+                td_jenis_pembelian.innerText = jenisPelangganTerpilih;
 
 
                 let diskon = tr_pesanan.querySelector('.diskon_pesanan');
@@ -983,9 +998,9 @@
     <script>
         function checkCheckbox() {
             if (resetCicilanCheckbox.checked) {
-               totalNominalTerbayar();
+                totalNominalTerbayar();
             } else {
-               totalNominalTerbayar();
+                totalNominalTerbayar();
             }
         }
         const resetCicilanCheckbox = document.getElementById("resetCicilan");

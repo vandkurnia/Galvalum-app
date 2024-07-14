@@ -297,6 +297,7 @@ class ReturPembeliController extends Controller
         $subTotalbaru = 0;
         $totalDiskon = 0;
         foreach ($returTambahan as $returTmbhn) {
+          
             // Data barang 
             $barangData = Barang::where('hash_id_barang', $returTmbhn['id_barang'])->first();
             if (empty($barangData)) {
@@ -329,7 +330,7 @@ class ReturPembeliController extends Controller
             $subTotalbaru += $hargaSetelahDiskon *  $returTmbhn['jumlah_pesanan'];
             $totalDiskon += $hargaDiskon;
             $pesananData = PesananPembeli::with('returPesananPembeli')->where('id_nota', $notaPembelian->id_nota)
-                ->where('id_barang', $barangData->id_barang)
+                ->where('id_barang', $barangData->id_barang)->where('harga_potongan', $returTmbhn['harga_potongan'])->where('jenis_pembelian', $returTmbhn['jenis_pelanggan'])
                 ->withTrashed()->first();
 
             if ($pesananData) {
@@ -927,7 +928,7 @@ class ReturPembeliController extends Controller
 
             foreach ($returPesananPembeli as $returPesanan) {
                 $pesananPembeli = PesananPembeli::withTrashed()->find($returPesanan->id_pesanan_pembeli);
-
+                // dump($returPesanan);
                 switch ($returPesanan->type_retur_pesanan) {
                     case 'retur_murni_tidak_rusak':
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
@@ -1045,6 +1046,7 @@ class ReturPembeliController extends Controller
                         // $stokBarang->stok_keluar =  $pesananPembeli->jumlah_pembelian;
                         // $stokBarang->save();
 
+                        // dd($returPesanan->qty);
 
 
 
@@ -1091,6 +1093,7 @@ class ReturPembeliController extends Controller
                         break;
 
                     case 'retur_tambah_barang':
+
                         $pesananPembeli->jumlah_pembelian = $returPesanan->qty_sebelum_perubahan;
                         $pesananPembeli->harga = $returPesanan->harga;
                         $pesananPembeli->jenis_pembelian = $returPesanan->jenis_pembelian_sebelumnya;
@@ -1100,16 +1103,19 @@ class ReturPembeliController extends Controller
                         // Hapus stok barang
                         // $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
 
+                        // dd($pesananPembeli->jumlah_pembelian);
+                  
 
                         // New Stok Barang History
                         $barang = Barang::find($pesananPembeli->id_barang);
 
-                        $barang->stok = $barang->stok + $pesananPembeli->jumlah_pembelian;
+                        $barang->stok = $barang->stok + $returPesanan->qty;
+                        // $barang->stok = $barang->stok + $pesananPembeli->jumlah_pembelian;
                         $barang->save();
                         // Buat instance dari model
                         $stokbarangHistory = new StokBarangHistoryModel();
                         $stokbarangHistory->id_barang = $barang->id_barang;
-                        $stokbarangHistory->stok_masuk = $pesananPembeli->jumlah_pembelian;
+                        $stokbarangHistory->stok_masuk = $returPesanan->qty;
                         // $stokbarangHistory->stok_keluar = $item['qty'];
                         $stokbarangHistory->stok_terkini = $barang->stok;
                         $stokbarangHistory->save();
@@ -1162,7 +1168,6 @@ class ReturPembeliController extends Controller
                 // Hapus retur pesanan pembeli setelah memprosesnya
                 $returPesanan->delete();
             }
-
 
 
             // Hapus data retur pembeli
