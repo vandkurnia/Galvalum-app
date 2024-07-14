@@ -78,7 +78,9 @@
                                 {{-- <th>Kekurangan</th> --}}
                                 <th>Status</th>
                                 <th>Nama Pemasok</th>
-                                <th>Aksi</th>
+                                @if (Auth::user()->role == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -101,14 +103,16 @@
                                             onclick="funcEditUser('{{ route('retur.pemasok.edit', ['id_retur' => $retur->hash_id_retur_pemasok]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button> --}}
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('retur.pemasok.destroy', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Batalkan Retur</button>
-                                        <button class="btn btn-warning btn-sm"
-                                            onclick="funcHideRetur('{{ route('retur.pemasok.hide', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)">
-                                            <i class="fas fa-eye-slash"></i> Sembunyikan
-                                        </button>
+                                        @if (Auth::user()->role == 'admin')
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('retur.pemasok.destroy', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)"><i
+                                                    class="fas fa-trash"></i>
+                                                Batalkan Retur</button>
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="funcHideRetur('{{ route('retur.pemasok.hide', ['id_retur' => $retur->hash_id_retur_pemasok]) }}', 0)">
+                                                <i class="fas fa-eye-slash"></i> Sembunyikan
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -159,16 +163,17 @@
                                         {{-- <a class="btn btn-primary btn-sm"
                                             href="{{ route('retur.pembeli.edit', ['id_retur' => $retur->hash_id_retur_pembeli]) }}"><i class="fas fa-edit"></i>Edit</a> --}}
 
+                                        @if (Auth::user()->role == 'admin')
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('retur.pembeli.destroy', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)"><i
+                                                    class="fas fa-trash"></i>
+                                                Batalkan Retur</button>
 
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('retur.pembeli.destroy', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Batalkan Retur</button>
-
-                                        <button class="btn btn-warning btn-sm"
-                                            onclick="funcHideRetur('{{ route('retur.pembeli.hide', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)">
-                                            <i class="fas fa-eye-slash"></i> Sembunyikan
-                                        </button>
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="funcHideRetur('{{ route('retur.pembeli.hide', ['id_retur' => $retur->hash_id_retur_pembeli]) }}', 0)">
+                                                <i class="fas fa-eye-slash"></i> Sembunyikan
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

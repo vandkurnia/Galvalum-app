@@ -308,6 +308,7 @@
                 @endforeach
 
             </tbody>
+           
             @if ($dataRincianBarang['status'] == 'hutang')
                 <tfoot>
                     <tr>

@@ -124,7 +124,7 @@ class ControllerInvoinceCetak extends Controller
             'total' => $notaPembeli->total,
             // 'dp' => ($notaPembeli['bukuBesar'][0]['debit'] - $notaPembeli['bukuBesar'][0]['kredit']),
             'dp' => $notaPembeli->dp,
-            'status' => $notaPembeli['total'] == $notaPembeli['nominal_terbayar'] ? 'lunas' : 'hutang',
+            'status' => $notaPembeli['total'] == ($notaPembeli['nominal_terbayar'] + $notaPembeli['dp']) ? 'lunas' : 'hutang',
             'list_barang' => $productsData
         ];
         $type = 2;

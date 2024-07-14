@@ -90,15 +90,15 @@
                                         {{-- <button class="btn btn-info btn-sm p-2"
                                             onclick="funcInfoNota('{{ route('pemesanan.infobarang', ['id' => $notaPembeli['id_nota']]) }}')"><i
                                                 class="fas fa-info-circle"></i></button> --}}
-
-
-                                        <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"
-                                            class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                                            Edit</a>
-                                        <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('pemesanan.destroy', ['id' => $notaPembeli['id_nota']]) }}', 0)"><i
-                                                class="fas fa-trash"></i>
-                                            Delete</button>
+                                        @if (Auth::user()->role == 'admin')
+                                            <a href="{{ route('pemesanan.edit', ['id' => $notaPembeli['id_nota']]) }}"
+                                                class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
+                                                Edit</a>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="funcHapusUser('{{ route('pemesanan.destroy', ['id' => $notaPembeli['id_nota']]) }}', 0)"><i
+                                                    class="fas fa-trash"></i>
+                                                Delete</button>
+                                        @endif
                                     </td>
 
                                     @if (Auth::user()->role == 'admin')
