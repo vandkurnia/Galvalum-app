@@ -86,6 +86,7 @@ class ReturPembeliController extends Controller
         $dataReturPembeli->faktur_retur_pembeli = $notaPembelian->no_nota;
         $dataReturPembeli->tanggal_retur_pembeli = $request->tanggal_retur_pembeli;
         $dataReturPembeli->id_nota = $notaPembelian->id_nota;
+
         // Simpan file bukti_retur_pembeli
         // Decode data JSON menjadi array asosiatif
         $fileData = json_decode($request->bukti_retur_pembeli, true);
@@ -125,7 +126,7 @@ class ReturPembeliController extends Controller
         $dataReturPembeli->id_pembeli = $notaPembelian->id_pembeli;
         $dataReturPembeli->dp_before = $notaPembelian->dp;
         $dataReturPembeli->tanggal_penyelesaian_before = $notaPembelian->tanggal_penyelesaian;
-       
+
 
         // $dataReturPembeli->total_nilai_retur = 0;
         $dataReturPembeli->pengembalian_data = 0;
@@ -139,6 +140,8 @@ class ReturPembeliController extends Controller
         // Membuat Retur Menu
         $returMurni = json_decode($request->get("retur_murni"), true);
         // dd($returMurni)
+
+        $keterangan = '';
 
         $subTotalReturMurni = 0;
 
@@ -169,6 +172,9 @@ class ReturPembeliController extends Controller
             // Mengupdate Jumlah Pembelian
             $pesananData->jumlah_pembelian = $pesananData->jumlah_pembelian - $returPesanan->qty;
             $pesananData->save();
+
+
+
             // Check if the returned item is damaged or not
             switch ($dataReturPembeli->jenis_retur) {
                 case 'Tidak Rusak':
@@ -217,14 +223,18 @@ class ReturPembeliController extends Controller
                         $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
                         $logStokBarang->save();
                     }
+
                     // Associate the return order with the stock entry
                     $returPesanan = ReturPesananPembeliModel::find($returPesanan->id_retur_pesanan);
                     $returPesanan->type_retur_pesanan = "retur_murni_tidak_rusak";
                     $returPesanan->save();
 
+                    $keterangan .= '- Retur barang tidak rusak ' . $pesananData->Barang->nama_barang . ' sebanyak : ' . $returPesanan->qty;
+
                     break;
                 default:
                     # code...
+                    $keterangan .= '- Retur barang rusak ' . $pesananData->Barang->nama_barang . ' sebanyak : ' . $returPesanan->qty;
                     break;
             }
 
@@ -297,7 +307,7 @@ class ReturPembeliController extends Controller
         $subTotalbaru = 0;
         $totalDiskon = 0;
         foreach ($returTambahan as $returTmbhn) {
-          
+
             // Data barang 
             $barangData = Barang::where('hash_id_barang', $returTmbhn['id_barang'])->first();
             if (empty($barangData)) {
@@ -336,6 +346,7 @@ class ReturPembeliController extends Controller
             if ($pesananData) {
 
 
+
                 $pesananSebelumnya = $pesananData->jumlah_pembelian;
                 // Pesanan sudah ada, tambahkan jumlah pembelian
                 $pesananData->jumlah_pembelian += $returTmbhn['jumlah_pesanan'];
@@ -345,6 +356,9 @@ class ReturPembeliController extends Controller
                 $pesananData->harga_potongan = $returTmbhn['harga_potongan']; // Contoh nilai harga_potongan
                 $pesananData->id_diskon = $diskonId; // Contoh nilai id_diskon
                 $pesananData->save();
+
+                // Tambah Keterangan
+                $keterangan .= '- Retur tambah jumlah ' . $pesananData->Barang->nama_barang . ' sebanyak : ' . $returPesanan->qty;
 
                 // Jika Deleted maka ubah ke null
                 // Belum
@@ -551,6 +565,8 @@ class ReturPembeliController extends Controller
                     }
                 }
             } else {
+
+
                 // Pesanan belum ada, buat pesanan baru
                 $pesananData = new PesananPembeli();
                 $pesananData->jumlah_pembelian = $returTmbhn['jumlah_pesanan']; // Contoh nilai jumlah_pembelian
@@ -562,11 +578,8 @@ class ReturPembeliController extends Controller
                 $pesananData->harga_potongan = $returTmbhn['harga_potongan']; // Contoh nilai harga_potongan
                 $pesananData->id_diskon = $diskonId; // Contoh nilai id_diskon
 
-
-
-
-
-
+                // Menambah keterangan dari pesanan baru
+                $keterangan .= '- Retur tambah barang ' . $pesananData->jumlah_pembelian . ' sebanyak : ' . $returPesanan->qty;
 
                 // Update data barang
                 // $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
@@ -670,6 +683,10 @@ class ReturPembeliController extends Controller
         $notaPembeliPesanan->total = $nilaiTotal + $notaPembeliPesanan->ongkir;
         $notaPembeliPesanan->save();
 
+
+
+        $dataReturPembeli->keterangan_retur_pembeli = $keterangan;
+        $dataReturPembeli->save();
         // Perhitungan Kembali untuk laporan Piutang untuk hutang dan lunas
         // if ($totalOld == ($nominalTerbayarOld + $dpOld)) {
 
@@ -1104,7 +1121,7 @@ class ReturPembeliController extends Controller
                         // $stokBarang = StokBarangModel::find($pesananPembeli->id_stokbarang);
 
                         // dd($pesananPembeli->jumlah_pembelian);
-                  
+
 
                         // New Stok Barang History
                         $barang = Barang::find($pesananPembeli->id_barang);

@@ -686,6 +686,7 @@ class StokController extends Controller
         $stokbarangHistory->id_barang = $barang->id_barang;
         $stokbarangHistory->stok_masuk = $validatedData['stok_tambah'];
         $stokbarangHistory->stok_terkini = $barang->stok;
+        $stokbarangHistory->keterangan_stok_history = 'Tambah Stok Barang ' . $barang->nama_barang . ' sebanyak ' . $validatedData['stok_tambah'];
         $stokbarangHistory->save();
 
 
@@ -803,6 +804,7 @@ class StokController extends Controller
         $stokbarangHistory->id_barang = $barang->id_barang;
         $stokbarangHistory->stok_keluar = $validatedData['stok_kurang'];
         $stokbarangHistory->stok_terkini = $barang->stok;
+        $stokbarangHistory->keterangan_stok_history = 'Kurang Stok Barang ' . $barang->nama_barang . ' sebanyak ' . $validatedData['stok_tambah'];
         $stokbarangHistory->save();
 
 

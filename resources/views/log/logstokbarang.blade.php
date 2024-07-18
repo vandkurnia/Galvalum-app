@@ -98,6 +98,11 @@
                                 <div id="description3" class="p-2 border">
                                     {{ $logStkbrng->keterangan }}
                                 </div>
+
+                                <div>
+                                    <h1>Keterangan</h1>
+                                    <p>{{ $logStkbrng->stokBarangHistory->keterangan_stok_history }}</p>
+                                </div>
                             
                             </div>
                             <table class="table table-bordered">

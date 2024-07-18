@@ -30,7 +30,8 @@ class ReturPembeliModel extends Model
         'tanggal_penyelesaian_before',
         'status',
         'id_pembeli',
-        'hidden'
+        'hidden',
+        'keterangan_retur_pembeli'
     ];
     public function pembeli()
     {

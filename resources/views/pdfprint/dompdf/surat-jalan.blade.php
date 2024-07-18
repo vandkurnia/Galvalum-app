@@ -15,8 +15,8 @@
     <style>
         body {
             /* font-family: Calibri; */
-            /* padding: 10px 10px 10px 10px; */ 
-           
+            /* padding: 10px 10px 10px 10px; */
+
         }
 
         h2 {
@@ -65,20 +65,18 @@
 <body onload="window.print()">
     <!-- Header kosongan -->
     <header style="position: relative;">
-        <div class="left-header"
-            style="position:absolute; left:0; width: 300px;height: 140px;">
+        <div class="left-header" style="position:absolute; left:0; width: 300px;height: 140px;">
             <div style="position: relative;">
 
                 <span style="font-size:16pt;  margin-top: 20px;">M A D I U N</span>
                 <div class="informasi-surat-jalan" style="align-items: center;gap: 10px;">
-                    <span style="font-size:20pt;font-weight:bold;padding-top:1rem">SURAT JALAN<br></span> 
+                    <span style="font-size:20pt;font-weight:bold;padding-top:1rem">SURAT JALAN<br></span>
                     <span style="font-size:16pt;padding-top:1rem">No {{ $dataSuratJalan[0]['no_surat'] }}</span>
                 </div>
             </div>
 
         </div>
-        <div class="right-header"
-            style="position:absolute; right:0; width: 300px;height: 140px;">
+        <div class="right-header" style="position:absolute; right:0; width: 300px;height: 140px;">
             <div style="display: flex;flex-direction: row;">
                 <span style="font-size:12pt">Madiun,</span>
                 @php
@@ -123,7 +121,9 @@
             <tbody>
                 @foreach ($dataRincianBarang as $index => $data)
                     <tr>
-                        <td>{{ number_format($data['qty'], 1, '.', '.') }}</td>
+                        <td>{{ fmod($data['qty'], 1) == 0 ? number_format($data['qty'], 0, '.', '.') : number_format($data['qty'], 1, '.', '.') }}
+                        </td>
+
                         <td>{{ $data['nama_barang'] }}</td>
                     </tr>
                 @endforeach
@@ -135,8 +135,8 @@
                 <h2 style="font-size: 18px;">Tanda Terima</h2>
                 <p style="padding-top: 40px;">.....................................</p>
             </div>
-            <div class="hormat-kami"  style="position: absolute; right: 0;padding-right: 40px;">
-                <h2  style="font-size: 18px;">Hormat Kami</h2>
+            <div class="hormat-kami" style="position: absolute; right: 0;padding-right: 40px;">
+                <h2 style="font-size: 18px;">Hormat Kami</h2>
                 <p style="padding-top: 40px;">.....................................</p>
             </div>
         </div>

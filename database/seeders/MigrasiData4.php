@@ -109,7 +109,10 @@ class MigrasiData4 extends Seeder
                 'kategori' => $bukubesar->kategori,
                 'keterangan' => $bukubesar->keterangan,
                 'debit' => $bukubesar->debit,
-                'kredit' => $bukubesar->kredit
+                'kredit' => $bukubesar->kredit,
+                'created_at' => $bukubesar->created_at,
+                'updated_at' => $bukubesar->updated_at,
+                'deleted_at' => $bukubesar->deleted_at
             ]);
         }
 
@@ -153,12 +156,14 @@ class MigrasiData4 extends Seeder
 
         $pemasok_barangs = DB::connection('sql_galvalum_asli')->table('pemasok_barangs')->get();
         foreach ($pemasok_barangs as $pemasok_barang) {
-            PemasokBarang::create([
+            DB::table('pemasok_barangs')->insert([
                 'id_pemasok' => $pemasok_barang->id_pemasok,
                 'nama_pemasok' => $pemasok_barang->nama_pemasok,
                 'hash_id_pemasok' => $pemasok_barang->hash_id_pemasok,
                 'no_telp_pemasok' => $pemasok_barang->no_telp_pemasok,
-                'alamat_pemasok' => $pemasok_barang->alamat_pemasok
+                'alamat_pemasok' => $pemasok_barang->alamat_pemasok,
+                'created_at' => $pemasok_barang->created_at,
+                'updated_at' => $pemasok_barang->updated_at
             ]);
         }
         $this->command->info('Data pemasok berhasil disimpan');
@@ -178,7 +183,7 @@ class MigrasiData4 extends Seeder
                 'updated_at' => $barang->updated_at,
                 'deleted_at' => $barang->deleted_at
             ]);
-            Barang::create([
+            DB::table('barangs')->insert([
                 'hash_id_barang' => $barang->hash_id_barang,
                 'kode_barang' => $barang->kode_barang,
                 'nama_barang' => $barang->nama_barang,
@@ -194,7 +199,7 @@ class MigrasiData4 extends Seeder
                 'id_bukubesar' => $bukubesar->id_bukubesar,
                 'created_at' => $barang->created_at,
                 'updated_at' => $barang->updated_at,
-                'deleted_at' => $barang->deleted_at
+                'deleted_at' => $barang->deleted_at,
             ]);
         }
 
@@ -204,14 +209,16 @@ class MigrasiData4 extends Seeder
 
 
 
-            $bukubesarHutang = BukubesarModel::find($riwayatHutang->id_bukubesar);
+            $bukubesarHutang = DB::table('bukubesar')->where('id_bukubesar',$riwayatHutang->id_bukubesar)->first();
 
             DB::table('riwayat_hutang')->insert([
                 'id' => $riwayatHutang->id,
                 'id_bukubesar' => $riwayatHutang->id_bukubesar ?? null,
                 'id_barang' => $riwayatHutang->id_barang,
 
-                'nominal_dibayar' => $bukubesarHutang->debit ? $bukubesarHutang->debit : 0
+                'nominal_dibayar' => $bukubesarHutang->debit ? $bukubesarHutang->debit : 0,
+                'created_at' => $riwayatHutang->created_at,
+                'updated_at' => $riwayatHutang->updated_at
             ]);
         }
         $this->command->info('Data riwayat hutang berhasil disimpan');
@@ -219,17 +226,7 @@ class MigrasiData4 extends Seeder
         $nota_pembelis = DB::connection('sql_galvalum_asli')->table('nota_pembelis')->get();
         $null_id_bukubesar = [];
         foreach ($nota_pembelis as $nota_pembeli) {
-            // Create a new bukubesar record
-            // $bukuBesarPembelian = BukubesarModel::create([
-            //     'id_akunbayar' => 1,
-            //     'tanggal' => $nota_pembeli->created_at,
-            //     'kategori' => 'transaksi',
-            //     'keterangan' => 'NOTA ' . $nota_pembeli->no_nota,
-            //     'debit' => $nota_pembeli->nominal_terbayar,
-            //     'created_at' => $nota_pembeli->created_at,
-            //     'updated_at' => $nota_pembeli->updated_at,
-            //     'deleted_at' => $nota_pembeli->deleted_at
-            // ]);
+
             $nota_bukubesar_old = DB::connection('sql_galvalum_asli')->table('nota_bukubesar')->where('id_nota', $nota_pembeli->id_nota)->get();
 
 
@@ -256,12 +253,12 @@ class MigrasiData4 extends Seeder
                     $harga_nominal_terbayar += $bukubesar_nota_cicilan->debit;
                 }
 
-                if(($dp + $harga_nominal_terbayar) == $nota_pembeli->total)
-                {
+                if (($dp + $harga_nominal_terbayar) == $nota_pembeli->total) {
                     $tanggal_penyelesaian = $bukubesar_nota_cicilan->updated_at;
-                    
                 }
             }
+
+
 
 
             // if (!empty($null_id_bukubesar)) {
@@ -269,7 +266,20 @@ class MigrasiData4 extends Seeder
             //     file_put_contents(public_path('notrecognizedpiutang.json'), $json_data);
             // }
 
-         
+
+            // Create a new bukubesar record
+            // $bukuBesarPembelian = BukubesarModel::create([
+            //     'id_akunbayar' => 1,
+            //     'tanggal' => $nota_pembeli->created_at,
+            //     'kategori' => 'transaksi',
+            //     'keterangan' => 'NOTA ' . $nota_pembeli->no_nota,
+            //     'debit' => $dp,
+            //     'created_at' => $nota_pembeli->created_at,
+            //     'updated_at' => $nota_pembeli->updated_at,
+            //     'deleted_at' => $nota_pembeli->deleted_at
+            // ]);
+
+
             // Insert nota_pembelis record with the new bukubesar id
             DB::table('nota_pembelis')->insert([
                 'id_nota' => $nota_pembeli->id_nota,
@@ -299,7 +309,7 @@ class MigrasiData4 extends Seeder
         $pesanan_pembelis = DB::connection('sql_galvalum_asli')->table('pesanan_pembelis')->get();
 
         foreach ($pesanan_pembelis as $pesanan_pembeli) {
-            PesananPembeli::create([
+            DB::table('pesanan_pembelis')->insert([
                 'jumlah_pembelian' => $pesanan_pembeli->jumlah_pembelian,
                 'harga' => $pesanan_pembeli->harga,
                 'diskon' => $pesanan_pembeli->diskon,
@@ -310,9 +320,10 @@ class MigrasiData4 extends Seeder
                 'id_diskon' => $pesanan_pembeli->id_diskon,
                 'created_at' => $pesanan_pembeli->created_at,
                 'updated_at' => $pesanan_pembeli->updated_at,
-                'deleted_at' => $pesanan_pembeli->deleted_at
+                'deleted_at' => $pesanan_pembeli->deleted_at,
             ]);
         }
+
 
 
 
@@ -359,16 +370,18 @@ class MigrasiData4 extends Seeder
             //     ]);
 
 
-            $bukuBesarPiutang = BukubesarModel::find($riwayatPiutang->id_bukubesar);
+            $bukuBesarPiutang = DB::table('bukubesar')->where('id_bukubesar',$riwayatPiutang->id_bukubesar)->first();
             // }
 
             // dump($bukubesarPiutangIsExist);
 
-            RiwayatPiutangModel::create([
+            DB::table('riwayat_piutang')->insert([
                 'id_piutang' => $riwayatPiutang->id_notabukubesar,
                 'id_nota' => $riwayatPiutang->id_nota,
                 'id_bukubesar' => $riwayatPiutang->id_bukubesar ?? null,
-                'nominal_dibayar' => $bukuBesarPiutang->debit ? $bukuBesarPiutang->debit : 0
+                'nominal_dibayar' => $bukuBesarPiutang->debit ? $bukuBesarPiutang->debit : 0,
+                'created_at' => $riwayatPiutang->created_at,
+                'updated_at' => $riwayatPiutang->updated_at
             ]);
         }
         $this->command->info('Data piutang berhasil disimpan');
@@ -442,6 +455,19 @@ class MigrasiData4 extends Seeder
         $retur_pembelis = DB::connection('sql_galvalum_asli')->table('retur_pembeli')->get();
 
         foreach ($retur_pembelis as $retur_pembeli) {
+
+            // // Get all records and retrieve the last one
+            // $notaPembeliReturGet = NotaPembeli::all();
+            // $lastNotaPembeli = $notaPembeliReturGet->last();
+
+            // Find the specific record based on the provided id_nota
+            $notaPembeliRetur = DB::table('nota_pembelis')->where('id_nota', $retur_pembeli->id_nota)->first();
+
+            // // Debug the last record and the specific record
+            // dd([$notaPembeliRetur, $lastNotaPembeli, $retur_pembeli->id_nota]);
+
+
+            // Untuk data yang diinputkan sebelum tanggal 15 dp beforenya mengikuti sebelumnya 
             ReturPembeliModel::create([
                 'id_retur_pembeli' => $retur_pembeli->id_retur_pembeli,
                 'hash_id_retur_pembeli' => $retur_pembeli->hash_id_retur_pembeli,
@@ -455,6 +481,8 @@ class MigrasiData4 extends Seeder
                 'pengembalian_data' => $retur_pembeli->pengembalian_data ?? 0, // Default ke 0 jika null
                 'kekurangan' => $retur_pembeli->kekurangan ?? 0, // Default ke 0 jika null
                 'status' => $retur_pembeli->status, // Asumsikan ini sama dengan status
+                'dp_before' => $notaPembeliRetur->dp,
+                'tanggal_penyelesaian_before' => $notaPembeliRetur->tanggal_penyelesaian,
                 'id_pembeli' => $retur_pembeli->id_pembeli,
                 'created_at' => $retur_pembeli->created_at, // Tambahkan timestamp jika diperlukan
                 'updated_at' => $retur_pembeli->updated_at, // Tambahkan timestamp jika diperlukan
@@ -467,6 +495,11 @@ class MigrasiData4 extends Seeder
         $retur_pesanan_pembelis = DB::connection('sql_galvalum_asli')->table('retur_pesanan_pembeli')->get();
 
         foreach ($retur_pesanan_pembelis as $retur_pesanan_pembeli) {
+
+            $pesananPembeliRetur = DB::table('pesanan_pembelis')
+                ->where('id_pesanan', $retur_pesanan_pembeli->id_pesanan_pembeli)
+                ->first();
+
             ReturPesananPembeliModel::create([
                 'id_retur_pesanan' => $retur_pesanan_pembeli->id_retur_pesanan,
                 'id_retur_pembeli' => $retur_pesanan_pembeli->id_retur_pembeli, // Pastikan kolom ini ada di database lama
@@ -476,6 +509,12 @@ class MigrasiData4 extends Seeder
                 'qty' => $retur_pesanan_pembeli->qty, // Asumsikan jumlah_retur adalah qty
                 'qty_sebelum_perubahan' => $retur_pesanan_pembeli->qty_sebelum_perubahan, // Default ke null jika tidak ada
                 'type_retur_pesanan' => $retur_pesanan_pembeli->type_retur_pesanan, // Pastikan kolom ini ada di database lama
+
+                // 2 Kolom Baru
+                'jenis_pembelian_sebelumnya' => $pesananPembeliRetur->jenis_pembelian,
+                'harga_potongan_sebelumnya' => $pesananPembeliRetur->harga_potongan,
+
+
                 'created_at' => $retur_pesanan_pembeli->created_at, // Tambahkan timestamp jika diperlukan
                 'updated_at' => $retur_pesanan_pembeli->updated_at, // Tambahkan timestamp jika diperlukan
                 'deleted_at' => $retur_pesanan_pembeli->deleted_at // Pastikan soft delete diatur ke null
@@ -526,7 +565,9 @@ class MigrasiData4 extends Seeder
                 'keterangan' => $log_stok_barang->keterangan,
                 'id_admin' => $log_stok_barang->id_admin,
                 'id_barang' => $log_stok_barang->id_barang,
-                'id_stok_barang_history' => $log_stok_barang->id_stok_barang_history
+                'id_stok_barang_history' => $log_stok_barang->id_stok_barang_history,
+                'created_at' => $log_stok_barang->created_at,
+                'updated_at' => $log_stok_barang->updated_at
             ]);
         }
         $this->command->info('Data log stok barang berhasil disimpan');

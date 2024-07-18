@@ -141,6 +141,7 @@
                                 {{-- <th>Kekurangan</th> --}}
                                 <th>Status</th>
                                 <th>Nama Pembeli</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -154,10 +155,12 @@
                                             alt="Bukti Retur" width="150px" height="150px"></td>
                                     <td>{{ $retur->jenis_retur }}</td>
                                     <td>{{ 'Rp. ' . number_format($retur->total_nilai_retur, 0, '.', ',') }}</td>
-                                    {{-- <td>{{ $retur->pengembalian_data }}</td>
+                                    {{-- <>{{ $retur->pengembalian_data }}</
+                                        td>
                                     <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
                                     <td>{{ $retur->pembeli->nama_pembeli }}</td>
+                                    <td>{{ $retur->keterangan }}</td>
                                     <td>
 
                                         {{-- <a class="btn btn-primary btn-sm"

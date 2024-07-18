@@ -15,7 +15,8 @@ class StokBarangHistoryModel extends Model
         'id_barang',
         'stok_masuk',
         'stok_keluar',
-        'stok_terkini'
+        'stok_terkini',
+        'keterangan_stok_history'
 
     ];
     public function barang()
