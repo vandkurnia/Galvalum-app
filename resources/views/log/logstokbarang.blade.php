@@ -99,14 +99,18 @@
                                     {{ $logStkbrng->keterangan }}
                                 </div>
 
+                                @if (!empty($logStkbrng->stokBarangHistory->keterangan_stok_history))
+                                <br>    
                                 <div>
-                                    <h1>Keterangan</h1>
-                                    <p>{{ $logStkbrng->stokBarangHistory->keterangan_stok_history }}</p>
-                                </div>
-                            
+                                        <h3>Keterangan</h3>
+                                        <p>{{ $logStkbrng->stokBarangHistory->keterangan_stok_history }}</p>
+                                    </div>
+                                @endif
+
+
                             </div>
                             <table class="table table-bordered">
-                               
+
                                 <thead>
                                     <tr>
                                         <th>Stok</th>
@@ -116,12 +120,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
+
 
                                     <tr>
-                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_terkini ?? 0, 1, '.', '')}}</td>
-                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_masuk ?? 0,  1, '.', '') }}</td>
-                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_keluar ?? 0,  1, '.', '') }}</td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_terkini ?? 0, 1, '.', '') }}
+                                        </td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_masuk ?? 0, 1, '.', '') }}
+                                        </td>
+                                        <td>{{ number_format($logStkbrng->stokBarangHistory->stok_keluar ?? 0, 1, '.', '') }}
+                                        </td>
                                     </tr>
 
                                 </tbody>

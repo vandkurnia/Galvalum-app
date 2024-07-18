@@ -147,6 +147,7 @@
                         </thead>
                         <tbody>
                             @foreach ($dataReturPembeli as $retur)
+                            @dd($retur);
                                 <tr>
                                     <td>{{ $retur->no_retur_pembeli }}</td>
                                     <td>{{ $retur->faktur_retur_pembeli }}</td>
@@ -159,8 +160,41 @@
                                         td>
                                     <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
-                                    <td>{{ $retur->pembeli->nama_pembeli }}</td>
-                                    <td>{{ $retur->keterangan }}</td>
+                                    <td>{{ $retur->pembeli->nama_pembeli }} </td>
+                                 
+                                   
+                                    @php
+                                        // Sample input string
+                                        $keterangan = $retur->keterangan_retur_pembeli;
+
+                                        // Initialize an array to hold the formatted items
+                                        $formattedItems = [];
+
+                                        // Check if keterangan is not null
+                                        if (!empty($keterangan)) {
+                                            // Split the string into an array using "- " as the delimiter
+                                            $items = explode('- ', $keterangan);
+
+                                            // Loop through each item, trim whitespace, and add to formattedItems array
+                                            foreach ($items as $item) {
+                                                $trimmedItem = trim($item);
+                                                if (!empty($trimmedItem)) {
+                                                    $formattedItems[] = $trimmedItem;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+
+                                    @if (!empty($formattedItems))
+                                        <td>
+                                            <ul>
+                                                @foreach ($formattedItems as $item)
+                                                    <li>{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    @endif
+
                                     <td>
 
                                         {{-- <a class="btn btn-primary btn-sm"
