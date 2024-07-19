@@ -99,13 +99,13 @@
                                     {{ $logStkbrng->keterangan }}
                                 </div>
 
-                                @if (!empty($logStkbrng->stokBarangHistory->keterangan_stok_history))
+                                {{-- @if (!empty($logStkbrng->stokBarangHistory->keterangan_stok_history))
                                 <br>    
                                 <div>
                                         <h3>Keterangan</h3>
                                         <p>{{ $logStkbrng->stokBarangHistory->keterangan_stok_history }}</p>
                                     </div>
-                                @endif
+                                @endif --}}
 
 
                             </div>
@@ -116,7 +116,7 @@
                                         <th>Stok</th>
                                         <th>Stok Masuk</th>
                                         <th>Stok Keluar</th>
-
+                                        <th>Keterangan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,6 +129,7 @@
                                         </td>
                                         <td>{{ number_format($logStkbrng->stokBarangHistory->stok_keluar ?? 0, 1, '.', '') }}
                                         </td>
+                                        <td>{{ $logStkbrng->stokBarangHistory->keterangan_stok_history }}</td>
                                     </tr>
 
                                 </tbody>

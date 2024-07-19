@@ -328,6 +328,11 @@
                             <option value="hutang">Hutang</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="keteranganTambahStok">Keterangan</label>
+                        <input type="text" class="form-control" name="keterangan" id="keterangan_pembayaran">
+                    </div>
+
                     <div id="formCicilanEdit" style="display: none;">
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
@@ -389,6 +394,10 @@
                             <option value="lunas">Lunas</option>
                             <option value="hutang">Hutang</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="keteranganTambahStok">Keterangan</label>
+                        <input type="text" class="form-control" name="keterangan" id="keterangan_pembayaran">
                     </div>
                     <div id="formCicilanEdit" style="display: none;">
                         <div class="form-group">

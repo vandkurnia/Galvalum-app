@@ -147,7 +147,7 @@
                         </thead>
                         <tbody>
                             @foreach ($dataReturPembeli as $retur)
-                            @dd($retur);
+                           
                                 <tr>
                                     <td>{{ $retur->no_retur_pembeli }}</td>
                                     <td>{{ $retur->faktur_retur_pembeli }}</td>
