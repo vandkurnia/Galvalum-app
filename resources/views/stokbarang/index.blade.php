@@ -256,7 +256,7 @@
                             </div>
                             <div id="formCicilan" style="display: none;">
                                 <div class="form-group">
-                                    <label for="nominalTerbayar">Nominal Terbayar:</label>
+                                    <label for="nominalTerbayar">DP :</label>
                                     <input type="text" class="form-control" name="nominal_terbayar"
                                         id="nominalTerbayar" value="0">
                                 </div>
@@ -395,6 +395,8 @@
                             <option value="hutang">Hutang</option>
                         </select>
                     </div>
+
+                 
                     <div class="form-group">
                         <label for="keteranganTambahStok">Keterangan</label>
                         <input type="text" class="form-control" name="keterangan" id="keterangan_pembayaran">
@@ -506,7 +508,7 @@
         handleStatusChange();
         // Periksa status pembayaran
         if (statusPembayaranSelect.value === 'lunas') {
-          
+
             cicilanEdit.style.display = 'none';
             // Jika status pembayaran adalah lunas
             tenggatBayarInput.disabled = true; // Nonaktifkan input tanggal tenggat bayar

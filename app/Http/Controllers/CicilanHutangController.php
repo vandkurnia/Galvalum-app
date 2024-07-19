@@ -103,8 +103,19 @@ class CicilanHutangController extends Controller
                 return redirect()->back()->with('error', 'Barang gagal karena nominal bayar lebih besar dari total pesanan');
             }
             $barangData->save();
+            // Buat entri baru di buku besar
+            $updateBukuBesar = new BukubesarModel();
+            $updateBukuBesar->id_akunbayar = 1;
+            $updateBukuBesar->tanggal = date('Y-m-d');
+            $updateBukuBesar->kategori = 'barang';
+            $updateBukuBesar->keterangan = 'Pelunasan Hutang';
+            $updateBukuBesar->debit = $nominal;
+            $updateBukuBesar->kredit = 0;
+            $updateBukuBesar->save();
+
             $riwayatHutangData = new RiwayatHutangModel();
             $riwayatHutangData->id_barang = $barangData->id_barang;
+            $riwayatHutangData->id_bukubesar =  $updateBukuBesar->id_bukubesar;
             $riwayatHutangData->nominal_dibayar = $nominal;
             $riwayatHutangData->save();
 
@@ -193,6 +204,11 @@ class CicilanHutangController extends Controller
             $riwayatHutang->nominal_dibayar = $request->nominal;
             $riwayatHutang->save();
 
+
+            // Update Bukubesar
+            $updateBukuBesar = BukubesarModel::find($riwayatHutang->id_bukubesar);
+            $updateBukuBesar->debit =  $riwayatHutang->nominal_dibayar; // Masukkan nilai debit yang sesua
+            $updateBukuBesar->save();
 
             // Cek apakah total terbayar lebih dari total harga barang
 
@@ -332,6 +348,10 @@ class CicilanHutangController extends Controller
             // $barangData->save();
 
 
+
+            // Bukubesar juga dihapus
+            $bukuBesar = BukubesarModel::find($riwayatHutang->id_bukubesar);
+            $bukuBesar->delete();
             DB::commit();
             return redirect()->route('cicilan.hutang.index', ['id_barang' => $barangData->hash_id_barang])->with('success', 'Cicilan hutang berhasil dihapus');
         } catch (\Exception $e) {

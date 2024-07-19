@@ -141,7 +141,7 @@ class LaporanController extends Controller
                     barangs.created_at as tanggal_stok_alt,
                     barangs.created_at as jatuh_tempo_alt,
                     barangs.total as harga_bayar,
-                    barangs.nominal_terbayar as jumlah_terbayar,
+                    (barangs.nominal_terbayar + barangs.dp_barang) as jumlah_terbayar,
                     barangs.tenggat_bayar as jatuh_tempo,
                     CASE
                     WHEN barangs.total > barangs.nominal_terbayar THEN "Belum Lunas"
@@ -154,7 +154,7 @@ class LaporanController extends Controller
                     pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
               
                
-                WHERE barangs.nominal_terbayar < barangs.total AND barangs.deleted_at IS NULL
+                WHERE (barangs.nominal_terbayar + barangs.dp_barang) < barangs.total AND barangs.deleted_at IS NULL
                 ',
             []
         );

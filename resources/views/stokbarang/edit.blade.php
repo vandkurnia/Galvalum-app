@@ -47,8 +47,9 @@
             </div>
             <div class="form-group">
                 <label for="stok">Stok:</label>
-                <input type="number" class="form-control" stok-original="{{ $dataBarang->stokoriginal }}" stok-total="{{  $dataBarang->stok }}" name="stok" id="stok"
-                    value="{{  $dataBarang->stok }}" oninput="calculateTotalNominalTerbayar()" required>
+                <input type="number" class="form-control" stok-original="{{ $dataBarang->stokoriginal }}"
+                    stok-total="{{ $dataBarang->stok }}" name="stok" id="stok" value="{{ $dataBarang->stok }}"
+                    oninput="calculateTotalNominalTerbayar()" required>
             </div>
 
         </div>
@@ -62,7 +63,8 @@
                 <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
                 <input id="harga_barang_pemasok" type="text"
                     class="form-control @error('harga_barang_pemasok') is-invalid @enderror" min="0"
-                    name="harga_barang_pemasok" oninput="calculateTotalNominalTerbayar()" value="{{ (int) $dataBarang->harga_barang_pemasok }}" required>
+                    name="harga_barang_pemasok" oninput="calculateTotalNominalTerbayar()"
+                    value="{{ (int) $dataBarang->harga_barang_pemasok }}" required>
                 @error('harga_barang_pemasok')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -72,7 +74,7 @@
 
 
 
-            <div class="form-group d-none" >
+            <div class="form-group d-none">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="statusChangeCheckbox"
                         name="status_pembayaran_change">
@@ -82,43 +84,60 @@
 
 
             <div class="form-group">
-              
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+                {{-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Perhatian!</strong> Merubah status pembelian akan mereset laporan hutang barang
                     ini.
 
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
+                </div> --}}
 
                 <label for="statusPembayaranEdit">Status Pembayaran:</label>
                 {{-- @dump($dataBarang->total )
                 @dump($dataBarang->nominal_terbayar ) --}}
+                {{-- @dump([
+                    $dataBarang->total,
+                    $dataBarang->nominal_terbayar,
+                    $dataBarang->dp_barang
+
+                ]) --}}
+                {{-- @dump($dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang)) --}}
                 <select class="form-control" name="status_pembelian"
-                    data-status-pembayaran="{{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'lunas' : 'hutang' }}"
+                    data-status-pembayaran="{{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang)  ? 'lunas' : 'hutang' }}"
                     onchange="handleStatusPembayaranChange()" id="statusPembayaranEdit" required="">
 
-                    <option {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'selected' : '' }} value="lunas">
+                    <option {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'selected' : '' }} value="lunas">
                         Lunas</option>
-                    <option {{ $dataBarang->total < $dataBarang->nominal_terbayar ? 'selected' : '' }} value="hutang">
+                    <option {{ $dataBarang->total > ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'selected' : '' }} value="hutang">
                         Hutang</option>
                 </select>
             </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="reset_cicilan" id="resetCicilan"
+                        value="1" checked>
+                    <label class="form-check-label" for="resetCicilan">
+                        Reset Cicilan Hutang yang sudah ada (jika ada).
+                    </label>
+                </div>
+            </div>
+            
             <div id="formCicilanEdit"
-                style="{{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'display: none;' : '' }}">
+                style="{{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'display: none;' : '' }}">
                 <div class="form-group">
                     <label for="nominalTerbayar">DP :</label>
-                    <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
-                        value="{{ (int) $dataBarang->nominal_terbayar }}"
-                        {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'readonly' : '' }}>
+                    <input type="text" class="form-control" name="dp" id="nominalTerbayar"
+                        value="{{ (float) $dataBarang->dp_barang }}"
+                        {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'readonly' : '' }}>
                 </div>
                 <div class="form-group">
-                  
+
                     <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                     <input type="date" class="form-control" name="tenggat_bayar"
-                        {{ $dataBarang->total == $dataBarang->nominal_terbayar ? 'disabled' : '' }} id="tenggatBayar"
-                        value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}">
+                        {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'disabled' : '' }}
+                        id="tenggatBayar" value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}">
                 </div>
             </div>
 
