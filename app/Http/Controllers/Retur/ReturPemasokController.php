@@ -133,6 +133,7 @@ class ReturPemasokController extends Controller
 
 
                 $barang->stok = $stokbaru;
+                $barang->stok_seluruh = $barang->stok_seluruh  - $item['qty'];
                 $barang->total -= $barang->harga_barang_pemasok * $item['qty'];
                 $barang->save();
                 // Buat instance dari model
@@ -414,6 +415,7 @@ class ReturPemasokController extends Controller
 
 
             $barang->stok = $barang->stok + $dataRetur->qty;
+            $barang->stok_seluruh = $barang->stok_seluruh + $dataRetur->qty;
             $barang->total += $barang->harga_barang_pemasok * $dataRetur->qty;
             $barang->save();
 

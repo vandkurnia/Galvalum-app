@@ -136,7 +136,7 @@ class LaporanController extends Controller
                     barangs.hash_id_barang as id_barang,
                     pemasok_barangs.nama_pemasok,
                     barangs.nama_barang,
-                    barangs.stok as total_pesanan,
+                    barangs.stok_seluruh as total_pesanan,
                     barangs.updated_at as tanggal_stok,
                     barangs.created_at as tanggal_stok_alt,
                     barangs.created_at as jatuh_tempo_alt,

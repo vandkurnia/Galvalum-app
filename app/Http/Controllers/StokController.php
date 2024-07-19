@@ -114,6 +114,7 @@ class StokController extends Controller
         $barang->nominal_terbayar =  $request->get('nominal_terbayar');
         $barang->tenggat_bayar = $request->get('tenggat_bayar');
         $barang->stok = $request->stok;
+        $barang->stok_seluruh = $request->stok;
 
 
 
@@ -295,8 +296,9 @@ class StokController extends Controller
             // Update total barang setelah mengubah stok masuk
             $updatebarangtotal = Barang::find($barang->id_barang);
             $updatebarangtotal->stok = $stokRequest;
+            $updatebarangtotal->stok_seluruh =  $updatebarangtotal->stok;
 
-            $updatebarangtotal->total = $updatebarangtotal->stok * $updatebarangtotal->harga_barang_pemasok;
+            $updatebarangtotal->total = $updatebarangtotal->stok_seluruh * $updatebarangtotal->harga_barang_pemasok;
             $updatebarangtotal->save();
 
 
@@ -665,7 +667,7 @@ class StokController extends Controller
 
         // Update total
         $barang->stok += $validatedData['stok_tambah'];
-
+        $barang->stok_seluruh += $validatedData['stok_tambah'];
         $total = $validatedData['stok_tambah'] * $barang->harga_barang_pemasok;
         $barang->total +=  $total;
 
@@ -793,6 +795,7 @@ class StokController extends Controller
 
         // Update total
         $barang->stok -=   $validatedData['stok_kurang'];
+        $barang->stok_seluruh -=   $validatedData['stok_kurang'];
         $barang->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
         $barang->nominal_terbayar -= $request->nominal_terbayar;
         $barang->save();
