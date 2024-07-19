@@ -181,6 +181,8 @@ class ReturPemasokController extends Controller
                 } else {
                     $returPemasok->type_retur_pesanan = 'retur_murni_tidak_rusak';
                 }
+
+                $returPemasok->keterangan_retur_pemasok = "- Retur " . $barang->nama_barang . ' sebanyak ' . $item['qty'];
                 $returPemasok->status = 'Selesai';
                 $returPemasok->id_pemasok = $barang->id_pemasok; // Assuming id_pemasok 1 exists
                 $returPemasok->id_barang = $barang->id_barang; // Assuming id_barang 1 exists

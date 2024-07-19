@@ -78,6 +78,7 @@
                                 {{-- <th>Kekurangan</th> --}}
                                 <th>Status</th>
                                 <th>Nama Pemasok</th>
+                                <th>Keterangan</th>
                                 @if (Auth::user()->role == 'admin')
                                     <th>Aksi</th>
                                 @endif
@@ -98,6 +99,7 @@
                                     {{-- <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
                                     <td>{{ $retur->pemasok->nama_pemasok ?? '-' }}</td>
+                                    <td>{{ $retur->keterangan_retur_pemasok }}</td>
                                     <td>
                                         {{-- <button class="btn btn-primary btn-sm"
                                             onclick="funcEditUser('{{ route('retur.pemasok.edit', ['id_retur' => $retur->hash_id_retur_pemasok]) }}')"><i

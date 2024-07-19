@@ -19,6 +19,11 @@ return new class extends Migration
            
             $table->string('keterangan_retur_pembeli')->nullable();
         });
+
+        Schema::table('retur_pemasok', function (Blueprint $table) {
+            $table->string('keterangan_retur_pemasok')->nullable();
+
+        });
         
     }
 
@@ -29,9 +34,15 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('retur_pemasok', function (Blueprint $table) {
+            $table->dropColumn('keterangan_retur_pemasok');
+
+        });
         Schema::table('retur_pembeli', function (Blueprint $table){
 
             $table->dropColumn('keterangan_retur_pembeli');
         });
+
+        
     }
 };
