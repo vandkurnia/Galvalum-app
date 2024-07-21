@@ -687,8 +687,28 @@ class StokController extends Controller
         // }
         // dd($request->nominal_terbayar);
         $barang->nominal_terbayar += $request->nominal_terbayar;
-
         $barang->save();
+
+
+
+
+        // updpate Hutang
+        // Buat Bukubesar
+        $updateBukuBesar = new BukubesarModel();
+        $updateBukuBesar->id_akunbayar = 1;
+        $updateBukuBesar->tanggal = date('Y-m-d');
+        $updateBukuBesar->kategori =  'barang';
+        $updateBukuBesar->keterangan = 'Hutang';
+
+
+        $updateBukuBesar->debit = $request->nominal_terbayar; // Masukkan nilai debit yang sesuai
+        $updateBukuBesar->kredit = 0; // Jika debit maka kredit harus 0
+        $updateBukuBesar->save();
+        RiwayatHutangModel::create([
+            'id_barang' => $barang->id_barang,
+            'id_bukubesar' => $updateBukuBesar->id_bukubesar,
+            'nominal_dibayar' =>  $request->nominal_terbayar
+        ]);
 
         // $stoktambah = $validatedData['stok_tambah'];
 
@@ -807,7 +827,7 @@ class StokController extends Controller
         $barang->stok -=   $validatedData['stok_kurang'];
         $barang->stok_seluruh -=   $validatedData['stok_kurang'];
         $barang->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
-        $barang->nominal_terbayar -= $request->nominal_terbayar;
+        // $barang->nominal_terbayar -= $request->nominal_terbayar;
         $barang->save();
 
         // $stoktambah = $validatedData['stok_kurang'];
@@ -885,7 +905,7 @@ class StokController extends Controller
         $totalOld = $barangOld->total;
         $nominalTerbayarOld =  $barangOld->nominal_terbayar;
         $dpOld = $barangOld->dp_barang;
-      
+
         $resetCicilan = $request->reset_cicilan ? 1 : 0;
         // Apakah direset cicilannya juga ?
         if ($resetCicilan) {
@@ -902,7 +922,7 @@ class StokController extends Controller
                 // dd([
                 //     $nominalTerbayarOld, $dpOld, $nominal_terbayar_baru, $dp_baru
                 // ]);
-        
+
 
 
                 if ($total_baru == ($nominal_terbayar_baru + $dp_baru)) {
@@ -1088,7 +1108,7 @@ class StokController extends Controller
                     // Reset List Piutang yang telah dibayar
                     $riwayatHutangList = RiwayatHutangModel::where('id_barang', $barangOld->id_barang)->get();
                     foreach ($riwayatHutangList as $riwayatHutang) {
-                   
+
                         $bukuBesarRiwayatHutang = BukubesarModel::find($riwayatHutang->id_bukubesar);
                         $bukuBesarRiwayatHutang->delete();
                         $riwayatHutang->delete();
@@ -1133,7 +1153,7 @@ class StokController extends Controller
                     if ($totalBaru > ($barangOld->dp_barang + $barangOld->nominal_terbayar)) {
                         // Membuat instance dari Request dan mengisi dengan data
 
-                    
+
                         $nominalBaru = $totalBaru - ($barangOld->dp_barang + $barangOld->nominal_terbayar);
 
                         // $data = [
@@ -1159,8 +1179,8 @@ class StokController extends Controller
                         $updateBukuBesar = new BukubesarModel();
                         $updateBukuBesar->id_akunbayar = 1;
                         $updateBukuBesar->tanggal = date('Y-m-d');
-                        $updateBukuBesar->kategori = 'transaksi';
-                        $updateBukuBesar->keterangan = 'PIUTANG';
+                        $updateBukuBesar->kategori =  'barang';
+                        $updateBukuBesar->keterangan = 'Hutang';
 
                         // $updateBukuBesar->sub_kategori = 'piutang';
                         $updateBukuBesar->debit = $nominal; // Masukkan nilai debit yang sesuai
@@ -1229,7 +1249,7 @@ class StokController extends Controller
                         $updateBukuBesar = new BukubesarModel();
                         $updateBukuBesar->id_akunbayar = 1;
                         $updateBukuBesar->tanggal = date('Y-m-d');
-                        $updateBukuBesar->kategori = 'transaksi';
+                        $updateBukuBesar->kategori =  'barang';
                         $updateBukuBesar->keterangan = 'PIUTANG';
 
                         // $updateBukuBesar->sub_kategori = 'piutang';

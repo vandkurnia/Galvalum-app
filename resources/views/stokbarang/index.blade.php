@@ -386,7 +386,7 @@
                             min="0" oninput="updateStokEdit()" value="0">
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran"
                             onchange="checkNominalTerbayarStokEdit()" required="">
@@ -394,7 +394,7 @@
                             <option value="lunas">Lunas</option>
                             <option value="hutang">Hutang</option>
                         </select>
-                    </div>
+                    </div> --}}
 
 
                     <div class="form-group">
