@@ -396,7 +396,7 @@
                         </select>
                     </div>
 
-                 
+
                     <div class="form-group">
                         <label for="keteranganTambahStok">Keterangan</label>
                         <input type="text" class="form-control" name="keterangan" id="keterangan_pembayaran">
@@ -501,36 +501,31 @@
         var statusPembayaranSelect = baseParentEdit.querySelector('#statusPembayaranEdit');
 
         // Ambil elemen input tanggal tenggat bayar dan nominal terbayar
-        var tenggatBayarInput = baseParentEdit.querySelector('#tenggatBayar');
-        var nominalTerbayarInput = baseParentEdit.querySelector('#nominalTerbayar');
-        var cicilanEdit = baseParentEdit.querySelector('#formCicilanEdit');
+        // var tenggatBayarInput = baseParentEdit.querySelector('#tenggatBayar');
+        // var nominalTerbayarInput = baseParentEdit.querySelector('#nominalTerbayar');
+        // var cicilanEdit = baseParentEdit.querySelector('#formCicilanEdit');
+
+
+        // let hargaPemasokEditBarang = baseParentEdit.querySelector('#harga_barang_pemasok');
+        // let stokEditBarang = baseParentEdit.querySelector('#stok');
+        // let totalEditBarang = hargaPemasokEditBarang.value * stokEditBarang.value;
+
+
+        // let nilaiDp = document.getElementById('DpBarang');
+
+
 
         handleStatusChange();
-        // Periksa status pembayaran
-        if (statusPembayaranSelect.value === 'lunas') {
 
-            cicilanEdit.style.display = 'none';
-            // Jika status pembayaran adalah lunas
-            tenggatBayarInput.disabled = true; // Nonaktifkan input tanggal tenggat bayar
-            nominalTerbayarInput.readOnly = true; // Jadikan input nominal terbayar hanya-baca
-
-            // Perhitungan Stok * Harga Pemasok
-            let hargaPemasok = baseParentEdit.querySelector('#harga_barang_pemasok');
-            let stok = baseParentEdit.querySelector('#stok');
-
-
-            nominalTerbayarInput.value = parseInt(hargaPemasok.value) * parseInt(stok
-                .value); // Isi input nominal terbayar dengan nilai 2323
-        } else if (statusPembayaranSelect.value === 'hutang') {
-
-            cicilanEdit.style.display = 'block';
-            // Jika status pembayaran adalah hutang
-            tenggatBayarInput.disabled = false; // Aktifkan input tanggal tenggat bayar
-            nominalTerbayarInput.readOnly = false; // Hapus keterbacaan hanya-baca pada input nominal terbayar
-            nominalTerbayarInput.value = 0; // Kosongkan nilai input nominal terbayar
-        }
         calculateTotalNominalTerbayar();
     }
+
+    function checkCheckboxModalEdit() {
+        handleStatusPembayaranChange();
+    }
+
+
+
     // Fungsi untuk checklist
     // Fungsi untuk menangani perubahan status pembayaran
     function handleStatusChange() {
@@ -556,24 +551,89 @@
     // Fungsi untuk kalkulasi nominal_terbayar 
     function calculateTotalNominalTerbayar() {
         const modalEdit = document.querySelector('#editUser');
+        // console.log(modalEdit);
         const hargaBarangPemasok = parseFloat(modalEdit.querySelector('#harga_barang_pemasok').value);
         const stokElement = modalEdit.querySelector('#stok');
         const stok = parseFloat(stokElement.value);
+        let cicilanEdit = modalEdit.querySelector('#formCicilanEdit');
+        // Nilai DP
+        let nilaiDp = modalEdit.querySelector('#DpBarang');
+
         let total = hargaBarangPemasok * stok;
 
         const statusPembelian = modalEdit.querySelector('#statusPembayaranEdit').value;
-        const nominalTerbayar = modalEdit.querySelector('#nominalTerbayar');
 
+
+
+        // Ambil elemen input tanggal tenggat bayar dan nominal terbayar
+        var tenggatBayarInput = modalEdit.querySelector('#tenggatBayar');
+
+
+        // Reset Cicilan
+        let resetCicilan = document.getElementById('resetCicilan');
+        let resetCicilanStatus = resetCicilan.checked ? true : false;
+        // const nominalTerbayar = modalEdit.querySelector('#nominalTerbayar');
+
+        // if (statusPembelian === 'lunas') {
+        //     let perbedaan = (parseFloat(stokElement.getAttribute('stok-total')) - stok) * -1;
+
+        //     let stok_akhir = parseFloat(stokElement.getAttribute('stok-original')) + perbedaan;
+        //     total = stok_akhir * hargaBarangPemasok;
+        //     // console.log("Perbedaan :" + perbedaan, stok_akhir, total);
+
+        //     // nominalTerbayar.value = total.toFixed(0);
+        //     nilaiDp.value = total.toFixed(0);
+        //     // console.log
+
+
+        //     (nominalTerbayar.value);
+        // }
+
+
+        // Periksa status pembayaran
         if (statusPembelian === 'lunas') {
-            let perbedaan = (parseFloat(stokElement.getAttribute('stok-total')) - stok) * -1;
 
-            let stok_akhir = parseFloat(stokElement.getAttribute('stok-original')) + perbedaan;
-            total = stok_akhir * hargaBarangPemasok;
-            console.log("Perbedaan :" + perbedaan, stok_akhir, total);
+            // Perhitungan Stok * Harga Pemasok
+            let hargaPemasok = modalEdit.querySelector('#harga_barang_pemasok');
+            let stok = modalEdit.querySelector('#stok');
 
-            // nominalTerbayar.value = total.toFixed(0);
-            nominalTerbayar.value = total.toFixed(0);
-            console.log(nominalTerbayar.value);
+            // cicilanEdit.style.display = 'none';
+
+
+            if (resetCicilanStatus) {
+                nilaiDp.value = parseFloat(hargaPemasok.value) * parseFloat(stok.value);
+
+                // Check if dpValue is NaN and set to 0 if it is
+                if (isNaN(nilaiDp.value)) {
+                    nilaiDp.value = 0;
+                }
+
+            } else {
+                nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+
+            }
+
+            // Jika status pembayaran adalah lunas
+            tenggatBayarInput.disabled = true; // Nonaktifkan input tanggal tenggat bayar
+            // nominalTerbayarInput.readOnly = true; // Jadikan input nominal terbayar hanya-baca
+
+        } else if (statusPembelian === 'hutang') {
+
+
+            if (resetCicilanStatus) {
+                nilaiDp.value = 0;
+
+            } else {
+                nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+
+            }
+
+            nilaiDp.readOnly = false;
+            cicilanEdit.style.display = 'block';
+            // Jika status pembayaran adalah hutang
+            tenggatBayarInput.disabled = false; // Aktifkan input tanggal tenggat bayar
+            // nominalTerbayarInput.readOnly = false; // Hapus keterbacaan hanya-baca pada input nominal terbayar
+            // nominalTerbayarInput.value = 0; // Kosongkan nilai input nominal terbayar
         }
     }
 </script>

@@ -105,38 +105,48 @@
                 ]) --}}
                 {{-- @dump($dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang)) --}}
                 <select class="form-control" name="status_pembelian"
-                    data-status-pembayaran="{{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang)  ? 'lunas' : 'hutang' }}"
+                    data-status-pembayaran="{{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'lunas' : 'hutang' }}"
                     onchange="handleStatusPembayaranChange()" id="statusPembayaranEdit" required="">
 
-                    <option {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'selected' : '' }} value="lunas">
+                    <option
+                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}
+                        value="lunas">
                         Lunas</option>
-                    <option {{ $dataBarang->total > ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'selected' : '' }} value="hutang">
+                    <option
+                        {{ $dataBarang->total > $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}
+                        value="hutang">
                         Hutang</option>
                 </select>
             </div>
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="reset_cicilan" id="resetCicilan"
-                        value="1" checked>
+                        value="1" onchange="checkCheckboxModalEdit()" checked>
                     <label class="form-check-label" for="resetCicilan">
                         Reset Cicilan Hutang yang sudah ada (jika ada).
                     </label>
                 </div>
             </div>
-            
+
             <div id="formCicilanEdit"
-                style="{{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'display: none;' : '' }}">
+                style="{{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'display: none;' : '' }}">
                 <div class="form-group">
-                    <label for="nominalTerbayar">DP :</label>
-                    <input type="text" class="form-control" name="dp" id="nominalTerbayar"
-                        value="{{ (float) $dataBarang->dp_barang }}"
-                        {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'readonly' : '' }}>
+                    <label for="DpBarang">DP :</label>
+                    <input type="text" class="form-control" name="dp" id="DpBarang"
+                        value="{{ (float) $dataBarang->dp_barang }}" data-default="{{ (float) $dataBarang->dp_barang }}"
+                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'readonly' : '' }}>
+                </div>
+
+                <div class="form-group">
+                    <label for="nominalTerbayar">Nominal Terbayar:</label>
+                    <input type="text" class="form-control" id="nominalTerbayar"
+                        value="{{ (float) $dataBarang->nominal_terbayar }}" readonly>
                 </div>
                 <div class="form-group">
 
                     <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
                     <input type="date" class="form-control" name="tenggat_bayar"
-                        {{ $dataBarang->total == ($dataBarang->nominal_terbayar + $dataBarang->dp_barang) ? 'disabled' : '' }}
+                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'disabled' : '' }}
                         id="tenggatBayar" value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}">
                 </div>
             </div>

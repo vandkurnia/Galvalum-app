@@ -920,7 +920,7 @@ class StokController extends Controller
 
 
                     $updateBukubesar = BukubesarModel::find($barangOld->id_bukubesar);
-                    $updateBukubesar->debit = $barangOld->dp;
+                    $updateBukubesar->debit = $barangOld->dp_barang;
                     $updateBukubesar->save();
 
 
@@ -1133,6 +1133,7 @@ class StokController extends Controller
                     if ($totalBaru > ($barangOld->dp_barang + $barangOld->nominal_terbayar)) {
                         // Membuat instance dari Request dan mengisi dengan data
 
+                    
                         $nominalBaru = $totalBaru - ($barangOld->dp_barang + $barangOld->nominal_terbayar);
 
                         // $data = [
@@ -1203,7 +1204,7 @@ class StokController extends Controller
 
                         // Membuat instance dari Request dan mengisi dengan data
 
-                        $nominalBaru = $totalBaru - ($barangOld->dp + $barangOld->nominal_terbayar);
+                        $nominalBaru = $totalBaru - ($barangOld->dp_barang + $barangOld->nominal_terbayar);
 
                         // $data = [
                         //     'id_nota' => (string) $barangCheck->id_nota,
