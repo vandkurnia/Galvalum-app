@@ -17,11 +17,11 @@ return new class extends Migration
     {
         Schema::table('retur_pembeli', function (Blueprint $table){
            
-            $table->string('keterangan_retur_pembeli')->nullable();
+            $table->text('keterangan_retur_pembeli')->nullable();
         });
 
         Schema::table('retur_pemasok', function (Blueprint $table) {
-            $table->string('keterangan_retur_pemasok')->nullable();
+            $table->text('keterangan_retur_pemasok')->nullable();
 
         });
         

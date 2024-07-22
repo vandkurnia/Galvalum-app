@@ -165,7 +165,7 @@
                 var totalKekurangan = getColumnTotal(7);
 
                 // Update the footer with formatted totals
-                $('#totalPemesanan').text( totalPemesanan);
+                $('#totalPemesanan').text( totalPemesanan.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
                 $('#totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
                 $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString('id-ID'));
                 $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
