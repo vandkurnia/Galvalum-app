@@ -23,7 +23,8 @@ class PembelianController extends Controller
 {
     public function edit(Request $request, $id)
     {
-        $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli', 'PesananPembeli')->first();
+        $notaPembelian = NotaPembeli::where('id_nota', $id)->with('Pembeli', 'PesananPembeli',  'piutang')->first();
+
         $dataPesanan = PesananPembeli::where('id_nota', $notaPembelian->id_nota)->with('Barang', 'Barang.TipeBarang')->get();
         $dataDiskon = DiskonModel::all();
 
@@ -718,7 +719,6 @@ class PembelianController extends Controller
         $updateNotaPembeli = NotaPembeli::find($notaPembeli->id_nota);
 
 
-
         $updateNotaPembeli->sub_total = $subTotal;
         $updateNotaPembeli->diskon = $request->get('diskon');
         $updateNotaPembeli->ongkir = $request->get('total_ongkir');
@@ -731,10 +731,64 @@ class PembelianController extends Controller
         $updateNotaPembeli->save();
 
 
-        $handleRiwayatPiutang = self::handleRiwayatPiutang($oldNotaPembeli, $request);
+        // $handleRiwayatPiutang = self::handleRiwayatPiutang($oldNotaPembeli, $request);
 
-        if (!$handleRiwayatPiutang) {
-            return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        // if (!$handleRiwayatPiutang) {
+        //     return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        // }
+
+
+
+        $piutangData = $request->has('piutangData') ? json_decode($request->piutangData, true) : [];
+      
+        foreach ($piutangData as $piutang) {
+          
+            switch ($piutang['status']) {
+                case 'exist':
+                    $cicilanPiutang =  new CicilanPiutangController();
+                   
+
+                    $dataPiutang = [
+                        'nominal' => (float) $piutang['nominal'],
+                        'id_nota' => $updateNotaPembeli->id_nota
+                    ];
+
+                    $statusPiutang = $cicilanPiutang->updateCicilan($piutang['id_piutang'],$dataPiutang);
+
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                case 'new':
+                    $cicilanPiutang = new CicilanPiutangController();
+                    $statusPiutang = $cicilanPiutang->storeCicilan([
+                        'nominal' => (float) $piutang['nominal'],
+                        'id_nota' => $updateNotaPembeli->id_nota,
+                    ]);
+
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                case 'deleted':
+                    $cicilanPiutang = new CicilanPiutangController();
+                    $statusPiutang = $cicilanPiutang->destroyCicilan($piutang['id_piutang'], $updateNotaPembeli->id_nota);
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                default:
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Status Cicilan Piutang Tidak valid');
+                    // Handle unknown status if necessary
+                    break;
+            }
         }
 
 
@@ -749,17 +803,15 @@ class PembelianController extends Controller
             // Rubah tanggal selesai 
             if (is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
                 $updateNotaPembeli2->tanggal_penyelesaian =  $updateNotaPembeli2->updated_at;
-               
             }
         } else {
             if (!is_null($updateNotaPembeli2->tanggal_penyelesaian)) {
                 $updateNotaPembeli2->tanggal_penyelesaian =  null;
-               
             }
         }
         $updateNotaPembeli2->save();
 
-        
+
         $bukuBesarDpUpdate =  BukubesarModel::find($updateNotaPembeli2->id_bukubesar);
         $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
         $bukuBesarDpUpdate->save();

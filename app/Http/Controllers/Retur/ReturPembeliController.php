@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Retur;
 
+use App\Http\Controllers\CicilanPiutangController;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\BukubesarModel;
@@ -833,10 +834,63 @@ class ReturPembeliController extends Controller
 
 
 
-        $handleRiwayatPiutang = PembelianController::handleRiwayatPiutang($oldNotaPembeli, $request);
-        if (!$handleRiwayatPiutang) {
-            return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        $piutangData = $request->has('piutangData') ? json_decode($request->piutangData, true) : [];
+      
+        foreach ($piutangData as $piutang) {
+          
+            switch ($piutang['status']) {
+                case 'exist':
+                    $cicilanPiutang =  new CicilanPiutangController();
+                   
+
+                    $dataPiutang = [
+                        'nominal' => (float) $piutang['nominal'],
+                        'id_nota' => $notaPembeliPesanan->id_nota
+                    ];
+
+                    $statusPiutang = $cicilanPiutang->updateCicilan($piutang['id_piutang'],$dataPiutang);
+
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                case 'new':
+                    $cicilanPiutang = new CicilanPiutangController();
+                    $statusPiutang = $cicilanPiutang->storeCicilan([
+                        'nominal' => (float) $piutang['nominal'],
+                        'id_nota' => $notaPembeliPesanan->id_nota,
+                    ]);
+
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                case 'deleted':
+                    $cicilanPiutang = new CicilanPiutangController();
+                    $statusPiutang = $cicilanPiutang->destroyCicilan($piutang['id_piutang'], $notaPembeliPesanan->id_nota);
+                    if ($statusPiutang['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect()->back()->with($statusPiutang['status'], $statusPiutang['message']);
+                    }
+                    break;
+
+                default:
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Status Cicilan Piutang Tidak valid');
+                    // Handle unknown status if necessary
+                    break;
+            }
         }
+
+
+        // $handleRiwayatPiutang = PembelianController::handleRiwayatPiutang($oldNotaPembeli, $request);
+        // if (!$handleRiwayatPiutang) {
+        //     return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        // }
 
 
 

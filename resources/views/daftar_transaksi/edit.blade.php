@@ -114,7 +114,7 @@
 
                     <div class="form-group">
                         <label for="jenisPelanggan">Jenis Pelanggan:</label>
-                       
+
                         <select class="form-control" name="jenis_pelanggan" id="jenisPelanggan" required>
 
                             <option {{ $notaPembelian->Pembeli->jenis_pembeli == 'harga_normal' ? 'selected' : '' }}
@@ -171,12 +171,19 @@
                                 <label for="jenisPembelian">Jenis Pembelian:</label>
                                 <select class="form-control" name="jenis_pembelian" id="jenis_pembelian" required>
 
-                                    <option value="harga_normal" {{ $notaPembelian->Pembeli->jenis_pembeli == 'harga_normal' ? 'selected' : '' }}>Harga Normal</option>
-                                    <option value="aplicator" {{ $notaPembelian->Pembeli->jenis_pembeli == 'aplicator' ? 'selected' : '' }}>Aplicator</option>
-                                    <option value="potongan" {{ $notaPembelian->Pembeli->jenis_pembeli == 'potongan' ? 'selected' : '' }}>Potongan</option>
+                                    <option value="harga_normal"
+                                        {{ $notaPembelian->Pembeli->jenis_pembeli == 'harga_normal' ? 'selected' : '' }}>
+                                        Harga Normal</option>
+                                    <option value="aplicator"
+                                        {{ $notaPembelian->Pembeli->jenis_pembeli == 'aplicator' ? 'selected' : '' }}>
+                                        Aplicator</option>
+                                    <option value="potongan"
+                                        {{ $notaPembelian->Pembeli->jenis_pembeli == 'potongan' ? 'selected' : '' }}>
+                                        Potongan</option>
                                 </select>
                             </div>
-                            <div id="harga_khusus_input" class="form-group" style="{{ $notaPembelian->Pembeli->jenis_pembeli == 'harga_normal' ? 'display: none;' : '' }}">
+                            <div id="harga_khusus_input" class="form-group"
+                                style="{{ $notaPembelian->Pembeli->jenis_pembeli == 'harga_normal' ? 'display: none;' : '' }}">
                                 <label for="harga_khusus">Harga Potongan Khusus:</label>
                                 <input type="number" min="0" class="form-control" name="harga_khusus"
                                     id="harga_khusus" value="0">
@@ -278,14 +285,17 @@
 
                                 const tbody_deleted_table = document.querySelector('#deletedPesananExist tbody');
                                 const check_tr_deleted = tbody_deleted_table.querySelector(
-                                    `tr[data-id-barang="${data_barang.hash_id_barang}"][data-jenis-pembelian="${jenisPelangganTerpilih}"][data-harga-khusus="${hargaKhususInput.value}"]`);
+                                    `tr[data-id-barang="${data_barang.hash_id_barang}"][data-jenis-pembelian="${jenisPelangganTerpilih}"][data-harga-khusus="${hargaKhususInput.value}"]`
+                                );
 
                                 if (check_tr_deleted) {
                                     tbody_table.appendChild(check_tr_deleted);
                                 }
 
 
-                                var tr_pesanan = tbody_table.querySelector(`tr[data-id-barang="${data_barang.hash_id_barang}"][data-jenis-pembelian="${jenisPelangganTerpilih}"][data-harga-khusus="${hargaKhususInput.value}"]`);
+                                var tr_pesanan = tbody_table.querySelector(
+                                    `tr[data-id-barang="${data_barang.hash_id_barang}"][data-jenis-pembelian="${jenisPelangganTerpilih}"][data-harga-khusus="${hargaKhususInput.value}"]`
+                                );
                                 let check_id_tr_sudah_ada = tr_pesanan ? true :
                                     false;
 
@@ -389,7 +399,7 @@
                                     tr_pesanan.appendChild(td_total);
                                     tr_pesanan.appendChild(td_aksi);
 
-                                    
+
                                     // Append ke TBODY table
                                     tbody_table.appendChild(tr_pesanan);
 
@@ -554,7 +564,8 @@
 
                             @foreach ($dataPesanan as $pesanan)
                                 <tr data-id-barang="{{ $pesanan->Barang->hash_id_barang }}" data-pesanan-type="exist"
-                                    data-is-deleted="no" data-jenis-pembelian="{{ $pesanan->jenis_pembelian }}" data-harga-khusus="{{(float) $pesanan->harga_potongan}}">
+                                    data-is-deleted="no" data-jenis-pembelian="{{ $pesanan->jenis_pembelian }}"
+                                    data-harga-khusus="{{ (float) $pesanan->harga_potongan }}">
                                     <th>{{ $loop->iteration }}</th>
                                     <td>{{ $pesanan->Barang->nama_barang }}</td>
                                     <td>{{ $pesanan->Barang->TipeBarang->nama_tipe }}</td>
@@ -633,6 +644,237 @@
             </div>
         </div>
     </div>
+
+
+
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Piutang</h6>
+            </div>
+            <div class="card-body">
+
+                <div class="piutangInput">
+                    <div class="form-group">
+                        <label for="nilaiDp">DP:</label>
+                        <input data-default="{{ $notaPembelian->dp }}" oninput="totalPembayaran()"
+                            type="number" class="form-control" name="dp" min="0" id="nilaiDp"
+                            value="{{ $notaPembelian->dp }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
+                        <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
+                            value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
+                            {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'disabled' : '' }}>
+                    </div>
+                    <div class="form-group">
+                        <label for="total">Total</label>
+                        <input type="text" class="form-control" id="total_seluruh" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="nominal_terbayar">Nominal Terbayar</label>
+                        <input type="number" class="form-control" id="nominal_terbayar_piutang"
+                            value="{{ $notaPembelian->nominal_terbayar }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="sisa_bayar">Sisa Bayar</label>
+                        <input type="text" class="form-control" id="sisa_bayar_piutang"
+                            value="{{ $notaPembelian->total - $notaPembelian->nominal_terbayar }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_pembayaran">Status Pembayaran</label>
+                        <input type="text" class="form-control" id="status_pembayaran_piutang" readonly>
+                    </div>
+                </div>
+
+                <div class="piutangData mt-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nominal</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="piutang_tbody">
+                            <tr>
+                                <td></td>
+                                <td><input type="number" class="form-control" id="input_nominal"></td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-primary" id="simpanPiutang">Simpan</button>
+                                </td>
+                            </tr>
+                            @foreach ($notaPembelian->piutang as $index => $dataPiutang)
+                                <tr data-type="piutang" data-status="exist" data-id="{{ $index++ }}"
+                                    data-id-piutang="{{ $dataPiutang->id_piutang }}">
+                                    <td>{{ $index++ }}</td>
+                                    <td>{{ $dataPiutang->nominal_dibayar }}</td>
+                                    <td>{{ $dataPiutang->created_at }}</td>
+                                    <td>
+                                        <button class="btn btn-warning editPiutang">Edit</button>
+                                        <button class="btn btn-danger hapusPiutang">Hapus</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- Deleted Data Section -->
+                <div class="piutangDataDeleted mt-4" style="display:none;">
+                    <table class="table" id="piutangDataDeleted">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nominal</th>
+                                <th>Tanggal Bayar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Deleted rows will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <script>
+                    function piutangTerbayar() {
+                        const dp = document.querySelector('#nilaiDp');
+
+                        const nominalTerbayar = document.querySelector('#nominal_terbayar_piutang');
+                        const sisaBayar = document.querySelector('#sisa_bayar_piutang');
+                        const statusPembayaran = document.querySelector('#status_pembayaran_piutang');
+
+
+
+                        let totalTerbayar = 0;
+                        // Hitung piutang berdasarkan total data tabel
+                        const piutangTbody = document.querySelectorAll('#piutang_tbody tr[data-type="piutang"]').forEach( function (tr) {
+
+                            const td = tr.querySelectorAll('td');
+                            totalTerbayar += parseFloat(td[1].innerText);
+                        });
+                        nominalTerbayar.value = totalTerbayar || 0;
+
+
+
+                        const total = parseFloat(document.querySelector('#total').value) || 0;
+                        const terbayar = parseFloat(nominalTerbayar.value) || 0;
+
+                        const nilaiDp = parseFloat(dp.value) || 0;
+                        const sisa = total - (terbayar + nilaiDp);
+
+                        sisaBayar.value = sisa.toFixed(2);
+
+                        if (sisa < 0) {
+                            statusPembayaran.value = 'Kelebihan';
+                        } else if (sisa === 0) {
+                            statusPembayaran.value = 'Lunas';
+                        } else {
+                            statusPembayaran.value = 'Belum Lunas';
+                        }
+
+                        return true;
+                    }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Set total from the document.querySelector("#totalBayar")
+                        document.querySelector('#total_seluruh').value = document.querySelector("#total").value;
+
+                       
+                        piutangTerbayar();
+
+                        document.querySelector('#simpanPiutang').addEventListener('click', function() {
+                            const tbody = document.querySelector('#piutang_tbody');
+                            const inputNominal = document.querySelector('#input_nominal').value;
+                            const noElements = tbody.querySelectorAll('tr[data-type="piutang"]').length;
+                            const newNo = noElements + 1;
+                            const currentDate = new Date();
+                            const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+
+                            const tr = document.createElement('tr');
+                            tr.setAttribute('data-type', 'piutang');
+                            tr.setAttribute('data-status', 'new');
+
+                            tr.innerHTML = `
+                                <td>${newNo}</td>
+                                <td>${inputNominal}</td>
+                                <td>${formattedDate}</td>
+                                <td>
+                                    <button class="btn btn-warning editPiutang">Edit</button>
+                                    <button class="btn btn-danger hapusPiutang">Hapus</button>
+                                </td>
+                            `;
+
+                            tbody.appendChild(tr);
+                            document.querySelector('#input_nominal').value = ''; // Reset input field
+
+                            piutangTerbayar();
+
+                        });
+
+
+
+                        document.querySelector('#piutang_tbody').addEventListener('click', function(e) {
+                            if (e.target.classList.contains('hapusPiutang')) {
+                                const tr = e.target.closest('tr');
+                                const dataStatus = tr.getAttribute('data-status');
+                                if (dataStatus === 'exist') {
+                                    const deletedTbody = document.querySelector('#piutangDataDeleted tbody');
+                                    deletedTbody.appendChild(tr);
+                                } else {
+                                    tr.remove();
+                                }
+
+
+                                piutangTerbayar();
+                            }
+
+                            if (e.target.classList.contains('editPiutang')) {
+                                const tr = e.target.closest('tr');
+                                const nominal = tr.querySelector('td:nth-child(2)').innerText;
+                                const editForm = document.createElement('tr');
+                                editForm.setAttribute('data-type', 'form');
+
+                                editForm.innerHTML = `
+                                        <td></td>
+                                        <td><input type="number" class="form-control" value="${nominal}" id="edit_nominal"></td>
+                                        <td></td>
+                                        <td>
+                                            <button class="btn btn-success simpanEdit">Simpan</button>
+                                            <button class="btn btn-secondary cancelEdit">Cancel</button>
+                                        </td>
+                                    `;
+
+                                tr.after(editForm);
+
+                                document.querySelector('.simpanEdit').addEventListener('click', function() {
+                                    const newNominal = document.querySelector('#edit_nominal').value;
+                                    tr.querySelector('td:nth-child(2)').innerText = newNominal;
+                                    editForm.remove();
+
+                                    piutangTerbayar();
+                                });
+
+                                document.querySelector('.cancelEdit').addEventListener('click', function() {
+                                    editForm.remove();
+
+
+                                });
+                            }
+                        });
+                    });
+                </script>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
 @endsection
 <!-- End of Page Wrapper -->
 
@@ -674,7 +916,7 @@
                                 value="Transfer">TRANSFER</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
 
@@ -694,8 +936,8 @@
                                 Reset Cicilan Piutang yang sudah ada (jika ada).
                             </label>
                         </div>
-                    </div>
-                    <div id="formCicilan"
+                    </div> --}}
+                    {{-- <div id="formCicilan"
                         style=" {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'display:none;' : '' }}">
 
                         <div class="form-group">
@@ -717,7 +959,7 @@
                                 value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
                                 {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'disabled' : '' }}>
                         </div>
-                    </div>
+                    </div> --}}
 
                     {{-- <input type="hidden" name="pesanan[]" id="isiPesanan"> --}}
                     {{-- <input type="hidden" name="nota[]" id="dataNota"> --}}
@@ -734,62 +976,69 @@
 
 
     <script>
-        function checkCheckbox() {
-            if (resetCicilanCheckbox.checked) {
-                totalPembayaran();
-            } else {
-                totalPembayaran();
-            }
-        }
-        const resetCicilanCheckbox = document.getElementById("resetCicilan");
+        // function checkCheckbox() {
+        //     if (resetCicilanCheckbox.checked) {
+        //         totalPembayaran();
+        //     } else {
+        //         totalPembayaran();
+        //     }
+        // }
+        // const resetCicilanCheckbox = document.getElementById("resetCicilan");
         // Tambahkan event listener ke checkbox
-        resetCicilanCheckbox.addEventListener("change", checkCheckbox);
+        // resetCicilanCheckbox.addEventListener("change", checkCheckbox);
         // Metode Pembayaran dan Status
         document.getElementById('statusPembayaran').addEventListener('change', function() {
-            var formCicilan = document.getElementById('formCicilan');
+            // var formCicilan = document.getElementById('formCicilan');
 
-            var valueString = String(this.value).trim();
-            let nilaiDp = document.getElementById('nilaiDp');
+            // var valueString = String(this.value).trim();
+            // let nilaiDp = document.getElementById('nilaiDp');
 
 
-            let resetCicilan = document.getElementById('resetCicilan');
-            let resetCicilanStatus = resetCicilan.checked ? true : false;
-            if (valueString === 'hutang') {
+            // let resetCicilan = document.getElementById('resetCicilan');
+            // let resetCicilanStatus = resetCicilan.checked ? true : false;
+            // if (valueString === 'hutang') {
 
-                formCicilan.style.display = 'block';
+            //     formCicilan.style.display = 'block';
 
-                if (resetCicilanStatus) {
-                    nilaiDp.value = 0;
-                } else {
-                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
-                }
+            //     if (resetCicilanStatus) {
+            //         nilaiDp.value = 0;
+            //     } else {
+            //         nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+            //     }
 
-                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                // nominalTerbayar.removeAttribute('readonly');
-                // nominalTerbayar.value = 0;
-                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-                tanggalTenggatBayar.removeAttribute('disabled');
+            //     // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+            //     // nominalTerbayar.removeAttribute('readonly');
+            //     // nominalTerbayar.value = 0;
+            //     const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+            //     tanggalTenggatBayar.removeAttribute('disabled');
 
-            } else {
-                formCicilan.style.display = 'none';
+            // } else {
+            //     formCicilan.style.display = 'none';
 
-                // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-                // nominalTerbayar.readOnly = true;
-                // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
-                // nominalTerbayar.value = 0;
+            //     // const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+            //     // nominalTerbayar.readOnly = true;
+            //     // nominalTerbayar.value = parseFloat(document.querySelector('#total').value) + parseFloat(nilaiDp);
+            //     // nominalTerbayar.value = 0;
 
-                if (resetCicilanStatus) {
+            //     if (resetCicilanStatus) {
 
-                    nilaiDp.value = parseFloat(document.querySelector('#total').value);
+            //         nilaiDp.value = parseFloat(document.querySelector('#total').value);
 
-                } else {
-                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+            //     } else {
+            //         nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
 
-                }
+            //     }
 
-                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-                tanggalTenggatBayar.disabled = true;
-            }
+            //     const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+            //     tanggalTenggatBayar.disabled = true;
+
+
+
+
+            // }
+
+            piutangTerbayar();
+
         });
 
 
@@ -832,21 +1081,21 @@
 
             // Pengisian Total pada Nominal Terbayar
 
-            let statusPembayaran = document.getElementById('statusPembayaran');
-            var valueString = String(statusPembayaran.value).trim();
+            // let statusPembayaran = document.getElementById('statusPembayaran');
+            // var valueString = String(statusPembayaran.value).trim();
 
-            let resetCicilanStatus = document.getElementById('resetCicilan').checked ? 1 : 0;
-            if (valueString === 'lunas') {
-                if (resetCicilanStatus) {
-                    nilaiDp.value = total.value;
+            // let resetCicilanStatus = document.getElementById('resetCicilan').checked ? 1 : 0;
+            // if (valueString === 'lunas') {
+            //     if (resetCicilanStatus) {
+            //         nilaiDp.value = total.value;
 
-                } else {
+            //     } else {
 
-                    nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
-                }
+            //         nilaiDp.value = parseFloat(nilaiDp.getAttribute('data-default'));
+            //     }
 
-                // document.querySelector('#nominalTerbayar').value = 0;
-            }
+            //     // document.querySelector('#nominalTerbayar').value = 0;
+            // }
 
 
 
@@ -855,6 +1104,8 @@
             // Tampilkan total harga dalam elemen span
             // $('#total_pembayaran').text('Rp ' + totalHarga);
 
+
+            piutangTerbayar();
 
         }
     </script>
@@ -1026,7 +1277,68 @@
 
 
 
+            // Menambahkan dp ke form
+            const TotalDp = document.querySelector('#nilaiDp');
+            const inputTotalDp = document.createElement('input');
+            inputTotalDp.type = 'hidden';
+            inputTotalDp.name = 'dp'; // Menetapkan nama input ke 'TotalDiskon'
+            inputTotalDp.value = TotalDp.value; // Menetapkan nilai input ke nilai dari input dengan id 'TotalDiskon'
+            formPembeli.appendChild(inputTotalDp); // Menambahkan input tersembunyi ke dalam form
 
+
+            // Menambahkan pajak ke form
+            const TotalTenggatBayar = document.querySelector('#tenggatBayar');
+            const inputTotalTenggatBayarHidden = document.createElement('input');
+            inputTotalTenggatBayarHidden.type = 'hidden';
+            inputTotalTenggatBayarHidden.name = 'tenggat_bayar'; // Menetapkan nama input ke 'TotalTenggatBayar'
+            inputTotalTenggatBayarHidden.value = TotalTenggatBayar
+                .value; // Menetapkan nilai input ke nilai dari input dengan id 'TotalTenggatBayar'
+            formPembeli.appendChild(inputTotalTenggatBayarHidden); // Menambahkan input tersembunyi ke dalam form
+
+
+
+
+             // Inisiasi data pesanan
+             const dataPiutang = [];
+            // Ambil TR untuk iterasi
+            let tr_piutang = document.querySelectorAll('.piutangData tbody tr[data-type="piutang"]');
+            Array.from(tr_piutang).forEach(function(tr) {
+                const tdPiutang = tr.querySelectorAll('td');
+                const itemPesanan = {
+                    id_piutang: tr.getAttribute('data-id-piutang'),
+                    nominal: tdPiutang[1].innerText,
+                    tanggal_dibayar: tdPiutang[2].innerText,
+                    status: tr.getAttribute('data-status')
+
+
+                }
+                dataPiutang.push(itemPesanan);
+            });
+
+
+
+            // Ambil TR dari table delete
+            let tr_piutang_deleted = document.querySelectorAll('#piutangDataDeleted tbody tr[data-type="piutang"]');
+            Array.from(tr_piutang_deleted).forEach(function(tr) {
+                const tdPiutang = tr.querySelectorAll('td');
+                const itemPesanan = {
+                    id_piutang: tr.getAttribute('data-id-piutang'),
+                    nominal: tdPiutang[1].innerText,
+                    tanggal_dibayar: tdPiutang[2].innerText,
+                    status: 'deleted'
+
+
+                }
+                dataPiutang.push(itemPesanan);
+            });
+            // Buat elemen input untuk menyimpan data pesanan sebagai JSON
+            const inputPiutang = document.createElement('input');
+            inputPiutang.type = 'hidden';
+            inputPiutang.name = 'piutangData'; // Nama input
+            inputPiutang.value = JSON.stringify(dataPiutang); // Nilai input (data pesanan sebagai JSON)
+
+            // Tambahkan input ke formulir
+            formPembeli.appendChild(inputPiutang);
             formPembeli.submit();
 
         }
