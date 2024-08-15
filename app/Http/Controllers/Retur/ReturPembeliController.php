@@ -257,33 +257,33 @@ class ReturPembeliController extends Controller
 
                 // $perbedaan = $pesananData->jumlah_pembelian - $returPesanan->qty;
                 $barang = Barang::find($pesananData->id_barang);
-                $barang->stok = $barang->stok +  $returPesanan->qty;
-                $barang->save();
-                // Buat instance dari model
-                $stokbarangHistory = new StokBarangHistoryModel();
-                $stokbarangHistory->id_barang = $barang->id_barang;
-                //   $stokbarangHistory->stok_masuk =$returPesanan->qty;
-                // $stokbarangHistory->stok_keluar = $item['qty'];
+                // $barang->stok = $barang->stok +  $returPesanan->qty;
+                // $barang->save();
+                // // Buat instance dari model
+                // $stokbarangHistory = new StokBarangHistoryModel();
+                // $stokbarangHistory->id_barang = $barang->id_barang;
+                // //   $stokbarangHistory->stok_masuk =$returPesanan->qty;
+                // // $stokbarangHistory->stok_keluar = $item['qty'];
 
-                $stokbarangHistory->stok_terkini = $barang->stok;
-                $stokbarangHistory->save();
-                // Simpan ke log
-                $logStokBarang = new LogStokBarangModel();
-                $logStokBarang->json_content = [
-                    'type' => 'retur_pembeli_store',
-                    'data' => [
-                        'pelanggan' => $notaPembelian->id_pelanggan,
-                        'no_nota' => $notaPembelian->no_nota,
+                // $stokbarangHistory->stok_terkini = $barang->stok;
+                // $stokbarangHistory->save();
+                // // Simpan ke log
+                // $logStokBarang = new LogStokBarangModel();
+                // $logStokBarang->json_content = [
+                //     'type' => 'retur_pembeli_store',
+                //     'data' => [
+                //         'pelanggan' => $notaPembelian->id_pelanggan,
+                //         'no_nota' => $notaPembelian->no_nota,
 
-                    ]
-                ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
-                $logStokBarang->tipe_log = 'retur_pembeli_create';
-                $logStokBarang->keterangan = 'Pesanan dihapus di nota ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
-                $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
-                // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
-                $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
-                $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
-                $logStokBarang->save();
+                //     ]
+                // ]; // Sesuaikan dengan isi json_content Anda // Sesuaikan dengan isi json_content Anda
+                // $logStokBarang->tipe_log = 'retur_pembeli_create';
+                // $logStokBarang->keterangan = 'Pesanan dihapus di nota ' . $notaPembelian->no_nota . ' pada pelanggan ' . $notaPembelian->Pembeli->nama_pembeli;
+                // $logStokBarang->id_admin = Auth::user()->id_admin; // Sesuaikan dengan id_admin yang ada
+                // // $logStokBarang->id_stok_barang = $stokBarang->id; // Sesuaikan dengan id_stok_barang yang ada
+                // $logStokBarang->id_barang = $barang->id_barang; // Sesuaikan dengan id_barang yang ada
+                // $logStokBarang->id_stok_barang_history = $stokbarangHistory->id_stok;
+                // $logStokBarang->save();
                 // $stokBarangDelete->delete();
                 $pesananCekQtynya->delete();
             }
