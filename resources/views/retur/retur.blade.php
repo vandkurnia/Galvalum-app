@@ -149,7 +149,6 @@
                         </thead>
                         <tbody>
                             @foreach ($dataReturPembeli as $retur)
-                           
                                 <tr>
                                     <td>{{ $retur->no_retur_pembeli }}</td>
                                     <td>{{ $retur->faktur_retur_pembeli }}</td>
@@ -163,8 +162,8 @@
                                     <td>{{ $retur->kekurangan }}</td> --}}
                                     <td>{{ $retur->status }}</td>
                                     <td>{{ $retur->pembeli->nama_pembeli }} </td>
-                                 
-                                   
+
+
                                     @php
                                         // Sample input string
                                         $keterangan = $retur->keterangan_retur_pembeli;
@@ -194,6 +193,10 @@
                                                     <li>{{ $item }}</li>
                                                 @endforeach
                                             </ul>
+                                        </td>
+                                    @else
+                                        <td>
+                                           
                                         </td>
                                     @endif
 
