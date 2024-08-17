@@ -180,7 +180,7 @@
                         <input type="number" class="form-control" id="total_nilai_retur" name="total_nilai_retur"
                             value="0" required>
                     </div>
-{{-- 
+                    {{-- 
                     <div class="form-group">
                         <label for="statusPembayaran">Status Pembayaran:</label>
                         <select class="form-control" name="status_pembelian" id="statusPembayaran" required>
@@ -203,6 +203,23 @@
                         </div>
                     </div> --}}
 
+                    <!-- Form Group untuk Select -->
+                    <div class="form-group">
+                        <label for="stokSelect">Pilih Stok:</label>
+                        <select class="form-control" id="stokSelect" name="hutang_stok">
+                            <!-- Options akan diisi secara dinamis dengan PHP -->
+                            @foreach ($dataBarang->hutangDanStok as $stok)
+                                <option value="{{ $stok->id_hutang_stok }}" data-total-stok="{{ $stok->stok }}"
+                                    data-created_at="{{ $stok->created_at }}">
+                                    {{ $stok->stok }} | {{ $stok->created_at }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <!-- Display perubahan stok -->
+                    <p id="stokDisplay"></p>
 
                     <div class="form-group">
                         <button type="button" class="btn btn-primary mt-4 float-right"
@@ -225,32 +242,61 @@
 
 @section('javascript-custom')
 
+    <script>
+        // Mendapatkan elemen select dan h3 untuk display
+        const stokSelect = document.getElementById('stokSelect');
+        const qtyRetur = document.querySelector('.qty-retur');
+        const stokDisplay = document.getElementById('stokDisplay');
 
-<script>
-    document.getElementById('statusPembayaran').addEventListener('change', function() {
-        var formCicilan = document.getElementById('formCicilan');
-        if (this.value === 'hutang') {
-            formCicilan.style.display = 'block';
+        // Fungsi untuk memperbarui stokDisplay berdasarkan perubahan stok
+        function updateStokDisplay() {
+            // Mendapatkan elemen option yang dipilih
+            const selectedOption = stokSelect.options[stokSelect.selectedIndex];
 
-            const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-            nominalTerbayar.removeAttribute('readonly');
-            nominalTerbayar.value = 0;
-            const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-            tanggalTenggatBayar.removeAttribute('disabled');
-        } else {
-            formCicilan.style.display = 'none';
+            // Mengambil nilai dari atribut data
+            const totalStokAwal = parseInt(selectedOption.getAttribute('data-total-stok'));
+            const penguranganStok = parseInt(qtyRetur.value) || 0; // Default to 0 if qtyRetur is empty
 
-            const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
-            nominalTerbayar.readOnly = true;
-            nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+            // Menghitung stok yang baru setelah pengurangan
+            const stokBaru = totalStokAwal - penguranganStok;
 
-            const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-            tanggalTenggatBayar.disabled = true;
-            
+            // Menampilkan hasil pengurangan di stokDisplay
+            stokDisplay.innerText = `Total Stok: ${totalStokAwal} -> ${stokBaru}`;
         }
 
-    });
-</script>
+        // Menambahkan event listener pada select dan input untuk memanggil fungsi update
+        stokSelect.addEventListener('change', updateStokDisplay);
+        qtyRetur.addEventListener('input', updateStokDisplay);
+
+        // Inisialisasi pertama kali untuk menampilkan stok default
+        updateStokDisplay();
+    </script>
+
+    <script>
+        document.getElementById('statusPembayaran').addEventListener('change', function() {
+            var formCicilan = document.getElementById('formCicilan');
+            if (this.value === 'hutang') {
+                formCicilan.style.display = 'block';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.removeAttribute('readonly');
+                nominalTerbayar.value = 0;
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.removeAttribute('disabled');
+            } else {
+                formCicilan.style.display = 'none';
+
+                const nominalTerbayar = formCicilan.querySelector('#nominalTerbayar');
+                nominalTerbayar.readOnly = true;
+                nominalTerbayar.value = parseInt(document.querySelector('#total').value);
+
+                const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
+                tanggalTenggatBayar.disabled = true;
+
+            }
+
+        });
+    </script>
     <script src="{{ secure_asset('library/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js') }}"></script>
     <script
         src="{{ secure_asset('library/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js') }}">

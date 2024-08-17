@@ -15,8 +15,19 @@ class HutangDanStokController extends Controller
 
     public function show($id)
     {
-        $hutangDanStok = HutangDanStokModel::with('bukubesar')->findOrFail($id);
-        return view('hutang-dan-stok.show', compact('hutangDanStok'));
+        // $hutangDanStok = HutangDanStokModel::with('bukubesar')->findOrFail($id);
+        // return view('hutang-dan-stok.show', compact('hutangDanStok'));
+        $hutangDanStok = HutangDanStokModel::findOrFail($id);
+    
+        return response()->json([
+            'total' => $hutangDanStok->total,
+            'dp' => $hutangDanStok->dp,
+            'nominal_terbayar' => $hutangDanStok->nominal_terbayar,
+            'stok' => $hutangDanStok->stok,
+            'id_bukubesar' => $hutangDanStok->id_bukubesar,
+            'id_barang' => $hutangDanStok->id_barang,
+            'updateUrl' => route('hutang-dan-stok.update', ['id' => $hutangDanStok->id_hutang_stok])
+        ]);
     }
 
     public function create()
@@ -125,8 +136,10 @@ class HutangDanStokController extends Controller
     public function destroy($id)
     {
         $hutangDanStok = HutangDanStokModel::findOrFail($id);
+
+        
         $hutangDanStok->delete();
 
-        return redirect()->route('hutang-dan-stok.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

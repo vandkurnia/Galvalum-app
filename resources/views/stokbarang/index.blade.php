@@ -122,7 +122,7 @@
                                     </td>
                                     <td>
                                         @if (Auth::user()->role == 'admin')
-                                            <a href="{{ route('hutang-dan-stok.show', $databarang->id_barang) }}"
+                                            <a href="{{ route('hutang-dan-stok.index', ['id_barang' => $databarang->id_barang]) }}"
                                                 class="btn btn-info">
                                                 <i class="fas fa-eye"></i>
                                             </a>

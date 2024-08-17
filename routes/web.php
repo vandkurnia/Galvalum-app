@@ -130,31 +130,31 @@ Route::middleware(['auth', 'check-tanggal'])->group(function () {
 
     Route::prefix('stok-hutang')->group(function () {
         // Menampilkan daftar hutang dan stok
-        Route::get('/hutang-dan-stok/{id_barang}', [HutangDanStokController::class, 'index'])
+        Route::get('/index/{id_barang}', [HutangDanStokController::class, 'index'])
             ->name('hutang-dan-stok.index');
 
         // Menampilkan form untuk membuat hutang dan stok baru
-        Route::get('/hutang-dan-stok/create', [HutangDanStokController::class, 'create'])
+        Route::get('/show/create', [HutangDanStokController::class, 'create'])
             ->name('hutang-dan-stok.create');
 
         // Menyimpan hutang dan stok baru
-        Route::post('/hutang-dan-stok', [HutangDanStokController::class, 'storeRequest'])
+        Route::post('/show', [HutangDanStokController::class, 'storeRequest'])
             ->name('hutang-dan-stok.store');
 
         // Menampilkan detail hutang dan stok
-        Route::get('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'show'])
+        Route::get('/show/{id}', [HutangDanStokController::class, 'show'])
             ->name('hutang-dan-stok.show');
 
         // Menampilkan form untuk edit hutang dan stok
-        Route::get('/hutang-dan-stok/{id}/edit', [HutangDanStokController::class, 'edit'])
+        Route::get('/show/{id}/edit', [HutangDanStokController::class, 'edit'])
             ->name('hutang-dan-stok.edit');
 
         // Mengupdate hutang dan stok
-        Route::put('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'updateRequest'])
+        Route::put('/show/{id}', [HutangDanStokController::class, 'updateRequest'])
             ->name('hutang-dan-stok.update');
 
         // Menghapus hutang dan stok
-        Route::delete('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'destroy'])
+        Route::delete('/show/{id}', [HutangDanStokController::class, 'destroy'])
             ->name('hutang-dan-stok.destroy');
     })->middleware(['auth']);
 

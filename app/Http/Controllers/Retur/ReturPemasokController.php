@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\RiwayatHutangModel;
 use App\Models\BukubesarModel;
+use App\Models\HutangDanStokModel;
 use App\Models\Log\LogStokBarangModel;
 use App\Models\PemasokBarang;
 use App\Models\PesananPembeli;
@@ -35,11 +36,12 @@ class ReturPemasokController extends Controller
     }
     public function add($id_barang)
     {
-        $dataBarang = Barang::with('stokBarang')->where('hash_id_barang', $id_barang)->first();
+        $dataBarang = Barang::with('stokBarang', 'hutangDanStok')->where('hash_id_barang', $id_barang)->first();
 
         if (!$dataBarang) {
             return redirect()->route('retur.index')->with('error', 'Barang tidak ditemukan');
         }
+
 
         // Calculate the stock
         // $totalStok = $dataBarang->stokBarang->sum(function ($stok) {
@@ -55,6 +57,7 @@ class ReturPemasokController extends Controller
             'bukti_retur_pemasok' => 'required', // 10MB max
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
             'retur_data' => 'required',
+            'hutang_stok' => 'required|exists:hutang_dan_stok,id_hutang_stok'
             // 'nominal_terbayar' => 'required'
         ]);
 
@@ -298,6 +301,13 @@ class ReturPemasokController extends Controller
                 //     }
                 // }
 
+
+
+                // Hutang dan Stok
+                $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
+                $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
+                $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
+                $updateHutangdanStok->save();
 
                 // Periksa kondisi untuk tanggal penyelesaian
                 if ($barangUpdate->nominal_terbayar == $barangUpdate->total && is_null($barangUpdate->tanggal_penyelesaian)) {
