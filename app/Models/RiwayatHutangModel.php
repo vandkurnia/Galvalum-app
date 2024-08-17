@@ -13,7 +13,8 @@ class RiwayatHutangModel extends Model
     protected $fillable = [
         'id_bukubesar',
         'id_barang',
-        'nominal_dibayar'
+        'nominal_dibayar',
+        'hutang_dan_stok_id'
     ];
 
     public function bukubesar()

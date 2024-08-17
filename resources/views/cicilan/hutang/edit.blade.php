@@ -1,5 +1,5 @@
 <form
-    action="{{ route('cicilan.hutang.update', ['id_bukubesar' => $dataRiwayatHutang->id, 'id_barang' => $id_barang]) }}"
+    action="{{ route('cicilan.hutang.update', ['id_hutang_dan_stok' => $dataRiwayatHutang->hutang_dan_stok_id, 'id_riwayathutang' => $dataRiwayatHutang->id]) }}"
     id="formEditUser" method="POST">
     @csrf
     @method('PUT')

@@ -20,6 +20,23 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                @php
+                    $detailError = session('detail_error');
+                    $errorMsg = $detailError ? json_decode($detailError, true)['errorMsg'] ?? null : null;
+                @endphp
+
+                @if ($errorMsg)
+                    <br>
+                    {{ $errorMsg }}
+                @endif
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <!-- error -->
         @if ($errors->any())
             @foreach ($errors->all() as $err)
@@ -37,6 +54,8 @@
                 </div>
             @endforeach
         @endif
+
+
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Stok Barang</h6>
@@ -103,6 +122,10 @@
                                     </td>
                                     <td>
                                         @if (Auth::user()->role == 'admin')
+                                            <a href="{{ route('hutang-dan-stok.show', $databarang->id_barang) }}"
+                                                class="btn btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
                                             <button class="btn btn-primary"
                                                 onclick="funcTambahStok('{{ route('stok.detail', ['id' => $databarang->hash_id_barang]) }}')">
                                                 <i class="fa fa-plus"></i>
@@ -114,10 +137,10 @@
                                             </button>
 
                                             <button class="btn btn-primary"
-                                                onclick="funcEditUser('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
+                                                onclick="funcEditStok('{{ route('stok.edit', ['id' => $databarang->hash_id_barang]) }}')"><i
                                                     class="fas fa-edit"></i></button>
                                             <button class="btn btn-danger"
-                                                onclick="funcHapusUser('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
+                                                onclick="funcHapusStok('{{ route('stok.destroy', ['id' => $databarang->hash_id_barang]) }}', 0)"><i
                                                     class="fas fa-trash"></i></button>
                                         @endif
 
@@ -335,8 +358,8 @@
 
                     <div id="formCicilanEdit" style="display: none;">
                         <div class="form-group">
-                            <label for="nominalTerbayar">Nominal Terbayar:</label>
-                            <input type="text" class="form-control" name="nominal_terbayar" id="nominalTerbayar"
+                            <label for="nominalTerbayar">Dp:</label>
+                            <input type="text" class="form-control" name="dp" id="nominalTerbayar"
                                 value="0">
                         </div>
                         <div class="form-group">
@@ -386,21 +409,24 @@
                             min="0" oninput="updateStokEdit()" value="0">
                     </div>
 
-                    {{-- <div class="form-group">
-                        <label for="statusPembayaran">Status Pembayaran:</label>
-                        <select class="form-control" name="status_pembelian" id="statusPembayaran"
-                            onchange="checkNominalTerbayarStokEdit()" required="">
-
-                            <option value="lunas">Lunas</option>
-                            <option value="hutang">Hutang</option>
-                        </select>
-                    </div> --}}
 
 
                     <div class="form-group">
                         <label for="keteranganTambahStok">Keterangan</label>
                         <input type="text" class="form-control" name="keterangan" id="keterangan_pembayaran">
                     </div>
+
+
+                    <!-- Tambahan form-group dengan select -->
+                    <div class="form-group">
+                        <label for="hutangStokSelect">Pilih Stok:</label>
+                        <select class="form-control" id="hutangStokSelect" name="hutang_stok">
+                            <!-- Options akan diisi secara dinamis dari response.data.hutangstok -->
+                        </select>
+                    </div>
+
+                    <!-- Tambahan h1 untuk menampilkan perubahan stok -->
+                    <p id="stokChangeDisplay"></p>
                     <div id="formCicilanEdit" style="display: none;">
                         <div class="form-group">
                             <label for="nominalTerbayar">Nominal Terbayar:</label>
@@ -412,6 +438,8 @@
                             <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
                                 value="{{ date('Y-m-d') }}">
                         </div>
+
+
                     </div>
                 </form>
             </div>
@@ -459,13 +487,13 @@
         if (statusPembayaran === 'lunas') {
             formCicilanEdit.style.display = 'none';
             nominalTerbayar.readOnly = true;
-            tenggatBayar.disabled = true;
+            tenggatBayar.readOnly = true;
             let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
             nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
         } else if (statusPembayaran === 'hutang') {
             formCicilanEdit.style.display = 'block';
             nominalTerbayar.readOnly = false;
-            tenggatBayar.disabled = false;
+            tenggatBayar.readOnly = false;
             nominalTerbayar.value = 0;
         }
     }
@@ -482,13 +510,13 @@
         if (statusPembayaran === 'lunas') {
             formCicilanEdit.style.display = 'none';
             nominalTerbayar.readOnly = true;
-            tenggatBayar.disabled = true;
+            tenggatBayar.readOnly = true;
             let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
             nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
         } else if (statusPembayaran === 'hutang') {
             formCicilanEdit.style.display = 'block';
             nominalTerbayar.readOnly = false;
-            tenggatBayar.disabled = false;
+            tenggatBayar.readOnly = false;
             nominalTerbayar.value = 0;
         }
     }
@@ -614,7 +642,7 @@
             }
 
             // Jika status pembayaran adalah lunas
-            tenggatBayarInput.disabled = true; // Nonaktifkan input tanggal tenggat bayar
+            tenggatBayarInput.readOnly = true; // Nonaktifkan input tanggal tenggat bayar
             // nominalTerbayarInput.readOnly = true; // Jadikan input nominal terbayar hanya-baca
 
         } else if (statusPembelian === 'hutang') {
@@ -631,7 +659,7 @@
             nilaiDp.readOnly = false;
             cicilanEdit.style.display = 'block';
             // Jika status pembayaran adalah hutang
-            tenggatBayarInput.disabled = false; // Aktifkan input tanggal tenggat bayar
+            tenggatBayarInput.readOnly = false; // Aktifkan input tanggal tenggat bayar
             // nominalTerbayarInput.readOnly = false; // Hapus keterbacaan hanya-baca pada input nominal terbayar
             // nominalTerbayarInput.value = 0; // Kosongkan nilai input nominal terbayar
         }
@@ -664,7 +692,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="funcHapusUser(null, 1)">Simpan</button>
+                <button type="button" class="btn btn-primary" onclick="funcHapusStok(null, 1)">Simpan</button>
             </div>
         </div>
     </div>
@@ -749,7 +777,7 @@
                 nominalTerbayar.removeAttribute('readonly');
                 nominalTerbayar.value = 0;
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-                tanggalTenggatBayar.removeAttribute('disabled');
+                tanggalTenggatBayar.removeAttribute('readonly');
 
             } else {
                 formCicilan.style.display = 'none';
@@ -762,7 +790,8 @@
                 nominalTerbayar.value = parseFloat(hargaBarangPemasok.value) * parseFloat(jumlahStok.value);
 
                 const tanggalTenggatBayar = formCicilan.querySelector('#tenggatBayar');
-                tanggalTenggatBayar.disabled = true;
+                // tanggalTenggatBayar.disabled = true;
+                tanggalTenggatBayar.readOnly = true;
             }
 
 
@@ -865,6 +894,26 @@
                     $('#stok_referensiEditStok').attr('harga-pemasok', response.data.harga_barang_pemasok);
                     $('#stok_referensiHasilEdit').val(response.data.stok);
                     $('#stok_referensiHasilEdit').attr('max', response.data.stok); // Set nilai maksimum
+
+
+                    // Contoh data dummy
+                    const hutangDanStokList = response.data.hutang_dan_stok;
+               
+                    // Mendapatkan elemen select
+                    const hutangStokSelect = document.getElementById('hutangStokSelect');
+
+                    // Mengisi select option dengan data dari hutangDanStokList
+                    hutangDanStokList.forEach(stok => {
+                        const option = document.createElement('option');
+                        option.value = stok.id;
+                        option.innerText = `${stok.total_stok} | ${stok.tanggal_dibuat}`;
+                        // Menambahkan atribut data-total-stok dan data-tanggal-dibuat
+                        option.setAttribute('data-total-stok', stok.total_stok);
+                        option.setAttribute('data-tanggal-dibuat', stok.tanggal_dibuat);
+
+                        hutangStokSelect.appendChild(option);
+                        hutangStokSelect.appendChild(option);
+                    });
                     $('#editStokModal').modal('show');
                 },
                 error: function(xhr, status, error) {
@@ -874,12 +923,38 @@
         }
 
 
+
+        // Fungsi untuk memperbarui h1 berdasarkan pengurangan stok
+        function updateStokChangeDisplay() {
+            // Mendapatkan elemen option yang dipilih
+            const selectedOption = hutangStokSelect.options[hutangStokSelect.selectedIndex];
+
+            // Mengambil nilai dari atribut data
+            const totalStokAwal = parseInt(selectedOption.getAttribute('data-total-stok'));
+            const penguranganStok = parseInt(stokTambahKurangStok.value) || 0;
+
+            // Menghitung stok yang baru setelah pengurangan
+            const stokBaru = totalStokAwal - penguranganStok;
+
+            // Menampilkan hasil pengurangan di h1
+            stokChangeDisplay.innerText = `Perubahan stok hutang: ${totalStokAwal} -> ${stokBaru}`;
+        }
+
+        const stokTambahKurangStok = document.getElementById('stok_tambahKurangStok');
+        const hutangStokSelect = document.getElementById('hutangStokSelect');
+
+        hutangStokSelect.addEventListener('change', updateStokChangeDisplay);
+        stokTambahKurangStok.addEventListener('input', updateStokChangeDisplay);
+        updateStokChangeDisplay();
+
+
+
         function funcTambahUser() {
             let formtambah = document.querySelector('#formTambahUser');
             formtambah.submit();
         }
 
-        function funcEditUser(url) {
+        function funcEditStok(url) {
             var url = url;
 
             // Kirim request Ajax
@@ -919,7 +994,7 @@
         }
 
 
-        function funcHapusUser(url, typeoperasi) {
+        function funcHapusStok(url, typeoperasi) {
             // 0 = Menampilkan modal, 1 = Submit penghapusan
             if (typeof(typeoperasi) === "number") {
                 if (typeoperasi === 1) {

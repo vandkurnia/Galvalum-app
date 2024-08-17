@@ -64,14 +64,14 @@
             <div class="card-body">
 
                 <h4>Tersisa : Rp.
-                        {{ number_format($barangData->total - ($barangData->nominal_terbayar + $barangData->dp_barang), 0, ',', '.') }}
+                        {{ number_format($stokHutangData->total - ($stokHutangData->nominal_terbayar + $stokHutangData->dp_barang), 0, ',', '.') }}
                 </h4>
 
                 <h4>Jatuh Tempo:
-                    {{ $barangData->tenggat_bayar ? \Carbon\Carbon::parse($barangData->tenggat_bayar)->translatedFormat('d F Y') : null }}
+                    {{ $stokHutangData->tenggat_bayar ? \Carbon\Carbon::parse($stokHutangData->tenggat_bayar)->translatedFormat('d F Y') : null }}
                 </h4>
                 <h4>Tanggal Selesai:
-                    {{ $barangData->tanggal_penyelesaian ? \Carbon\Carbon::parse($barangData->tanggal_penyelesaian)->translatedFormat('d F Y') : 'Belum ada' }}
+                    {{ $stokHutangData->tanggal_penyelesaian ? \Carbon\Carbon::parse($stokHutangData->tanggal_penyelesaian)->translatedFormat('d F Y') : 'Belum ada' }}
                 </h4>
 
 
@@ -84,7 +84,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahUser"><i
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TambahPelunasanHutang"><i
                             class="fa fa-plus"></i> Tambah Nominal Pelunasan</button>
                 </div>
                 <div class="table-responsive">
@@ -102,7 +102,7 @@
 
                         <tbody>
 
-                            @foreach ($barangData->riwayatHutang as $rh)
+                            @foreach ($stokHutangData->riwayatHutang as $rh)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
 
@@ -112,11 +112,11 @@
                                     <td>
 
                                         <button class="btn btn-primary btn-sm"
-                                            onclick="funcEditUser('{{ route('cicilan.hutang.edit', ['id_bukubesar' => $rh->id, 'id_barang' => $barangData->hash_id_barang]) }}')"><i
+                                            onclick="funcEditHutang('{{ route('cicilan.hutang.edit', [ 'id_riwayathutang' => $rh->id]) }}')"><i
                                                 class="fas fa-edit"></i>
                                             Edit</button>
                                         <button class="btn btn-danger btn-sm"
-                                            onclick="funcHapusUser('{{ route('cicilan.hutang.destroy', ['id_bukubesar' => $rh->id, 'id_barang' => $barangData->hash_id_barang]) }}', 0)"><i
+                                            onclick="funcHapusUser('{{ route('cicilan.hutang.destroy', [ 'id_riwayathutang' => $rh->id]) }}', 0)"><i
                                                 class="fas fa-trash"></i>
                                             Delete</button>
                                     </td>
@@ -141,7 +141,7 @@
 
 
 {{-- Modal Tambah Pelunasan --}}
-<div class="modal fade" id="TambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="TambahPelunasanHutang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -152,9 +152,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('cicilan.hutang.store') }}" id="formTambahUser" method="POST">
+                <form action="{{ route('cicilan.hutang.store') }}" id="formTambahPelunasanHutang" method="POST">
                     @csrf
-                    <input type="hidden" name="id_barang" value="{{ $barangData->id_barang }}">
+                    <input type="hidden" name="id_hutang_stok" value="{{$stokHutangData->id_hutang_stok}}">
+                    {{-- <input type="hidden" name="id_barang" value="{{ $stokHutangData->id_barang }}"> --}}
                     <div class="form-group">
                         <label for="nominal">Besaran:</label>
                         <input type="number" name="nominal" id="nominal" class="form-control" step="any">
@@ -165,7 +166,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="funcTambahUser()">Simpan</button>
+                <button type="button" class="btn btn-primary" onclick="funcTambahPelunasanHutang()">Simpan</button>
             </div>
         </div>
     </div>
@@ -231,13 +232,13 @@
 
 
     <script>
-        function funcTambahUser() {
-            let formtambah = document.querySelector('#formTambahUser');
+        function funcTambahPelunasanHutang() {
+            let formtambah = document.querySelector('#formTambahPelunasanHutang');
             formtambah.submit();
             return false;
         }
 
-        function funcEditUser(url) {
+        function funcEditHutang(url) {
             var url = url;
 
             // Kirim request Ajax

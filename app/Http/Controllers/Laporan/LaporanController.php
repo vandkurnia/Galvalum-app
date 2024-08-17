@@ -133,28 +133,31 @@ class LaporanController extends Controller
         $dataLaporanHutang = DB::select(
             '
                 SELECT
-                    barangs.hash_id_barang as id_barang,
+                    -- barangs.hash_id_barang as id_barang,
+                    hutang_dan_stok.id_hutang_stok as id_hutang_stok,
                     pemasok_barangs.nama_pemasok,
                     barangs.nama_barang,
-                    barangs.stok_seluruh as total_pesanan,
-                    barangs.updated_at as tanggal_stok,
-                    barangs.created_at as tanggal_stok_alt,
-                    barangs.created_at as jatuh_tempo_alt,
-                    barangs.total as harga_bayar,
-                    (barangs.nominal_terbayar + barangs.dp_barang) as jumlah_terbayar,
-                    barangs.tenggat_bayar as jatuh_tempo,
+                    hutang_dan_stok.stok as total_pesanan,
+                    hutang_dan_stok.updated_at as tanggal_stok,
+                    hutang_dan_stok.created_at as tanggal_stok_alt,
+                    hutang_dan_stok.created_at as jatuh_tempo_alt,
+                    hutang_dan_stok.total as harga_bayar,
+                    (hutang_dan_stok.nominal_terbayar + hutang_dan_stok.dp) as jumlah_terbayar,
+                    hutang_dan_stok.tenggat_waktu as jatuh_tempo,
                     CASE
-                    WHEN barangs.total > barangs.nominal_terbayar THEN "Belum Lunas"
-                    WHEN barangs.total < barangs.nominal_terbayar THEN "Kelebihan"
+                    WHEN hutang_dan_stok.total > hutang_dan_stok.nominal_terbayar THEN "Belum Lunas"
+                    WHEN hutang_dan_stok.total < hutang_dan_stok.nominal_terbayar THEN "Kelebihan"
                     ELSE "Lunas"
                     END AS status_pembayaran
                 FROM
                     `barangs`
                 LEFT JOIN
                     pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
+                JOIN 
+                    hutang_dan_stok ON hutang_dan_stok.id_barang = barangs.id_barang
               
                
-                WHERE (barangs.nominal_terbayar + barangs.dp_barang) < barangs.total AND barangs.deleted_at IS NULL
+                WHERE (hutang_dan_stok.nominal_terbayar + hutang_dan_stok.dp) < hutang_dan_stok.total AND hutang_dan_stok.deleted_at IS NULL
                 ',
             []
         );

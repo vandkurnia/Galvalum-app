@@ -11,6 +11,7 @@ use App\Http\Controllers\ReturController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\DaftarTransaksiController;
 use App\Http\Controllers\DiskonController;
+use App\Http\Controllers\HutangDanStokController;
 use App\Http\Controllers\JsonType\BarangJsonController;
 use App\Http\Controllers\JsonType\PembeliJsonController;
 use App\Http\Controllers\JsonType\PemesananBarangJsonController;
@@ -125,6 +126,38 @@ Route::middleware(['auth', 'check-tanggal'])->group(function () {
         });
     });
 
+
+
+    Route::prefix('stok-hutang')->group(function () {
+        // Menampilkan daftar hutang dan stok
+        Route::get('/hutang-dan-stok/{id_barang}', [HutangDanStokController::class, 'index'])
+            ->name('hutang-dan-stok.index');
+
+        // Menampilkan form untuk membuat hutang dan stok baru
+        Route::get('/hutang-dan-stok/create', [HutangDanStokController::class, 'create'])
+            ->name('hutang-dan-stok.create');
+
+        // Menyimpan hutang dan stok baru
+        Route::post('/hutang-dan-stok', [HutangDanStokController::class, 'storeRequest'])
+            ->name('hutang-dan-stok.store');
+
+        // Menampilkan detail hutang dan stok
+        Route::get('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'show'])
+            ->name('hutang-dan-stok.show');
+
+        // Menampilkan form untuk edit hutang dan stok
+        Route::get('/hutang-dan-stok/{id}/edit', [HutangDanStokController::class, 'edit'])
+            ->name('hutang-dan-stok.edit');
+
+        // Mengupdate hutang dan stok
+        Route::put('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'updateRequest'])
+            ->name('hutang-dan-stok.update');
+
+        // Menghapus hutang dan stok
+        Route::delete('/hutang-dan-stok/{id}', [HutangDanStokController::class, 'destroy'])
+            ->name('hutang-dan-stok.destroy');
+    })->middleware(['auth']);
+
     Route::prefix('laporan_penjualan')->group(function () {
         Route::get('/', [DaftarTransaksiController::class, 'index'])->name('pemesanan.index');
         Route::get('/penjualan/{id}', [DaftarTransaksiController::class, 'penjualanPDF'])->name('pemesanan.penjualanPDF');
@@ -204,11 +237,11 @@ Route::middleware(['auth', 'check-tanggal'])->group(function () {
         Route::delete('/hapus/{id_piutang}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
     });
     Route::prefix('cicilanhutang')->name('')->group(function () {
-        Route::get('/{id_barang}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');
-        Route::get('/edit/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'edit'])->name('cicilan.hutang.edit');
+        Route::get('/{id_hutang_dan_stok}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');
+        Route::get('/edit/{id_riwayathutang}', [CicilanHutangController::class, 'edit'])->name('cicilan.hutang.edit');
         Route::post('/tambah', [CicilanHutangController::class, 'store'])->name('cicilan.hutang.store');
-        Route::put('/update/{id_barang}/{id_bukubesar}', [CicilanHutangController::class, 'update'])->name('cicilan.hutang.update'); // Mengupdate user berdasarkan ID
-        Route::delete('/hapus/{id_bukubesar}/{id_barang}', [CicilanHutangController::class, 'destroy'])->name('cicilan.hutang.destroy');
+        Route::put('/update/{id_hutang_dan_stok}/{id_riwayathutang}', [CicilanHutangController::class, 'update'])->name('cicilan.hutang.update'); // Mengupdate user berdasarkan ID
+        Route::delete('/hapus/{id_riwayathutang}', [CicilanHutangController::class, 'destroy'])->name('cicilan.hutang.destroy');
     });
     Route::prefix('laporan')->group(function () {
 

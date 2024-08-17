@@ -108,7 +108,7 @@
                                     <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}</td>
                                     <td><span class="badge badge-warning">Belum Lunas</span></td>
                                     <td>Unpaid</td>
-                                    <td><a href="{{ route('cicilan.hutang.index', ['id_barang' => $laporan['id_barang']]) }}" class="btn btn-primary">Update cicilan</a></td>
+                                    <td><a href="{{ route('cicilan.hutang.index', ['id_hutang_dan_stok' => $laporan['id_hutang_stok']]) }}" class="btn btn-primary">Update cicilan</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\RiwayatHutangModel;
 use App\Models\BukubesarModel;
+use App\Models\HutangDanStokModel;
 use App\Models\Log\LogStokBarangModel;
 use App\Models\PemasokBarang;
 use App\Models\StokBarangHistoryModel;
@@ -85,6 +86,7 @@ class StokController extends Controller
             'harga_barang_pemasok' => 'required',
             'stok' => 'required',
             'ukuran' => 'required',
+            'tenggat_bayar' => 'required|date',
             // 'id_pemasok' => 'required',
             'id_tipe_barang' => 'required',
         ]);
@@ -163,6 +165,25 @@ class StokController extends Controller
         $barang->id_bukubesar = $bukuBesar->id_bukubesar;
 
         $barang->save();
+
+
+        // Hutang dan Stok Barang
+        $hutangDanStokBarangController = new HutangDanStokController();
+        $statusStokBarang = $hutangDanStokBarangController->store([
+            'total' => $barang->total,
+            'dp' => $barang->dp_barang,
+            'nominal_terbayar' => $barang->nominal_terbayar ?? 0,
+            'stok' => $barang->stok,
+            'tenggat_bayar' => $barang->tenggat_bayar,
+            'id_bukubesar' => $barang->id_bukubesar,
+            'id_barang' => $barang->id_barang,
+        ]);
+
+        if ($statusStokBarang['status'] === 'error') {
+            // Jika terjadi error, rollback dan redirect back dengan pesan error
+            DB::rollback();
+            return redirect()->back()->with('error', $statusStokBarang['message'])->with('detail_error', $statusStokBarang['detail_error']);
+        }
 
 
         // Buat instance dari model
@@ -260,6 +281,11 @@ class StokController extends Controller
         $barang->save();
 
 
+
+
+
+
+
         // dd([
         //     'nominal_terbayar_lama' => $nominal_terbayar_lama,
         //     'nominal_terbayar_baru' => $request->nominal_terbayar,
@@ -318,6 +344,8 @@ class StokController extends Controller
             $stokbarangHistory->save();
 
 
+            
+
 
 
             // Simpan ke log
@@ -350,230 +378,37 @@ class StokController extends Controller
 
 
 
-        // Menggunakan DB::transaction untuk menjaga integritas transaksi
-        // $bukubesarBarang = $barang->bukuBesar;
-        // dd([
-        //     'nominal_terbayar' => $barang->nominal_terbayar,
-        //     'request nominal terbayar' => $request->nominal_terbayar,
-        //     'status' => $nominal_terbayar_lama != $request->nominal_terbayar,
-        //     'nominal_terbayar_lama' =>  $nominal_terbayar_lama
-        // ]);
-
-        // dd(['test' => $total_lama == $nominal_terbayar_lama]);
-
-        // Menghitung lagi untuk konversi status pembayaran
-        // if ($total_lama == $nominal_terbayar_lama) {
-        //     $barangTerbaru =  Barang::find($barang->id_barang);
-        //     $total_baru = $barangTerbaru->total;
-        //     $nominal_terbayar_baru = $barangTerbaru->nominal_terbayar;
-
-        //     // Lunas ke lunas
-        //     if ($total_baru == $nominal_terbayar_baru) {
-
-
-
-
-        //         // $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
-
-        //         // $bukubesar = BukubesarModel::withTrashed()->find($bukubesarbarang->id_bukubesar);
-
-        //         // $stokBarangpertama = StokBarangModel::where('id_barang', $barang->id_barang)->first();
-
-
-        //         $barangData = Barang::find($barang->id_barang);
-        //         // Selisih antara debit pertama dengan 
-        //         // $bukubesar->debit = $barangTerbaru->harga_pemasok * $barangData->stok;
-        //         // $bukubesar->save();
-
-        //         // if ($bukubesar && $bukubesar->debit > 0) {
-        //         //     $bukubesar->restore();
-        //         // }
-        //         $barangData->nominal_terbayar = $barangData->total;
-        //         $barangData->save();
-
-
-        //         // Periksa kondisi untuk tanggal penyelesaian
-        //         if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
-        //             $barangData->save();
-        //         } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = null;
-        //             $barangData->save();
-        //         }
-        //     }
-
-        //     // Lunas ke hutang
-        //     else {
-
-        //         $barangData = Barang::find($barang->id_barang);
-        //         $barangData->nominal_terbayar =  $request->nominal_terbayar;
-
-        //         $barangData->save();
-
-        //         // Periksa kondisi untuk tanggal penyelesaian
-        //         if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
-        //             $barangData->save();
-        //         } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = null;
-        //             $barangData->save();
-        //         }
-
-
-
-        //         // Delete all records where 'id_barang' matches $barang->id_barang
-        //         RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
-
-
-
-
-        //         // $barangTerbaru =  Barang::find($barang->id_barang);
-        //         // $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
-        //         // $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
-
-        //         // // Selisih antara debit pertama dengan 
-        //         // $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
-        //         // $bukubesarUpdate->save();
-
-        //         // // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-        //         // $bukubesarBarangs = RiwayatHutangModel::where('id_barang', $barang->id_barang)
-        //         //     ->skip(1) // Lewatkan entri pertama
-        //         //     ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
-        //         //     ->get();
-
-        //         // // Hapus semua entri buku besar setelah yang pertama
-        //         // foreach ($bukubesarBarangs as $bukubesarBarang) {
-        //         //     $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
-        //         //     if ($bukubesarToDelete) {
-        //         //         $bukubesarToDelete->forceDelete();
-        //         //     }
-        //         // }
-        //     }
-        // } else {
-
-        //     $cekTotal =  Barang::find($barang->id_barang);
-        //     $total_baru = $cekTotal->total;
-        //     $nominal_terbayar_baru = $cekTotal->nominal_terbayar;
-        //     // Hutang ke lunas 
-        //     if ($total_baru == $nominal_terbayar_baru) {
-
-        //         $barangData =  Barang::find($barang->id_barang);
-        //         $barangData->nominal_terbayar = $barangData->total;
-        //         $barangData->save();
-
-
-
-        //         // Periksa kondisi untuk tanggal penyelesaian
-        //         if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
-        //             $barangData->save();
-        //         } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = null;
-        //             $barangData->save();
-        //         }
-
-
-        //         RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
-        //         //   $barangTer
-
-
-
-
-
-        //         // $barangTerbaru =  Barang::find($barang->id_barang);
-        //         // $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
-        //         // $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
-
-        //         // // Selisih antara debit pertama dengan 
-        //         // $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
-        //         // $bukubesarUpdate->save();
-
-
-        //         // // $bukuBesarIkut = BukubesarModel::find($bukubesarUpdate->id_bukubesar);
-
-
-        //         // // dd([
-        //         // //     'barang' => $bukubesarUpdate,
-        //         // //     'kucing' => $barangTerbaru,
-        //         // //     'test' => $bukuBesarIkut
-        //         // // ]);
-
-
-        //         // // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-        //         // $bukubesarBarangs = RiwayatHutangModel::where('id_barang', $barang->id_barang)
-        //         //     ->skip(1) // Lewatkan entri pertama
-        //         //     ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
-        //         //     ->get();
-
-        //         // // Hapus semua entri buku besar setelah yang pertama
-        //         // foreach ($bukubesarBarangs as $bukubesarBarang) {
-        //         //     $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
-        //         //     if ($bukubesarToDelete) {
-        //         //         $bukubesarToDelete->forceDelete();
-        //         //     }
-        //         // }
-        //     } else if ($total_lama != $total_baru || $nominal_terbayar_lama != $request->nominal_terbayar) {
-        //         $barangData = Barang::find($barang->id_barang);
-        //         $barangData->nominal_terbayar =  $request->nominal_terbayar;
-        //         $barangData->save();
-
-
-        //         // Periksa kondisi untuk tanggal penyelesaian
-        //         if ($barangData->nominal_terbayar == $barangData->total && is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = $barangData->updated_at;  // Atau $barangData->updated_at jika diperlukan
-        //             $barangData->save();
-        //         } elseif ($barangData->nominal_terbayar != $barangData->total && !is_null($barangData->tanggal_penyelesaian)) {
-        //             $barangData->tanggal_penyelesaian = null;
-        //             $barangData->save();
-        //         }
-
-        //         RiwayatHutangModel::where('id_barang', $barang->id_barang)->delete();
-
-
-
-
-
-        //         // $barangTerbaru =  Barang::find($barang->id_barang);
-        //         // $bukubesarbarang = RiwayatHutangModel::where('id_barang', $barang->id_barang)->first();
-        //         // $bukubesarUpdate = BukubesarModel::find($bukubesarbarang->id_bukubesar);
-
-        //         // // Selisih antara debit pertama dengan 
-        //         // $bukubesarUpdate->debit = $barangTerbaru->nominal_terbayar;
-        //         // $bukubesarUpdate->save();
-
-
-        //         // // $bukuBesarIkut = BukubesarModel::find($bukubesarUpdate->id_bukubesar);
-
-
-        //         // // dd([
-        //         // //     'barang' => $bukubesarUpdate,
-        //         // //     'kucing' => $barangTerbaru,
-        //         // //     'test' => $bukuBesarIkut
-        //         // // ]);
-
-
-        //         // // Ambil semua entri buku besar terkait dengan barang, kecuali yang pertama
-        //         // $bukubesarBarangs = RiwayatHutangModel::where('id_barang', $barang->id_barang)
-        //         //     ->skip(1) // Lewatkan entri pertama
-        //         //     ->take(PHP_INT_MAX) // Ambil semua entri setelah entri pertama
-        //         //     ->get();
-
-        //         // // Hapus semua entri buku besar setelah yang pertama
-        //         // foreach ($bukubesarBarangs as $bukubesarBarang) {
-        //         //     $bukubesarToDelete = BukubesarModel::find($bukubesarBarang->id_bukubesar);
-        //         //     if ($bukubesarToDelete) {
-        //         //         $bukubesarToDelete->forceDelete();
-        //         //     }
-        //         // }
-        //     }
-        // }
-
-
-        $handleRiwayatHutang = self::handleRiwayatHutang($oldBarang, $request);
-
-        if (!$handleRiwayatHutang) {
-            return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        // Hapus lalu reset lagi
+        $hutangDanStok = $barang->hutangDanStok;
+        foreach ($hutangDanStok as $hutangStok) {
+            $hutangStokData = HutangDanStokModel::find($hutangStok->id_hutang_stok);
+            $hutangStokData->delete();
         }
+
+        // Hutang dan Stok Barang
+        $hutangDanStokBarangController = new HutangDanStokController();
+        $statusStokBarang = $hutangDanStokBarangController->store([
+            'total' => $barang->total,
+            'dp' => $barang->dp_barang,
+            'nominal_terbayar' => $barang->nominal_terbayar ?? 0,
+            'stok' => $barang->stok,
+            'tenggat_bayar' => $barang->tenggat_bayar,
+            'id_bukubesar' => $barang->id_bukubesar,
+            'id_barang' => $barang->id_barang,
+        ]);
+
+        if ($statusStokBarang['status'] === 'error') {
+            // Jika terjadi error, rollback dan redirect back dengan pesan error
+            DB::rollback();
+            return redirect()->back()->with('error', $statusStokBarang['message'])->with('detail_error', $statusStokBarang['detail_error']);
+        }
+
+
+        // $handleRiwayatHutang = self::handleRiwayatHutang($oldBarang, $request);
+
+        // if (!$handleRiwayatHutang) {
+        //     return redirect()->back()->with(['error' => 'Terjadi Kesalahan pada sisi cicilan']);
+        // }
 
         // dd("atas");
         DB::commit();
@@ -585,7 +420,7 @@ class StokController extends Controller
 
     public function destroy($id)
     {
-        $dataBarang = Barang::with('riwayatHutang')->where('hash_id_barang', $id)->first();
+        $dataBarang = Barang::with('riwayatHutang', 'hutangDanStok')->where('hash_id_barang', $id)->first();
         if ($dataBarang) {
 
             // hapus riwayatHutang
@@ -593,6 +428,13 @@ class StokController extends Controller
                 $riwayatHutang = RiwayatHutangModel::find($riwayatHutang->id);
                 $riwayatHutang->delete();
             }
+
+            foreach ($dataBarang->hutangDanStok as $hutangDanStok) {
+
+                $hutangDanStok = HutangDanStokModel::find($hutangDanStok->id_hutang_stok);
+                $hutangDanStok->delete();
+            }
+
             $dataBarang->delete();
 
             return redirect()->route('stok.index')->with('success', 'Barang berhasil dihapus');
@@ -605,7 +447,17 @@ class StokController extends Controller
     public function showStokBarang($id)
     {
 
-        $dataBarang = Barang::with('stokBarang')->where('hash_id_barang', $id)->first();
+        $dataBarang = Barang::with([
+            'stokBarang',
+            'hutangDanStok' => function ($query) {
+                $query->select([
+                    'id_hutang_stok as id',
+                    'stok as total_stok',
+                    'created_at as tanggal_dibuat',
+                    'id_barang'
+                ]);
+            }
+        ])->where('hash_id_barang', $id)->first();
 
         if (!$dataBarang) {
             return response()->json([
@@ -635,7 +487,7 @@ class StokController extends Controller
         $validatedData = $request->validate([
             'stok_tambah' => 'required|numeric|min:0',
             'id_barang' => 'required|exists:barangs,hash_id_barang',
-            'nominal_terbayar' => 'required',
+            'dp' => 'required',
 
         ], [
             'stok_tambah.required' => 'Stok tambah harus diisi.',
@@ -686,8 +538,13 @@ class StokController extends Controller
 
         // }
         // dd($request->nominal_terbayar);
-        $barang->nominal_terbayar += $request->nominal_terbayar;
+        // $barang->nominal_terbayar += $request->nominal_terbayar;
         $barang->save();
+
+
+
+
+
 
 
 
@@ -701,14 +558,34 @@ class StokController extends Controller
         $updateBukuBesar->keterangan = 'Hutang';
 
 
-        $updateBukuBesar->debit = $request->nominal_terbayar; // Masukkan nilai debit yang sesuai
+        $updateBukuBesar->debit = $request->dp; // Masukkan nilai debit yang sesuai
         $updateBukuBesar->kredit = 0; // Jika debit maka kredit harus 0
         $updateBukuBesar->save();
-        RiwayatHutangModel::create([
-            'id_barang' => $barang->id_barang,
+        // RiwayatHutangModel::create([
+        //     'id_barang' => $barang->id_barang,
+        //     'id_bukubesar' => $updateBukuBesar->id_bukubesar,
+        //     'nominal_dibayar' =>  $request->nominal_terbayar
+        // ]);
+
+
+
+        // Hutang dan Stok Barang
+        $hutangDanStokBarangController = new HutangDanStokController();
+        $statusStokBarang = $hutangDanStokBarangController->store([
+            'total' =>   $total,
+            'dp' => $request->dp,
+            'nominal_terbayar' =>  0,
+            'stok' => $validatedData['stok_tambah'],
+            'tenggat_bayar' => $request->tenggat_bayar,
             'id_bukubesar' => $updateBukuBesar->id_bukubesar,
-            'nominal_dibayar' =>  $request->nominal_terbayar
+            'id_barang' => $barang->id_barang,
         ]);
+
+        if ($statusStokBarang['status'] === 'error') {
+            // Jika terjadi error, rollback dan redirect back dengan pesan error
+            DB::rollback();
+            return redirect()->back()->with('error', $statusStokBarang['message'])->with('detail_error', $statusStokBarang['detail_error']);
+        }
 
         // $stoktambah = $validatedData['stok_tambah'];
 
@@ -778,18 +655,24 @@ class StokController extends Controller
     {
 
 
+       
+       
 
         $validatedData = $request->validate([
             'stok_kurang' => 'required|numeric|min:0',
             'id_barang' => 'required|exists:barangs,hash_id_barang',
             'nominal_terbayar' => 'required',
+            'hutang_stok' => 'required|exists:hutang_dan_stok,id_hutang_stok'
 
         ], [
             'stok_kurang.required' => 'Stok tambah harus diisi.',
             'stok_kurang.numeric' => 'Stok tambah harus berupa angka.',
             'stok_kurang.min' => 'Stok tambah harus lebih dari atau sama dengan 0.',
             'id_barang.exists' => 'Barang tidak ditemukan.',
+            'hutang_stok.exist' => 'Hutang stok tidak ditemukan.'
         ]);
+
+
 
         // dd($validatedData);
         $barang = Barang::where('hash_id_barang', $validatedData['id_barang'])->first();
@@ -829,6 +712,15 @@ class StokController extends Controller
         $barang->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
         // $barang->nominal_terbayar -= $request->nominal_terbayar;
         $barang->save();
+
+
+
+        // dd($validatedData['hutang_stok']);
+        // Hutang dan Stok
+        $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
+        $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
+        $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
+        $updateHutangdanStok->save();
 
         // $stoktambah = $validatedData['stok_kurang'];
 

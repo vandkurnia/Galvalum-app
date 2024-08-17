@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\HutangDanStokModel;
+use Illuminate\Http\Request;
+
+class HutangDanStokController extends Controller
+{
+    public function index($id_barang)
+    {
+        $hutangDanStok = HutangDanStokModel::with('bukubesar')->where('id_barang', $id_barang)->get();
+        return view('stokbarang.detail', compact('hutangDanStok'));
+    }
+
+    public function show($id)
+    {
+        $hutangDanStok = HutangDanStokModel::with('bukubesar')->findOrFail($id);
+        return view('hutang-dan-stok.show', compact('hutangDanStok'));
+    }
+
+    public function create()
+    {
+        return view('hutang-dan-stok.create');
+    }
+
+    public function storeRequest(Request $request)
+    {
+        $validatedData = $request->validate([
+            'total' => 'required|numeric',
+            'dp' => 'nullable|numeric',
+            'nominal_terbayar' => 'nullable|numeric',
+            'stok' => 'required|integer',
+            'id_bukubesar' => 'required|exists:bukubesar,id',
+            'id_barang' => 'required|exists:barang,id_barang',
+        ]);
+
+        $result = $this->store($validatedData);
+
+        return redirect()->back()->with($result['status'], $result['message']);
+    }
+
+    public function store(array $data)
+    {
+        try {
+            $hutangDanStok = HutangDanStokModel::create([
+                'total' => $data['total'],
+                'dp' => $data['dp'],
+                'nominal_terbayar' => $data['nominal_terbayar'],
+                'stok' => $data['stok'],
+                'tenggat_waktu' => $data['tenggat_bayar'],
+                'id_bukubesar' => $data['id_bukubesar'],
+                'id_barang' => $data['id_barang'],
+            ]);
+
+            return [
+                'code' => 201,
+                'status' => 'success',
+                'message' => 'Berhasil menyimpan data',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'code' => 500,
+                'status' => 'error',
+                'message' => 'Gagal menyimpan hutang dan stok',
+                'detail_error' => json_encode([
+                    'line' => $e->getLine(),
+                    'errorMsg' => $e->getMessage()
+                ])
+            ];
+        }
+    }
+
+    public function edit($id)
+    {
+        $hutangDanStok = HutangDanStokModel::findOrFail($id);
+        return view('hutang-dan-stok.edit', compact('hutangDanStok'));
+    }
+
+    public function updateRequest(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'total' => 'required|numeric',
+            'dp' => 'nullable|numeric',
+            'nominal_terbayar' => 'nullable|numeric',
+            'stok' => 'required|integer',
+            'id_bukubesar' => 'required|exists:bukubesar,id',
+            'id_barang' => 'required|exists:barang,id_barang',
+        ]);
+
+        $result = $this->update($validatedData, $id);
+
+        return redirect()->back()->with($result['status'], $result['message']);
+    }
+
+    public function update(array $data, $id)
+    {
+        try {
+            $hutangDanStok = HutangDanStokModel::findOrFail($id);
+            $hutangDanStok->update([
+                'total' => $data['total'],
+                'dp' => $data['dp'],
+                'nominal_terbayar' => $data['nominal_terbayar'],
+                'stok' => $data['stok'],
+
+                'tenggat_waktu' => $data['tenggat_bayar'],
+                'id_bukubesar' => $data['id_bukubesar'],
+                'id_barang' => $data['id_barang'],
+            ]);
+
+            return [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Berhasil memperbarui data',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'code' => 500,
+                'status' => 'error',
+                'message' => 'Gagal memperbarui data',
+            ];
+        }
+    }
+
+    public function destroy($id)
+    {
+        $hutangDanStok = HutangDanStokModel::findOrFail($id);
+        $hutangDanStok->delete();
+
+        return redirect()->route('hutang-dan-stok.index')->with('success', 'Data berhasil dihapus');
+    }
+}

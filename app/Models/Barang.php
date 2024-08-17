@@ -68,6 +68,10 @@ class Barang extends Model
     {
         return $this->hasMany(StokBarangModel::class)->oldestOfMany();
     }
+    public function hutangDanStok()
+    {
+        return $this->hasMany(HutangDanStokModel::class, 'id_barang', 'id_barang');
+    }
     protected static function booted()
     {
         static::creating(function ($stokbarang) {
