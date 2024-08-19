@@ -170,6 +170,7 @@ class StokController extends Controller
         // Hutang dan Stok Barang
         $hutangDanStokBarangController = new HutangDanStokController();
         $statusStokBarang = $hutangDanStokBarangController->store([
+            'harga_beli' => $request->harga_barang,
             'total' => $barang->total,
             'dp' => $barang->dp_barang,
             'nominal_terbayar' => $barang->nominal_terbayar ?? 0,
@@ -388,6 +389,7 @@ class StokController extends Controller
         // Hutang dan Stok Barang
         $hutangDanStokBarangController = new HutangDanStokController();
         $statusStokBarang = $hutangDanStokBarangController->store([
+            'harga_beli' => $request->harga_barang,
             'total' => $barang->total,
             'dp' => $barang->dp_barang,
             'nominal_terbayar' => $barang->nominal_terbayar ?? 0,
@@ -718,7 +720,7 @@ class StokController extends Controller
         // dd($validatedData['hutang_stok']);
         // Hutang dan Stok
         $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
-        $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $barang->harga_barang_pemasok;
+        $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $updateHutangdanStok->harga_beli;
         $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
         $updateHutangdanStok->save();
 

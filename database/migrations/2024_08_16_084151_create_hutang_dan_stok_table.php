@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('hutang_dan_stok', function (Blueprint $table) {
             $table->id('id_hutang_stok');
+            $table->decimal('harga_beli', 15, 2);
             $table->decimal('total', 15, 2);
             $table->decimal('dp', 15, 2);
             $table->decimal('nominal_terbayar', 15, 2);

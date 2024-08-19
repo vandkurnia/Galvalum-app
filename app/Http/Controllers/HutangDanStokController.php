@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\HutangDanStokModel;
 use Illuminate\Http\Request;
 
@@ -54,7 +55,18 @@ class HutangDanStokController extends Controller
     public function store(array $data)
     {
         try {
+            $barang = Barang::find($data['id_barang']);
+            if(!$barang)
+            {
+                return [
+                    'code' => 404,
+                    'status' => 'error',
+                    'message' => 'Barang tidak ditemukan',
+
+                ];
+            }
             $hutangDanStok = HutangDanStokModel::create([
+                'harga_beli' => $barang->harga_barang,
                 'total' => $data['total'],
                 'dp' => $data['dp'],
                 'nominal_terbayar' => $data['nominal_terbayar'],
@@ -108,7 +120,9 @@ class HutangDanStokController extends Controller
     {
         try {
             $hutangDanStok = HutangDanStokModel::findOrFail($id);
+        
             $hutangDanStok->update([
+                'harga_beli' => $hutangDanStok->harga_beli,
                 'total' => $data['total'],
                 'dp' => $data['dp'],
                 'nominal_terbayar' => $data['nominal_terbayar'],

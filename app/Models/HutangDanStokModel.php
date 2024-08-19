@@ -13,6 +13,7 @@ class HutangDanStokModel extends Model
     protected $table = 'hutang_dan_stok';
     protected $primaryKey = 'id_hutang_stok';
     protected $fillable = [
+        'harga_beli',
         'total',
         'dp',
         'nominal_terbayar',
