@@ -10,7 +10,7 @@ class HutangDanStokModel extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'hutang_dan_stok';
+    protected $table = 'lacak_stok';
     protected $primaryKey = 'id_hutang_stok';
     protected $fillable = [
         'harga_beli',

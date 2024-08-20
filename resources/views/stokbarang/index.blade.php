@@ -407,6 +407,8 @@
                         <label for="stok_tambah" class="form-label">Pengurangan Stok</label>
                         <input type="number" class="form-control" id="stok_tambahKurangStok" name="stok_kurang"
                             min="0" oninput="updateStokEdit()" value="0">
+                        <p class="validation-stok"></p>
+
                     </div>
 
 
@@ -898,7 +900,7 @@
 
                     // Contoh data dummy
                     const hutangDanStokList = response.data.hutang_dan_stok;
-               
+
                     // Mendapatkan elemen select
                     const hutangStokSelect = document.getElementById('hutangStokSelect');
 
@@ -929,9 +931,22 @@
             // Mendapatkan elemen option yang dipilih
             const selectedOption = hutangStokSelect.options[hutangStokSelect.selectedIndex];
 
+
             // Mengambil nilai dari atribut data
             const totalStokAwal = parseInt(selectedOption.getAttribute('data-total-stok'));
+
+
+            if (stokTambahKurangStok.value > totalStokAwal) {
+                checkStokIsNotValidMessage(totalStokAwal, true);
+                stokTambahKurangStok.value = totalStokAwal
+            } else if (stokTambahKurangStok.value < 0) {
+                checkStokIsNotValidMessage(totalStokAwal, true);
+                stokTambahKurangStok.value = 0;
+            } else {
+                checkStokIsNotValidMessage(totalStokAwal, false);
+            }
             const penguranganStok = parseInt(stokTambahKurangStok.value) || 0;
+
 
             // Menghitung stok yang baru setelah pengurangan
             const stokBaru = totalStokAwal - penguranganStok;
@@ -947,6 +962,21 @@
         stokTambahKurangStok.addEventListener('input', updateStokChangeDisplay);
         updateStokChangeDisplay();
 
+
+        // Validasi stok
+        function checkStokIsNotValidMessage(stok_1, minus_1) {
+            let stok = stok_1;
+            let minus = minus_1;
+            const validationElement = document.querySelector('p.validation-stok');
+
+            if (minus) {
+                validationElement.classList.add('invalid-feedback', 'd-block');
+                validationElement.textContent = `Pengurangan stok harus antara 0 - ${stok}`;
+            } else {
+                validationElement.classList.remove('invalid-feedback', 'd-block');
+                validationElement.textContent = '';
+            }
+        }
 
 
         function funcTambahUser() {

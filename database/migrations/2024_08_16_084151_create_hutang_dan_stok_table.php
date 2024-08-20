@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('tenggat_waktu');  // Kolom tenggat_waktu ditambahkan di sini
             $table->unsignedBigInteger('id_bukubesar');
             $table->unsignedBigInteger('id_barang');
-            $table->integer('stok');
+            $table->decimal('stok',15, 2);
             $table->timestamps();
             $table->softDeletes();
 

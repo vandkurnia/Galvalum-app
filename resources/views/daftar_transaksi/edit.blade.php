@@ -639,8 +639,7 @@
                     </table>
                 </div>
                 {{-- <div class="mt-2">Total Pembayaran: <span id="total_pembayaran">Rp. 0</span></div> --}}
-                <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
-                    data-target="#modalBayar">Bayar</button>
+             
             </div>
         </div>
     </div>
@@ -688,7 +687,7 @@
                     </div>
                 </div>
 
-                <div class="piutangData mt-4">
+                <div class="piutangData mt-4 d-none">
                     <table class="table">
                         <thead>
                             <tr>
@@ -739,6 +738,8 @@
                         </tbody>
                     </table>
                 </div>
+                <button type="submit" class="btn btn-primary mt-4 float-right" data-toggle="modal"
+                data-target="#modalBayar">Bayar</button>
 
                 <script>
                     function piutangTerbayar() {

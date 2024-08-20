@@ -580,7 +580,7 @@ class ReturPembeliController extends Controller
                 $pesananData->id_diskon = $diskonId; // Contoh nilai id_diskon
 
                 // Menambah keterangan dari pesanan baru
-                $keterangan .= '- Retur tambah barang ' . $pesananData->jumlah_pembelian . ' sebanyak : ' . $returPesanan->qty;
+                $keterangan .= '- Retur tambah barang ' . $barangData->nama_barang . ' sebanyak : ' . $returPesanan->qty;
 
                 // Update data barang
                 // $stokTersedia = StokBarangModel::selectRaw('(SUM(stok_masuk) - SUM(stok_keluar)) as stok')->where('id_barang', $barangData->id_barang)->groupBy('id_barang')->first();
