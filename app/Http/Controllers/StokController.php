@@ -664,7 +664,7 @@ class StokController extends Controller
             'stok_kurang' => 'required|numeric|min:0',
             'id_barang' => 'required|exists:barangs,hash_id_barang',
             'nominal_terbayar' => 'required',
-            'hutang_stok' => 'required|exists:hutang_dan_stok,id_hutang_stok'
+            'hutang_stok' => 'required|exists:lacak_stok,id_hutang_stok'
 
         ], [
             'stok_kurang.required' => 'Stok tambah harus diisi.',
