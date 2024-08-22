@@ -36,6 +36,7 @@ class ReturPemasokModel extends Model
         'id_pemasok',
         'id_barang',
         'id_stok_barang',
+        'id_hutang_stok',
         'hidden',
         'keterangan_retur_pemasok'
     ];

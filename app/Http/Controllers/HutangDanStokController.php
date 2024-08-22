@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\HutangDanStokModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HutangDanStokController extends Controller
 {
@@ -149,10 +150,26 @@ class HutangDanStokController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
         $hutangDanStok = HutangDanStokModel::findOrFail($id);
+
+        $checkTotalHutangDanStokTersedia = HutangDanStokModel::where('id_barang', $hutangDanStok->id_barang)->count();
+        
+        // Minimal harus satu
+        if($checkTotalHutangDanStokTersedia <= 1)
+        {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Data lacak stok gagal dihapus hanya tersisa  1 data');
+        }
+
+        $barang =  Barang::find($hutangDanStok->id_barang);
+        $barang->stok -= $hutangDanStok->stok;
+        $barang->save();
+
 
         
         $hutangDanStok->delete();
+        DB::commit();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }

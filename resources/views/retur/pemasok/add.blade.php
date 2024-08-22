@@ -63,20 +63,32 @@
         <div class="card shadow mb-4">
             <div class="card-header py-4">
 
-                <div class="container mt-5">
-                    {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
-                        <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
-                        <div>
-                            <strong>Halaman ini sedang dalam perbaikan dan migrasi data</strong> dan tidak menyimpan
-                            perubahan hingga <span
-                                id="maintenance-date">{{ date('d-m-Y H:i:s', strtotime('2024-05-23 20:00:00')) }}</span>
-                            atau lebih cepat.
-                        </div>
-                    </div> --}}
-                </div>
+
                 <h6 class="m-0 font-weight-bold text-primary">Retur</h6>
             </div>
             <div class="card-body">
+                <!-- Tambahan h1 untuk menampilkan perubahan stok -->
+                <p class="validation-stok"></p>
+
+                <script>
+                    // Validasi stok
+                    function checkStokIsNotValidMessage(stok_1, minus_1) {
+                        let stok = stok_1;
+                        let minus = minus_1;
+                        const validationElement = document.querySelector('.validation-stok');
+
+                        if (minus) {
+                            validationElement.classList.add('invalid-feedback', 'd-block');
+                            validationElement.textContent = `Pengurangan stok harus antara 0 - ${stok}`;
+
+
+
+                        } else {
+                            validationElement.classList.remove('invalid-feedback', 'd-block');
+                            validationElement.textContent = '';
+                        }
+                    }
+                </script>
                 <div class="table-responsive">
                     <table class="table" id="Retur">
                         <thead>
@@ -124,6 +136,30 @@
 
                 if (qtyRetur > qtyAvailable) {
                     input.value = qtyAvailable;
+                }
+
+
+
+                const stokSelectOption = stokSelect.options[stokSelect.selectedIndex];
+
+
+                // Mengambil nilai dari atribut data
+                const totalStokAwal = parseInt(stokSelectOption.getAttribute('data-total-stok'));
+
+                // validasi stok
+                if (qtyRetur > totalStokAwal) {
+                    checkStokIsNotValidMessage(totalStokAwal, true);
+                    input.value = totalStokAwal
+                    // Update stok referensi
+
+                    return false;
+                } else if (qtyRetur < 0) {
+                    checkStokIsNotValidMessage(totalStokAwal, true);
+                    input.value = 0;
+
+                    return false;
+                } else {
+                    checkStokIsNotValidMessage(totalStokAwal, false);
                 }
 
                 const newQtyRetur = parseFloat(input.value);

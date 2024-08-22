@@ -2,7 +2,6 @@
     @csrf
     @method('PUT')
     <div class="row">
-        <!-- Left Column -->
         <div class="col-md-6">
             <div class="form-group">
                 <label for="pemasok">Pemasok:</label>
@@ -16,8 +15,8 @@
                 </select>
             </div>
 
-            {{-- <div class="form-group">
-                <label for="kode_barang">Kode Barang:</label>
+            <div class="form-group">
+                <label for="kode_barang">Kode Barang</label>
                 <input id="kode_barang" type="text" class="form-control @error('kode_barang') is-invalid @enderror"
                     name="kode_barang" value="{{ $dataBarang['kode_barang'] }}" required>
                 @error('kode_barang')
@@ -25,20 +24,17 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div> --}}
-
+            </div>
             <div class="form-group">
                 <label for="nama_barang">Nama Barang:</label>
                 <input type="text" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang"
                     value="{{ $dataBarang['nama_barang'] }}" required>
             </div>
-
             <div class="form-group">
                 <label for="ukuran">Ukuran Barang:</label>
                 <input type="text" class="form-control" name="ukuran" id="ukuran" placeholder="Ukuran Barang"
                     value="{{ $dataBarang['ukuran'] }}" required>
             </div>
-
             <div class="form-group">
                 <label for="id_tipe_barang">Tipe Barang:</label>
                 <select class="form-control" id="id_tipe_barang" name="id_tipe_barang" required>
@@ -49,40 +45,26 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="stok">Stok:</label>
+                <input type="number" class="form-control" stok-original="{{ $dataBarang->stokoriginal }}"
+                    stok-total="{{ $dataBarang->stok }}" name="stok" id="stok" value="{{ $dataBarang->stok }}"
+                    oninput="calculateTotalNominalTerbayar()" required>
+            </div>
 
-
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label for="harga_barang">Harga Jual:</label>
                 <input type="number" class="form-control" name="harga_barang" id="harga_barang"
                     placeholder="Harga Barang" value="{{ (int) $dataBarang['harga_barang'] }}" required>
             </div>
-
-
-            <!-- Checkbox to Toggle Additional Fields -->
             <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="toggleAdditionalFields" name="toggleAdditionalFields" 
-                        onclick="toggleFields()">
-                    <label class="form-check-label" for="toggleAdditionalFields" >Edit Additional Details</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column (Initially Hidden) -->
-        <div class="col-md-6" id="additionalFields" style="display: none;">
-            <div class="form-group">
-                <label for="stok">Stok:</label>
-                <input type="number" class="form-control" name="stok" id="stok"
-                    value="{{ $dataBarang->stok }}"  required>
-            </div>
-
-          
-            <div class="form-group">
-                <label for="harga_barang_pemasok">Harga Barang Pemasok:</label>
+                <label for="harga_barang_pemasok">Harga Barang Pemasok</label>
                 <input id="harga_barang_pemasok" type="text"
-                    class="form-control @error('harga_barang_pemasok') is-invalid @enderror" name="harga_barang_pemasok"
-                    oninput="calculateTotalNominalTerbayar()" value="{{ (int) $dataBarang->harga_barang_pemasok }}"
-                     required>
+                    class="form-control @error('harga_barang_pemasok') is-invalid @enderror" min="0"
+                    name="harga_barang_pemasok" oninput="calculateTotalNominalTerbayar()"
+                    value="{{ (int) $dataBarang->harga_barang_pemasok }}" required>
                 @error('harga_barang_pemasok')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -90,57 +72,74 @@
                 @enderror
             </div>
 
+
+
+            <div class="form-group d-none">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="statusChangeCheckbox"
+                        name="status_pembayaran_change">
+                    <label class="form-check-label" for="statusChangeCheckbox">Status Pembayaran Berubah</label>
+                </div>
+            </div>
+
+
             <div class="form-group">
+
+              
+
                 <label for="statusPembayaranEdit">Status Pembayaran:</label>
-                <select class="form-control" name="status_pembelian" id="statusPembayaranEdit"
-                    onchange="handleStatusPembayaranChange()"
+             
+                <select class="form-control" name="status_pembelian"
                     data-status-pembayaran="{{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'lunas' : 'hutang' }}"
-                     required>
-                    <option value="lunas"
-                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}>
+                    onchange="handleStatusPembayaranChange()" id="statusPembayaranEdit" required="">
+
+                    <option
+                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}
+                        value="lunas">
                         Lunas</option>
-                    <option value="hutang"
-                        {{ $dataBarang->total > $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}>
+                    <option
+                        {{ $dataBarang->total > $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'selected' : '' }}
+                        value="hutang">
                         Hutang</option>
                 </select>
             </div>
+            {{-- <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="reset_cicilan" id="resetCicilan"
+                        value="1" onchange="checkCheckboxModalEdit()" checked>
+                    <label class="form-check-label" for="resetCicilan">
+                        Reset Cicilan Hutang yang sudah ada (jika ada).
+                    </label>
+                </div>
+            </div> --}}
 
             <div id="formCicilanEdit"
                 style="{{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'display: none;' : '' }}">
                 <div class="form-group">
                     <label for="DpBarang">DP :</label>
                     <input type="text" class="form-control" name="dp" id="DpBarang"
-                        value="{{ (float) $dataBarang->dp_barang }}"
-                        data-default="{{ (float) $dataBarang->dp_barang }}" 
+                        value="{{ (float) $dataBarang->dp_barang }}" data-default="{{ (float) $dataBarang->dp_barang }}"
                         {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'readonly' : '' }}>
                 </div>
-{{-- 
+
                 <div class="form-group">
                     <label for="nominalTerbayar">Nominal Terbayar:</label>
                     <input type="text" class="form-control" id="nominalTerbayar"
-                        value="{{ (float) $dataBarang->nominal_terbayar }}"  readonly>
-                </div> --}}
-
+                        value="{{ (float) $dataBarang->nominal_terbayar }}" readonly>
+                </div>
                 <div class="form-group">
+
                     <label for="tenggatBayar">Tenggat Waktu Bayar:</label>
-                    <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
-                        value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}" 
-                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'readonly' : '' }}>
+                    <input type="date" class="form-control" name="tenggat_bayar"
+                        {{ $dataBarang->total == $dataBarang->nominal_terbayar + $dataBarang->dp_barang ? 'readonly' : '' }}
+                        id="tenggatBayar" value="{{ $dataBarang->tenggat_bayar ?? date('Y-m-d') }}">
                 </div>
             </div>
+
         </div>
     </div>
+
+
+
+
 </form>
-
-<script>
-    function toggleFields() {
-        const additionalFields = document.getElementById('additionalFields');
-        const inputs = additionalFields.querySelectorAll('input, select');
-
-        additionalFields.style.display = additionalFields.style.display === 'none' ? 'block' : 'none';
-
-        inputs.forEach(input => {
-            input.readonly = !input.readonly;
-        });
-    }
-</script>

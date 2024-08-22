@@ -502,25 +502,25 @@
 
     function checkNominalTerbayarStokEdit() {
         const stokModal = document.querySelector('#editStokModal .modal-body')
-        const statusPembayaran = stokModal.querySelector('#statusPembayaran').value;
+        // const statusPembayaran = stokModal.querySelector('#statusPembayaran').value;
         const formCicilanEdit = stokModal.querySelector('#formCicilanEdit');
         const nominalTerbayar = stokModal.querySelector('#nominalTerbayar');
         const tenggatBayar = stokModal.querySelector('#tenggatBayar');
 
         const stokReferensi = stokModal.querySelector('#stok_referensiEditStok');
         const stok = stokModal.querySelector('#stok_tambahKurangStok');
-        if (statusPembayaran === 'lunas') {
-            formCicilanEdit.style.display = 'none';
-            nominalTerbayar.readOnly = true;
-            tenggatBayar.readOnly = true;
-            let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
-            nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
-        } else if (statusPembayaran === 'hutang') {
-            formCicilanEdit.style.display = 'block';
-            nominalTerbayar.readOnly = false;
-            tenggatBayar.readOnly = false;
-            nominalTerbayar.value = 0;
-        }
+        // if (statusPembayaran === 'lunas') {
+        //     formCicilanEdit.style.display = 'none';
+        //     nominalTerbayar.readOnly = true;
+        //     tenggatBayar.readOnly = true;
+        //     let harga_pemasok = stokReferensi.getAttribute('harga-pemasok');
+        //     nominalTerbayar.value = parseFloat(harga_pemasok) * stok.value;
+        // } else if (statusPembayaran === 'hutang') {
+        //     formCicilanEdit.style.display = 'block';
+        //     nominalTerbayar.readOnly = false;
+        //     tenggatBayar.readOnly = false;
+        //     nominalTerbayar.value = 0;
+        // }
     }
 
     // Fungsi untuk menangani perubahan status pembayaran
@@ -842,7 +842,7 @@
 
         function updateStokEdit() {
             var stokReferensiHasil = $('#stok_referensiHasilEdit');
-            console.log(stokReferensiHasil);
+
             var stokKurang = parseFloat($('#stok_tambahKurangStok').val()); // Changed to parseFloat
 
             if (!isNaN(stokKurang)) {
@@ -903,6 +903,10 @@
 
                     // Mendapatkan elemen select
                     const hutangStokSelect = document.getElementById('hutangStokSelect');
+                    // Remove all existing options
+                    while (hutangStokSelect.options.length > 0) {
+                        hutangStokSelect.remove(0);
+                    }
 
                     // Mengisi select option dengan data dari hutangDanStokList
                     hutangDanStokList.forEach(stok => {
@@ -939,9 +943,29 @@
             if (stokTambahKurangStok.value > totalStokAwal) {
                 checkStokIsNotValidMessage(totalStokAwal, true);
                 stokTambahKurangStok.value = totalStokAwal
+                // Update stok referensi
+                var stokReferensiHasil = $('#stok_referensiHasilEdit');
+
+                let maxReferensi = parseFloat(stokReferensiHasil.attr('max')); // Changed to parseFloat
+
+                var stokKurang = parseFloat($('#stok_tambahKurangStok').val()); // Changed to parseFloat
+                // Update the value and ensure it has up to two decimal places
+                stokReferensiHasil.val((maxReferensi - stokKurang).toFixed(2));
+                return false;
             } else if (stokTambahKurangStok.value < 0) {
                 checkStokIsNotValidMessage(totalStokAwal, true);
                 stokTambahKurangStok.value = 0;
+
+
+                // Update stok referensi
+                var stokReferensiHasil = $('#stok_referensiHasilEdit');
+
+                let maxReferensi = parseFloat(stokReferensiHasil.attr('max')); // Changed to parseFloat
+
+                var stokKurang = parseFloat($('#stok_tambahKurangStok').val()); // Changed to parseFloat
+                // Update the value and ensure it has up to two decimal places
+                stokReferensiHasil.val((maxReferensi - stokKurang).toFixed(2));
+                return false;
             } else {
                 checkStokIsNotValidMessage(totalStokAwal, false);
             }
@@ -960,7 +984,7 @@
 
         hutangStokSelect.addEventListener('change', updateStokChangeDisplay);
         stokTambahKurangStok.addEventListener('input', updateStokChangeDisplay);
-        updateStokChangeDisplay();
+        // updateStokChangeDisplay();
 
 
         // Validasi stok
@@ -972,6 +996,9 @@
             if (minus) {
                 validationElement.classList.add('invalid-feedback', 'd-block');
                 validationElement.textContent = `Pengurangan stok harus antara 0 - ${stok}`;
+
+
+
             } else {
                 validationElement.classList.remove('invalid-feedback', 'd-block');
                 validationElement.textContent = '';

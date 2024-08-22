@@ -128,7 +128,7 @@ Route::middleware(['auth', 'check-tanggal'])->group(function () {
 
 
 
-    Route::prefix('stok-hutang')->group(function () {
+    Route::prefix('lacak-stok')->group(function () {
         // Menampilkan daftar hutang dan stok
         Route::get('/index/{id_barang}', [HutangDanStokController::class, 'index'])
             ->name('hutang-dan-stok.index');

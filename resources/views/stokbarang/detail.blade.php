@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Hutang dan Stok')
+@section('title', 'Lacak Stok')
 @section('header-custom')
     <link href="{{ secure_asset('library/datatable/datatables.min.css') }}" rel="stylesheet">
 @endsection
@@ -8,9 +8,36 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                @php
+                    $detailError = session('detail_error');
+                    $errorMsg = $detailError ? json_decode($detailError, true)['errorMsg'] ?? null : null;
+                @endphp
+
+                @if ($errorMsg)
+                    <br>
+                    {{ $errorMsg }}
+                @endif
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Hutang dan Stok</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Lacak Stok</h6>
             </div>
             <div class="card-body">
                 <div class="mb-3">
@@ -28,6 +55,7 @@
                                 <th>DP</th>
                                 <th>Nominal Terbayar</th>
                                 <th>Stok</th>
+                                <th data-orderable="false">Dibuat Tanggal</th>
 
                                 <th data-orderable="false">Aksi</th>
                             </tr>
@@ -41,10 +69,9 @@
                                     <td>{{ number_format($item->dp, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->nominal_terbayar, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->stok, 1, '.', '') }}</td>
+                                    <td>{{ $item->created_at }}</td>
                                     <td>
                                         @if (Auth::user()->role == 'admin')
-                                           
-
                                             <!-- Tombol Hapus -->
                                             <button class="btn btn-danger btn-sm"
                                                 onclick="funcHapusHutangStok(`{{ route('hutang-dan-stok.destroy', ['id' => $item->id_hutang_stok]) }}`)">
@@ -156,7 +183,7 @@
 
     <script>
         function funcEditHutangStok(url) {
-           
+
             // Mengambil data dari server menggunakan AJAX
             $.get(url, function(data) {
                 // Isi form di modal edit dengan data yang didapat

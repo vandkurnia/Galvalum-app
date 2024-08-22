@@ -23,13 +23,13 @@ class Barang extends Model
         'stok_seluruh',
         'ukuran',
         // 'status_pembayaran',
-        'dp_barang',
+        // 'dp_barang',
         'total',
         'nominal_terbayar',
         'tenggat_bayar',
         'id_pemasok',
         'id_tipe_barang',
-        'id_bukubesar'
+        // 'id_bukubesar'
     ];
 
 

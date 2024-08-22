@@ -57,7 +57,7 @@ class ReturPemasokController extends Controller
             'bukti_retur_pemasok' => 'required', // 10MB max
             'jenis_retur' => 'required|in:Rusak,Tidak Rusak',
             'retur_data' => 'required',
-            'hutang_stok' => 'required|exists:hutang_dan_stok,id_hutang_stok'
+            'hutang_stok' => 'required|exists:lacak_stok,id_hutang_stok'
             // 'nominal_terbayar' => 'required'
         ]);
 
@@ -177,6 +177,7 @@ class ReturPemasokController extends Controller
                 $returPemasok->total = $barang->harga_barang_pemasok * $item['qty'];
                 $returPemasok->qty = $item['qty'];
                 $returPemasok->qty_sebelum_perubahan = null;
+                $returPemasok->id_hutang_stok = $request->hutang_stok;
 
                 if ($validatedData['jenis_retur'] == 'Rusak') {
 
@@ -305,8 +306,8 @@ class ReturPemasokController extends Controller
 
                 // Hutang dan Stok
                 $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
-                $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $updateHutangdanStok->harga_beli;
-                $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
+                $updateHutangdanStok->total -= $item['qty'] * $updateHutangdanStok->harga_beli;
+                $updateHutangdanStok->stok -= $item['qty'];
                 $updateHutangdanStok->save();
 
                 // Periksa kondisi untuk tanggal penyelesaian
@@ -414,6 +415,7 @@ class ReturPemasokController extends Controller
 
     public function destroy($id_retur)
     {
+        DB::beginTransaction();
 
         $dataRetur = ReturPemasokModel::find($this->hashToId($id_retur)->id_retur_pemasok);
         if ($dataRetur) {
@@ -457,6 +459,13 @@ class ReturPemasokController extends Controller
             $dataRetur->delete();
 
 
+            
+
+            $hutangDanStok = HutangDanStokModel::where('id_hutang_stok', $dataRetur->id_hutang_stok)->first();
+            
+            $hutangDanStok->stok += $dataRetur->qty;
+            $hutangDanStok->total += $dataRetur->qty + $hutangDanStok->harga_beli;
+            $hutangDanStok->save();
 
             // Periksa kondisi untuk tanggal penyelesaian
             if ($barang->nominal_terbayar == $barang->total && is_null($barang->tanggal_penyelesaian)) {
@@ -466,8 +475,11 @@ class ReturPemasokController extends Controller
                 $barang->tanggal_penyelesaian = null;
                 $barang->save();
             }
+
+            DB::commit();
             return redirect()->route('retur.index')->with('success', 'Retur berhasil dihapus');
         } else {
+            DB::rollBack();
             return redirect()->route('retur.index')->with('error', 'Retur tidak ditemukan');
         }
     }

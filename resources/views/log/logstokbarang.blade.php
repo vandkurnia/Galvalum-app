@@ -113,9 +113,9 @@
 
                                 <thead>
                                     <tr>
-                                        <th>Stok</th>
-                                        <th>Stok Masuk</th>
-                                        <th>Stok Keluar</th>
+                                        <th style="width: 100px;">Stok</th>
+                                        <th style="width: 100px;">Stok Masuk</th>
+                                        <th style="width: 100px;">Stok Keluar</th>
                                         <th>Keterangan</th>
                                     </tr>
                                 </thead>

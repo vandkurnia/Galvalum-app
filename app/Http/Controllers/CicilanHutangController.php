@@ -28,13 +28,13 @@ class CicilanHutangController extends Controller
         // return redirect()->back();
         $stokHutangData = HutangDanStokModel::with('riwayatHutang')->find($id_hutang_dan_stok);
         // $barangData = Barang::where('hash_id_barang', $id_barang)->with('riwayatHutang')->first();
-        if ($stokHutangData->nominal_terbayar == $stokHutangData->total && is_null($stokHutangData->tanggal_penyelesaian)) {
-            $stokHutangData->tanggal_penyelesaian = $stokHutangData->updated_at;  // Atau $stokHutangData->updated_at jika diperlukan
-            $stokHutangData->save();
-        } elseif ($stokHutangData->nominal_terbayar != $stokHutangData->total && !is_null($stokHutangData->tanggal_penyelesaian)) {
-            $stokHutangData->tanggal_penyelesaian = null;
-            $stokHutangData->save();
-        }
+        // if ($stokHutangData->nominal_terbayar == $stokHutangData->total && is_null($stokHutangData->tanggal_penyelesaian)) {
+        //     $stokHutangData->tanggal_penyelesaian = $stokHutangData->updated_at;  // Atau $stokHutangData->updated_at jika diperlukan
+        //     $stokHutangData->save();
+        // } elseif ($stokHutangData->nominal_terbayar != $stokHutangData->total && !is_null($stokHutangData->tanggal_penyelesaian)) {
+        //     $stokHutangData->tanggal_penyelesaian = null;
+        //     $stokHutangData->save();
+        // }
         // dd($barangData);
 
         return view('cicilan.hutang.index', compact('stokHutangData'));
