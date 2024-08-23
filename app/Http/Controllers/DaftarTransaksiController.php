@@ -122,7 +122,7 @@ class DaftarTransaksiController extends Controller
             $totalLoadTime = $endTime - $startTime;
 
             // Debug total load time
-            debug("total Load time :" . $totalLoadTime . ' seconds');
+            // debug("total Load time :" . $totalLoadTime . ' seconds');
             // Return the data in DataTable format
             return response()->json([
                 'draw' => $request->input('draw'),
