@@ -1179,7 +1179,7 @@
                 const hargaBarang = floatVal(hargaBarangCell.textContent);
 
                 const stokCell = row.querySelector('td:nth-child(8)');
-                const stok = floatVal(stokCell.textContent);
+                const stok = parseFloat(stokCell.textContent);
 
                 // Get Harga Pemasok (column 6)
                 const hargaPemasokCell = row.querySelector('td:nth-child(7)');
