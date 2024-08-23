@@ -64,7 +64,7 @@
             <div class="card-body">
 
                 <h4>Tersisa : Rp.
-                        {{ number_format($stokHutangData->total - ($stokHutangData->nominal_terbayar + $stokHutangData->dp_barang), 0, ',', '.') }}
+                        {{ number_format($stokHutangData->total - ($stokHutangData->nominal_terbayar + $stokHutangData->dp), 0, ',', '.') }}
                 </h4>
 
                 <h4>Jatuh Tempo:
