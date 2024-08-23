@@ -1079,72 +1079,122 @@
     <script>
         $(document).ready(function() {
             $('#stokbarang').DataTable({
-                "columnDefs": [{
-                        "orderable": false,
-                        "targets": [8, 9]
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: window.location.href,
+                    data: function(d) {
+                        d.api = 'yes'; // Add query parameter for backend processing
+                    }
+                },
+                columns: [{
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            // `meta.row` is the index of the row
+                            return meta.row + 1; // Add 1 to start numbering from 1
+                        }
+                    },
+                    {
+                        data: 'pemasok'
+                    },
+                    {
+                        data: 'nama_barang'
+                    },
+                    {
+                        data: 'tipe_barang'
+                    },
+                    {
+                        data: 'ukuran_barang'
+                    },
+                    {
+                        data: 'harga_barang'
+                    },
+                    {
+                        data: 'harga_pemasok'
+                    },
+                    {
+                        data: 'stok'
+                    },
+                    {
+                        data: 'retur',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'aksi',
+                        orderable: false,
+                        searchable: false
+                    },
+
+                    {
+                        data: 'log',
+                        orderable: false,
+                        searchable: false
+                    },
+
+                ],
+                order: [
+                    [0, 'asc']
+                ],
+                columnDefs: [{
+                        orderable: false,
+                        targets: [8, 9]
                     } // Disable sorting on the "Retur" and "Aksi" columns
                 ],
-                "footerCallback": function(row, data, start, end, display) {
-                    var api = this.api();
-
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function(i) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\Rp.,]/g, '') * 1 :
-                            typeof i === 'number' ?
-                            i : 0;
-                    };
-
-                    // Function to parse values as floats
-                    var floatVal = function(i) {
-                        return typeof i === 'string' ?
-                            parseFloat(i.replace(/[\$,]/g, '')) :
-                            // Remove any commas or dollar signs, then parse as float
-                            typeof i === 'number' ?
-                            i : 0;
-                    }
-
-                    // Calculate total for Harga Penjualan
-                    var totalHargaPenjualan = api
-                        .column(5, {
-                            page: 'current'
-                        })
-                        .nodes()
-                        .reduce(function(sum, cell) {
-                            var hargaPenjualan = parseFloat($(cell).data('harga-jual'))
-
-                            var stok = parseFloat($(cell).siblings('[data-stok]').data('stok'));
-
-                            // return intVal(a) + intVal(b);
-                            return sum + (hargaPenjualan * stok);
-                        }, 0);
-
-                    // Calculate total for Harga Pemasok
-                    // Calculate the total Harga Pemasok and total Stok
-                    var totalHargaPemasok = api.column(6, {
-                        page: 'current'
-                    }).nodes().reduce(function(sum, cell) {
-                        var hargaPemasok = parseFloat($(cell).data('harga'));
-                        var stok = parseFloat($(cell).siblings('[data-stok]').data('stok'));
-                        return sum + (hargaPemasok * stok);
-                    }, 0);
-
-                    // Calculate total for Stok
-                    var totalStok = api
-                        .column(7, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function(a, b) {
-                            return floatVal(a) + floatVal(b);
-                        }, 0);
-
-                    // Update footer
-                    $(api.column(5).footer()).html('Rp. ' + totalHargaPenjualan.toLocaleString());
-                    $(api.column(6).footer()).html('Rp. ' + totalHargaPemasok.toLocaleString());
-                    $(api.column(7).footer()).html(totalStok.toLocaleString());
+                // Your DataTable options here...
+                drawCallback: function() {
+                    hitungFooterTable(); // Call the function after each draw
                 }
+
+
+
             });
         });
+
+
+
+
+        function hitungFooterTable() {
+            // Function to parse values as floats
+            function floatVal(i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[\Rp.,]/g, '')) :
+                    typeof i === 'number' ?
+                    i : 0;
+            }
+
+            // Calculate total for Harga Penjualan * Stok
+            let totalHargaPenjualan = 0;
+            let totalHargaPemasok = 0;
+            let totalStok = 0;
+
+            // Select all rows in the table body
+            const rows = document.querySelectorAll('#stokbarang tbody tr');
+
+            rows.forEach(row => {
+                // Get Harga Penjualan (column 5) and Stok (column 7)
+                const hargaBarangCell = row.querySelector('td:nth-child(6)');
+                const hargaBarang = floatVal(hargaBarangCell.textContent);
+
+                const stokCell = row.querySelector('td:nth-child(8)');
+                const stok = floatVal(stokCell.textContent);
+
+                // Get Harga Pemasok (column 6)
+                const hargaPemasokCell = row.querySelector('td:nth-child(7)');
+                const hargaPemasok = floatVal(hargaPemasokCell.textContent);
+
+                // Calculate totals
+                totalHargaPenjualan += hargaBarang * stok;
+                totalHargaPemasok += hargaPemasok * stok;
+                totalStok += stok;
+            });
+
+            // Update footer
+            document.querySelector('#totalHargaPenjualan').textContent = 'Rp. ' + totalHargaPenjualan.toLocaleString();
+            document.querySelector('#totalHargaPemasok').textContent = 'Rp. ' + totalHargaPemasok.toLocaleString();
+            document.querySelector('#totalStok').textContent = totalStok.toLocaleString();
+        }
     </script>
 @endsection

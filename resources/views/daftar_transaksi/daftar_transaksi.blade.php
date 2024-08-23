@@ -18,8 +18,7 @@
                 <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control"
-                            onchange="this.form.submit()">
+                        <input type="date" id="tanggal" name="tanggal" class="form-control">
                     </div>
                 </form>
             </div>
@@ -44,11 +43,15 @@
                                 <th data-orderable="false">Cetak</th>
                                 <th data-orderable="false">Aksi</th>
 
-                                @if (Auth::user()->role == 'admin')
-                                    <th data-orderable="false">
+
+                                <th data-orderable="false">
+                                    @if (Auth::user()->role == 'admin')
                                         Log
-                                    </th>
-                                @endif
+                                    @else
+                                        -
+                                    @endif
+                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -101,15 +104,16 @@
                                         @endif
                                     </td>
 
-                                    @if (Auth::user()->role == 'admin')
-                                        <td>
+
+                                    <td>
+                                        @if (Auth::user()->role == 'admin')
                                             <a href="{{ route('log-nota.index', ['id_nota' => $notaPembeli['id_nota']]) }}"
                                                 class="btn btn-info btn-sm">
                                                 <i class="fas fa-info-circle"></i>
                                             </a>
+                                        @endif
+                                    </td>
 
-                                        </td>
-                                    @endif
 
                                 </tr>
                             @endforeach
@@ -189,7 +193,137 @@
     <script src="{{ secure_asset('library/datatable/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#dataTransaksi').DataTable();
+            // Get the current URL and append `?api=yes`
+            let currentUrl = window.location.href;
+
+            if (currentUrl.indexOf('?') === -1) {
+                currentUrl += '?api=yes';
+            } else {
+                currentUrl += '&api=yes';
+            }
+
+            // Set the default date to today (Y-m-d format)
+            let today = new Date().toISOString().slice(0, 10);
+            $('#tanggal').val(today);
+
+            // Initialize the DataTable
+            const dataTransaksi = $('#dataTransaksi').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: currentUrl,
+                    type: 'GET',
+                    data: function(d) {
+                        d.dateFilter = $('#tanggal').val();
+                    }
+                },
+                columns: [
+
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            // `meta.row` is the index of the row
+                            return meta.row + 1; // Add 1 to start numbering from 1
+                        }
+                    },
+                    {
+                        
+                        data: 'no_nota',
+                        orderable: false,
+                        name: 'no_nota',
+             
+                    },
+                    {
+                        data: 'pembeli.no_hp_pembeli',
+                        orderable: false,
+                        name: 'pembeli.no_hp_pembeli'
+                    },
+                    {
+                        data: 'pembeli.nama_pembeli',
+                        orderable: false,
+                        name: 'pembeli.nama_pembeli'
+                    },
+                    {
+                        data: 'total_pesanan',
+                        orderable: false,
+                        name: 'total_pesanan'
+                    },
+                    {
+                        data: 'created_at',
+                        orderable: false,
+                        name: 'created_at',
+                        render: function(data) {
+                            return new Date(data).toISOString().slice(0, 10);
+                        }
+                    },
+                    {
+                        data: 'created_at',
+                        orderable: false,
+                        name: 'created_at',
+                        render: function(data) {
+                            return new Date(data).toISOString().slice(11, 16);
+                        }
+                    },
+                    {
+                        data: 'total',
+                        orderable: false,
+                        name: 'total'
+                    },
+                    {
+                        data: 'status_pembayaran',
+                  
+                        name: 'status_pembayaran',
+                        orderable: false
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                        render: function(data) {
+                            return new Date(data).toISOString().slice(0, 10);
+                        },
+                        orderable: false
+                    },
+                    {
+                        data: 'metode_pembayaran',
+                       
+                        name: 'metode_pembayaran'
+                    },
+                    {
+                        data: "cetak_invoice",
+                        orderable: false,
+                        render: function(data, type, row) {
+                            return data; // This will render the HTML buttons directly
+                        }
+
+                    },
+                    {
+                        data: "action_buttons",
+                        orderable: false,
+                        render: function(data, type, row) {
+                            return data; // This will render the HTML buttons directly
+                        }
+                    },
+                    {
+                        data: "log_button",
+                        orderable: false,
+                        render: function(data, type, row) {
+                            return data; // This will render the HTML buttons directly
+                        }
+
+                    }
+                ]
+            });
+            // Reload DataTable when the date changes
+            $('#tanggal').on('change', function() {
+                dataTransaksi.ajax.reload();
+            });
+
+            // Reload DataTable when the search input changes
+            $('#dataTransaksi_filter input').on('keyup', function() {
+                dataTransaksi.search(this.value).draw();
+            });
         });
     </script>
     <script>

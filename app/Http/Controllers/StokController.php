@@ -19,15 +19,83 @@ use Illuminate\Support\Facades\Validator;
 
 class StokController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataSemuaBarang = Barang::with('pemasok', 'tipeBarang', 'stokBarang')->get();
-        $dataBaruSemuaBarang = [];
-        foreach ($dataSemuaBarang as $barang) {
-            // $totalStok = $barang->stokBarang->sum('stok_masuk') - $barang->stokBarang->sum('stok_keluar');
-            // $barang->stok = $totalStok;
-            $dataBaruSemuaBarang[] = $barang;
+        if ($request->has('api') && $request->api == 'yes') {
+            $columns = [
+                0 => 'id_barang',
+                1 => 'pemasok.nama_pemasok',
+                2 => 'nama_barang',
+                3 => 'tipeBarang.nama_tipe',
+                4 => 'ukuran',
+                5 => 'harga_barang',
+                6 => 'harga_barang_pemasok',
+                7 => 'stok',
+            ];
+
+            $query = Barang::with('pemasok', 'tipeBarang', 'stokBarang');
+
+            // Search functionality
+            if (!empty($request->input('search.value'))) {
+                $search = $request->input('search.value');
+                $query->where(function ($query) use ($search) {
+                    $query->where('nama_barang', 'like', "%{$search}%")
+                        ->orWhereHas('pemasok', function ($q) use ($search) {
+                            $q->where('nama_pemasok', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('tipeBarang', function ($q) use ($search) {
+                            $q->where('nama_tipe', 'like', "%{$search}%");
+                        });
+                });
+            }
+
+            // Ordering functionality
+            if ($request->has('order')) {
+                $order = $request->input('order.0.column');
+                $dir = $request->input('order.0.dir');
+                $query->orderBy($columns[$order], $dir);
+            } else {
+                $query->orderBy('id_barang', 'asc');
+            }
+
+            // Pagination
+            $start = $request->input('start');
+            $length = $request->input('length');
+            $totalRecords = $query->count();
+
+            $dataSemuaBarang = $query->offset($start)->limit($length)->get();
+
+            $data = [];
+            foreach ($dataSemuaBarang as $index => $databarang) {
+                $data[] = [
+                    'no' => $start + $index + 1,
+                    'pemasok' => $databarang->pemasok->nama_pemasok ?? '-',
+                    'nama_barang' => $databarang->nama_barang,
+                    'tipe_barang' => $databarang->tipeBarang->nama_tipe,
+                    'ukuran_barang' => $databarang->ukuran,
+                    'harga_barang' => number_format($databarang->harga_barang, 0, ',', '.'),
+                    'harga_pemasok' => number_format($databarang->harga_barang_pemasok, 0, ',', '.'),
+                    'stok' => number_format($databarang->stok, 1, '.', ''),
+                    'retur' => Auth::user()->role == 'admin' ? '<button class="btn btn-primary btn-sm" onclick="location.href=\'' . route('retur.pemasok.add', ['id_pesanan' => $databarang->hash_id_barang]) . '\'">Retur</button>' : '',
+                    'aksi' => Auth::user()->role == 'admin' ? '
+                        <a href="' . route('hutang-dan-stok.index', ['id_barang' => $databarang->id_barang]) . '" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <button class="btn btn-primary" onclick="funcTambahStok(\'' . route('stok.detail', ['id' => $databarang->hash_id_barang]) . '\')"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-danger" onclick="funcKurangStok(\'' . route('stok.detail', ['id' => $databarang->hash_id_barang]) . '\')"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary" onclick="funcEditStok(\'' . route('stok.edit', ['id' => $databarang->hash_id_barang]) . '\')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger" onclick="funcHapusStok(\'' . route('stok.destroy', ['id' => $databarang->hash_id_barang]) . '\', 0)"><i class="fas fa-trash"></i></button>' : '',
+                    'log' => Auth::user()->role == 'admin' ? '<a href="' . route('log-stok-barang.index', ['id_barang' => $databarang->hash_id_barang]) . '" class="btn btn-info"><i class="fas fa-info-circle"></i></a>' : ''
+                ];
+            }
+            return response()->json([
+                "draw" => intval($request->input('draw')),
+                "recordsTotal" => intval($totalRecords),
+                "recordsFiltered" => intval($totalRecords),
+                "data" => $data
+            ]);
+        } else {
+            $dataBaruSemuaBarang = [];
         }
+
 
 
         $dataTipeBarang = TipeBarang::all();
