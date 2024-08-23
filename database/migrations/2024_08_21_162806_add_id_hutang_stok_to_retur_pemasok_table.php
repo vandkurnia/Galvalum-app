@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::table('retur_pemasok', function (Blueprint $table) {
             // Add the id_hutang_stok column, which is nullable
-            $table->unsignedBigInteger('id_hutang_stok')->nullable();
+            $table->unsignedBigInteger('id_hutang_stok');
 
             // Add foreign key constraint
-            $table->foreign('id_hutang_stok')->references('id_hutang_stok')->on('lacak_stok')->onDelete('set null');
+            $table->foreign('id_hutang_stok')->references('id_hutang_stok')->on('lacak_stok')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
