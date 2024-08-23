@@ -18,7 +18,7 @@
                 <form>
                     <div class="form-group">
                         <label for="tanggal">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control">
+                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}">
                     </div>
                 </form>
             </div>
@@ -203,8 +203,8 @@
             }
 
             // Set the default date to today (Y-m-d format)
-            let today = new Date().toISOString().slice(0, 10);
-            $('#tanggal').val(today);
+            // let today = new Date().toISOString().slice(0, 10);
+            // $('#tanggal').val();
 
             // Initialize the DataTable
             const dataTransaksi = $('#dataTransaksi').DataTable({

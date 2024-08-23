@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CheckTenggatWaktu;
 use App\Models\Barang;
 use App\Models\CustomNotification;
+use App\Models\HutangDanStokModel;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -60,19 +61,23 @@ class CheckTenggatWaktuListener
             }
         }
 
-        $barangs = Barang::whereDate('tenggat_bayar', $today)->get();
+        $lacakStoks = HutangDanStokModel::with('barang')
+            ->whereDate('tenggat_waktu', $today)
+            ->whereRaw('total > (dp + nominal_terbayar)')
+            ->get();
+     
 
-        foreach ($barangs as $barang) {
+        foreach ($lacakStoks as $lacakStok) {
             $exists = CustomNotification::where('type', 'hutang')
-                ->where('id_data', $barang->id_barang)
+                ->where('id_data', $lacakStok->id_barang)
                 ->exists();
 
             if (!$exists) {
                 CustomNotification::create([
                     'type' => 'hutang',
-                    'id_data' => $barang->id_barang,
+                    'id_data' => $lacakStok->id_barang,
                     'icon' => 'fas fa-exclamation-triangle text-white',
-                    'message' => "Barang {$barang->nama_barang} jatuh tempo pembayaran pada hari ini.",
+                    'message' => "Barang {$lacakStok->barang->nama_barang} jatuh tempo pembayaran pada hari ini.",
                 ]);
             }
         }
