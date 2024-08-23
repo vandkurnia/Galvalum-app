@@ -665,7 +665,7 @@
                         <label for="tenggatBayar">Tenggat Waktu Bayar: </label>
                         <input type="date" class="form-control" name="tenggat_bayar" id="tenggatBayar"
                             value="{{ $notaPembelian->tenggat_bayar != null ? date('Y-m-d', strtotime($notaPembelian->tenggat_bayar)) : date('Y-m-d') }}"
-                            {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? 'disabled' : '' }}>
+                            {{ $notaPembelian->total == $notaPembelian->nominal_terbayar + $notaPembelian->dp ? '' : '' }}>
                     </div>
                     <div class="form-group">
                         <label for="total">Total</label>
