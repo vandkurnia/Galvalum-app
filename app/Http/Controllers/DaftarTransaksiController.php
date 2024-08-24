@@ -104,6 +104,9 @@ class DaftarTransaksiController extends Controller
 
 
                     $logButton = '<a href="' . route('log-nota.index', ['id_nota' => $nota['id_nota']]) . '" class="btn btn-info "><i class="fas fa-info-circle"></i></a>';
+                } else {
+                    $logButton = '';
+
                 }
                 // Add additional fields to the response data
                 $dataNotaPembeli[$index]['status_pembayaran'] = $statusPembayaran;
