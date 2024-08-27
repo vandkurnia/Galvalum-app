@@ -872,6 +872,8 @@ class PembelianController extends Controller
             // }
             $notaPembeli->bukuBesar->delete();
             foreach ($notaPembeli->Piutang as $Piutang) {
+                $bukubesarPiutang = BukubesarModel::find($Piutang->id_bukubesar);
+                $bukubesarPiutang->delete();
                 $Piutang->delete();
             }
 
@@ -933,12 +935,12 @@ class PembelianController extends Controller
                 $returPembeli->delete();
             }
 
-            // Hapus Semua Laporan Piutang
-            // Check if NotaPembeli is found
-            if ($notaPembeli) {
-                // Delete all related bukuBesar records
-                $notaPembeli->bukuBesar()->delete();
-            }
+            // // Hapus Semua Laporan Piutang
+            // // Check if NotaPembeli is found
+            // if ($notaPembeli) {
+            //     // Delete all related bukuBesar records
+            //     $notaPembeli->bukuBesar()->delete();
+            // }
 
             // Hapus NotaPembeli itu sendiri
             $notaPembeli->delete();
