@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // AkunBayarSeeder::class,
+            AkunBayarSeeder::class,
             // BukubesarSeeder::class,
-            // UserSeeder::class,
-            // KategoriSeeder::class,
-            // TipeBarangSeeder::class,
-            // PemasokSeeder::class,
+            UserSeeder::class,
+            KategoriSeeder::class,
+            TipeBarangSeeder::class,
+            PemasokSeeder::class,
             // BarangSeeder::class,
 
             // DiskonSeeder::class,
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             // CustomNotificationSeeder::class
 
             // MigrasiData4::class
-            MigrasiData5::class
+            // MigrasiData5::class
 
         ]);
     }

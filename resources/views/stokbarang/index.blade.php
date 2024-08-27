@@ -20,6 +20,8 @@
             </div>
         @endif
 
+
+
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
@@ -1176,14 +1178,16 @@
             rows.forEach(row => {
                 // Get Harga Penjualan (column 5) and Stok (column 7)
                 const hargaBarangCell = row.querySelector('td:nth-child(6)');
-                const hargaBarang = floatVal(hargaBarangCell.textContent);
+                const hargaBarang = hargaBarangCell && hargaBarangCell.textContent.trim() !== '' ? floatVal(
+                    hargaBarangCell.textContent) : 0;
 
                 const stokCell = row.querySelector('td:nth-child(8)');
-                const stok = parseFloat(stokCell.textContent);
+                const stok = stokCell && stokCell.textContent.trim() !== '' ? parseFloat(stokCell.textContent) : 0;
 
                 // Get Harga Pemasok (column 6)
                 const hargaPemasokCell = row.querySelector('td:nth-child(7)');
-                const hargaPemasok = floatVal(hargaPemasokCell.textContent);
+                const hargaPemasok = hargaPemasokCell && hargaPemasokCell.textContent.trim() !== '' ? floatVal(
+                    hargaPemasokCell.textContent) : 0;
 
                 // Calculate totals
                 totalHargaPenjualan += hargaBarang * stok;

@@ -285,7 +285,7 @@ class CicilanPiutangController extends Controller
 
             $data = [
                 'nominal' => $request->input('nominal'),
-                'id_nota' => $request->input('id_nota'),
+                'id_nota' => $id_nota,
             ];
 
             $result = $this->updateCicilan($id_piutang, $data);
