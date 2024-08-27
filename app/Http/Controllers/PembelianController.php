@@ -740,20 +740,17 @@ class PembelianController extends Controller
 
 
         $piutangData = $request->has('piutangData') ? json_decode($request->piutangData, true) : [];
-      
         foreach ($piutangData as $piutang) {
-          
             switch ($piutang['status']) {
                 case 'exist':
                     $cicilanPiutang =  new CicilanPiutangController();
-                   
 
                     $dataPiutang = [
                         'nominal' => (float) $piutang['nominal'],
                         'id_nota' => $updateNotaPembeli->id_nota
                     ];
 
-                    $statusPiutang = $cicilanPiutang->updateCicilan($piutang['id_piutang'],$dataPiutang);
+                    $statusPiutang = $cicilanPiutang->updateCicilan($piutang['id_piutang'], $dataPiutang);
 
                     if ($statusPiutang['status'] != 'success') {
                         DB::rollBack();
@@ -813,8 +810,25 @@ class PembelianController extends Controller
 
 
         $bukuBesarDpUpdate =  BukubesarModel::find($updateNotaPembeli2->id_bukubesar);
-        $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
-        $bukuBesarDpUpdate->save();
+        // for NEW UPDATE find the data why it is missing !
+        if ($bukuBesarDpUpdate) {
+            // If it exists, update the debit value
+            $bukuBesarDpUpdate->debit = $updateNotaPembeli2->dp;
+            $bukuBesarDpUpdate->save();
+        } else {
+            // If it doesn't exist, create a new BukubesarModel entry with "NEW UPDATE" in the keterangan
+            $bukuBesarDpPembelian = new BukubesarModel();
+            $bukuBesarDpPembelian->id_akunbayar = 1;
+            $bukuBesarDpPembelian->tanggal = date('Y-m-d'); // Tanggal saat ini
+            $bukuBesarDpPembelian->kategori = 'transaksi';
+            $bukuBesarDpPembelian->keterangan = 'NOTA ' . $notaPembeli->no_nota . ' NEW UPDATE'; // Keterangan with "NEW UPDATE"
+            $bukuBesarDpPembelian->debit = $updateNotaPembeli2->dp; // Misalnya debit sebesar 1000
+            $bukuBesarDpPembelian->save();
+
+            // Optionally, update the id_bukubesar in $updateNotaPembeli2 if needed
+            $updateNotaPembeli2->id_bukubesar = $bukuBesarDpPembelian->id_bukubesar;
+            $updateNotaPembeli2->save();
+        }
 
 
         // Log Nota

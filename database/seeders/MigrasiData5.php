@@ -288,7 +288,7 @@ class MigrasiData5 extends Seeder
                 'no_nota' => $nota_pembeli->no_nota,
                 'id_pembeli' => $nota_pembeli->id_pembeli,
                 'id_admin' => $nota_pembeli->id_admin,
-                'id_bukubesar' =>  null,
+                'id_bukubesar' =>  $nota_pembeli->id_bukubesar,
                 'metode_pembayaran' => $nota_pembeli->metode_pembayaran,
                 'sub_total' => $nota_pembeli->sub_total,
                 'nominal_terbayar' => $nota_pembeli->nominal_terbayar,

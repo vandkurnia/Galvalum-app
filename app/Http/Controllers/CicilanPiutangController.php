@@ -114,15 +114,15 @@ class CicilanPiutangController extends Controller
                 }
             }
 
-            // Check for overpayment
-            if (($notaPembelian->nominal_terbayar + $notaPembelian->dp) > $notaPembelian->total) {
+            // // Check for overpayment
+            // if (($notaPembelian->nominal_terbayar + $notaPembelian->dp) > $notaPembelian->total) {
 
-                return [
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Nota piutang gagal karena nominal bayar lebih besar dari total pesanan.'
-                ];
-            }
+            //     return [
+            //         'status' => 'error',
+            //         'code' => 400,
+            //         'message' => 'Nota piutang gagal karena nominal bayar lebih besar dari total pesanan.'
+            //     ];
+            // }
 
             // Save updated NotaPembelian
             $notaPembelian->save();
@@ -237,15 +237,15 @@ class CicilanPiutangController extends Controller
                 }
             }
 
-            // Prevent overpayment
-            if ($notaPembelian->nominal_terbayar > $notaPembelian->total) {
+            // // Prevent overpayment
+            // if ($notaPembelian->nominal_terbayar > $notaPembelian->total) {
 
-                return [
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Nota piutang gagal diupdate karena nominal bayar lebih besar dari total pesanan.'
-                ];
-            }
+            //     return [
+            //         'status' => 'error',
+            //         'code' => 400,
+            //         'message' => 'Nota piutang gagal diupdate karena nominal bayar lebih besar dari total pesanan.'
+            //     ];
+            // }
 
             // Save the updated NotaPembelian
             $notaPembelian->save();
