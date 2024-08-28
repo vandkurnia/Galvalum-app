@@ -282,7 +282,7 @@ class LaporanController extends Controller
           JOIN 
               pembelis ON pembelis.id_pembeli = nota_pembelis.id_pembeli
           WHERE 
-            ((nota_pembelis.nominal_terbayar + nota_pembelis.dp) = nota_pembelis.total OR (nota_pembelis.nominal_terbayar + nota_pembelis.dp) > nota_pembelis.total) AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
+             (nota_pembelis.nominal_terbayar + nota_pembelis.dp) >= nota_pembelis.total AND nota_pembelis.piutang_is_visible = "yes"  AND nota_pembelis.deleted_at IS NULL
               
       ';
 

@@ -306,8 +306,10 @@ class ReturPemasokController extends Controller
 
                 // Hutang dan Stok
                 $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
-                $updateHutangdanStok->total -= $item['qty'] * $updateHutangdanStok->harga_beli;
                 $updateHutangdanStok->stok -= $item['qty'];
+                
+                $updateHutangdanStok->total = $updateHutangdanStok->stok * $updateHutangdanStok->harga_beli;
+
                 $updateHutangdanStok->save();
 
                 // Periksa kondisi untuk tanggal penyelesaian
@@ -464,7 +466,7 @@ class ReturPemasokController extends Controller
             $hutangDanStok = HutangDanStokModel::where('id_hutang_stok', $dataRetur->id_hutang_stok)->first();
             
             $hutangDanStok->stok += $dataRetur->qty;
-            $hutangDanStok->total += $dataRetur->qty + $hutangDanStok->harga_beli;
+            $hutangDanStok->total = $hutangDanStok->stok * $hutangDanStok->harga_beli;
             $hutangDanStok->save();
 
             // Periksa kondisi untuk tanggal penyelesaian

@@ -72,7 +72,8 @@ class PembelianController extends Controller
         $notaPembeli->nominal_terbayar =  $request->get('nominal_terbayar', 0);
         $notaPembeli->tenggat_bayar = $request->get('tenggat_bayar');
         // Nominal Terbayar
-
+        $notaPembeli->piutang_is_visible = 'yes';
+        
         $notaPembeli->dp = $request->get('dp') ?? 0;
 
 
@@ -865,7 +866,7 @@ class PembelianController extends Controller
 
         ])->where('id_nota', $id)->first();
         DB::beginTransaction();
-        if ($notaPembeli) {
+    if ($notaPembeli) {
             // Hapus semua BukuBesar terkait
             // foreach ($notaPembeli->bukuBesar as $bukuBesar) {
             //     $bukuBesar->delete();

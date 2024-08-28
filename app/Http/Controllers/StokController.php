@@ -225,7 +225,7 @@ class StokController extends Controller
         $bukuBesar->kategori = "barang"; // Isi dengan kategori yang sesuai
         $bukuBesar->keterangan = "Tambah Stok Barang " . $barang->nama_barang; // Isi dengan keterangan yang sesuai
         // $bukuBesar->keterangan = 'STOK BARANG ' . $barang->id_barang . ' STOK- ' . $request->stok; // Isi dengan keterangan yang sesuai
-        $bukuBesar->debit =  $request->get('nominal_terbayar'); // Isi dengan nilai kredit yang sesuai
+        $bukuBesar->debit =  $barang->dp_barang; // Isi dengan nilai kredit yang sesuai
         $bukuBesar->save();
 
 
@@ -799,10 +799,11 @@ class StokController extends Controller
 
         // dd($validatedData['hutang_stok']);
         // Hutang dan Stok
-        $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
-        $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $updateHutangdanStok->harga_beli;
-        $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
-        $updateHutangdanStok->save();
+       
+        // $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
+        // $updateHutangdanStok->total -= $validatedData['stok_kurang'] * $updateHutangdanStok->harga_beli;
+        // $updateHutangdanStok->stok -= $validatedData['stok_kurang'];
+        // $updateHutangdanStok->save();
 
         // $stoktambah = $validatedData['stok_kurang'];
 
