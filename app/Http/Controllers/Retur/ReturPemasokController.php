@@ -305,10 +305,20 @@ class ReturPemasokController extends Controller
 
 
                 // Hutang dan Stok
-                $updateHutangdanStok = HutangDanStokModel::find($validatedData['hutang_stok']);
+                $updateHutangdanStok = HutangDanStokModel::with('barang')->find($validatedData['hutang_stok']);
+             
                 $updateHutangdanStok->stok -= $item['qty'];
                 
-                $updateHutangdanStok->total = $updateHutangdanStok->stok * $updateHutangdanStok->harga_beli;
+                // dd([
+                //     'hutangDanStok' => $updateHutangdanStok,
+                //     'qty_baru' => $item['qty'],
+                //     'harga_beli' => $updateHutangdanStok->harga_beli,
+                //     'total_lama' => $updateHutangdanStok->total,
+                    
+                //     'total_baru' => $updateHutangdanStok->total - ($item['qty'] * $updateHutangdanStok->harga_beli),
+                //     'total_baru2' => $updateHutangdanStok->total - $item['qty'] * $updateHutangdanStok->harga_beli
+                // ]);
+                $updateHutangdanStok->total -= $updateHutangdanStok->stok * $updateHutangdanStok->harga_beli;
 
                 $updateHutangdanStok->save();
 

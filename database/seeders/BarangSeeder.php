@@ -144,23 +144,33 @@ class BarangSeeder extends Seeder
             ]);
             $barangAfterUpdate = DB::table('barangs')->where('id_barang', $id_barang)->first();
 
-            // Hutang dan Stok Barang
-            $hutangDanStokBarangController = new HutangDanStokController();
-            $statusStokBarang = $hutangDanStokBarangController->store([
+            DB::table('lacak_stok')->insert([
                 'harga_beli' => $dtbarang['harga_barang_pemasok'],
                 'total' => $dtbarang['harga_barang_pemasok'] * $dtbarang['stok'],
                 'dp' => $dtbarang['harga_barang_pemasok'] * $dtbarang['stok'],
                 'nominal_terbayar' =>  0,
                 'stok' => $dtbarang['stok'],
-                'tenggat_bayar' => $barangAfterUpdate->tenggat_bayar,
+                'tenggat_waktu' => $barangAfterUpdate->tenggat_bayar,
                 'id_bukubesar' => $id_bukubesar,
                 'id_barang' => $id_barang,
             ]);
+            // // Hutang dan Stok Barang
+            // $hutangDanStokBarangController = new HutangDanStokController();
+            // $statusStokBarang = $hutangDanStokBarangController->store([
+            //     'harga_beli' => $dtbarang['harga_barang_pemasok'],
+            //     'total' => $dtbarang['harga_barang_pemasok'] * $dtbarang['stok'],
+            //     'dp' => $dtbarang['harga_barang_pemasok'] * $dtbarang['stok'],
+            //     'nominal_terbayar' =>  0,
+            //     'stok' => $dtbarang['stok'],
+            //     'tenggat_bayar' => $barangAfterUpdate->tenggat_bayar,
+            //     'id_bukubesar' => $id_bukubesar,
+            //     'id_barang' => $id_barang,
+            // ]);
 
-            if ($statusStokBarang['status'] === 'error') {
-                // Jika terjadi error, rollback dan redirect back dengan pesan error
-                return $statusStokBarang['message'];
-            }
+            // if ($statusStokBarang['status'] === 'error') {
+            //     // Jika terjadi error, rollback dan redirect back dengan pesan error
+            //     return $statusStokBarang['message'];
+            // }
 
             // Insert into StokBarangHistory table
             $id_stok_history = DB::table('stok_barang_history')->insertGetId([

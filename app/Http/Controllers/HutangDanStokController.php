@@ -67,7 +67,7 @@ class HutangDanStokController extends Controller
                 ];
             }
             $hutangDanStok = HutangDanStokModel::create([
-                'harga_beli' => $barang->harga_barang,
+                'harga_beli' => $barang->harga_barang_pemasok,
                 'total' => $data['total'],
                 'dp' => $data['dp'],
                 'nominal_terbayar' => $data['nominal_terbayar'],
