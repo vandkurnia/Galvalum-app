@@ -381,4 +381,21 @@ class CicilanHutangController extends Controller
             // return redirect()->route('cicilan.hutang.index', ['id_barang' => $id_barang])->with('error', 'Kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function notVisible($id_hutang_dan_stok)
+    {
+   
+          // Cari nota pembeli berdasarkan id_nota
+          $hutangDanStok = HutangDanStokModel::find($id_hutang_dan_stok);
+
+          if ($hutangDanStok) {
+              // Update piutang_is_visible menjadi 'no'
+              $hutangDanStok->hidden = 'yes';
+              $hutangDanStok->save();
+  
+              return redirect()->back()->with('success', 'Cicilan berhasil dihapus.');
+          } else {
+              return redirect()->back()->with('error', 'Nota tidak ditemukan.');
+          }
+    }
 }

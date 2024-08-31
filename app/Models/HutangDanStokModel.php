@@ -20,7 +20,8 @@ class HutangDanStokModel extends Model
         'tenggat_waktu',
         'stok',
         'id_bukubesar',
-        'id_barang'
+        'id_barang',
+        'hidden'
     ];
 
     public function bukubesar()

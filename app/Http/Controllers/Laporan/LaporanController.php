@@ -161,44 +161,55 @@ class LaporanController extends Controller
                 ',
             []
         );
-        // $dataLaporanHutang = DB::select(
-        //     '
-        //         SELECT
-        //             barangs.hash_id_barang as id_barang,
-        //             pemasok_barangs.nama_pemasok,
-        //             barangs.nama_barang,
-        //             SUM(stok_barang.stok_masuk - stok_barang.stok_keluar) as total_pesanan,
-        //             pemasok_barangs.created_at as tanggal_stok,
-        //             barangs.total as harga_bayar,
-        //             barangs.nominal_terbayar as jumlah_terbayar,
-        //             barangs.tenggat_bayar as jatuh_tempo,
-        //             CASE
-        //             WHEN barangs.total > barangs.nominal_terbayar THEN "Belum Lunas"
-        //             WHEN barangs.total < barangs.nominal_terbayar THEN "Kelebihan"
-        //             ELSE "Lunas"
-        //             END AS status_pembayaran
-        //         FROM
-        //             `barangs`
-        //         LEFT JOIN
-        //             pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
-        //         JOIN
-        //             stok_barang ON stok_barang.id_barang = barangs.id_barang
-                
-        //         LEFT JOIN
-        //             bukubesar ON bukubesar.id_bukubesar = bukubesar_barang.id_bukubesar
-        //         WHERE barangs.nominal_terbayar < barangs.total
-        //         GROUP BY
-        //             barangs.hash_id_barang, pemasok_barangs.nama_pemasok, barangs.nama_barang, pemasok_barangs.created_at, barangs.total, barangs.nominal_terbayar, barangs.tenggat_bayar; 
-        //         ',
-        //     []
-        // );
+      
 
         // Mengubah hasil query menjadi array
         $dataLaporanHutangArray = collect($dataLaporanHutang)->map(function ($item) {
             return (array) $item;
         })->toArray();
 
-        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray    ]);
+
+        $dataLaporanHutangLunas = DB::select(
+            '
+                SELECT
+                    -- barangs.hash_id_barang as id_barang,
+                    lacak_stok.id_hutang_stok as id_hutang_stok,
+                    pemasok_barangs.nama_pemasok,
+                    barangs.nama_barang,
+                    lacak_stok.stok as total_pesanan,
+                    lacak_stok.updated_at as tanggal_stok,
+                    lacak_stok.created_at as tanggal_stok_alt,
+                    lacak_stok.created_at as jatuh_tempo_alt,
+                    lacak_stok.total as harga_bayar,
+                    (lacak_stok.nominal_terbayar + lacak_stok.dp) as jumlah_terbayar,
+                    lacak_stok.tenggat_waktu as jatuh_tempo,
+                    CASE
+                    WHEN lacak_stok.total > lacak_stok.nominal_terbayar THEN "Belum Lunas"
+                    WHEN lacak_stok.total < lacak_stok.nominal_terbayar THEN "Kelebihan"
+                    ELSE "Lunas"
+                    END AS status_pembayaran
+                FROM
+                    `barangs`
+                LEFT JOIN
+                    pemasok_barangs ON pemasok_barangs.id_pemasok = barangs.id_pemasok
+                JOIN 
+                    lacak_stok ON lacak_stok.id_barang = barangs.id_barang
+              
+               
+                WHERE (lacak_stok.nominal_terbayar + lacak_stok.dp) >= lacak_stok.total AND lacak_stok.deleted_at IS NULL  AND lacak_stok.hidden = "no"
+                ',
+            []
+        );
+       
+        // Mengubah hasil query menjadi array
+        $dataBarangHutangLunasDanKelebihanArray = collect($dataLaporanHutangLunas)->map(function ($item) {
+            return (array) $item;
+        })->toArray();
+
+
+         // Lunas dan Kelebihan
+         $barangHutangLunasDanKelebihan =  json_decode(json_encode($dataBarangHutangLunasDanKelebihanArray), true);
+        return view('laporan.laporanhutang', ['dataLaporanHutang' => $dataLaporanHutangArray , 'dataLaporanHutangLunasDanKelebihan' => $barangHutangLunasDanKelebihan]);
     }
 
     public function laporanPiutang(Request $request)

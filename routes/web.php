@@ -236,7 +236,8 @@ Route::middleware(['auth', 'check-tanggal'])->group(function () {
         Route::put('/update/{id_nota}/{id_piutang}', [CicilanPiutangController::class, 'update'])->name('cicilan.update'); // Mengupdate user berdasarkan ID
         Route::delete('/hapus/{id_piutang}/{id_nota}', [CicilanPiutangController::class, 'destroy'])->name('cicilan.destroy');
     });
-    Route::prefix('cicilanhutang')->name('')->group(function () {
+    Route::prefix('cicilanhutang')->group(function () {
+        Route::get('/{id_hutang_dan_stok}/hide', [CicilanHutangController::class, 'notVisible'])->name('cicilan.hutang.hide');
         Route::get('/{id_hutang_dan_stok}', [CicilanHutangController::class, 'index'])->name('cicilan.hutang.index');
         Route::get('/edit/{id_riwayathutang}', [CicilanHutangController::class, 'edit'])->name('cicilan.hutang.edit');
         Route::post('/tambah', [CicilanHutangController::class, 'store'])->name('cicilan.hutang.store');

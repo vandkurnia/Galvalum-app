@@ -132,6 +132,7 @@ class HutangDanStokController extends Controller
                 'tenggat_waktu' => $data['tenggat_bayar'],
                 'id_bukubesar' => $data['id_bukubesar'],
                 'id_barang' => $data['id_barang'],
+                'hidden' => 'no'
             ]);
 
             return [

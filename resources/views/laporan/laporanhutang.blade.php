@@ -100,15 +100,104 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $laporan['nama_pemasok'] }}</td>
                                     <td>{{ $laporan['nama_barang'] }}</td>
-                                    <td>{{ number_format( $laporan['total_pesanan'], 1, ',', '.') }}</td>
+                                    <td>{{ number_format($laporan['total_pesanan'], 1, ',', '.') }}</td>
                                     <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok_alt'])) }}</td>
                                     <td>{{ number_format((int) $laporan['harga_bayar'], 0, ',', '.') }}</td>
                                     <td>{{ number_format((int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>
-                                    <td>{{ number_format((int) $laporan['harga_bayar'] - (int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}</td>
+                                    <td>{{ number_format((int) $laporan['harga_bayar'] - (int) $laporan['jumlah_terbayar'], 0, ',', '.') }}
+                                    </td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}
+                                    </td>
                                     <td><span class="badge badge-warning">Belum Lunas</span></td>
                                     <td>Unpaid</td>
-                                    <td><a href="{{ route('cicilan.hutang.index', ['id_hutang_dan_stok' => $laporan['id_hutang_stok']]) }}" class="btn btn-primary">Update cicilan</a></td>
+                                    <td><a href="{{ route('cicilan.hutang.index', ['id_hutang_dan_stok' => $laporan['id_hutang_stok']]) }}"
+                                            class="btn btn-primary">Update cicilan</a></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Total</th>
+                                <th id="totalPemesanan">Rp. 0</th>
+                                <th></th>
+                                <th id="totalHargaBayar">Rp. 0</th>
+                                <th id="totalJumlahTerbayar">Rp. 0</th>
+                                <th id="totalKekurangan">Rp. 0</th>
+                                <th colspan="4"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+
+                <h6 class="m-0 font-weight-bold text-primary">Laporan Hutang Lunas / Kelebihan</h6>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="laporanHutangLunasDanKelebihan" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Supplier</th>
+                                <th>Barang Pesanan</th>
+                                <th>Total Pemesanan</th>
+                                <th>Tanggal Pembelian</th>
+                                <th>Harga Bayar</th>
+                                <th>Jumlah Terbayar</th>
+                                <th>Kekurangan</th>
+                                <th>Jatuh Tempo</th>
+                                <th>Status</th>
+                                <th>Lunas</th>
+                                <th>Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dataLaporanHutangLunasDanKelebihan as $laporan)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $laporan['nama_pemasok'] }}</td>
+                                    <td>{{ $laporan['nama_barang'] }}</td>
+                                    <td>{{ number_format($laporan['total_pesanan'], 1, ',', '.') }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['tanggal_stok_alt'])) }}</td>
+                                    <td>{{ number_format((int) $laporan['harga_bayar'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format((int) $laporan['jumlah_terbayar'], 0, ',', '.') }}</td>
+                                    <td>{{ number_format((int) $laporan['harga_bayar'] - (int) $laporan['jumlah_terbayar'], 0, ',', '.') }}
+                                    </td>
+                                    <td>{{ date('Y-m-d', strtotime($laporan['jatuh_tempo'] ?? $laporan['jatuh_tempo_alt'])) }}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-warning">
+                                            @if ($laporan['harga_bayar'] == $laporan['jumlah_terbayar'])
+                                                Lunas
+                                            @elseif ($laporan['jumlah_terbayar'] > $laporan['harga_bayar'])
+                                                Kelebihan
+                                            @else
+                                                Belum Lunas
+                                            @endif
+                                        </span>
+                                    </td>
+
+                                    <td></td>
+                                    <td>
+                                        <a href="{{ route('cicilan.hutang.index', ['id_hutang_dan_stok' => $laporan['id_hutang_stok']]) }}"
+                                            class="btn btn-primary"><i class="fas fa-info-circle"></i></a>
+
+                                        <a href="{{ route('cicilan.hutang.hide', ['id_hutang_dan_stok' => $laporan['id_hutang_stok']]) }}"
+                                            class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> <!-- Ikon tong sampah -->
+                                        </a>
+
+
+                                    </td>
+
+
+
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -149,28 +238,39 @@
             $('#laporanHutang').DataTable({
 
                 drawCallback: function() {
-                var api = this.api();
+                    var api = this.api();
 
-                // Function to calculate column totals
-                function getColumnTotal(columnIndex) {
-                    return api.column(columnIndex, { page: 'current' }).data().reduce(function(sum, value) {
-                        return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g, ''), 10);
-                    }, 0);
+                    // Function to calculate column totals
+                    function getColumnTotal(columnIndex) {
+                        return api.column(columnIndex, {
+                            page: 'current'
+                        }).data().reduce(function(sum, value) {
+                            return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g,
+                                ''), 10);
+                        }, 0);
+                    }
+
+                    // Calculate totals for each column
+                    var totalPemesanan = getColumnTotal(3);
+                    var totalHargaBayar = getColumnTotal(5);
+                    var totalJumlahTerbayar = getColumnTotal(6);
+                    var totalKekurangan = getColumnTotal(7);
+
+                    // Update the footer with formatted totals
+                    $('#totalPemesanan').text(totalPemesanan.toLocaleString('id-ID', {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
+                    }));
+                    $('#totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
+                    $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
+                        'id-ID'));
+                    $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
                 }
-
-                // Calculate totals for each column
-                var totalPemesanan = getColumnTotal(3);
-                var totalHargaBayar = getColumnTotal(5);
-                var totalJumlahTerbayar = getColumnTotal(6);
-                var totalKekurangan = getColumnTotal(7);
-
-                // Update the footer with formatted totals
-                $('#totalPemesanan').text( totalPemesanan.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
-                $('#totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
-                $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString('id-ID'));
-                $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
-            }
             });
+
+            $('#laporanHutangLunasDanKelebihan').DataTable({
+
+            })
         });
     </script>
 @endsection
