@@ -257,19 +257,47 @@
                     var totalKekurangan = getColumnTotal(7);
 
                     // Update the footer with formatted totals
-                    $('#totalPemesanan').text(totalPemesanan.toLocaleString('id-ID', {
+                    $('#laporanHutang #totalPemesanan').text(totalPemesanan.toLocaleString('id-ID', {
                         minimumFractionDigits: 1,
                         maximumFractionDigits: 1
                     }));
-                    $('#totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
-                    $('#totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
+                    $('#laporanHutang #totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
+                    $('#laporanHutang #totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
                         'id-ID'));
-                    $('#totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
+                    $('#laporanHutang #totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
                 }
             });
 
             $('#laporanHutangLunasDanKelebihan').DataTable({
+                drawCallback: function() {
+                    var api = this.api();
 
+                    // Function to calculate column totals
+                    function getColumnTotal(columnIndex) {
+                        return api.column(columnIndex, {
+                            page: 'current'
+                        }).data().reduce(function(sum, value) {
+                            return sum + parseInt(value.replace(/[\Rp.]/g, '').replace(/,/g,
+                                ''), 10);
+                        }, 0);
+                    }
+
+                    // Calculate totals for each column
+                    var totalPemesanan = getColumnTotal(3);
+                    var totalHargaBayar = getColumnTotal(5);
+                    var totalJumlahTerbayar = getColumnTotal(6);
+                    var totalKekurangan = getColumnTotal(7);
+
+                    // Update the footer with formatted totals
+                    $('#laporanHutangLunasDanKelebihan #totalPemesanan').text(totalPemesanan.toLocaleString('id-ID', {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
+                    }));
+                    $('#laporanHutangLunasDanKelebihan #totalHargaBayar').text('Rp. ' + totalHargaBayar.toLocaleString('id-ID'));
+                    $('#laporanHutangLunasDanKelebihan #totalJumlahTerbayar').text('Rp. ' + totalJumlahTerbayar.toLocaleString(
+                        'id-ID'));
+                    $('#laporanHutangLunasDanKelebihan #totalKekurangan').text('Rp. ' + totalKekurangan.toLocaleString('id-ID'));
+                }
             })
         });
     </script>

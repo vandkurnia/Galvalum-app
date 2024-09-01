@@ -229,11 +229,11 @@
                         }
                     },
                     {
-                        
+
                         data: 'no_nota',
                         orderable: false,
                         name: 'no_nota',
-             
+
                     },
                     {
                         data: 'pembeli.no_hp_pembeli',
@@ -255,17 +255,27 @@
                         orderable: false,
                         name: 'created_at',
                         render: function(data) {
-                            return new Date(data).toISOString().slice(0, 10);
+                            let date = new Date(data);
+                            let day = String(date.getDate()).padStart(2, '0');
+                            let month = String(date.getMonth() + 1).padStart(2,
+                                '0'); // Bulan dimulai dari 0
+                            let year = date.getFullYear();
+                            return `${day}-${month}-${year}`;
                         }
                     },
+
                     {
                         data: 'created_at',
                         orderable: false,
                         name: 'created_at',
                         render: function(data) {
-                            return new Date(data).toISOString().slice(11, 16);
+                            let date = new Date(data);
+                            let hours = String(date.getHours()).padStart(2, '0');
+                            let minutes = String(date.getMinutes()).padStart(2, '0');
+                            return `${hours}:${minutes}`;
                         }
                     },
+
                     {
                         data: 'total',
                         orderable: false,
@@ -273,7 +283,7 @@
                     },
                     {
                         data: 'status_pembayaran',
-                  
+
                         name: 'status_pembayaran',
                         orderable: false
                     },
@@ -281,13 +291,18 @@
                         data: 'created_at',
                         name: 'created_at',
                         render: function(data) {
-                            return new Date(data).toISOString().slice(0, 10);
+                            let date = new Date(data);
+                            let day = String(date.getDate()).padStart(2, '0');
+                            let month = String(date.getMonth() + 1).padStart(2,
+                                '0'); // Bulan dimulai dari 0
+                            let year = date.getFullYear();
+                            return `${day}-${month}-${year}`;
                         },
                         orderable: false
                     },
                     {
                         data: 'metode_pembayaran',
-                       
+
                         name: 'metode_pembayaran'
                     },
                     {
