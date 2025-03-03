@@ -34,7 +34,7 @@ class LogStokBarangModel extends Model
     // Definisikan relasi dengan model User (admin)
     public function admin()
     {
-        return $this->belongsTo(User::class, 'id_admin');
+        return $this->belongsTo(User::class, 'id_admin')->withTrashed();
     }
 
     // Definisikan relasi dengan model StokBarang
