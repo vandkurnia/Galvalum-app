@@ -193,7 +193,7 @@
 
                 {{-- <div class="informasi-toko" style="position:absolute;left: 125px;  width: 199px;"> --}}
                 <div class="informasi-toko" style="position:absolute;left: 125px;  width: 60%; top: 0;">
-                    <h2 class="nama-toko" style="font-size: 14px;">TK. BIMA SAKTI PERKASA</h2>
+                    <h2 class="nama-toko" style="font-size: 14px;">CV. BIMA SAKTI PERKASA MADIUN</h2>
                     <p class="alamat-toko"
                         style="
                         margin-bottom: 0px;
@@ -316,7 +316,7 @@
                             <h2>Keterangan</h2>
                             <ol>
                                 <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
-                                <li>BRI : 388401024665532 / An. Budiono</li>
+                                <li>BRI : 004501575757562 / An. CV BIMA SAKTI PERKASA MADIUN</li>
                                 <li>BCA : 1771837226 / An. Budiono</li>
                             </ol>
                         </td>
@@ -349,7 +349,7 @@
                             <h2>Keterangan</h2>
                             <ol>
                                 <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
-                                <li>BRI : 388401024665532 / An. Budiono</li>
+                                <li>BRI : 004501575757562 / An. CV BIMA SAKTI PERKASA MADIUN</li>
                                 <li>BCA : 1771837226 / An. Budiono</li>
                             </ol>
                         </td>
