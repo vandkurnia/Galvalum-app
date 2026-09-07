@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cetak;
 
 use App\Http\Controllers\Controller;
 use App\Models\NotaPembeli;
+use App\Models\User;
 use App\Models\pdf\InvoicePembayaranModel;
 use App\Models\pdf\SuratJalanModel;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -63,7 +64,9 @@ class ControllerInvoinceCetak extends Controller
         // $namaKasir = $notaPembeli->Admin->nama_admin;
         // Sementara
         // Seharusnya tiap cetak dicatat
-        $namaKasir = $notaPembeli->Admin->nama_admin;
+        // $namaKasir = $notaPembeli->Admin->nama_admin;
+        $getnamaKasir = User::withTrashed()->where('id_admin', $notaPembeli->id_admin)->first();
+        $namaKasir = $getnamaKasir->nama_admin;
         // dd($namaKasir);
 
         $dataPembayaran = [

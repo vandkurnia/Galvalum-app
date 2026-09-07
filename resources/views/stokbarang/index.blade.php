@@ -81,14 +81,16 @@
                                 <th>Tipe Barang</th>
                                 <th>Ukuran Barang</th>
                                 <th>Harga Barang</th>
-                                <th>Harga Supplier</th>
+                                
+                                @if (Auth::user()->role != 'karyawan')
+                                    <th>Harga Supplier</th>
+                                @endif
+                                
                                 <th>Jumlah Stok</th>
-                                <th data-orderable="false">Retur</th>
-                                <th data-orderable="false">Aksi</th>
                                 @if (Auth::user()->role == 'admin')
-                                    <th data-orderable="false">
-                                        Log
-                                    </th>
+                                    <th data-orderable="false">Retur</th>
+                                    <th data-orderable="false">Aksi</th>
+                                    <th data-orderable="false">Log</th>
                                 @endif
                             </tr>
                         </thead>
@@ -109,8 +111,12 @@
                                     <td>{{ $databarang->ukuran }}</td>
                                     <td data-harga-jual="{{ $databarang->harga_barang }}">
                                         {{ number_format($databarang->harga_barang, 0, ',', '.') }}</td>
-                                    <td data-harga="{{ $databarang->harga_barang_pemasok }}">
-                                        {{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
+                                        
+                                    @if (Auth::user()->role != 'karyawan')
+                                        <td data-harga="{{ $databarang->harga_barang_pemasok }}">
+                                            {{ number_format($databarang->harga_barang_pemasok, 0, ',', '.') }}</td>
+                                    @endif
+                                    
                                     <td data-stok="{{ $databarang->stok }}">
                                         {{ number_format($databarang->stok, 1, '.', '') }}</td>
                                     <td>
@@ -167,7 +173,9 @@
                             <tr>
                                 <th colspan="5">Total</th>
                                 <th id="totalHargaPenjualan">Rp. 0</th>
-                                <th id="totalHargaPemasok">Rp. 0</th>
+                                @if (Auth::user()->role != 'karyawan')
+                                    <th id="totalHargaPemasok">Rp. 0</th>
+                                @endif
                                 <th id="totalStok">0</th>
                                 <th colspan="3"></th>
                             </tr>
@@ -1080,81 +1088,149 @@
 
     <script>
         $(document).ready(function() {
-            $('#stokbarang').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: window.location.href,
-                    data: function(d) {
-                        d.api = 'yes'; // Add query parameter for backend processing
-                    }
-                },
-                columns: [{
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row, meta) {
-                            // `meta.row` is the index of the row
-                            return meta.row + 1; // Add 1 to start numbering from 1
+            const role = @json(Auth::user()->role);
+            
+            if (role === "admin") {
+                $('#stokbarang').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: window.location.href,
+                        data: function(d) {
+                            d.api = 'yes'; // Add query parameter for backend processing
                         }
                     },
-                    {
-                        data: 'pemasok'
+                    columns: [{
+                            data: null,
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                // `meta.row` is the index of the row
+                                return meta.row + 1; // Add 1 to start numbering from 1
+                            }
+                        },
+                        {
+                            data: 'pemasok'
+                        },
+                        {
+                            data: 'nama_barang'
+                        },
+                        {
+                            data: 'tipe_barang'
+                        },
+                        {
+                            data: 'ukuran_barang'
+                        },
+                        {
+                            data: 'harga_barang'
+                        },
+                        {
+                            data: 'harga_pemasok',
+                        },
+                        {
+                            data: 'stok'
+                        },
+                        {
+                            data: 'retur',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'aksi',
+                            orderable: false,
+                            searchable: false
+                        },
+    
+                        {
+                            data: 'log',
+                            orderable: false,
+                            searchable: false
+                        },
+    
+                    ],
+                    order: [
+                        [0, 'asc']
+                    ],
+                    columnDefs: [{
+                            orderable: false,
+                            targets: [8, 9]
+                        } // Disable sorting on the "Retur" and "Aksi" columns
+                    ],
+                    // Your DataTable options here...
+                    drawCallback: function() {
+                        hitungFooterTable(); // Call the function after each draw
+                    }
+                });
+            } else {
+                $('#stokbarang').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: window.location.href,
+                        data: function(d) {
+                            d.api = 'yes'; // Add query parameter for backend processing
+                        }
                     },
-                    {
-                        data: 'nama_barang'
-                    },
-                    {
-                        data: 'tipe_barang'
-                    },
-                    {
-                        data: 'ukuran_barang'
-                    },
-                    {
-                        data: 'harga_barang'
-                    },
-                    {
-                        data: 'harga_pemasok'
-                    },
-                    {
-                        data: 'stok'
-                    },
-                    {
-                        data: 'retur',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'aksi',
-                        orderable: false,
-                        searchable: false
-                    },
-
-                    {
-                        data: 'log',
-                        orderable: false,
-                        searchable: false
-                    },
-
-                ],
-                order: [
-                    [0, 'asc']
-                ],
-                columnDefs: [{
-                        orderable: false,
-                        targets: [8, 9]
-                    } // Disable sorting on the "Retur" and "Aksi" columns
-                ],
-                // Your DataTable options here...
-                drawCallback: function() {
-                    hitungFooterTable(); // Call the function after each draw
-                }
-
-
-
-            });
+                    columns: [{
+                            data: null,
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                // `meta.row` is the index of the row
+                                return meta.row + 1; // Add 1 to start numbering from 1
+                            }
+                        },
+                        {
+                            data: 'pemasok'
+                        },
+                        {
+                            data: 'nama_barang'
+                        },
+                        {
+                            data: 'tipe_barang'
+                        },
+                        {
+                            data: 'ukuran_barang'
+                        },
+                        {
+                            data: 'harga_barang'
+                        },
+                        {
+                            data: 'stok'
+                        },
+                        {
+                            data: 'retur',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'aksi',
+                            orderable: false,
+                            searchable: false
+                        },
+    
+                        {
+                            data: 'log',
+                            orderable: false,
+                            searchable: false
+                        },
+    
+                    ],
+                    order: [
+                        [0, 'asc']
+                    ],
+                    columnDefs: [{
+                            orderable: false,
+                            targets: [8, 9]
+                        } // Disable sorting on the "Retur" and "Aksi" columns
+                    ],
+                    // Your DataTable options here...
+                    drawCallback: function() {
+                        hitungFooterTableKar(); // Call the function after each draw
+                    }
+                });
+            }
         });
-
 
 
 
@@ -1198,6 +1274,41 @@
             // Update footer
             document.querySelector('#totalHargaPenjualan').textContent = 'Rp. ' + totalHargaPenjualan.toLocaleString();
             document.querySelector('#totalHargaPemasok').textContent = 'Rp. ' + totalHargaPemasok.toLocaleString();
+            document.querySelector('#totalStok').textContent = totalStok.toLocaleString();
+        }
+        
+        function hitungFooterTableKar() {
+            // Function to parse values as floats
+            function floatVal(i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[\Rp.,]/g, '')) :
+                    typeof i === 'number' ?
+                    i : 0;
+            }
+
+            // Calculate total for Harga Penjualan * Stok
+            let totalHargaPenjualan = 0;
+            let totalStok = 0;
+
+            // Select all rows in the table body
+            const rows = document.querySelectorAll('#stokbarang tbody tr');
+
+            rows.forEach(row => {
+                // Get Harga Penjualan (column 5) and Stok (column 7)
+                const hargaBarangCell = row.querySelector('td:nth-child(6)');
+                const hargaBarang = hargaBarangCell && hargaBarangCell.textContent.trim() !== '' ? floatVal(
+                    hargaBarangCell.textContent) : 0;
+
+                const stokCell = row.querySelector('td:nth-child(7)');
+                const stok = stokCell && stokCell.textContent.trim() !== '' ? parseFloat(stokCell.textContent) : 0;
+
+                // Calculate totals
+                totalHargaPenjualan += hargaBarang * stok;
+                totalStok += stok;
+            });
+
+            // Update footer
+            document.querySelector('#totalHargaPenjualan').textContent = 'Rp. ' + totalHargaPenjualan.toLocaleString();
             document.querySelector('#totalStok').textContent = totalStok.toLocaleString();
         }
     </script>
