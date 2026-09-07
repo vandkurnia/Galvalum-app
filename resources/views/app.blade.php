@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Galvalum - @yield('title', 'App')</title>
+    <title>Distributor - @yield('title', 'App')</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ secure_asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
