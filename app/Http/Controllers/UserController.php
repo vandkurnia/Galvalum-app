@@ -77,7 +77,7 @@ class UserController extends Controller
     {
         $request->validate([
             'nama_admin' => 'required',
-            'role' => $request->role,
+            'role' => 'required',
             'no_telp_admin' => 'required',
             // 'email_admin' => 'required|email|unique:users,email_admin',
         ]);
