@@ -79,7 +79,7 @@ class UserController extends Controller
             'nama_admin' => 'required',
             'role' => 'required',
             'no_telp_admin' => 'required',
-            // 'email_admin' => 'required|email|unique:users,email_admin',
+            'email_admin' => 'required|email',
         ]);
         // dd("heheha");
 
@@ -89,6 +89,21 @@ class UserController extends Controller
         // $user->email_admin = $request->email_admin;
         // // Setel field lainnya sesuai kebutuhan
         // $user->save();
+
+        //check if change email
+        if ($request->email_admin != $user->email_admin) {
+
+            $checkExistsEmail = User::where('email_admin', $request->email_admin)
+                ->where('hash_id_admin', '!=', $id)
+                ->exists();
+
+            if ($checkExistsEmail) {
+                return redirect()
+                    ->route('user.index')
+                    ->with('error', 'Email sudah terdaftar pada akun lain!');
+            }
+        }
+
         $user->update($request->all());
 
         return redirect()->route('user.index')->with('success', 'User berhasil diupdate');
