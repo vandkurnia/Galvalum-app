@@ -230,8 +230,13 @@
                         style="
                         margin-top: 0px;
                         padding-top: 0px;
-                        ">Wa
-                        / Telp : 085733823107
+                        ">No. Telp : 085733823107
+                    </p>
+                    <p class="alamat-toko"
+                        style="
+                        margin-top: 0px;
+                        padding-top: 0px;
+                        ">WhatsApp : 085640552995
                     </p>
 
                     <p class="nomor-telepon-toko"></p>
@@ -414,10 +419,10 @@
                     <td colspan="4">Subtotal Harga</td>
                     <td>Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}</td>
                 </tr>
-                <tr>
-                    <td colspan="4">Diskon</td>
-                    <td>Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
-                </tr>
+                <!--<tr>-->
+                <!--    <td colspan="4">Diskon</td>-->
+                <!--    <td>Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>-->
+                <!--</tr>-->
                 <tr>
                     <td colspan="4">Ongkir</td>
                     <td>Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>

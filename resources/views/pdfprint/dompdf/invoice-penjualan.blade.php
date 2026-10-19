@@ -103,7 +103,12 @@
             display: flex;
             flex-direction: column;
             padding: 10px 5px 5px 10px;
-            min-height: 100px;
+            min-height: 80px;
+        }
+
+        .detail-nama-pembelii {
+            display: Flex;
+            flex-direction: column;
         }
 
 
@@ -158,7 +163,7 @@
 
         .logo-toko,
         .informasi-toko {
-            width: 50%;
+            width: 70%;
             /* height: 20%; */
         }
 
@@ -180,19 +185,25 @@
         .nomor-telepon-toko {
             margin-top: 0;
         }
+        
+        .free-margin-padding {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
     </style>
 </head>
 
 <body onload="window.print()" style="position: relative">
     <header style="position: relative; height: 280px;">
-        <div class="info-pembeli-dan-penjual" style="position:absolute; height:350px; ">
+        <div class="info-pembeli-dan-penjual" style="position:absolute; height:320px; ">
             <div class="informasi-nota" style="width: 300px; position: relative;">
-                <div class="logo-toko" style="position: absolute; width: 120px; top: 0;">
+                <div class="logo-toko" style="position: absolute; width: 120px; top: 20px;">
                     <img src="{{ secure_asset('assets/logogalvalum.jpg') }}" alt="Logo Galvalum">
                 </div>
 
-                {{-- <div class="informasi-toko" style="position:absolute;left: 125px;  width: 199px;"> --}}
-                <div class="informasi-toko" style="position:absolute;left: 125px;  width: 60%; top: 0;">
+                <div class="informasi-toko" style="position:absolute;left: 125px;  width: 70%; top: 0;">
                     <h2 class="nama-toko" style="font-size: 14px;">CV. BIMA SAKTI PERKASA MADIUN</h2>
                     <p class="alamat-toko"
                         style="
@@ -203,16 +214,21 @@
                     <p class="alamat-toko"
                         style="
                         margin-top: 0px;
-                        padding-top: 0px;
-                        ">
-                        Wa
-                        / Telp : 085733823107
+                        padding-bottom: 2px;
+                        margin-bottom: 0px;
+                        ">WhatsApp : 085640552995
                     </p>
-
+                    <p class="alamat-toko"
+                        style="
+                        margin-top: 0px;
+                        padding-top: 0px;
+                        ">No. Telp : 085733823107
+                    </p>
                     <p class="nomor-telepon-toko"></p>
                 </div>
             </div>
-            <table class="table" style="position: absolute; left: 0; top: 125px;">
+            
+            <table class="table" style="position: absolute; left: 0; top: 140px; height: 140px;">
                 <thead>
                     <tr>
                         <th class="text-center">Kepada Yth.:</th>
@@ -220,19 +236,21 @@
                 </thead>
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
-                        <td class="nama-pembeli" style="font-size: 14px; height:20px;">
+                        <td class="nama-pembeli">
+                            <div class="detail-nama-pembelii">
                             @foreach ($dataPembeli as $index => $data)
-                                <span style="margin-bottom: 5px;">{{ $data['nama'] }}<br><br></span>
-                                <span style="margin-bottom: 5px;">{{ $data['alamat'] }} <br><br></span>
-                                <span style="margin-bottom: 5px;">{{ $data['telp'] }}</span>
+                                <p class="free-margin-padding" style="margin-bottom: 10px; font-size: 14px">{{ $data['nama'] }}</p>
+                                <p class="free-margin-padding" style="margin-bottom: 10px; font-size: 14px">{{ $data['alamat'] }}</p>
+                                <p class="free-margin-padding" style="font-size: 14px">{{ $data['telp'] }}</p>
                             @endforeach
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <!-- <div class="informasi-pembeli ">
                 <h2 class="label-pembeli">Kepada Yth.:</h2>
-                <div class="nama-pembeli">
+                <div class="">
                     <span>Ibu Dewi</span>
                     <span>Desa Lebak Ayu Sawahan Madiun</span>
                     <span>0895359508913</span>
@@ -240,7 +258,6 @@
 
             </div> -->
         </div>
-
 
         <div class="informasi-surat-lain" style="position: absolute; right:0; width:300px; height:320px;">
             <div style="position: relative; height:280px;">
@@ -271,7 +288,7 @@
                     </thead>
                     <tbody class="text-dark" style="background-color: #e9ecef">
                         <tr class="fw-light">
-                            <td class="text-center" style="font-size: 14px; height: 59px;">{{ $dataKasir }}</td>
+                            <td class="text-center" style="padding-left: 10px; font-size: 14px; height: 59px;">{{ $dataKasir }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -312,7 +329,11 @@
             @if ($dataRincianBarang['status'] == 'hutang')
                 <tfoot>
                     <tr>
+                    @if ($dataRincianBarang['diskon'] > 0)
                         <td rowspan="5" colspan="4">
+                    @else
+                        <td rowspan="4" colspan="4">
+                    @endif
                             <h2>Keterangan</h2>
                             <ol>
                                 <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
@@ -324,10 +345,12 @@
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}
                         </td>
                     </tr>
+                    @if ($dataRincianBarang['diskon'] > 0)
                     <tr>
                         <td colspan="1">Diskon</td>
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
                     </tr>
+                    @endif
                     <tr>
                         <td colspan="1">Ongkir</td>
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
@@ -345,7 +368,11 @@
             @else
                 <tfoot>
                     <tr>
+                    @if ($dataRincianBarang['diskon'] > 0)
                         <td rowspan="4" colspan="4">
+                    @else
+                        <td rowspan="3" colspan="4">
+                    @endif
                             <h2>Keterangan</h2>
                             <ol>
                                 <li>Barang yang sudah dibeli tidak bisa ditukar / dikembalikan</li>
@@ -357,10 +384,12 @@
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['subtotalHarga'], 0, ',', '.') }}
                         </td>
                     </tr>
+                    @if ($dataRincianBarang['diskon'] > 0)
                     <tr>
                         <td colspan="1">Diskon</td>
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['diskon'], 0, ',', '.') }}</td>
                     </tr>
+                    @endif
                     <tr>
                         <td colspan="1">Ongkir</td>
                         <td colspan="1">Rp. {{ number_format($dataRincianBarang['ongkir'], 0, ',', '.') }}</td>
