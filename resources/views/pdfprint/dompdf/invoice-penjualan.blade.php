@@ -106,7 +106,7 @@
             min-height: 80px;
         }
 
-        .detail-nama-pembelii {
+        .detail-nama-pembeli {
             display: Flex;
             flex-direction: column;
         }
@@ -216,13 +216,13 @@
                         margin-top: 0px;
                         padding-bottom: 2px;
                         margin-bottom: 0px;
-                        ">WhatsApp : 085640552995
+                        ">Admin 1 : 085640552995
                     </p>
                     <p class="alamat-toko"
                         style="
                         margin-top: 0px;
                         padding-top: 0px;
-                        ">No. Telp : 085733823107
+                        ">Admin 2 : 085733823107
                     </p>
                     <p class="nomor-telepon-toko"></p>
                 </div>
@@ -237,11 +237,10 @@
                 <tbody class="text-dark" style="background-color: #e9ecef">
                     <tr class="fw-light">
                         <td class="nama-pembeli">
-                            <div class="detail-nama-pembelii">
+                            <div class="detail-nama-pembeli">
                             @foreach ($dataPembeli as $index => $data)
-                                <p class="free-margin-padding" style="margin-bottom: 10px; font-size: 14px">{{ $data['nama'] }}</p>
-                                <p class="free-margin-padding" style="margin-bottom: 10px; font-size: 14px">{{ $data['alamat'] }}</p>
-                                <p class="free-margin-padding" style="font-size: 14px">{{ $data['telp'] }}</p>
+                                <p class="free-margin-padding" style="margin-bottom:5px; font-size: 14px">{{ $data['nama'] }}</p>
+                                <p class="free-margin-padding" style="font-size: 14px">{{ $data['alamat'] }} (Telp.{{ $data['telp'] }})</p>
                             @endforeach
                             </div>
                         </td>
